@@ -3,7 +3,7 @@
 ### Ready
 
 #### Wantch: Manage Movies to Watch
-- Demo: [wantch.meteorapp.com](wantch.meteorapp.com) 
+- Demo: [wantch.meteorapp.com](https://wantch.meteorapp.com) 
 - Repository: [filipenevola/wantch](https://github.com/filipenevola/wantch)
 - Why: To show how simple is to create an app using Meteor Methods and React
 - Stack: Meteor, React and PWA
