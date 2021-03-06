@@ -2,8 +2,16 @@
 
 ### Ready
 
+#### Tailwindcss
+- Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
+- Repository: [meteor/examples/tailwindcss](./tailwindcss)
+- Why: To show how to set up [tailwindcss](https://tailwindcss.com/) with Meteor
+- Stack: Tailwindcss, Meteor and React
+- Last Updated At: Mar/06/2021
+- Meteor Version: 2.1
+
 #### Wantch: Manage Movies to Watch
-- Demo: [wantch.meteorapp.com](https://wantch.meteorapp.com) 
+- Demo: [wantch.meteorapp.com](https://wantch.meteorapp.com)
 - Repository: [filipenevola/wantch](https://github.com/filipenevola/wantch)
 - Why: To show how simple is to create an app using Meteor Methods and React
 - Stack: Meteor, React and PWA
