@@ -15,7 +15,7 @@ See [package.json](package.json) as example.
 ### 2 - Install Meteor package for postcss
 
 ```bash
-meteor add hexsprite:postcss
+meteor add juliancwirko:postcss
 ```
 
 See [packages](.meteor/packages) as example.
