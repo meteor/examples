@@ -27,6 +27,13 @@
 - Meteor Version: 2.1
 
 ### WIP
+#### Parties
+- Demo: N/A
+- Repository: [meteor/examples/parties](./parties)
+- Why: One of the original Meteor examples
+- Stack: Meteor, Blaze
+- Last Updated At: March/16/2021
+- Meteor Version: 2.1
 
 #### Native app with Cordova
 - Demo: N/A
