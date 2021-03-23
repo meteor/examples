@@ -26,6 +26,15 @@
 - Last Updated At: Feb/25/2021
 - Meteor Version: 2.1
 
+
+#### Double app
+- Demo: [double-app.meteorapp.com](https://double-app.meteorapp.com)
+- Repository: [denihs/double-app](https://github.com/denihs/double-app/)
+- Why: To show how to have two apps with different purposes, but sharing the same codebase. 
+- Stack: Meteor and React
+- Last Updated At: Mar/19/2021
+- Meteor Version: 2.1
+
 ### WIP
 
 #### Native app with Cordova
