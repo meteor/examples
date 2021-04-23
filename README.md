@@ -2,6 +2,14 @@
 
 ### Ready
 
+#### Simple Tasks
+- Demo: [simpletasks.meteorapp.com/](https://simpletasks.meteorapp.com)
+- Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
+- Why: To show how to use Meteor with [Chakra UI](https://chakra-ui.com/) + [Formik](https://formik.org/) + MongoDB
+- Stack: Meteor, Chakra UI, React, Formik, MongoDB
+- Last Updated At: Apr/07/2021
+- Meteor Version: 2.1.1
+
 #### Chakra UI
 - Demo: [chakraui.meteorapp.com/](https://chakraui.meteorapp.com/)
 - Repository: [meteor/examples/chakra-ui](./chakra-ui)
