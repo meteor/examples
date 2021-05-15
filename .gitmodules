@@ -1,0 +1,3 @@
+[submodule "complex-todos-svelte"]
+	path = complex-todos-svelte
+	url = https://github.com/guncebektas/complex-todos-svelte
