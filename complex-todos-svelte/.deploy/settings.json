@@ -1,0 +1,15 @@
+{
+  "public": {
+    "log": [
+      "ERROR",
+      "FATAL",
+      "WARN",
+      "INFO",
+      "TRACE",
+    ]
+  },
+  "monti": {
+    "appId": "bzuQ34N4GPrwEu6Bo",
+    "appSecret": "a7343029-4163-4c69-9342-d09b4d515e0c"
+  }
+}

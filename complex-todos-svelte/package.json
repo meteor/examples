@@ -1,0 +1,32 @@
+{
+  "name": "complex-todos-svelte",
+  "private": true,
+  "scripts": {
+    "start": "meteor -s settings.json --port 3000",
+    "test": "TEST_WATCH=1 meteor -s settings.json --port 3000 test --driver-package meteortesting:mocha",
+    "cypress": "cypress open",
+    "visualize": "meteor -s settings.json --production --extra-packages bundle-visualizer",
+    "deploy": "cd .deploy && mup deploy"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.8.3",
+    "bcrypt": "^5.0.1",
+    "jquery": "^3.4.1",
+    "meteor-node-stubs": "^1.0.0",
+    "node-cache": "^5.1.2",
+    "simpl-schema": "^1.10.2",
+    "svelte": "^3.31.2",
+    "svelte-routing": "^1.6.0"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.js",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "cypress": "^7.3.0"
+  }
+}
