@@ -43,6 +43,14 @@
 - Last Updated At: Mar/19/2021
 - Meteor Version: 2.1
 
+### Leaderboards
+- Demo: N/A
+- Repository [meteor/leaderboards](https://github.com/meteor/leaderboard/)
+- Why: Complete example of a small Blaze app with only client code that can update the DB.
+- Stack: Meteor and Blaze
+- Last Updated At: Jul/25/2021
+- Meteor Version: 2.3.1
+
 ### WIP
 
 #### Native app with Cordova
