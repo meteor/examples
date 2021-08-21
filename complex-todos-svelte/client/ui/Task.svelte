@@ -1,33 +1,31 @@
 <script>
   import {useTracker} from 'meteor/rdb:svelte-meteor-data';
   import {tasksRemove, tasksUpdateAsChecked, tasksUpdateAsPrivate} from '../../imports/modules/tasks/tasks.methods.js';
-  
+
   export let key;
   export let task;
   let showButton = false;
-  
+
   $: currentUser = useTracker(() => Meteor.user());
-  
+
   $: {
-    if($currentUser)
-    {
+    if($currentUser) {
       showButton = task.owner === $currentUser._id;
+    } else {
+      showButton = false;
     }
   }
-  
-  function toggleChecked()
-  {
+
+  function toggleChecked() {
     // Set the checked property to the opposite of its current value
     tasksUpdateAsChecked.call({taskId: task._id, setChecked: !task.checked});
   }
-  
-  function deleteThisTask()
-  {
+
+  function deleteThisTask() {
     tasksRemove.call({taskId: task._id});
   }
-  
-  function togglePrivate()
-  {
+
+  function togglePrivate() {
     tasksUpdateAsPrivate.call({taskId: task._id, setPrivate: !task.private});
   }
 </script>
