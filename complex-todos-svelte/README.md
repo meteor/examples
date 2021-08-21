@@ -253,7 +253,11 @@ will talk with each other over events.
 
 Logging with different level is essentials to check what is going on during both development and production. An
 application log must have at least debug, error, warning, info and success levels. Using debug log may affect
-performance so disabling it with a settings file is a good approach
+performance so disabling it with a settings file is a good approach.
+
+The [meteor:logging](https://docs.meteor.com/packages/logging.html) package may be included to your project in others packages.
+If meteor:logging is solving your needs, you should use meteor:logging package instead of ostrio:logger. 
+You should choose packages carefully to prevent new dependencies. 
 
 ### Migration
 
