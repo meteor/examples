@@ -51,6 +51,14 @@
 - Last Updated At: Mar/19/2021
 - Meteor Version: 2.1
 
+### Leaderboard
+- Demo: [leaderboard-example.meteorapp.com](https://leaderboard-example.meteorapp.com)
+- Repository: [meteor/leaderboard](https://github.com/meteor/leaderboard)
+- Why: A simple example of Meteor and Blaze with the use of sessions and of real-time data updates.
+- Stack: Meteor, Blaze
+- Last updated at: June/25/2021
+- Meteor Version: 2.3
+
 ### WIP
 
 #### Native app with Cordova
