@@ -10,7 +10,7 @@
 - Last Updated At: Apr/07/2021
 - Meteor Version: 2.1.1
 
-#### Complex Todos
+#### Complex Svelte Todos
 - Demo: [complex-todos-svelte.meteorapp.com/](https://complex-todos-svelte.meteorapp.com)
 - Repository: [guncebektas/complex-todos-svelte](https://github.com/guncebektas/complex-todos-svelte)
 - Why: To show how to use Meteor in real world problems.
