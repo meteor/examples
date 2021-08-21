@@ -9,7 +9,7 @@
     "deploy": "cd .deploy && mup deploy"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.3",
+    "@babel/runtime": "^7.15.3",
     "bcrypt": "^5.0.1",
     "jquery": "^3.4.1",
     "meteor-node-stubs": "^1.0.0",

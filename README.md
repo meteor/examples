@@ -15,8 +15,8 @@
 - Repository: [guncebektas/complex-todos-svelte](https://github.com/guncebektas/complex-todos-svelte)
 - Why: To show how to use Meteor in real world problems.
 - Stack: Meteor, Svelte, Bootstrap, MongoDB, Cypress
-- Last Updated At: May/15/2021
-- Meteor Version: 2.1.1
+- Last Updated At: Aug/21/2021
+- Meteor Version: 2.3.5
 
 #### Chakra UI
 - Demo: [chakraui.meteorapp.com/](https://chakraui.meteorapp.com/)
