@@ -2,6 +2,22 @@
 
 ### Ready
 
+#### Simple Tasks
+- Demo: [simpletasks.meteorapp.com/](https://simpletasks.meteorapp.com)
+- Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
+- Why: To show how to use Meteor with [Chakra UI](https://chakra-ui.com/) + [Formik](https://formik.org/) + MongoDB
+- Stack: Meteor, Chakra UI, React, Formik, MongoDB
+- Last Updated At: Apr/07/2021
+- Meteor Version: 2.1.1
+
+#### Complex Svelte Todos
+- Demo: [complex-todos-svelte.meteorapp.com/](https://complex-todos-svelte.meteorapp.com)
+- Repository: [guncebektas/complex-todos-svelte](https://github.com/guncebektas/complex-todos-svelte)
+- Why: To show how to use Meteor in real world problems.
+- Stack: Meteor, Svelte, Bootstrap, MongoDB, Cypress
+- Last Updated At: Aug/21/2021
+- Meteor Version: 2.3.5
+
 #### Chakra UI
 - Demo: [chakraui.meteorapp.com/](https://chakraui.meteorapp.com/)
 - Repository: [meteor/examples/chakra-ui](./chakra-ui)
@@ -25,6 +41,23 @@
 - Stack: Meteor, React and PWA
 - Last Updated At: Feb/25/2021
 - Meteor Version: 2.1
+
+
+#### Double app
+- Demo: [double-app.meteorapp.com](https://double-app.meteorapp.com)
+- Repository: [denihs/double-app](https://github.com/denihs/double-app/)
+- Why: To show how to have two apps with different purposes, but sharing the same codebase. 
+- Stack: Meteor and React
+- Last Updated At: Mar/19/2021
+- Meteor Version: 2.1
+
+### Leaderboards
+- Demo: N/A
+- Repository [meteor/leaderboards](https://github.com/meteor/leaderboard/)
+- Why: Complete example of a small Blaze app with only client code that can update the DB.
+- Stack: Meteor and Blaze
+- Last Updated At: Jul/25/2021
+- Meteor Version: 2.3.1
 
 ### WIP
 #### Parties
