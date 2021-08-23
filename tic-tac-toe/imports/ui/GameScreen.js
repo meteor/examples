@@ -15,7 +15,11 @@ const Slot = ({ id, room: { gameState, _id } }) => {
           "makePlay",
           { roomId: _id, playState: { play: id - 1, color } },
           err => {
-            if (err) alert(err.message);
+            if (err && err.error === "invalid-play") {
+                alert("This move is invalid. You might need to wait for your turn!")
+            } else if(err) {
+                alert(err.message);
+            }
           }
         );
       }}
