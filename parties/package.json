@@ -8,12 +8,12 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
-    "bcrypt": "^5.0.0",
+    "@babel/runtime": "^7.15.3",
+    "bcrypt": "^5.0.1",
     "bootstrap": "^3.4.1",
-    "jquery": "^3.5.1",
-    "lodash": "^4.17.20",
-    "meteor-node-stubs": "^1.0.1"
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
+    "meteor-node-stubs": "^1.1.0"
   },
   "meteor": {
     "mainModule": {

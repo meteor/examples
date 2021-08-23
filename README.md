@@ -63,10 +63,10 @@
 #### Parties
 - Demo: N/A
 - Repository: [meteor/examples/parties](./parties)
-- Why: One of the original Meteor examples
+- Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates.
 - Stack: Meteor, Blaze
-- Last Updated At: March/16/2021
-- Meteor Version: 2.1
+- Last Updated At: August/23/2021
+- Meteor Version: 2.3.5
 
 #### Native app with Cordova
 - Demo: N/A
