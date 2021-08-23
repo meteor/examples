@@ -14,7 +14,10 @@ See [package.json](package.json) as example.
 
 ### 2 - Install Meteor package for postcss
 
+And remove the standard minifier.
+
 ```bash
+meteor remove standard-minifier-css
 meteor add juliancwirko:postcss
 ```
 

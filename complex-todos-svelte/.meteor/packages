@@ -1,0 +1,59 @@
+# Meteor packages used by this project, one per line.
+# Check this file (and the other files in this directory) into your repository.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-base@1.5.1             # Packages every Meteor app needs to have
+mobile-experience@1.1.0       # Packages for a great mobile UX
+mongo@1.12.0                   # The database Meteor supports right now
+jquery                  # Wrapper package for npm-installed jquery
+reactive-var@1.0.11            # Reactive variable for tracker
+tracker@1.2.0                 # Meteor's client-side reactive programming library
+
+standard-minifier-css@1.7.3   # CSS minifier run for production mode
+standard-minifier-js@2.6.1    # JS minifier run for production mode
+es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
+ecmascript@0.15.3              # Enable ECMAScript2015+ syntax in app code
+typescript@4.3.5              # Enable TypeScript syntax in .ts and .tsx modules
+shell-server@0.5.0            # Server-side component of the `meteor shell` command
+
+svelte:compiler
+rdb:svelte-meteor-data
+static-html
+svelte:blaze-integration
+meteortesting:mocha
+
+#
+# Accounts and roles
+#
+accounts-ui@1.4.0
+accounts-password@2.0.0
+
+#
+# Data layer
+#
+aldeed:collection2
+dburles:mongo-collection-instances
+
+#
+# Validated methods
+#
+mdg:validated-method
+ddp-rate-limiter@1.1.0
+
+#
+# Logging
+#
+ostrio:logger
+ostrio:loggerconsole
+
+#
+# Scheduled jobs
+#
+msavin:sjobs
+
+#
+# APM
+#
+montiapm:agent

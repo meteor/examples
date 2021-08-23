@@ -1,0 +1,13 @@
+{
+  "baseUrl": "http://localhost:3000/",
+  "watchForFileChanges": true,
+  "defaultCommandTimeout": 15000,
+  "requestTimeout": 15000,
+  "pageLoadTimeout": 120000,
+  "responseTimeout": 60000,
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  },
+  "projectId": "ctdsm1"
+}

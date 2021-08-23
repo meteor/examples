@@ -1,0 +1,12 @@
+{
+  "public": {
+    "log": [
+      "ERROR",
+      "FATAL",
+      "WARN",
+      "INFO",
+      "TRACE",
+      "DEBUG"
+    ]
+  }
+}
