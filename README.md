@@ -2,6 +2,14 @@
 
 ### Ready
 
+#### Tic tac toe
+- Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
+- Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
+- Why: To show that we can even build multiplayer games with meteor.
+- Stack: Meteor and React
+- Last Updated At: Aug/23/2021
+- Meteor Version: 2.3.5
+
 #### Simple Tasks
 - Demo: [simpletasks.meteorapp.com/](https://simpletasks.meteorapp.com)
 - Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
@@ -16,7 +24,6 @@
 - Why: To show how to use Meteor in real world problems.
 - Stack: Meteor, Svelte, Bootstrap, MongoDB, Cypress
 - Last Updated At: Aug/21/2021
-- Meteor Version: 2.3.5
 
 #### Chakra UI
 - Demo: [chakraui.meteorapp.com/](https://chakraui.meteorapp.com/)
