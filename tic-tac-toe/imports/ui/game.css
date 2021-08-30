@@ -1,8 +1,8 @@
 .game {
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 3px);
-  height: calc(100vh - 6px);
+  width: 500px;
+  height: 500px;
 }
 .line {
   display: flex;
@@ -11,10 +11,20 @@
   height: calc(100% / 3);
 }
 .slot {
-  border: solid black 3px;
+  border-bottom: solid black 3px;
+  border-right: solid black 3px;
   flex-basis: calc(100% / 3);
   height: 100%;
 }
+.line:last-child > .slot
+{
+  border-bottom: none;
+}
+.slot:last-child
+{
+  border-right: none;
+}
+
 html,
 body,
 body div,

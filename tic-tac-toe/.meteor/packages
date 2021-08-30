@@ -9,7 +9,6 @@ mobile-experience@1.1.0       # Packages for a great mobile UX
 mongo@1.12.0                   # The database Meteor supports right now
 reactive-var@1.0.11            # Reactive variable for tracker
 
-standard-minifier-css@1.7.3   # CSS minifier run for production mode
 standard-minifier-js@2.6.1    # JS minifier run for production mode
 es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
 ecmascript@0.15.3              # Enable ECMAScript2015+ syntax in app code
@@ -21,3 +20,4 @@ insecure@1.0.7                # Allow all DB writes from clients (for prototypin
 static-html             # Define static page content in .html files
 react-meteor-data       # React higher-order component for reactively tracking Meteor data
 fongandrew:find-and-modify
+juliancwirko:postcss

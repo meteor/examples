@@ -16,15 +16,17 @@ const Slot = ({ id, room: { gameState, _id } }) => {
           { roomId: _id, playState: { play: id - 1, color } },
           err => {
             if (err && err.error === "invalid-play") {
-                alert("This move is invalid. You might need to wait for your turn!")
-            } else if(err) {
-                alert(err.message);
+              alert(
+                "This move is invalid. You might need to wait for your turn!"
+              );
+            } else if (err) {
+              alert(err.message);
             }
           }
         );
       }}
     >
-      {gameState[id - 1] === "cross" ? <img src={"/cross.png"} /> : ""}
+      {gameState[id - 1] === "cross" ? <img className="p-6" src={"/cross.png"} /> : ""}
       {gameState[id - 1] === "circle" ? <img src={"/circle.png"} /> : ""}
     </div>
   );
@@ -54,21 +56,23 @@ export const GameScreen = () => {
   if (roomLoading) return "Loading...";
 
   return (
-    <div className="game">
-      <div className="line">
-        <Slot id={1} room={room} />
-        <Slot id={2} room={room} />
-        <Slot id={3} room={room} />
-      </div>
-      <div className="line">
-        <Slot id={4} room={room} />
-        <Slot id={5} room={room} />
-        <Slot id={6} room={room} />
-      </div>
-      <div className="line">
-        <Slot id={7} room={room} />
-        <Slot id={8} room={room} />
-        <Slot id={9} room={room} />
+    <div className="flex flex-col w-full justify-center items-center h-screen ">
+      <div className="game">
+        <div className="line">
+          <Slot id={1} room={room} />
+          <Slot id={2} room={room} />
+          <Slot id={3} room={room} />
+        </div>
+        <div className="line">
+          <Slot id={4} room={room} />
+          <Slot id={5} room={room} />
+          <Slot id={6} room={room} />
+        </div>
+        <div className="line">
+          <Slot id={7} room={room} />
+          <Slot id={8} room={room} />
+          <Slot id={9} room={room} />
+        </div>
       </div>
     </div>
   );

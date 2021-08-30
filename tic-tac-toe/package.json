@@ -9,11 +9,15 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.3",
+    "autoprefixer": "^10.3.3",
     "meteor-node-stubs": "^1.1.0",
+    "postcss": "^8.3.6",
+    "postcss-load-config": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "tailwindcss": "^2.2.9"
   },
   "meteor": {
     "mainModule": {
