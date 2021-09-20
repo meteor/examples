@@ -12,7 +12,7 @@ module.exports = ctx => {
       // "autoprefixer" is reported to be slow,
       // so we use it only in production.
       config.plugins.autoprefixer = {
-        browserslist: ['defaults'],
+        overrideBrowserslist: ['defaults'],
       };
     }
 
