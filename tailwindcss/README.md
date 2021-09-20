@@ -53,5 +53,3 @@ meteor npm install
 ```bash
 meteor
 ```
-
-> You will see some warnings when running this example, but we are going to [fix](https://github.com/Meteor-Community-Packages/organization/issues/52) them soon
