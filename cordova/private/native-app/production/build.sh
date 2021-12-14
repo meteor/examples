@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# replace cordova-example build details
+# fill the data here
 env=production
 appId=com.meteorapp.mobile
 appName=Mobile
