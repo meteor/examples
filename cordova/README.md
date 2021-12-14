@@ -5,9 +5,11 @@ It is very common to create new projects that should be a PWA and also a Native 
 
 ## Content
 
-- [ ] Cordova basic config
-- [ ] mobile-config default
-- [ ] Push
+- [x] Cordova basic config
+- [x] mobile-config default
+- [x] Automatic scripts to submit to Stores
+- [x] Push
+- [ ] Update after Android changed the format and APKs are no longer used
 - [ ] Settings to open in the store when accessing PWA (SSR)
 - [ ] Settings for universal links
 - [ ] Assets
