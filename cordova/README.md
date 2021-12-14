@@ -312,3 +312,10 @@ The implementation here is not the simplest one, the idea here is to provide ins
 Document all the places that the developer needs to change.
 
 Look for `replace cordova-example` in the code and replace with your values. 
+  
+## Scripts to build and submit automatically
+  
+- [Jenkins Job DSL definition](./private/jenkins.groovy): this groovy script can be installed in Jenkins using this [plugin](https://plugins.jenkins.io/job-dsl/).
+- [Build script](./private/native-app/production/build.sh): Build the `.ipa` and `.apk`. Inform your credentials in the variables at the top.
+- [Publish Android script](./private/native-app/production/publish-android.sh): Sends to Google Play. The first time you need to upload the APK manually, later everything can be done by this script.
+- [Publish iOS script](./private/native-app/production/publish-ios.sh): Sends to App Store. Inform your credentials in the variables at the top.
