@@ -26,8 +26,8 @@ job("build-native") {
     shell("""
       ${installYarn}
       cd private/native-app/${environment}
-      ./build.sh
-      ./publish-android.sh
+      APP_ID=com.meteorapp.mobile ./build.sh
+      APP_ID=com.meteorapp.mobile ./publish-android.sh
       FL_UNLOCK_KEYCHAIN_PASSWORD=${yourKeychainPassword} ./publish-ios.sh
     """)
   }
