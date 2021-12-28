@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-# SUPPLY_TRACK=beta
-SUPPLY_TRACK=production bundle exec fastlane --verbose android googleplay
+authFileAndroid=~/android_auth.json
+
+fastlane supply --aab ~/app-release.aab --json_key $authFileAndroid --package_name $APP_ID
