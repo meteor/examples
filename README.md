@@ -20,7 +20,7 @@
 
 #### Complex Svelte Todos
 - Demo: [complex-todos-svelte.meteorapp.com/](https://complex-todos-svelte.meteorapp.com)
-- Repository: [guncebektas/complex-todos-svelte](https://github.com/guncebektas/complex-todos-svelte)
+- Repository: N/A
 - Why: To show how to use Meteor in real world problems.
 - Stack: Meteor, Svelte, Bootstrap, MongoDB, Cypress
 - Last Updated At: Aug/21/2021
