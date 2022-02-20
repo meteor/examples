@@ -3,7 +3,7 @@
 ### Ready
 
 #### Tic tac toe
-- Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
+- Demo: N/A
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with meteor.
 - Stack: Meteor and React
@@ -51,7 +51,7 @@
 
 
 #### Double app
-- Demo: [double-app.meteorapp.com](https://double-app.meteorapp.com)
+- Demo: N/A
 - Repository: [denihs/double-app](https://github.com/denihs/double-app/)
 - Why: To show how to have two apps with different purposes, but sharing the same codebase. 
 - Stack: Meteor and React
