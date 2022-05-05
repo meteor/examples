@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { render } from 'react-dom';
-import { App } from '/app/ui/App';
+import { Routes } from "../app/ui/common/Routes";
 
 Meteor.startup(() => {
-  render(<App/>, document.getElementById('react-target'));
+  render(
+    <Suspense fallback={() => <h1>Loading...</h1>}>
+      <Routes />
+    </Suspense>,
+    document.getElementById('react-target')
+  );
 });
