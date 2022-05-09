@@ -76,8 +76,8 @@ export default function HomePage() {
           <h2>All NFTs</h2>
 
           <div className="mt-4 grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-full container mx-auto">
-            {nfts.map((nft, index) => (
-              <Card key={index} itemImg={nft.image} itemName={nft.name} itemPrice={nft.price} itemId={nft.id} />
+            {nfts.map((nft) => (
+              <Card key={nft.tokenId} itemImg={nft.image} itemName={nft.name} itemPrice={nft.price} itemId={nft.id} />
             ))}
           </div>
         </>

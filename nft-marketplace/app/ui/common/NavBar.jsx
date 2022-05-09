@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { RoutePaths } from "./Routes";
+import { RoutePaths } from "./RoutePaths";
 import { Disclosure } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 
 const navigation = [
-  { name: 'Nav Link 1', href: '#' },
-  { name: 'Nav Link 2', href: '#' },
-  { name: 'Nav Link 3', href: '#' },
+  { name: 'Sell NFT', href: RoutePaths.SELL_NFT },
+  { name: 'Nav Link 2', href: '#1' },
+  { name: 'Nav Link 3', href: '#2' },
 ];
 
 export const NavBar = () => {
@@ -23,8 +23,8 @@ export const NavBar = () => {
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex items-center space-x-4">
-                    {navigation.map((item, index) => (
-                      <Link className="px-3 py-2 rounded-md text-sm font-medium" to={item.href} key={index}>
+                    {navigation.map((item) => (
+                      <Link className="px-3 py-2 rounded-md text-sm font-medium" to={item.href} key={item.href}>
                         {item.name}
                       </Link>
                     ))}
@@ -49,9 +49,9 @@ export const NavBar = () => {
           {/* Mobile menu items */}
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-charade">
-              {navigation.map((item, index) => (
+              {navigation.map((item) => (
                 <Disclosure.Button
-                  key={index}
+                  key={item.href}
                   as={Link}
                   to={item.href}
                   className="block px-3 py-2 rounded-md text-white-lilac font-medium hover:text-lavender focus:text-lavender"
