@@ -72,40 +72,40 @@ export default function SellNftPage() {
   }
 
   return (
-    <div className="max-w-lg mx-auto mb-2.5 px-2 sm:px-0 ">
-      <h2>Create New Item</h2>
+    <div className="max-w-lg mx-auto mt-14 mb-2.5 px-2 sm:px-0 ">
+      <h2 className="text-h2 text-rhino font-bold text-center">Create New Item</h2>
 
       <div className="mt-20">
         <input
           type="file"
           name="Asset"
-          className="w-full border rounded-lg p-4"
+          className="w-full border-2 border-porcelain text-manatee rounded-lg p-4"
           onChange={onChange}
         />
 
-        <p>Supported file types: JPG, GIF, PNG, list all supported types here. Max 50 Mb</p>
+        <p className="text-p text-manatee mt-2">Supported file types: JPG, GIF, PNG, list all supported types here. Max 50 Mb</p>
 
         <input
           placeholder="Name"
-          className="w-full mt-4 border rounded-lg p-4"
+          className="w-full mt-4 border-2 border-porcelain rounded-lg px-4 py-5"
           onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
         />
 
         <div className="mt-4">
           <input
             placeholder="Price in ETH"
-            className="w-full border rounded-lg p-4"
+            className="w-full border-2 border-porcelain rounded-lg px-4 py-5"
             onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
           />
         </div>
 
         <textarea
           placeholder="Description (optional)"
-          className="w-full mt-4 border rounded-lg p-4"
+          className="w-full mt-4 border-2 border-porcelain rounded-lg px-4 py-5"
           onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
         />
 
-        <p>Description will be included on the item details page next to the image.</p>
+        <p className="text-p text-manatee mt-2">Description will be included on the item details page next to the image.</p>
 
         <Button className="mt-4" text="Create" onClick={listNFTForSale} />
       </div>

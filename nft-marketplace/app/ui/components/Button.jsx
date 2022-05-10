@@ -11,7 +11,7 @@ export const Button = ({
   disabled = false,
 }) => {
   const btnTypes = {
-    primary: 'py-2 px-4 bg-gray-500 text-white border-none', // Full background
+    primary: 'py-3.5 px-4 bg-dodger text-white border-none', // Full background
   };
 
   return (
