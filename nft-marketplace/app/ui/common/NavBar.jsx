@@ -31,7 +31,7 @@ export const NavBar = ({ connection }) => {
                     <div className="border-l border-lilac opacity-50 h-9"></div>
 
                     {connection ? (
-                      <Link className="px-3 py-2 rounded-md text-p font-medium" to={RoutePaths.CONNECT}>
+                      <Link className="px-3 py-2 rounded-md text-p font-medium" to={RoutePaths.MY_NFTS}>
                         Account
                       </Link>
                     ) : (
@@ -74,7 +74,7 @@ export const NavBar = ({ connection }) => {
               {connection ? (
                 <Disclosure.Button
                   as={Link}
-                  to={RoutePaths.CONNECT}
+                  to={RoutePaths.MY_NFTS}
                   className="block px-3 py-2 text-p font-medium"
                 >
                   Account

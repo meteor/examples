@@ -33,11 +33,13 @@ export default function DetailsPage() {
       const tokenUri = await contract.tokenURI(data.tokenId);
       const meta = await axios.get(tokenUri);
       let price = ethers.utils.formatUnits(data.price.toString(), 'ether');
+      console.log({data, meta});
       let nftData = {
         price,
         tokenId: data.tokenId.toNumber(),
         seller: data.seller,
         owner: data.owner,
+        sold: data.sold,
         image: meta.data.image,
         name: meta.data.name,
         id: meta.data.id,
@@ -80,7 +82,7 @@ export default function DetailsPage() {
                   <h2 className="text-h2 text-rhino font-bold">{nft.name}</h2>
                   <p className="text-p text-manatee mt-2">Owned by <span className="text-dodger">{truncateEthAddress(nft.owner)}</span></p>
                   <h2 className="text-h2 text-rhino font-bold mt-8">{nft.price} ETH</h2>
-                  <Button className="mt-4" text="Buy with Metamask" onClick={() => { buyNft(nft) }} />
+                  <Button className="mt-4" text="Buy with Metamask" disabled={nft.sold} onClick={() => { buyNft(nft) }} />
 
                   {nft.description && (
                     <>
