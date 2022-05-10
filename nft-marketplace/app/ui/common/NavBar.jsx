@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { RoutePaths } from "./RoutePaths";
-import { Disclosure } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { Disclosure } from '@headlessui/react';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
 
 const navigation = [
   { name: 'Explore', href: RoutePaths.ROOT },
   { name: 'Create', href: RoutePaths.SELL_NFT },
 ];
 
-export const NavBar = () => {
+export const NavBar = ({ connection }) => {
   return (
     <Disclosure as="nav" className="bg-violet text-white py-2.5">
       {({ open }) => (
@@ -27,6 +27,18 @@ export const NavBar = () => {
                         {item.name}
                       </Link>
                     ))}
+
+                    <div className="border-l border-lilac opacity-50 h-9"></div>
+
+                    {connection ? (
+                      <Link className="px-3 py-2 rounded-md text-p font-medium" to={RoutePaths.CONNECT}>
+                        Account
+                      </Link>
+                    ) : (
+                      <Link className="px-3 py-2 rounded-md text-p font-medium" to={RoutePaths.CONNECT}>
+                        Connect
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -58,6 +70,24 @@ export const NavBar = () => {
                   {item.name}
                 </Disclosure.Button>
               ))}
+
+              {connection ? (
+                <Disclosure.Button
+                  as={Link}
+                  to={RoutePaths.CONNECT}
+                  className="block px-3 py-2 text-p font-medium"
+                >
+                  Account
+                </Disclosure.Button>
+              ) : (
+                <Disclosure.Button
+                  as={Link}
+                  to={RoutePaths.CONNECT}
+                  className="block px-3 py-2 text-p font-medium"
+                >
+                  Connect
+                </Disclosure.Button>
+              )}
             </div>
           </Disclosure.Panel>
         </>
