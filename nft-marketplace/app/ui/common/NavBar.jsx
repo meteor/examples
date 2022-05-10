@@ -18,7 +18,7 @@ export const NavBar = ({ connection }) => {
             <div className="relative flex items-center justify-between h-16">
               <div className="flex-1 flex items-center justify-between sm:items-stretch">
                 <div className="flex-shrink-0 flex items-center">
-                  <Link to={RoutePaths.ROOT}><img src="images/logo.png" alt="Meteor NFT"/></Link>
+                  <Link to={RoutePaths.ROOT}><img src="/images/logo.png" alt="Meteor NFT"/></Link>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex items-center space-x-4">

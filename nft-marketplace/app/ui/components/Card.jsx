@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { RoutePaths } from "../common/RoutePaths";
 
 export const Card = ({
   children,
@@ -8,8 +10,10 @@ export const Card = ({
   itemPrice = null,
   itemId = null,
 }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className={`${className}`}>
+    <div className={`cursor-pointer ${className}`} onClick={() => navigate(`${RoutePaths.DETAILS}/${itemId}`)}>
       <div className="rounded-t-xl max-h-80 flex items-center overflow-hidden">
         <img className="w-full" src={itemImg} />
       </div>

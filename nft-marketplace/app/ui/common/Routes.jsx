@@ -6,6 +6,7 @@ import { App } from "../App";
 const HomePage = React.lazy(() => import('../HomePage'));
 const SellNftPage = React.lazy(() => import('../SellNftPage'));
 const ConnectPage = React.lazy(() => import('../ConnectPage'));
+const DetailsPage = React.lazy(() => import('../DetailsPage'));
 
 export const Routes = () => (
   <BrowserRouter>
@@ -14,6 +15,7 @@ export const Routes = () => (
         <Route index element={<HomePage />} />
         <Route path={RoutePaths.SELL_NFT} element={<SellNftPage />} />
         <Route path={RoutePaths.CONNECT} element={<ConnectPage />} />
+        <Route path={`${RoutePaths.DETAILS}/:itemId`} element={<DetailsPage />} />
       </Route>
     </ReactRoutes>
   </BrowserRouter>
