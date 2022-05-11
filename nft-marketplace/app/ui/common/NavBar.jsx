@@ -23,7 +23,7 @@ export const NavBar = ({ connection }) => {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex items-center space-x-4">
                     {navigation.map((item) => (
-                      <Link className="px-3 py-2 rounded-md text-p font-medium" to={item.href} key={item.href}>
+                      <Link className="px-3 py-2 border-y-2 border-transparent hover:border-b-orange text-p font-medium" to={item.href} key={item.href}>
                         {item.name}
                       </Link>
                     ))}
@@ -31,12 +31,12 @@ export const NavBar = ({ connection }) => {
                     <div className="border-l border-lilac opacity-50 h-9"></div>
 
                     {connection ? (
-                      <Link className="flex items-center px-3 py-2 rounded-md text-p font-medium" to={RoutePaths.MY_NFTS}>
+                      <Link className="flex items-center border-y-2 border-transparent hover:border-b-orange px-3 py-2 text-p font-medium" to={RoutePaths.MY_NFTS}>
                         <img className="w-8 h-8 mr-2 rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
                         Account
                       </Link>
                     ) : (
-                      <Link className="px-3 py-2 rounded-md text-p font-medium" to={RoutePaths.CONNECT}>
+                      <Link className="px-3 py-2 text-p font-medium" to={RoutePaths.CONNECT}>
                         Connect
                       </Link>
                     )}
