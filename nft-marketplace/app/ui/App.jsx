@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { Outlet } from 'react-router-dom';
 import { NavBar } from "./common/NavBar";
 import { CheckAccount } from "./common/CheckAccount";
+import { Footer } from "./common/Footer";
 
 export const App = () => {
   const [connection, setConnection] = useState(false);
@@ -18,9 +19,12 @@ export const App = () => {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <NavBar connection={connection} />
-      <Outlet context={[connection, setConnection]} />
-    </>
+      <div className="grow">
+        <Outlet context={[connection, setConnection]} />
+      </div>
+      <Footer />
+    </div>
   );
 };
