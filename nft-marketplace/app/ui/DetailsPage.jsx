@@ -7,6 +7,7 @@ import { Button } from "./components/Button";
 import { RoutePaths } from "./common/RoutePaths";
 import { useNavigate, useParams } from "react-router-dom";
 import truncateEthAddress from "truncate-eth-address";
+import { usePriceConverter } from "./util/usePriceConverter";
 
 import {
   marketplaceAddress
@@ -19,6 +20,7 @@ export default function DetailsPage() {
   const [loadingState, setLoadingState] = useState('not-loaded');
   const { itemId } = useParams();
   const navigate = useNavigate();
+  const { converterData } = usePriceConverter();
   useEffect(() => {
     loadNFT();
   }, []);
@@ -33,7 +35,6 @@ export default function DetailsPage() {
       const tokenUri = await contract.tokenURI(data.tokenId);
       const meta = await axios.get(tokenUri);
       let price = ethers.utils.formatUnits(data.price.toString(), 'ether');
-      console.log({data, meta});
       let nftData = {
         price,
         tokenId: data.tokenId.toNumber(),
@@ -81,7 +82,10 @@ export default function DetailsPage() {
                 <div className="col-span-2">
                   <h2 className="text-h2 text-rhino font-bold">{nft.name}</h2>
                   <p className="text-p text-manatee mt-2">Owned by <span className="text-dodger">{truncateEthAddress(nft.owner)}</span></p>
-                  <h2 className="text-h2 text-rhino font-bold mt-8">{nft.price} ETH</h2>
+                  <div className="flex items-baseline mt-8">
+                    <h2 className="text-h2 text-rhino font-bold mr-2">{nft.price} ETH</h2>
+                    {converterData?.ethereum?.usd && <h4 className="text-h4 text-manatee font-bold">${+(converterData.ethereum.usd * nft.price).toFixed(15)}</h4>}
+                  </div>
                   <Button className="mt-4" text="Buy with Metamask" disabled={nft.sold} onClick={() => { buyNft(nft) }} />
 
                   {nft.description && (
