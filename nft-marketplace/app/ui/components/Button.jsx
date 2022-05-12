@@ -12,6 +12,17 @@ export const Button = ({
 }) => {
   const btnTypes = {
     primary: 'py-3.5 px-4 bg-dodger text-white border-none', // Full background
+    secondary: `py-3.5 px-4 bg-transparent text-dodger border-2 border-dodger ${
+      !disabled
+        ? 'hover:bg-dodger hover:text-white hover:border-transparent'
+        : ''
+    }`, // Outline
+    tertiary: 'py-3.5 px-4 bg-transparent text-dodger border-none', // Transparent
+    danger: `py-3.5 px-4 bg-transparent text-vermilion border-2 border-vermilion ${
+      !disabled
+        ? 'hover:bg-vermilion hover:text-white hover:border-transparent'
+        : ''
+    }`, // Red outline
   };
 
   return (
