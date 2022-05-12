@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { RoutePaths } from "./RoutePaths";
 import { Disclosure } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import { CurrentAccount } from './CurrentAccount';
 
 const navigation = [
   { name: 'Explore', href: RoutePaths.ROOT },
@@ -10,6 +11,8 @@ const navigation = [
 ];
 
 export const NavBar = ({ connection }) => {
+  const currentAccount = CurrentAccount();
+
   return (
     <Disclosure as="nav" className="bg-violet text-white py-2.5">
       {({ open }) => (
@@ -31,7 +34,7 @@ export const NavBar = ({ connection }) => {
                     <div className="border-l border-lilac opacity-50 h-9"></div>
 
                     {connection ? (
-                      <Link className="flex items-center border-y-2 border-transparent hover:border-b-orange px-3 py-2 text-p font-medium" to={RoutePaths.MY_NFTS}>
+                      <Link className="flex items-center border-y-2 border-transparent hover:border-b-orange px-3 py-2 text-p font-medium" to={`${RoutePaths.ACCOUNT}/${currentAccount}`}>
                         <img className="w-8 h-8 mr-2 rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
                         Account
                       </Link>
@@ -75,7 +78,7 @@ export const NavBar = ({ connection }) => {
               {connection ? (
                 <Disclosure.Button
                   as={Link}
-                  to={RoutePaths.MY_NFTS}
+                  to={`${RoutePaths.ACCOUNT}/${currentAccount}`}
                   className="flex items-center px-3 py-2 text-p font-medium"
                 >
                   <img className="w-8 h-8 mr-2 rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>

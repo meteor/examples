@@ -9,12 +9,17 @@ export const Card = ({
   itemName = null,
   itemPrice = null,
   itemId = null,
+  badge = '',
 }) => {
   const navigate = useNavigate();
+  const badgeBackgroundColor = (badge === "owned") ? "rhino" : "dodger";
 
   return (
     <div className={`cursor-pointer ${className}`} onClick={() => navigate(`${RoutePaths.DETAILS}/${itemId}`)}>
-      <div className="rounded-t-xl max-h-80 flex items-center overflow-hidden">
+      <div className="relative rounded-t-lg max-h-80 flex items-center overflow-hidden">
+        {badge && (
+          <p className={`absolute top-0 left-0 text-small text-white font-medium uppercase rounded-br-lg py-1 px-2 bg-${badgeBackgroundColor}`}>{badge}</p>
+        )}
         <img className="w-full" src={itemImg} />
       </div>
       <div className="rounded-b-xl bg-white p-4">

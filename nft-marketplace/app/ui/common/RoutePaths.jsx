@@ -3,5 +3,5 @@ export const RoutePaths = {
   SELL_NFT: '/sell-nft',
   CONNECT: '/connect',
   DETAILS: '/details',
-  MY_NFTS: '/my-nfts',
+  ACCOUNT: '/account',
 };

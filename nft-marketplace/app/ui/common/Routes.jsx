@@ -7,7 +7,7 @@ const HomePage = React.lazy(() => import('../HomePage'));
 const SellNftPage = React.lazy(() => import('../SellNftPage'));
 const ConnectPage = React.lazy(() => import('../ConnectPage'));
 const DetailsPage = React.lazy(() => import('../DetailsPage'));
-const MyNftsPage = React.lazy(() => import('../MyNftsPage'));
+const AccountPage = React.lazy(() => import('../AccountPage'));
 
 export const Routes = () => (
   <BrowserRouter>
@@ -17,7 +17,7 @@ export const Routes = () => (
         <Route path={RoutePaths.SELL_NFT} element={<SellNftPage />} />
         <Route path={RoutePaths.CONNECT} element={<ConnectPage />} />
         <Route path={`${RoutePaths.DETAILS}/:itemId`} element={<DetailsPage />} />
-        <Route path={RoutePaths.MY_NFTS} element={<MyNftsPage />} />
+        <Route path={`${RoutePaths.ACCOUNT}/:address`} element={<AccountPage />} />
       </Route>
     </ReactRoutes>
   </BrowserRouter>
