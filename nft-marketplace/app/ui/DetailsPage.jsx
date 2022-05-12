@@ -5,7 +5,7 @@ import axios from 'axios';
 import Web3Modal from 'web3modal';
 import { Button } from "./components/Button";
 import { RoutePaths } from "./common/RoutePaths";
-import { useNavigate, useParams } from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import truncateEthAddress from "truncate-eth-address";
 import { usePriceConverter } from "./util/usePriceConverter";
 
@@ -81,7 +81,7 @@ export default function DetailsPage() {
 
                 <div className="col-span-2">
                   <h2 className="text-h2 text-rhino font-bold">{nft.name}</h2>
-                  <p className="text-p text-manatee mt-2">Owned by <span className="text-dodger">{truncateEthAddress(nft.owner)}</span></p>
+                  <p className="text-p text-manatee mt-2">Owned by <Link className="text-dodger" to={`${RoutePaths.ACCOUNT}/${nft.owner}`}>{truncateEthAddress(nft.owner)}</Link></p>
                   <div className="flex items-baseline mt-8">
                     <h2 className="text-h2 text-rhino font-bold mr-2">{nft.price} ETH</h2>
                     {converterData?.ethereum?.usd && <h4 className="text-h4 text-manatee font-bold">${+(converterData.ethereum.usd * nft.price).toFixed(15)}</h4>}

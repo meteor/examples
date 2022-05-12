@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card } from "./components/Card";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import truncateEthAddress from "truncate-eth-address";
 
 import {
@@ -15,9 +15,10 @@ export default function MyNftsPage() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState('not-loaded');
   const { address } = useParams();
+  const location = useLocation();
   useEffect(() => {
     loadNFTs()
-  }, []);
+  }, [location]);
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
@@ -30,7 +31,7 @@ export default function MyNftsPage() {
       const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
       const meta = await axios.get(tokenURI);
       let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
-      const badge = (i.owner.toLowerCase() === address.toLowerCase()) ? "owned" : "for sale";
+      const badge = (i.owner.toLowerCase() === address.toLowerCase() && i.owner.toLowerCase() !== marketplaceAddress.toLowerCase()) ? "owned" : "for sale";
       let item = {
         price,
         badge,
