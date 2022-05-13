@@ -68,12 +68,12 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="bg-violet bg-bg-stars bg-auto bg-no-repeat bg-right-bottom py-24">
+      <div className="bg-violet bg-bg-stars bg-auto bg-no-repeat bg-center-center py-24">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-big text-white font-bold">Fully functional NFT marketplace built with Meteor</h2>
           <p className="text-p font-light mt-5 text-white">Basic example of a digital marketplace for crypto collectibles and non-fungible tokens (NFTs). Buy, sell, and discover exclusive digital items.</p>
           <Button
-            className="mt-8 mx-auto"
+            className="mt-8 mx-auto bg-rhino"
             text="Get Started for Free"
             onClick={() => {
               navigate(RoutePaths.SELL_NFT);
