@@ -4,6 +4,9 @@ import axios from 'axios';
 import { Card } from "./components/Card";
 import { useParams, useLocation } from "react-router-dom";
 import truncateEthAddress from "truncate-eth-address";
+import { SortOptions } from "./common/SortOptions";
+import { Select } from "./components/Select";
+import { CategoryOptions } from "./common/CategoryOptions";
 
 import {
   marketplaceAddress
@@ -14,11 +17,13 @@ import NFTMarketplace from '../../artifacts/contracts/NFTMarketplace.sol/NFTMark
 export default function MyNftsPage() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState('not-loaded');
+  const [category, setCategory] = useState(CategoryOptions[0].value);
+  const [sortBy, setSortBy] = useState(SortOptions[0].value);
   const { address } = useParams();
   const location = useLocation();
   useEffect(() => {
     loadNFTs()
-  }, [location]);
+  }, [location, category, sortBy]);
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
@@ -36,8 +41,8 @@ export default function MyNftsPage() {
         price,
         badge,
         tokenId: i.tokenId.toNumber(),
-        seller: i.seller,
-        owner: i.owner,
+        seller: i.seller.toLowerCase(),
+        owner: i.owner.toLowerCase(),
         name: meta.data.name,
         image: meta.data.image,
         tokenURI
@@ -45,7 +50,26 @@ export default function MyNftsPage() {
 
       return item;
     }));
-    setNfts(items);
+
+    let filteredItems = items;
+
+    if (category === 'owned') {
+      filteredItems = items.filter((item) => item.badge === 'owned' );
+    } else if (category === 'for-sale') {
+      filteredItems = items.filter((item) => item.badge === 'for sale' );
+    }
+
+    if (sortBy === 'oldest') {
+      filteredItems.sort((a,b) => a.tokenId - b.tokenId);
+    } else if (sortBy === 'newest') {
+      filteredItems.sort((a,b) => b.tokenId - a.tokenId);
+    } else if (sortBy === 'price-low') {
+      filteredItems.sort((a,b) => a.price - b.price);
+    } else if (sortBy === 'price-high') {
+      filteredItems.sort((a,b) => b.price - a.price);
+    }
+
+    setNfts(filteredItems);
     setLoadingState('loaded');
   }
 
@@ -57,7 +81,23 @@ export default function MyNftsPage() {
         <>
           <img className="w-20 h-20 mx-auto rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
           <h1 className="text-h1 text-rhino text-center font-bold mb-7 mt-4">{truncateEthAddress(address)}</h1>
-          <h2 className="text-h2 text-rhino font-bold mb-8">{nfts.length} item{nfts.length > 1? 's' : ''}</h2>
+
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-h2 text-rhino font-bold">{nfts.length} item{nfts.length > 1? 's' : ''}</h2>
+
+            <div className="flex items-center">
+              <Select className="mr-4" onChange={e => setCategory(e.target.value)}>
+                {CategoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </Select>
+              <Select onChange={e => setSortBy(e.target.value)}>
+                {SortOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </Select>
+            </div>
+          </div>
 
           <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full container mx-auto">
             {nfts.map((nft) => (

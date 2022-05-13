@@ -6,6 +6,8 @@ import { Card } from "./components/Card";
 import { Button } from "./components/Button";
 import { RoutePaths } from "./common/RoutePaths";
 import { useNavigate } from "react-router-dom";
+import { Select } from "./components/Select";
+import { SortOptions } from "./common/SortOptions";
 
 import {
   marketplaceAddress
@@ -16,10 +18,11 @@ import NFTMarketplace from '../../artifacts/contracts/NFTMarketplace.sol/NFTMark
 export default function HomePage() {
   const navigate = useNavigate();
   const [nfts, setNfts] = useState([]);
+  const [sortBy, setSortBy] = useState('oldest');
   const [loadingState, setLoadingState] = useState('not-loaded');
   useEffect(() => {
     loadNFTs();
-  }, []);
+  }, [sortBy]);
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
@@ -47,7 +50,17 @@ export default function HomePage() {
       };
 
       return item;
-    }))
+    }));
+
+    if (sortBy === 'oldest') {
+      items.sort((a,b) => a.tokenId - b.tokenId); // b - a for reverse sort
+    } else if (sortBy === 'newest') {
+      items.sort((a,b) => b.tokenId - a.tokenId); // b - a for reverse sort
+    } else if (sortBy === 'price-low') {
+      items.sort((a,b) => a.price - b.price); // b - a for reverse sort
+    } else if (sortBy === 'price-high') {
+      items.sort((a,b) => b.price - a.price); // b - a for reverse sort
+    }
 
     setNfts(items);
     setLoadingState('loaded');
@@ -72,7 +85,14 @@ export default function HomePage() {
           <h2 className="text-h2 text-rhino font-bold">No items in marketplace</h2>
         ) : (
           <>
-            <h2 className="text-h2 text-rhino font-bold mb-8">All NFTs</h2>
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-h2 text-rhino font-bold">All NFTs</h2>
+              <Select onChange={e => setSortBy(e.target.value)}>
+                {SortOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </Select>
+            </div>
 
             <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full container mx-auto">
               {nfts.map((nft) => (
