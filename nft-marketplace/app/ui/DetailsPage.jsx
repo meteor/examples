@@ -9,6 +9,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import truncateEthAddress from "truncate-eth-address";
 import { usePriceConverter } from "./util/usePriceConverter";
 import { CurrentAccount } from "./common/CurrentAccount";
+import { InputField } from "./components/Fields/InputField";
 
 import {
   marketplaceAddress
@@ -145,9 +146,11 @@ export default function DetailsPage() {
 
                   {sellItem && (
                     <div className="flex items-center">
-                      <input
-                        placeholder="Price in ETH"
-                        className="border-2 border-porcelain rounded-lg px-4 py-5 mr-4"
+                      <InputField
+                        name='price'
+                        label="Price in ETH"
+                        value={formInput.price}
+                        classNameContainer="mr-4"
                         onChange={e => setFormInput({ ...formInput, price: e.target.value })}
                       />
                       <Button text="Create Listing" type="secondary" onClick={() => { listNFTForSale(nft) }} />

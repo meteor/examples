@@ -5,7 +5,7 @@ import { Card } from "./components/Card";
 import { useParams, useLocation } from "react-router-dom";
 import truncateEthAddress from "truncate-eth-address";
 import { SortOptions } from "./common/SortOptions";
-import { Select } from "./components/Select";
+import { Select } from "./components/Fields/Select";
 import { CategoryOptions } from "./common/CategoryOptions";
 
 import {

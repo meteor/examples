@@ -6,7 +6,7 @@ import { Card } from "./components/Card";
 import { Button } from "./components/Button";
 import { RoutePaths } from "./common/RoutePaths";
 import { useNavigate } from "react-router-dom";
-import { Select } from "./components/Select";
+import { Select } from "./components/Fields/Select";
 import { SortOptions } from "./common/SortOptions";
 
 import {

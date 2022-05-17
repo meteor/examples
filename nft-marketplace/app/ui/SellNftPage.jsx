@@ -5,6 +5,7 @@ import Web3Modal from 'web3modal';
 import { RoutePaths } from "./common/RoutePaths";
 import { useNavigate } from 'react-router-dom';
 import { Button } from "./components/Button";
+import { InputField } from "./components/Fields/InputField";
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
 
@@ -76,32 +77,42 @@ export default function SellNftPage() {
       <h2 className="text-h2 text-rhino font-bold text-center">Create New Item</h2>
 
       <div className="mt-20">
-        <input
-          type="file"
-          name="Asset"
-          className="w-full border-2 border-porcelain text-manatee rounded-lg p-4"
-          onChange={onChange}
-        />
+        <label htmlFor="file" className="flex relative">
+          <input
+            type="file"
+            name="Asset"
+            className="file:hidden w-full border-2 border-porcelain bg-white text-manatee rounded-lg px-4 py-5"
+            id="file"
+            onChange={onChange}
+          />
+
+          <Button className="bg-rhino absolute top-1 right-1 bottom-1" text="Upload" onClick={(e) => document.querySelector('#file').click()} />
+        </label>
 
         <p className="text-p text-manatee mt-2">Supported file types: JPG, GIF, PNG, list all supported types here. Max 50 Mb</p>
 
-        <input
-          placeholder="Name"
-          className="w-full mt-4 border-2 border-porcelain rounded-lg px-4 py-5"
+        <InputField
+          name='name'
+          label="Name"
+          value={formInput.name}
+          classNameContainer="mt-4"
           onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
         />
 
-        <div className="mt-4">
-          <input
-            placeholder="Price in ETH"
-            className="w-full border-2 border-porcelain rounded-lg px-4 py-5"
-            onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
-          />
-        </div>
+        <InputField
+          name='price'
+          label="Price in ETH"
+          value={formInput.price}
+          classNameContainer="mt-4"
+          onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
+        />
 
-        <textarea
-          placeholder="Description (optional)"
-          className="w-full mt-4 border-2 border-porcelain rounded-lg px-4 py-5"
+        <InputField
+          textArea
+          name='description'
+          label="Description (optional)"
+          value={formInput.description}
+          classNameContainer="mt-4"
           onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
         />
 
