@@ -13,17 +13,21 @@ import {
 } from '../../config'
 
 import NFTMarketplace from '../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json';
+import {Button} from "./components/Button";
 
 export default function MyNftsPage() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState('not-loaded');
   const [category, setCategory] = useState(CategoryOptions[0].value);
   const [sortBy, setSortBy] = useState(SortOptions[0].value);
+  const loadMoreInitialState = 4;
+  const loadMoreIncrementSize = 4;
+  const [loadMore, setLoadMore] = useState(loadMoreInitialState);
   const { address } = useParams();
   const location = useLocation();
   useEffect(() => {
     loadNFTs()
-  }, [location, category, sortBy]);
+  }, [location, category, sortBy, loadMore]);
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
@@ -86,12 +90,18 @@ export default function MyNftsPage() {
             <h2 className="text-h2 text-rhino font-bold">{nfts.length} item{nfts.length > 1? 's' : ''}</h2>
 
             <div className="flex items-center">
-              <Select className="mr-4" onChange={e => setCategory(e.target.value)}>
+              <Select className="mr-4" onChange={e => {
+                setCategory(e.target.value);
+                setLoadMore(loadMoreInitialState);
+              }}>
                 {CategoryOptions.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </Select>
-              <Select onChange={e => setSortBy(e.target.value)}>
+              <Select onChange={e => {
+                setSortBy(e.target.value);
+                setLoadMore(loadMoreInitialState);
+              }}>
                 {SortOptions.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
@@ -100,7 +110,7 @@ export default function MyNftsPage() {
           </div>
 
           <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full container mx-auto">
-            {nfts.map((nft) => (
+            {nfts.slice(0, loadMore).map((nft) => (
               <Card
                 key={nft.tokenId}
                 itemImg={nft.image}
@@ -111,6 +121,18 @@ export default function MyNftsPage() {
               />
             ))}
           </div>
+
+          {loadMore < nfts.length && (
+            <div className="mt-14 text-center">
+              <Button
+                className="bg-dodger"
+                text="Load More"
+                onClick={() => {
+                  setLoadMore(loadMore + loadMoreIncrementSize);
+                }}
+              />
+            </div>
+          )}
         </>
       )}
     </div>

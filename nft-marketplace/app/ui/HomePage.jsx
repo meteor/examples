@@ -20,9 +20,12 @@ export default function HomePage() {
   const [nfts, setNfts] = useState([]);
   const [sortBy, setSortBy] = useState('oldest');
   const [loadingState, setLoadingState] = useState('not-loaded');
+  const loadMoreInitialState = 4;
+  const loadMoreIncrementSize = 4;
+  const [loadMore, setLoadMore] = useState(loadMoreInitialState);
   useEffect(() => {
     loadNFTs();
-  }, [sortBy]);
+  }, [sortBy, loadMore]);
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
@@ -87,7 +90,10 @@ export default function HomePage() {
           <>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-h2 text-rhino font-bold">All NFTs</h2>
-              <Select onChange={e => setSortBy(e.target.value)}>
+              <Select onChange={e => {
+                setSortBy(e.target.value);
+                setLoadMore(loadMoreInitialState);
+              }}>
                 {SortOptions.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
@@ -95,10 +101,22 @@ export default function HomePage() {
             </div>
 
             <div className="grid gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full container mx-auto">
-              {nfts.map((nft) => (
+              {nfts.slice(0, loadMore).map((nft) => (
                 <Card key={nft.tokenId} itemImg={nft.image} itemName={nft.name} itemPrice={nft.price} itemId={nft.tokenId} />
               ))}
             </div>
+
+            {loadMore < nfts.length && (
+              <div className="mt-14 text-center">
+                <Button
+                  className="bg-dodger"
+                  text="Load More"
+                  onClick={() => {
+                    setLoadMore(loadMore + loadMoreIncrementSize);
+                  }}
+                />
+              </div>
+            )}
           </>
         )}
       </div>
