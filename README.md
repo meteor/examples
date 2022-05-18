@@ -88,8 +88,8 @@
 - Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
 - Why: To show how to integrate web3 with Meteor
 - Stack: Meteor, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
-- Last Updated At: May/02/2022
-- Meteor Version: 2.7.1
+- Last Updated At: May/18/2022
+- Meteor Version: 2.7.2
 
 ## How to add your example?
 
