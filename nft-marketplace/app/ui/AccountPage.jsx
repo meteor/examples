@@ -25,6 +25,7 @@ export default function MyNftsPage() {
   const [loadMore, setLoadMore] = useState(loadMoreInitialState);
   const { address } = useParams();
   const location = useLocation();
+  let pluralize = require('pluralize');
   useEffect(() => {
     loadNFTs()
   }, [location, category, sortBy, loadMore]);
@@ -79,15 +80,15 @@ export default function MyNftsPage() {
 
   return (
     <div className="max-w-7xl mx-auto mt-16 pt-2.5 px-2 sm:px-6 lg:px-8">
+      <img className="w-20 h-20 mx-auto rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
+      <h1 className="text-h1 text-rhino text-center font-bold mb-7 mt-4">{truncateEthAddress(address)}</h1>
+
       {(loadingState === 'loaded' && !nfts.length) ? (
         <h2 className="text-h2 text-rhino font-bold">No items in this account</h2>
       ) : (
         <>
-          <img className="w-20 h-20 mx-auto rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
-          <h1 className="text-h1 text-rhino text-center font-bold mb-7 mt-4">{truncateEthAddress(address)}</h1>
-
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-h2 text-rhino font-bold">{nfts.length} item{nfts.length > 1? 's' : ''}</h2>
+            <h2 className="text-h2 text-rhino font-bold">{pluralize('item', nfts.length, true)}</h2>
 
             <div className="flex items-center">
               <Select className="mr-4" onChange={e => {

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button } from "./components/Button";
 import { ConnectAccount } from "./common/ConnectAccount";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { RoutePaths } from "./common/RoutePaths";
 
 export default function ConnectPage() {
+  const navigate = useNavigate();
   const [connection, setConnection] = useOutletContext();
 
   return (
@@ -16,8 +18,9 @@ export default function ConnectPage() {
         text={connection ? 'Already Connected' : 'Connect with Metamask'}
         disabled={connection}
         onClick={() => {
-          ConnectAccount().then(() => {
-            setConnection(true)
+          ConnectAccount().then((conn) => {
+            setConnection(true);
+            navigate(`${RoutePaths.ACCOUNT}/${conn.selectedAddress}`);
           }, () => {
             setConnection(false)
           });

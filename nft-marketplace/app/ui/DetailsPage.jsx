@@ -16,6 +16,7 @@ import {
 } from '../../config'
 
 import NFTMarketplace from '../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json'
+import {formatPrice} from "./util/formatPrice";
 
 export default function DetailsPage() {
   const [nft, setNft] = useState(null);
@@ -129,7 +130,7 @@ export default function DetailsPage() {
                     <>
                       <div className="flex items-baseline">
                         <h2 className="text-h2 text-rhino font-bold mr-2">{nft.price} ETH</h2>
-                        {converterData?.ethereum?.usd && <h4 className="text-h4 text-manatee font-bold">${+(converterData.ethereum.usd * nft.price).toFixed(15)}</h4>}
+                        {converterData?.ethereum?.usd && <h4 className="text-h4 text-manatee font-bold">${formatPrice(nft.price * converterData.ethereum.usd)}</h4>}
                       </div>
 
                       <Button className="mt-4" text="Buy with Metamask" onClick={() => { buyNft(nft) }} />

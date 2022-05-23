@@ -23,6 +23,7 @@
     "hardhat": "^2.9.3",
     "ipfs-http-client": "^56.0.3",
     "meteor-node-stubs": "^1.2.1",
+    "pluralize": "^8.0.0",
     "postcss": "^8.4.13",
     "postcss-load-config": "^3.1.4",
     "react": "^17.0.2",
