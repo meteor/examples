@@ -42,3 +42,15 @@ If you're getting errors like "Nonce too high" when trying to add an NFT or doin
 1. Access the top right menu like you did in the last section
 2. Go to Settings and then Advanced
 3. Click on Reset Accounts
+
+## Screenshots of the application
+
+![Screenshot 2022-05-25 at 11-23-41 Dummy Page](https://user-images.githubusercontent.com/41165990/170509257-e4adabaa-c0d4-4d4d-9fb5-4a4e851f365e.png)
+
+![Screenshot 2022-05-25 at 11-24-25 Dummy Page](https://user-images.githubusercontent.com/41165990/170509233-0f791139-3ce9-4553-8dc3-12eee1bab194.png)
+
+![Screenshot 2022-05-25 at 11-28-23 Dummy Page](https://user-images.githubusercontent.com/41165990/170509196-26c18a49-a077-4170-b335-b84608c4e762.png)
+
+![Screenshot 2022-05-25 at 11-29-14 Dummy Page](https://user-images.githubusercontent.com/41165990/170509143-b3fab5ae-9e18-487b-9b83-13e72473acc4.png)
+
+![Screenshot 2022-05-25 at 11-29-54 Dummy Page](https://user-images.githubusercontent.com/41165990/170509070-9b685b41-53c5-4573-a799-0e3fcc0a4d59.png)
