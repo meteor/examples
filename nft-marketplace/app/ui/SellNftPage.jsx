@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { ethers } from 'ethers';
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 import Web3Modal from 'web3modal';
@@ -20,10 +20,13 @@ export default function SellNftPage() {
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' });
   const [connection, setConnection] = useOutletContext();
+  useEffect(() => {
+    if (!connection) {
+      navigate(RoutePaths.CONNECT);
+    }
+  }, [connection]);
 
-  if (!connection) {
-    navigate(RoutePaths.CONNECT);
-  }
+  console.log(connection);
 
   async function onChange(e) {
     const file = e.target.files[0];
