@@ -129,7 +129,7 @@ export default function DetailsPage() {
                   {nft.owner === marketplaceAddress.toLowerCase() && nft.seller !== currentAccount && (
                     <>
                       <div className="flex items-baseline">
-                        <h2 className="text-h2 text-rhino font-bold mr-2">{nft.price} ETH</h2>
+                        <h2 className="text-h2 text-rhino font-bold mr-2">{nft.price} MATIC</h2>
                         {converterData?.ethereum?.usd && <h4 className="text-h4 text-manatee font-bold">${formatPrice(nft.price * converterData.ethereum.usd)}</h4>}
                       </div>
 

@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 import Web3Modal from 'web3modal';
 import { RoutePaths } from "./common/RoutePaths";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useOutletContext} from 'react-router-dom';
 import { Button } from "./components/Button";
 import { InputField } from "./components/Fields/InputField";
 
@@ -19,6 +19,11 @@ export default function SellNftPage() {
   const navigate = useNavigate();
   const [fileUrl, setFileUrl] = useState(null);
   const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' });
+  const [connection, setConnection] = useOutletContext();
+
+  if (!connection) {
+    navigate(RoutePaths.CONNECT);
+  }
 
   async function onChange(e) {
     const file = e.target.files[0];
@@ -101,7 +106,7 @@ export default function SellNftPage() {
 
         <InputField
           name='price'
-          label="Price in ETH"
+          label="Price in MATIC"
           value={formInput.price}
           classNameContainer="mt-4"
           onChange={e => updateFormInput({ ...formInput, price: e.target.value })}

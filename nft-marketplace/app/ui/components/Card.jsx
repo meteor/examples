@@ -25,7 +25,7 @@ export const Card = ({
       <div className="rounded-b-xl bg-white p-4">
         <div className="flex justify-between items-start">
           <p className="text-p text-rhino">{itemName}</p>
-          <p className="text-p text-rhino">{itemPrice} ETH</p>
+          <p className="text-p text-rhino">{itemPrice} MATIC</p>
         </div>
         <p className="text-p text-manatee">#{itemId}</p>
       </div>
