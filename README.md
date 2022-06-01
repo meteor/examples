@@ -83,6 +83,14 @@
 - Last Updated At: May/22/2020
 - Meteor Version: 1.10.3
 
+#### NFT Marketplace
+- Demo: https://meteor-nft-marketplace.meteorapp.com (Instructions on how to use it are in the README.md of the project)
+- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
+- Why: To show how to integrate web3 with Meteor
+- Stack: Meteor, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Last Updated At: June/1/2022
+- Meteor Version: 2.7.2
+
 ## How to add your example?
 
 - Create a PR including it in this README
