@@ -29,7 +29,7 @@ export default function HomePage() {
 
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
-    const provider = new ethers.providers.JsonRpcProvider("https://matic-mumbai.chainstacklabs.com");
+    const provider = new ethers.providers.JsonRpcProvider();
     const contract = new ethers.Contract(marketplaceAddress, NFTMarketplace.abi, provider);
     const data = await contract.fetchMarketItems();
 
