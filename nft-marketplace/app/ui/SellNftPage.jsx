@@ -26,8 +26,6 @@ export default function SellNftPage() {
     }
   }, [connection]);
 
-  console.log(connection);
-
   async function onChange(e) {
     const file = e.target.files[0];
     try {
