@@ -35,7 +35,7 @@ export const NavBar = ({ connection }) => {
 
                     {connection ? (
                       <Link className="flex items-center border-y-2 border-transparent hover:border-b-orange px-3 py-2 text-p font-medium" to={`${RoutePaths.ACCOUNT}/${currentAccount}`}>
-                        <img className="w-8 h-8 mr-2 rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
+                        <img className="w-8 h-8 mr-2 rounded-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
                         Account
                       </Link>
                     ) : (
@@ -81,7 +81,7 @@ export const NavBar = ({ connection }) => {
                   to={`${RoutePaths.ACCOUNT}/${currentAccount}`}
                   className="flex items-center px-3 py-2 text-p font-medium"
                 >
-                  <img className="w-8 h-8 mr-2 rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
+                  <img className="w-8 h-8 mr-2 rounded-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
                   Account
                 </Disclosure.Button>
               ) : (
