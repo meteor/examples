@@ -47,10 +47,10 @@ If you're getting errors like "Nonce too high" when trying to add an NFT or doin
 
 ![Screenshot 2022-05-25 at 11-23-41 Dummy Page](https://user-images.githubusercontent.com/41165990/170509257-e4adabaa-c0d4-4d4d-9fb5-4a4e851f365e.png)
 
-![Screenshot 2022-05-25 at 11-24-25 Dummy Page](https://user-images.githubusercontent.com/41165990/170509233-0f791139-3ce9-4553-8dc3-12eee1bab194.png)
+![Screenshot 2022-06-28 at 23-51-54 Dummy Page](https://user-images.githubusercontent.com/41165990/176348036-67f4d3fd-8eba-4cde-bacb-c14abecef9ed.png)
 
-![Screenshot 2022-05-25 at 11-28-23 Dummy Page](https://user-images.githubusercontent.com/41165990/170509196-26c18a49-a077-4170-b335-b84608c4e762.png)
+![Screenshot 2022-06-28 at 23-52-15 Dummy Page](https://user-images.githubusercontent.com/41165990/176348065-05ef0658-3366-4eca-bbf8-db729b057b19.png)
 
-![Screenshot 2022-05-25 at 11-29-14 Dummy Page](https://user-images.githubusercontent.com/41165990/170509143-b3fab5ae-9e18-487b-9b83-13e72473acc4.png)
+![Screenshot 2022-06-28 at 23-53-22 Dummy Page](https://user-images.githubusercontent.com/41165990/176348085-3896af2b-2e36-41d1-9df5-e1e7de7c7d98.png)
 
-![Screenshot 2022-05-25 at 11-29-54 Dummy Page](https://user-images.githubusercontent.com/41165990/170509070-9b685b41-53c5-4573-a799-0e3fcc0a4d59.png)
+![Screenshot 2022-06-28 at 23-54-11 Dummy Page](https://user-images.githubusercontent.com/41165990/176348099-baadb92b-9a8b-4db0-ae47-ccce00e02625.png)
