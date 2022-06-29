@@ -80,7 +80,7 @@ export default function MyNftsPage() {
 
   return (
     <div className="max-w-7xl mx-auto mt-16 pt-2.5 px-2 sm:px-6 lg:px-8">
-      <img className="w-20 h-20 mx-auto rounded-r-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
+      <img className="w-20 h-20 mx-auto rounded-full" src="/images/default-profile-avatar.png" alt="Profile avatar"/>
       <h1 className="text-h1 text-rhino text-center font-bold mb-7 mt-4">{truncateEthAddress(address)}</h1>
 
       {(loadingState === 'loaded' && !nfts.length) ? (
