@@ -3,7 +3,7 @@
 ### Ready
 
 #### Tic tac toe
-- Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
+- Demo: tic-tac-toe
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with meteor.
 - Stack: Meteor and React
