@@ -1,8 +1,9 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { App } from '/imports/ui/App';
 
 Meteor.startup(() => {
-  render(<App/>, document.getElementById('react-target'));
+  const root = createRoot(document.getElementById('react-target'))
+  root.render(<App/>);
 });

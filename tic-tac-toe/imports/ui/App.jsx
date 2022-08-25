@@ -1,10 +1,8 @@
 import React from "react";
-import { Hello } from "./Hello.jsx";
-import { Info } from "./Info.jsx";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { GameScreen } from "./GameScreen";
-import { RoomList } from "./RoomList";
+import { GameScreen } from "/imports/ui/GameScreen";
+import { RoomList } from "/imports/ui/RoomList";
 
 export const App = () => (
   <Router>
