@@ -7,8 +7,8 @@
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with meteor.
 - Stack: Meteor and React
-- Last Updated At: Aug/23/2021
-- Meteor Version: 2.3.5
+- Last Updated At: Nov/18/2021
+- Meteor Version: 2.5
 
 #### Simple Tasks
 - Demo: [simpletasks.meteorapp.com/](https://simpletasks.meteorapp.com)
@@ -65,6 +65,14 @@
 - Stack: Meteor and Blaze
 - Last Updated At: Jul/25/2021
 - Meteor Version: 2.3.1
+
+#### NFT Marketplace
+- Demo: https://meteor-nft-marketplace.meteorapp.com (Instructions on how to use it are in the README.md of the project)
+- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
+- Why: To show how to integrate web3 with Meteor
+- Stack: Meteor, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Last Updated At: June/1/2022
+- Meteor Version: 2.7.2
 
 ### Simple photo
 - Demo: https://simple-photo.meteorapp.com/
