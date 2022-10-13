@@ -7,7 +7,7 @@ import {useNavigate, useOutletContext} from 'react-router-dom';
 import { Button } from "./components/Button";
 import { InputField } from "./components/Fields/InputField";
 
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
+const client = ipfsHttpClient('https://infura-ipfs.io:5001/api/v0');
 
 import {
   marketplaceAddress
@@ -36,7 +36,7 @@ export default function SellNftPage() {
         }
       );
 
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
       setFileUrl(url);
     } catch (error) {
       console.log('Error uploading file: ', error);
@@ -52,7 +52,7 @@ export default function SellNftPage() {
     });
     try {
       const added = await client.add(data);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
       /* after file is uploaded to IPFS, return the URL to use it in the transaction */
       return url;
     } catch (error) {
