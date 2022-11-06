@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "allowJs": true,
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "/*": [
+        "./*"
+      ],
+      "meteor/reactive-var": [
+        "/Users/rra/.meteor/packages/reactive-var/1.0.11/web.browser/reactive-var.js"
+      ],
+      "meteor/es5-shim": [
+        "/Users/rra/.meteor/packages/es5-shim/4.8.0/web.browser/client.js",
+        "/Users/rra/.meteor/packages/es5-shim/4.8.0/web.browser/console.js",
+        "/Users/rra/.meteor/packages/es5-shim/4.8.0/web.browser/cordova.js",
+        "/Users/rra/.meteor/packages/es5-shim/4.8.0/web.browser/export_globals.js",
+        "/Users/rra/.meteor/packages/es5-shim/4.8.0/web.browser/import_globals.js"
+      ],
+      "meteor/shell-server": [
+        "/Users/rra/.meteor/packages/shell-server/0.5.0/web.browser/main.js",
+        "/Users/rra/.meteor/packages/shell-server/0.5.0/web.browser/shell-server.js"
+      ]
+    }
+  },
+  "typeAcquisition": {
+    "include": [
+      "meteor"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    ".meteor"
+  ]
+}

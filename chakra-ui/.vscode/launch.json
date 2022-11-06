@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Meteor: Run",
+      "runtimeExecutable": "meteor",
+      "outputCapture": "std",
+      "noDebug": "true",
+      "runtimeArgs": [
+        "run",
+        "--port",
+        "3000"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Meteor: Debug",
+      "runtimeExecutable": "meteor",
+      "runtimeArgs": [
+        "run",
+        "--port",
+        "3000",
+        "--inspect-brk"
+      ],
+      "outputCapture": "std",
+      "serverReadyAction": {
+        "pattern": "App running at: http://localhost:([0-9]+)/",
+        "uriFormat": "http://localhost:%s",
+        "action": "debugWithChrome"
+      }
+    }
+  ]
+}
