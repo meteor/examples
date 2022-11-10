@@ -38,8 +38,8 @@
 - Repository: [meteor/examples/tailwindcss](./tailwindcss)
 - Why: To show how to set up [tailwindcss](https://tailwindcss.com/) with Meteor
 - Stack: Tailwindcss, Meteor and React
-- Last Updated At: Mar/06/2021
-- Meteor Version: 2.1
+- Last Updated At: Nov/10/2022
+- Meteor Version: 2.8
 
 #### Wantch: Manage Movies to Watch
 - Demo: [wantch.meteorapp.com](https://wantch.meteorapp.com)
