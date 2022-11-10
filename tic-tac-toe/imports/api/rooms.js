@@ -32,16 +32,13 @@ Meteor.methods({
     return RoomCollection.findOne(roomId);
   },
   joinRoom({ roomId }) {
-    const room = RoomCollection.findAndModify({
-      query: { _id: roomId, capacity: { $gte: 1 } },
-      update: { $inc: { capacity: -1 } },
-      new: true
-    });
+    RoomCollection.update({ _id: roomId, capacity: { $gte: 1 } }, { $inc: { capacity: -1 } })
+    const room = RoomCollection.findOne(roomId)
     if (!room) {
       throw new Error("Room not found, or full!");
     }
     return {
-      room: RoomCollection.findOne(roomId),
+      room,
       color: room.capacity === 1 ? "cross" : "circle"
     };
   },
@@ -53,23 +50,16 @@ Meteor.methods({
       winner: null,
       [`gameState.${play}`]: "empty"
     };
-    console.log(query);
-    const room = RoomCollection.findAndModify({
-      query,
-      update: { $set: { colorTurn: otherColor, [`gameState.${play}`]: color } },
-      new: true
-    });
+    RoomCollection.update(query, { $set: { colorTurn: otherColor, [`gameState.${play}`]: color } })
+    const room = RoomCollection.findOne(roomId)
 
     if (!room) {
       throw new Meteor.Error("invalid-play");
     }
     const winner = checkEndGame(room.gameState);
     if (winner && winner !== "empty") {
-      return RoomCollection.findAndModify({
-        query: { _id: roomId },
-        update: { $set: { winner } },
-        new: true
-      });
+      RoomCollection.update(roomId, { $set: { winner } })
+      return RoomCollection.findOne(roomId)
     }
 
     return room;

@@ -7,8 +7,8 @@
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with meteor.
 - Stack: Meteor and React
-- Last Updated At: Nov/18/2021
-- Meteor Version: 2.5
+- Last Updated At: Sep/06/2022
+- Meteor Version: 2.7.3
 
 #### Simple Tasks
 - Demo: [simpletasks.meteorapp.com/](https://simpletasks.meteorapp.com)
@@ -49,7 +49,6 @@
 - Last Updated At: Feb/25/2021
 - Meteor Version: 2.1
 
-
 #### Double app
 - Demo: [double-app.meteorapp.com](https://double-app.meteorapp.com)
 - Repository: [denihs/double-app](https://github.com/denihs/double-app/)
@@ -65,6 +64,30 @@
 - Stack: Meteor and Blaze
 - Last Updated At: Jul/25/2021
 - Meteor Version: 2.3.1
+
+#### NFT Marketplace
+- Demo: https://meteor-nft-marketplace.meteorapp.com (Instructions on how to use it are in the README.md of the project)
+- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
+- Why: To show how to integrate web3 with Meteor
+- Stack: Meteor, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Last Updated At: June/1/2022
+- Meteor Version: 2.7.2
+
+### Simple photo
+- Demo: https://simple-photo.meteorapp.com/
+- Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-photo)
+- Why: A simple example of `mdg:camera` package that allows you to take pictures from your web/phone camera.
+- Stack: Meteor and Blaze
+- Last Updated At: Aug/29/2022
+- Meteor Version: 2.7.3
+
+### Simple map
+- Demo: https://simple-map.meteorapp.com/
+- Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-map)
+- Why: A simple example of using the `mdg:geolocation` package to get current geolocation and show them on maps.
+- Stack: Meteor and Blaze
+- Last Updated At: Aug/29/2022
+- Meteor Version: 2.7.3
 
 ### WIP
 #### Parties
