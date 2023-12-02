@@ -39,12 +39,12 @@ export function HeroCallToAction() {
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
             lineHeight="110%">
             <Text as="span" color="blue.600">
-              Meteor
+              Meteor 3.0 {' '}
             </Text> + {' '}
             <Text as="span" color="green.400">
-              Chakra UI {' '}
+              Node 20 {' '}
             </Text>
-            + Dark Mode
+            + Chakra UI
           </Heading>
           <Text color="gray.500" fontSize={{ base: 'xl' }}>
             Meteor is a framework for building Web, Mobile, and Desktop applications in JS.
