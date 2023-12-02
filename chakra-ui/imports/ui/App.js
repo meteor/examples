@@ -1,12 +1,19 @@
 import React from 'react';
-import { ChakraProvider } from "@chakra-ui/react"
-import HeroCallToAction from "./HeroCallToAction";
-import Navbar from "./Navbar";
-import theme from "../../client/theme";
+import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
+import { HeroCallToAction } from './HeroCallToAction';
+import { Navbar } from './Navbar';
+
+const theme = extendTheme({ config: {
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
+} });
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Navbar />
-    <HeroCallToAction />
-  </ChakraProvider>
+  <>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <ChakraProvider theme={theme}>
+      <Navbar />
+      <HeroCallToAction />
+    </ChakraProvider>
+  </>
 );

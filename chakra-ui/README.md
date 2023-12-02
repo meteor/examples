@@ -1,5 +1,9 @@
 # Meteor + Chakra UI + Dark mode example
 
+Demo deployed on [Galaxy](https://meteor.com/cloud):
+
+https://chakraui.meteorapp.com/
+
 ## Chakra UI
 
 The setup is already done in this project, but if you want to do it in another project you can follow the steps below.
@@ -23,22 +27,28 @@ See [package.json](package.json) as example.
 
 ```js
 import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { render } from 'react-dom';
-import { App } from '/imports/ui/App';
-import { ColorModeScript } from "@chakra-ui/react"
-import theme from "./theme";
+import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
+import { HeroCallToAction } from './HeroCallToAction';
+import { Navbar } from './Navbar';
 
-Meteor.startup(() => {
-  render(<>
+const theme = extendTheme({ config: {
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
+  } });
+
+export const App = () => (
+  <>
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    <App/>
-  </>, document.getElementById('react-target'));
-});
+    <ChakraProvider theme={theme}>
+      <Navbar />
+      <HeroCallToAction />
+    </ChakraProvider>
+  </>
+);
 
 ```
 
-See [main.js](client/main.js) and [theme.js](client/theme.js) as example.
+See [main.js](client/main.js) and [App.js](imports/ui/App.js) as example.
 
 ## Running the example
 
@@ -51,8 +61,5 @@ meteor npm install
 ### Running
 
 ```bash
-meteor
+meteor npm run start
 ```
-
-Video demo:
-https://www.loom.com/share/ec3df7366b6048ad8db2f0b4ccbb32c6

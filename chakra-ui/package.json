@@ -2,23 +2,35 @@
   "name": "chakra-ui-meteor-example",
   "private": true,
   "scripts": {
-    "start": "meteor run"
+    "start": "meteor run",
+    "eslint": "eslint . --fix"
   },
   "dependencies": {
-    "@babel/runtime": "^7.13.9",
-    "@chakra-ui/icons": "^1.0.6",
-    "@chakra-ui/react": "^1.3.4",
-    "@emotion/react": "^11.1.5",
-    "@emotion/styled": "^11.1.5",
-    "framer-motion": "^3.10.0",
-    "meteor-node-stubs": "^1.0.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "@babel/runtime": "^7.23.5",
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "framer-motion": "^10.16.12",
+    "meteor-node-stubs": "^1.2.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@quave/eslint-config-quave": "^1.0.7",
+    "@types/meteor": "^2.9.7",
+    "@types/react": "^18.2.41",
+    "@types/react-dom": "^18.2.17"
   },
   "meteor": {
     "mainModule": {
       "client": "client/main.js",
       "server": "server/main.js"
     }
+  },
+  "eslintConfig": {
+    "extends": [
+      "@quave/quave"
+    ]
   }
 }

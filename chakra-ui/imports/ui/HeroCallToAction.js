@@ -1,77 +1,16 @@
 import React from 'react';
-import {Box, Button, Container, createIcon, Heading, Icon, Stack, Text, useColorModeValue,} from '@chakra-ui/react';
-import {SearchIcon, StarIcon} from '@chakra-ui/icons'
-
-export default function HeroCallToAction() {
-  return (
-    <>
-      <Container maxW={'3xl'}>
-        <Stack
-          as={Box}
-          textAlign={'center'}
-          spacing={{base: 8, md: 14}}
-          py={{base: 20, md: 36}}>
-          <Heading
-            fontWeight={600}
-            fontSize={{base: '2xl', sm: '4xl', md: '6xl'}}
-            lineHeight={'110%'}>
-            <Text as={'span'} color={'blue.600'}>
-              Meteor
-            </Text> + {' '}
-            <Text as={'span'} color={'green.400'}>
-              Chakra UI {' '}
-            </Text>
-            + Dark Mode
-          </Heading>
-          <Text color={'gray.500'} fontSize={{base: 'xl'}}>
-            Meteor is a framework for building Web, Mobile, and Desktop applications in JS.
-            Chakra UI is a simple, modular and accessible component library to build your React applications.
-          </Text>
-          <Stack
-            direction={'column'}
-            spacing={3}
-            align={'center'}
-            alignSelf={'center'}
-            position={'relative'}>
-            <Button
-              colorScheme={'green'}
-              bg={'green.400'}
-              rounded={'full'}
-              px={6}
-              leftIcon={<StarIcon />}
-              _hover={{
-                bg: 'green.500',
-              }}>
-              Get Started
-            </Button>
-            <Button variant={'link'} colorScheme={'blue'} size={'sm'} leftIcon={<SearchIcon/>}>
-              Learn More
-            </Button>
-            <Box>
-              <Icon
-                as={Arrow}
-                color={useColorModeValue('gray.800', 'gray.300')}
-                w={71}
-                position={'absolute'}
-                right={-71}
-                top={'10px'}
-              />
-              <Text
-                fontSize={'lg'}
-                fontFamily={'Caveat'}
-                position={'absolute'}
-                right={'-125px'}
-                top={'-15px'}
-                transform={'rotate(10deg)'}>
-                Create your app
-              </Text>
-            </Box>
-          </Stack>
-        </Stack>
-      </Container>
-    </>
-  );
-}
+import {
+  Box,
+  Button,
+  Container,
+  createIcon,
+  Heading,
+  Icon,
+  Stack,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { SearchIcon, StarIcon } from '@chakra-ui/icons';
 
 const Arrow = createIcon({
   displayName: 'Arrow',
@@ -85,3 +24,77 @@ const Arrow = createIcon({
     />
   ),
 });
+
+export function HeroCallToAction() {
+  return (
+    <>
+      <Container maxW="5xl">
+        <Stack
+          as={Box}
+          textAlign="center"
+          spacing={{ base: 8, md: 14 }}
+          py={{ base: 20, md: 36 }}>
+          <Heading
+            fontWeight={600}
+            fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
+            lineHeight="110%">
+            <Text as="span" color="blue.600">
+              Meteor
+            </Text> + {' '}
+            <Text as="span" color="green.400">
+              Chakra UI {' '}
+            </Text>
+            + Dark Mode
+          </Heading>
+          <Text color="gray.500" fontSize={{ base: 'xl' }}>
+            Meteor is a framework for building Web, Mobile, and Desktop applications in JS.
+            Chakra UI is a simple, modular and accessible component library to build your React applications.
+          </Text>
+          <Stack
+            direction="column"
+            spacing={3}
+            align="center"
+            alignSelf="center"
+            position="relative">
+            <Button
+              colorScheme="green"
+              bg="green.400"
+              rounded="full"
+              px={6}
+              as="a"
+              target="_blank"
+              href="https://github.com/meteor/examples/tree/main/chakra-ui"
+              leftIcon={<StarIcon />}
+              _hover={{
+                bg: 'green.500',
+              }}>
+              Clone this Repository
+            </Button>
+            <Button as="a" href="https://meteor.com" variant="link" colorScheme="blue" size="sm" leftIcon={<SearchIcon/>}>
+              Learn More
+            </Button>
+            <Box>
+              <Icon
+                as={Arrow}
+                color={useColorModeValue('gray.800', 'gray.300')}
+                w={71}
+                position="absolute"
+                right={-71}
+                top="10px"
+              />
+              <Text
+                fontSize="lg"
+                fontFamily="Caveat"
+                position="absolute"
+                right="-125px"
+                top="-15px"
+                transform="rotate(10deg)">
+                Create your app
+              </Text>
+            </Box>
+          </Stack>
+        </Stack>
+      </Container>
+    </>
+  );
+}
