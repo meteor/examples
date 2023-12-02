@@ -26,12 +26,12 @@
 - Last Updated At: Aug/21/2021
 
 #### Chakra UI
-- Demo: [chakraui.meteorapp.com/](https://chakraui.meteorapp.com/)
+- Demo: [chakraui.meteorapp.com](https://chakraui.meteorapp.com/)
 - Repository: [meteor/examples/chakra-ui](./chakra-ui)
 - Why: To show how to set up [Chakra UI](https://chakra-ui.com/) + Icons + Dark Mode with Meteor
 - Stack: Chakra UI, Meteor and React
-- Last Updated At: Mar/06/2021
-- Meteor Version: 2.1
+- Last Updated At: Dec/02/2023
+- Meteor Version: 3.0-alpha
 
 #### Tailwindcss
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
