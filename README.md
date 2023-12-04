@@ -63,7 +63,7 @@
 - Why: Complete example of a small Blaze app with only client code that can update the DB.
 - Stack: Meteor and Blaze
 - Last Updated At: Jul/25/2021
-- Meteor Version: 2.3.1
+- Meteor Version: 2.13.3
 
 #### NFT Marketplace
 - Demo: https://meteor-nft-marketplace.meteorapp.com (Instructions on how to use it are in the README.md of the project)
@@ -78,16 +78,16 @@
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-photo)
 - Why: A simple example of `mdg:camera` package that allows you to take pictures from your web/phone camera.
 - Stack: Meteor and Blaze
-- Last Updated At: Aug/29/2022
-- Meteor Version: 2.7.3
+- Last Updated At: Dec/04/2023
+- Meteor Version: 2.14-beta.4
 
 ### Simple map
 - Demo: https://simple-map.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-map)
 - Why: A simple example of using the `mdg:geolocation` package to get current geolocation and show them on maps.
 - Stack: Meteor and Blaze
-- Last Updated At: Aug/29/2022
-- Meteor Version: 2.7.3
+- Last Updated At: Dec/04/2023
+- Meteor Version: 2.13.3
 
 ### WIP
 #### Parties
