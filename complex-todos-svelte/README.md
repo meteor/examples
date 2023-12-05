@@ -1,8 +1,6 @@
-*** This tutorial is still in development
-
 # Complex Todo List App
 
-The Meteor Tutorial app.
+A Meteor.js app which is using version 2.12
 
 Use it to share a single todo list with your friends. The list updates on everyone's screen in real time, and you can
 make tasks private if you don't want others to see them.
@@ -64,7 +62,7 @@ If you find a better approach, please help me to improve this project.
 ### Let's Start
 
 1. Install Meteor.js
-1. Clone the repo ```git clone https://github.com/guncebektas/complex-todos-svelte.git```
+1. Clone this repository
 1. cd ```complex-todos-svelte-master```
 1. Run ```meteor npm install``` command
 1. Run ```npm start``` command
@@ -270,6 +268,8 @@ in ```/server/modules/migrations/server/index.js```. After the next start of the
 automatically for once.
 
 The current version will be stored in a server side collection named as ```_migrations```.
+
+This example is using a custom migration module, and you may want to use officially recommended [percolate:migrations](https://github.com/percolatestudio/meteor-migrations).
 
 ### Jobs
 
