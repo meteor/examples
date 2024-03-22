@@ -1,4 +1,5 @@
 import { Mongo } from "meteor/mongo";
+import { Meteor } from "meteor/meteor";
 
 export const RoomCollection = new Mongo.Collection("rooms");
 
@@ -21,47 +22,52 @@ function checkEndGame(gameState) {
 }
 
 Meteor.methods({
-  createRoom() {
-    const roomId = RoomCollection.insert({
+  async createRoom() {
+    const roomId = await RoomCollection.insertAsync({
       createdAt: new Date(),
       capacity: 2,
       gameState: new Array(9).fill("empty"),
       colorTurn: "cross",
-      winner: null
+      winner: null,
     });
-    return RoomCollection.findOne(roomId);
+    return RoomCollection.findOneAsync(roomId);
   },
-  joinRoom({ roomId }) {
-    RoomCollection.update({ _id: roomId, capacity: { $gte: 1 } }, { $inc: { capacity: -1 } })
-    const room = RoomCollection.findOne(roomId)
+  async joinRoom({ roomId }) {
+    await RoomCollection.updateAsync(
+      { _id: roomId, capacity: { $gte: 1 } },
+      { $inc: { capacity: -1 } }
+    );
+    const room = await RoomCollection.findOneAsync(roomId);
     if (!room) {
-      throw new Error("Room not found, or full!");
+      throw new Meteor.Error("Room not found, or full!");
     }
     return {
       room,
-      color: room.capacity === 1 ? "cross" : "circle"
+      color: room.capacity === 1 ? "cross" : "circle",
     };
   },
-  makePlay({ roomId, playState: { color, play } }) {
+  async makePlay({ roomId, playState: { color, play } }) {
     const otherColor = color === "cross" ? "circle" : "cross";
     const query = {
       _id: roomId,
       colorTurn: color,
       winner: null,
-      [`gameState.${play}`]: "empty"
+      [`gameState.${play}`]: "empty",
     };
-    RoomCollection.update(query, { $set: { colorTurn: otherColor, [`gameState.${play}`]: color } })
-    const room = RoomCollection.findOne(roomId)
+    await RoomCollection.updateAsync(query, {
+      $set: { colorTurn: otherColor, [`gameState.${play}`]: color },
+    });
+    const room = await RoomCollection.findOneAsync(roomId);
 
     if (!room) {
       throw new Meteor.Error("invalid-play");
     }
     const winner = checkEndGame(room.gameState);
     if (winner && winner !== "empty") {
-      RoomCollection.update(roomId, { $set: { winner } })
-      return RoomCollection.findOne(roomId)
+      await RoomCollection.updateAsync(roomId, { $set: { winner } });
+      return await RoomCollection.findOneAsync(roomId);
     }
 
     return room;
-  }
+  },
 });
