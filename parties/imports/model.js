@@ -100,8 +100,8 @@ Meteor.methods({
     if (userId !== party.owner && !_.contains(party.invited, userId)) {
       await Parties.updateAsync(partyId, { $addToSet: { invited: userId } });
 
-      const from = contactEmail(Meteor.users.findOne(this.userId));
-      const to = contactEmail(Meteor.users.findOne(userId));
+      const from = contactEmail(await Meteor.users.findOneAsync(this.userId));
+      const to = contactEmail(await Meteor.users.findOneAsync(userId));
       if (Meteor.isServer && to) {
         // This code only runs on the server. If you didn't want clients
         // to be able to see it, you could move it to a separate file.
@@ -129,7 +129,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "You must be logged in to RSVP");
     if (!["yes", "no", "maybe"].includes(rsvp))
       throw new Meteor.Error(400, "Invalid RSVP");
-    const party = Parties.findOne(partyId);
+    const party = await Parties.findOneAsync(partyId);
     if (!party) throw new Meteor.Error(404, "No such party");
     if (
       !party.public &&
@@ -157,7 +157,7 @@ Meteor.methods({
         // safe on the client since there's only one thread.
         let modifier = { $set: {} };
         modifier.$set["rsvps." + rsvpIndex + ".rsvp"] = rsvp;
-        Parties.update(partyId, modifier);
+        await Parties.updateAsync(partyId, modifier);
       }
 
       // Possible improvement: send email to the other people that are
