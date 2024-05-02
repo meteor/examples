@@ -4,31 +4,28 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-base@1.5.1             # Packages every Meteor app needs to have
-mobile-experience@1.1.0       # Packages for a great mobile UX
-mongo@1.12.0                   # The database Meteor supports right now
+meteor-base@1.5.2-rc300.0             # Packages every Meteor app needs to have
+mobile-experience@1.1.1-rc300.0       # Packages for a great mobile UX
+mongo@2.0.0-rc300.0                   # The database Meteor supports right now
 jquery                  # Wrapper package for npm-installed jquery
-reactive-var@1.0.11            # Reactive variable for tracker
-tracker@1.2.0                 # Meteor's client-side reactive programming library
+reactive-var@1.0.13-rc300.0            # Reactive variable for tracker
+tracker@1.3.3-rc300.0                 # Meteor's client-side reactive programming library
 
-standard-minifier-css@1.7.3   # CSS minifier run for production mode
-standard-minifier-js@2.6.1    # JS minifier run for production mode
-es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
-ecmascript@0.15.3              # Enable ECMAScript2015+ syntax in app code
-typescript@4.3.5              # Enable TypeScript syntax in .ts and .tsx modules
-shell-server@0.5.0            # Server-side component of the `meteor shell` command
+standard-minifier-css@1.9.3-rc300.0   # CSS minifier run for production mode
+standard-minifier-js@3.0.0-rc300.0    # JS minifier run for production mode
+es5-shim@4.8.1-rc300.0                # ECMAScript 5 compatibility for older browsers
+ecmascript@0.16.8-rc300.0              # Enable ECMAScript2015+ syntax in app code
+typescript@5.4.3-rc300.0              # Enable TypeScript syntax in .ts and .tsx modules
+shell-server@0.6.0-rc300.0            # Server-side component of the `meteor shell` command
 
-svelte:compiler
-rdb:svelte-meteor-data
-static-html
-svelte:blaze-integration
+static-html@1.3.3-rc300.0
 meteortesting:mocha
 
 #
 # Accounts and roles
 #
-accounts-ui@1.4.0
-accounts-password@2.0.0
+accounts-ui@1.4.3-rc300.0
+accounts-password@3.0.0-rc300.0
 
 #
 # Data layer
@@ -40,7 +37,7 @@ dburles:mongo-collection-instances
 # Validated methods
 #
 mdg:validated-method
-ddp-rate-limiter@1.1.0
+ddp-rate-limiter@1.2.1-rc300.0
 
 #
 # Logging
@@ -51,9 +48,9 @@ ostrio:loggerconsole
 #
 # Scheduled jobs
 #
-msavin:sjobs
 
 #
 # APM
 #
 montiapm:agent
+zodern:melte
