@@ -1,31 +1,24 @@
 <script>
-  import {Meteor} from 'meteor/meteor';
-  import {useTracker} from 'meteor/rdb:svelte-meteor-data';
+  import { Meteor } from 'meteor/meteor';
   import Task from './Task.svelte';
-  import {taskRepository} from '../../imports/modules/tasks/taskRepository.js';
+  import { taskRepository } from '../../imports/modules/tasks/taskRepository.js';
   import TaskAddNewForm from './TaskAddNewForm.svelte';
-  import {TASKS_PUBLICATION} from '../../imports/modules/tasks/enums/publications.js';
-  
+  import { TASKS_PUBLICATION } from '../../imports/modules/tasks/enums/publications.js';
+
   let hideCompleted = false;
   let tasks;
   let currentUser;
+  export let incompleteCount;
   
-  $: Meteor.subscribe(TASKS_PUBLICATION.TASKS);
+  $m: Meteor.subscribe(TASKS_PUBLICATION.TASKS);
   
-  $: incompleteCount = useTracker(() => taskRepository.find({checked: {$ne: true}}).count());
+  $m: incompleteCount = taskRepository.find({checked: {$ne: true}}).count();
   
-  $: currentUser = useTracker(() => Meteor.user());
+  $m: currentUser = Meteor.user();
   
-  const taskStore = taskRepository.find({}, {sort: {createdAt: -1}});
-  
-  $: {
-    tasks = $taskStore;
-  
-    if(hideCompleted)
-    {
-      tasks = tasks.filter(task => !task.checked);
-    }
-  }
+  $m: tasks = taskRepository.find({
+    ...(hideCompleted ? {checked: {$ne: true}} : {})
+  }, {sort: {createdAt: -1}}).fetch();
 </script>
 
 <div class="container">
@@ -37,7 +30,7 @@
     </div>
   </div>
   
-  <h2>Pending Items ({ $incompleteCount })</h2>
+  <h2>Pending Items ({ incompleteCount })</h2>
   
   <div class="row">
     <div class="col-sm">
