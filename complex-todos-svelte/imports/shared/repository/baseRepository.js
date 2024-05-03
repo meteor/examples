@@ -93,9 +93,9 @@ class BaseRepository
    * @param selector {string|object}
    * @param updateObject {object}
    */
-  updateMany(selector, updateObject)
+  async updateMany(selector, updateObject)
   {
-    this._collection.update(selector, updateObject, {multi: true});
+    await this._collection.updateAsync(selector, updateObject, {multi: true});
   }
   
   /**
