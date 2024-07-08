@@ -1,7 +1,7 @@
 import "./game.css";
 import React, { useEffect } from "react";
 import { useHistory, useLocation, useParams } from "react-router";
-import { useTracker } from "meteor/react-meteor-data";
+import { useTracker, useFind } from "meteor/react-meteor-data";
 import { RoomCollection } from "../api/rooms";
 
 const Slot = ({ id, room: { gameState, _id } }) => {
@@ -10,18 +10,21 @@ const Slot = ({ id, room: { gameState, _id } }) => {
   return (
     <div
       className="slot"
-      onClick={() => {
-        Meteor.call(
-          "makePlay",
-          { roomId: _id, playState: { play: id - 1, color } },
-          err => {
-            if (err && err.error === "invalid-play") {
-                alert("This move is invalid. You might need to wait for your turn!")
-            } else if(err) {
-                alert(err.message);
-            }
+      onClick={async () => {
+        try {
+          await Meteor.callAsync("makePlay", {
+            roomId: _id,
+            playState: { play: id - 1, color },
+          });
+        } catch (e) {
+          if (e.error === "invalid-play") {
+            alert(
+              "This move is invalid. You might need to wait for your turn!"
+            );
+          } else {
+            alert(e.message);
           }
-        );
+        }
       }}
     >
       {gameState[id - 1] === "cross" ? <img src={"/cross.png"} /> : ""}
@@ -34,7 +37,6 @@ export const GameScreen = () => {
   const { id } = useParams();
   const location = useLocation();
   const history = useHistory();
-
   const { color } = location.state;
   const roomLoading = useTracker(() => {
     // Note that this subscription will get cleaned up
@@ -42,7 +44,7 @@ export const GameScreen = () => {
     const handle = Meteor.subscribe("room", { _id: id });
     return !handle.ready();
   }, [id]);
-  const room = useTracker(() => RoomCollection.findOne({ _id: id }), [id]);
+  const [room] = useFind(() => RoomCollection.find({ _id: id }), [id]);
 
   useEffect(() => {
     if (room && room.winner) {

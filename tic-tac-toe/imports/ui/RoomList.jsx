@@ -5,15 +5,15 @@ import { useHistory } from "react-router";
 
 export const RoomList = () => {
   const history = useHistory();
-  const listLoading = useSubscribe('rooms')
+  const listLoading = useSubscribe("rooms");
   const rooms = useFind(() => RoomCollection.find({}), []);
 
   if (listLoading()) return "Loading...";
   return (
     <div>
       <button
-        onClick={() => {
-          Meteor.call("createRoom");
+        onClick={async () => {
+          await Meteor.callAsync("createRoom");
         }}
       >
         {" "}
@@ -28,10 +28,8 @@ export const RoomList = () => {
             <button
               disabled={capacity <= 0}
               onClick={() => {
-                Meteor.call(
-                  "joinRoom",
-                  { roomId: _id },
-                  (err, { room, color }) => {
+                Meteor.callAsync("joinRoom", { roomId: _id }).then(
+                  ({ room, color }) => {
                     history.push(`/game/${room._id}`, { color });
                   }
                 );
