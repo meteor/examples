@@ -78,16 +78,24 @@
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-photo)
 - Why: A simple example of `mdg:camera` package that allows you to take pictures from your web/phone camera.
 - Stack: Meteor and Blaze
-- Last Updated At: Dec/04/2023
-- Meteor Version: 2.14-beta.4
+- Last Updated At: July/08/2024
+- Meteor Version: 2.16
 
 ### Simple map
 - Demo: https://simple-map.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-map)
 - Why: A simple example of using the `mdg:geolocation` package to get current geolocation and show them on maps.
 - Stack: Meteor and Blaze
-- Last Updated At: Dec/04/2023
-- Meteor Version: 2.13.3
+- Last Updated At: July/08/2024
+- Meteor Version: 3.0-rc.4
+
+### Solomo
+- Demo: https://solomo.meteorapp.com/
+- Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/solomo)
+- Why: Combined use of photo and geolocation packages to show pictures at a location
+- Stack: Meteor and Blaze
+- Last Updated At: July/08/2024
+- Meteor Version: 2.16
 
 ### WIP
 #### Parties
