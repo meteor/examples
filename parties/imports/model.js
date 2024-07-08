@@ -1,7 +1,7 @@
-import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
-import { check, Match } from 'meteor/check';
-import _ from 'lodash'
+import { Meteor } from "meteor/meteor";
+import { Mongo } from "meteor/mongo";
+import { check, Match } from "meteor/check";
+import _ from "lodash";
 // All Tomorrow's Parties -- data model
 // Loaded on both the client and the server
 
@@ -24,11 +24,12 @@ Parties.allow({
     return false; // no cowboy inserts -- use createParty method
   },
   update: function (userId, party, fields, modifier) {
-    if (userId !== party.owner)
-      return false; // not the owner
+    if (userId !== party.owner) return false; // not the owner
 
     const allowed = ["title", "description", "x", "y"];
-    if ([fields, allowed].reduce((a, b) => a.filter(c => !b.includes(c))).length)
+    if (
+      [fields, allowed].reduce((a, b) => a.filter((c) => !b.includes(c))).length
+    )
       return false; // tried to write to forbidden field
 
     // A good improvement would be to validate the type of the new
@@ -39,11 +40,11 @@ Parties.allow({
   remove: function (userId, party) {
     // You can only remove parties that you created and nobody is going to.
     return party.owner === userId && attending(party) === 0;
-  }
+  },
 });
 
 export const attending = function (party) {
-  return (_.groupBy(party.rsvps, 'rsvp').yes || []).length;
+  return (_.groupBy(party.rsvps, "rsvp").yes || []).length;
 };
 
 const NonEmptyString = Match.Where(function (x) {
@@ -58,7 +59,7 @@ const Coordinate = Match.Where(function (x) {
 
 Meteor.methods({
   // options should include: title, description, x, y, public
-  createParty: function (options) {
+  createParty: async function (options) {
     check(options, {
       title: NonEmptyString,
       description: NonEmptyString,
@@ -71,106 +72,115 @@ Meteor.methods({
       throw new Meteor.Error(413, "Title too long");
     if (options.description.length > 1000)
       throw new Meteor.Error(413, "Description too long");
-    if (! this.userId)
-      throw new Meteor.Error(403, "You must be logged in");
+    if (!this.userId) throw new Meteor.Error(403, "You must be logged in");
 
-    return Parties.insert({
+    return await Parties.insertAsync({
       owner: this.userId,
       x: options.x,
       y: options.y,
       title: options.title,
       description: options.description,
-      public: !! options.public,
+      public: !!options.public,
       invited: [],
-      rsvps: []
+      rsvps: [],
     });
   },
 
-  invite: function (partyId, userId) {
+  invite: async function (partyId, userId) {
     check(partyId, String);
     check(userId, String);
-    const party = Parties.findOne(partyId);
-    if (! party || party.owner !== this.userId)
+    const party = await Parties.findOneAsync(partyId);
+    if (!party || party.owner !== this.userId)
       throw new Meteor.Error(404, "No such party");
     if (party.public)
-      throw new Meteor.Error(400,
-                             "That party is public. No need to invite people.");
-    if (userId !== party.owner && ! _.contains(party.invited, userId)) {
-      Parties.update(partyId, { $addToSet: { invited: userId } });
+      throw new Meteor.Error(
+        400,
+        "That party is public. No need to invite people."
+      );
+    if (userId !== party.owner && !_.contains(party.invited, userId)) {
+      await Parties.updateAsync(partyId, { $addToSet: { invited: userId } });
 
-      const from = contactEmail(Meteor.users.findOne(this.userId));
-      const to = contactEmail(Meteor.users.findOne(userId));
+      const from = contactEmail(await Meteor.users.findOneAsync(this.userId));
+      const to = contactEmail(await Meteor.users.findOneAsync(userId));
       if (Meteor.isServer && to) {
         // This code only runs on the server. If you didn't want clients
         // to be able to see it, you could move it to a separate file.
-        Email.send({
+        await Email.sendAsync({
           from: "noreply@example.com",
           to: to,
           replyTo: from || undefined,
           subject: "PARTY: " + party.title,
           text:
-"Hey, I just invited you to '" + party.title + "' on All Tomorrow's Parties." +
-"\n\nCome check it out: " + Meteor.absoluteUrl() + "\n"
+            "Hey, I just invited you to '" +
+            party.title +
+            "' on All Tomorrow's Parties." +
+            "\n\nCome check it out: " +
+            Meteor.absoluteUrl() +
+            "\n",
         });
       }
     }
   },
 
-  rsvp: function (partyId, rsvp) {
+  rsvp: async function (partyId, rsvp) {
     check(partyId, String);
     check(rsvp, String);
-    if (! this.userId)
+    if (!this.userId)
       throw new Meteor.Error(403, "You must be logged in to RSVP");
-    if (!['yes', 'no', 'maybe'].includes(rsvp))
+    if (!["yes", "no", "maybe"].includes(rsvp))
       throw new Meteor.Error(400, "Invalid RSVP");
-    const party = Parties.findOne(partyId);
-    if (! party)
-      throw new Meteor.Error(404, "No such party");
-    if (! party.public && party.owner !== this.userId &&
-        !party.invited?.includes(this.userId))
+    const party = await Parties.findOneAsync(partyId);
+    if (!party) throw new Meteor.Error(404, "No such party");
+    if (
+      !party.public &&
+      party.owner !== this.userId &&
+      !party.invited?.includes(this.userId)
+    )
       // private, but let's not tell this to the user
       throw new Meteor.Error(403, "No such party");
 
-    const rsvpIndex = party.rsvps.map(rsvps => rsvps.user).indexOf(this.userId);
+    const rsvpIndex = party.rsvps
+      .map((rsvps) => rsvps.user)
+      .indexOf(this.userId);
     if (rsvpIndex !== -1) {
       // update existing rsvp entry
 
       if (Meteor.isServer) {
         // update the appropriate rsvp entry with $
-        Parties.update(
-          {_id: partyId, "rsvps.user": this.userId},
-          {$set: {"rsvps.$.rsvp": rsvp}});
+        await Parties.updateAsync(
+          { _id: partyId, "rsvps.user": this.userId },
+          { $set: { "rsvps.$.rsvp": rsvp } }
+        );
       } else {
         // minimongo doesn't yet support $ in modifier. as a temporary
         // workaround, make a modifier that uses an index. this is
         // safe on the client since there's only one thread.
-        let modifier = {$set: {}};
+        let modifier = { $set: {} };
         modifier.$set["rsvps." + rsvpIndex + ".rsvp"] = rsvp;
-        Parties.update(partyId, modifier);
+        await Parties.updateAsync(partyId, modifier);
       }
 
       // Possible improvement: send email to the other people that are
       // coming to the party.
     } else {
       // add new rsvp entry
-      Parties.update(partyId,
-                     {$push: {rsvps: {user: this.userId, rsvp: rsvp}}});
+      await Parties.updateAsync(partyId, {
+        $push: { rsvps: { user: this.userId, rsvp: rsvp } },
+      });
     }
-  }
+  },
 });
 
 ///////////////////////////////////////////////////////////////////////////////
 // Users
 
 export const displayName = function (user) {
-  if (user.profile?.name)
-    return user.profile.name;
+  if (user.profile?.name) return user.profile.name;
   return user.emails[0].address;
 };
 
 export const contactEmail = function (user) {
-  if (user.emails?.length)
-    return user.emails[0].address;
+  if (user.emails?.length) return user.emails[0].address;
   if (user.services?.facebook && user.services?.facebook.email)
     return user.services.facebook.email;
   return null;
