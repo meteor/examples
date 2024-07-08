@@ -1,16 +1,16 @@
 import { useSubscribe, useFind } from "meteor/react-meteor-data";
 import React from "react";
 import { RoomCollection } from "../api/rooms";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 export const RoomList = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const listLoading = useSubscribe("rooms");
   const rooms = useFind(() => RoomCollection.find({}), []);
 
   if (listLoading()) return "Loading...";
   return (
-    <div>
+    <div className="page">
       <button
         onClick={async () => {
           await Meteor.callAsync("createRoom");
@@ -30,7 +30,7 @@ export const RoomList = () => {
               onClick={() => {
                 Meteor.callAsync("joinRoom", { roomId: _id }).then(
                   ({ room, color }) => {
-                    history.push(`/game/${room._id}`, { color });
+                    navigate(`/game/${room._id}`, { state: { color } });
                   }
                 );
               }}

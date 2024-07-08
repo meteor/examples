@@ -2,18 +2,17 @@
   "name": "tic-tac-toe",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "meteor run --open",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "@babel/runtime": "^7.19.0",
-    "meteor-node-stubs": "^1.2.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router": "^5.3.3",
-    "react-router-dom": "^5.3.3"
+    "@babel/runtime": "^7.24.7",
+    "meteor-node-stubs": "^1.2.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.1"
   },
   "meteor": {
     "mainModule": {

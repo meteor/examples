@@ -7,8 +7,8 @@
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with meteor.
 - Stack: Meteor and React
-- Last Updated At: Sep/06/2022
-- Meteor Version: 2.7.3
+- Last Updated At: July/07/2024
+- Meteor Version: 3.0-rc.4
 
 #### Simple Tasks
 - Demo: [simpletasks.meteorapp.com/](https://simpletasks.meteorapp.com)

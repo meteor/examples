@@ -1,12 +1,12 @@
 import "./game.css";
 import React, { useEffect } from "react";
-import { useHistory, useLocation, useParams } from "react-router";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useTracker, useFind } from "meteor/react-meteor-data";
 import { RoomCollection } from "../api/rooms";
 
 const Slot = ({ id, room: { gameState, _id } }) => {
   const location = useLocation();
-  const { color } = location.state;
+  const color = location.state?.color;
   return (
     <div
       className="slot"
@@ -36,8 +36,8 @@ const Slot = ({ id, room: { gameState, _id } }) => {
 export const GameScreen = () => {
   const { id } = useParams();
   const location = useLocation();
-  const history = useHistory();
-  const { color } = location.state;
+  const navigate = useNavigate();
+  const color = location.state?.color;
   const roomLoading = useTracker(() => {
     // Note that this subscription will get cleaned up
     // when your component is unmounted or deps change.
@@ -49,7 +49,7 @@ export const GameScreen = () => {
   useEffect(() => {
     if (room && room.winner) {
       alert(room.winner === color ? "You Won!" : "You Lost!!");
-      history.push("/");
+      navigate("/");
     }
   }, [room]);
 
