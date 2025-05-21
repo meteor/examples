@@ -1,6 +1,4 @@
-import {log} from '../imports/shared/logger/logger.js';
-import {Jobs} from 'meteor/msavin:sjobs';
-import {JOB} from './shared/enums/job.js';
+import { log } from '../imports/shared/logger/logger.js';
 
 /**
  * Initialize server at startup
@@ -23,12 +21,9 @@ class ServerInit
    */
   initializeJobs()
   {
-    Jobs.run(JOB.TASKS.EXPIRE, {
-        in: {
-          days: 7
-        }
-      }
-    );
+    setInterval(() => {
+      Meteor.call('tasks.expire');
+    }, 60000)
   }
 }
 

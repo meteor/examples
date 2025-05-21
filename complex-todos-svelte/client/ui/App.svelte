@@ -1,9 +1,8 @@
 <script>
-  import {Link, Route, Router} from 'svelte-routing';
-  import {BlazeTemplate} from 'meteor/svelte:blaze-integration';
+  import { Link, Route, Router } from 'svelte-routing';
   import Tasks from './Tasks.svelte';
   import About from './About.svelte';
-  
+
   export let url = '';
 
   // Tasks svelte is the homepage of the application. Thus set "/tasks" on "/" load
@@ -28,9 +27,6 @@
             </li>
             <li class="nav-item">
               <Link to="about" class="nav-link">About</Link>
-            </li>
-            <li class="nav-item nav-login">
-              <BlazeTemplate template="loginButtons"/>
             </li>
           </ul>
         </div>
