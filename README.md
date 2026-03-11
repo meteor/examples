@@ -1,6 +1,40 @@
 ## Examples of Meteor Projects
 
+> **Note: We are currently modernizing all the apps in this repository to support the latest Meteor 3.4.**
+>
+> In the meantime, here are some up-to-date resources you can check out:
+>
+> **Skeletons**: Quickly scaffold a new Meteor app using `meteor create` with any of the available skeletons:
+>
+> `--bare`, `--minimal`, `--full`, `--react` (default), `--vue`, `--apollo`, `--svelte`, `--blaze`, `--tailwind`, `--chakra-ui`, `--solid`, `--angular`, `--typescript`, `--babel`, `--coffeescript`, `--prototype`
+>
+> Run [`meteor create --help`](https://docs.meteor.com/cli/#meteorcreate) to see all options.
+>
+> **Example Apps:**
+> - [Simple Tasks](https://github.com/fredmaiaarantes/simpletasks): A task management app with Meteor Accounts, Chakra UI, Formik, and MongoDB
+> - [Welcome Meteor Cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova): For Cordova / mobile usage
+>
+> **Tutorial Apps (Meteor 3.4 + Rspack):**
+> - [React](https://github.com/meteor/meteor3-react/tree/3.4-rspack) ([tutorial](https://docs.meteor.com/tutorials/react/))
+> - [Solid](https://github.com/meteor/meteor3-solid/tree/3.4-rspack) ([tutorial](https://docs.meteor.com/tutorials/solid/))
+> - [Vue 3](https://github.com/meteor/meteor3-vue3/tree/3.4-rspack) ([tutorial](https://docs.meteor.com/tutorials/vue/meteorjs3-vue3.html))
+> - [Blaze](https://github.com/meteor/meteor3-blaze/tree/3.4-rspack) ([tutorial](https://docs.meteor.com/tutorials/blaze/))
+> - [Svelte](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack) ([tutorial](https://docs.meteor.com/tutorials/svelte/))
+
+---
+
 ### Ready
+
+#### Simple Tasks
+
+- Demo: [simpletasks2.meteorapp.com/](https://simpletasks2.meteorapp.com)
+- Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
+- Why: To show how to use Meteor with [Chakra UI](https://chakra-ui.com/) + [Formik](https://formik.org/) + MongoDB
+- Stack: Meteor, Rspack, Chakra UI, React, Formik, MongoDB
+- Last Updated At: Feb/12/2026
+- Meteor Version: 3.4
+
+### To migrate - WIP
 
 #### Tic tac toe
 - Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
@@ -9,14 +43,6 @@
 - Stack: Meteor and React
 - Last Updated At: Sep/06/2022
 - Meteor Version: 2.7.3
-
-#### Simple Tasks
-- Demo: [simpletasks.meteorapp.com/](https://simpletasks.meteorapp.com)
-- Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
-- Why: To show how to use Meteor with [Chakra UI](https://chakra-ui.com/) + [Formik](https://formik.org/) + MongoDB
-- Stack: Meteor, Chakra UI, React, Formik, MongoDB
-- Last Updated At: Apr/07/2021
-- Meteor Version: 2.1.1
 
 #### Complex Svelte Todos
 - Demo: [complex-todos-svelte.meteorapp.com/](https://complex-todos-svelte.meteorapp.com)
@@ -40,22 +66,6 @@
 - Stack: Tailwindcss, Meteor and React
 - Last Updated At: Nov/10/2022
 - Meteor Version: 2.8
-
-#### Wantch: Manage Movies to Watch
-- Demo: [wantch.meteorapp.com](https://wantch.meteorapp.com)
-- Repository: [filipenevola/wantch](https://github.com/filipenevola/wantch)
-- Why: To show how simple is to create an app using Meteor Methods and React
-- Stack: Meteor, React and PWA
-- Last Updated At: Feb/25/2021
-- Meteor Version: 2.1
-
-#### Double app
-- Demo: [double-app.meteorapp.com](https://double-app.meteorapp.com)
-- Repository: [denihs/double-app](https://github.com/denihs/double-app/)
-- Why: To show how to have two apps with different purposes, but sharing the same codebase. 
-- Stack: Meteor and React
-- Last Updated At: Mar/19/2021
-- Meteor Version: 2.1
 
 ### Leaderboards
 - Demo: N/A
@@ -96,23 +106,6 @@
 - Stack: Meteor and Blaze
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
-
-### WIP
-#### Parties
-- Demo: N/A
-- Repository: [meteor/examples/parties](./parties)
-- Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates.
-- Stack: Meteor, Blaze
-- Last Updated At: August/23/2021
-- Meteor Version: 2.3.5
-
-#### Native app with Cordova
-- Demo: N/A
-- Repository: [meteor/examples/cordova](./cordova)
-- Why: To show how to set up a proper Native app with Meteor and Cordova
-- Stack: Meteor and Cordova
-- Last Updated At: May/22/2020
-- Meteor Version: 1.10.3
 
 ## How to add your example?
 
