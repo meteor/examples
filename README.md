@@ -147,6 +147,14 @@
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
 
+### Parties
+- Demo: N/A
+- Repository: [meteor/examples/parties](./parties)
+- Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates.
+- Stack: Meteor, Blaze
+- Last Updated At: August/23/2021
+- Meteor Version: 2.3.5
+
 ## How to add your example?
 
 - Create a PR including it in this README
