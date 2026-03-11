@@ -83,6 +83,14 @@
 - Stack: Meteor, Rspack, Svelte
 - Meteor Version: 3.4
 
+#### Chakra UI
+- Demo: [chakraui.meteorapp.com](https://chakraui.meteorapp.com/)
+- Repository: [meteor/examples/chakra-ui](./chakra-ui)
+- Why: To show how to set up [Chakra UI](https://chakra-ui.com/) + Icons + Dark Mode with Meteor
+- Stack: Meteor, Rspack, Chakra UI, React
+- Last Updated At: Mar/11/2026
+- Meteor Version: 3.4
+
 ### To migrate - WIP
 
 #### Tic tac toe
@@ -92,14 +100,6 @@
 - Stack: Meteor and React
 - Last Updated At: Sep/06/2022
 - Meteor Version: 2.7.3
-
-#### Chakra UI
-- Demo: [chakraui.meteorapp.com](https://chakraui.meteorapp.com/)
-- Repository: [meteor/examples/chakra-ui](./chakra-ui)
-- Why: To show how to set up [Chakra UI](https://chakra-ui.com/) + Icons + Dark Mode with Meteor
-- Stack: Chakra UI, Meteor and React
-- Last Updated At: Dec/02/2023
-- Meteor Version: 3.0-alpha
 
 #### Tailwindcss
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
