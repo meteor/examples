@@ -14,8 +14,8 @@
     "@swc/helpers": "^0.5.19",
     "framer-motion": "^12.35.2",
     "meteor-node-stubs": "^1.2.27",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@meteorjs/rspack": "^1.0.1",
@@ -25,8 +25,8 @@
     "@rspack/core": "^1.7.8",
     "@rspack/plugin-react-refresh": "^1.6.1",
     "@types/meteor": "^2.9.11",
-    "@types/react": "^18.3.28",
-    "@types/react-dom": "^18.3.7",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "react-refresh": "^0.18.0"
   },
   "meteor": {
