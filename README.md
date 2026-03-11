@@ -171,6 +171,8 @@ If you see old examples that are no longer representing the current state of Met
 
 ## Join the Meteor Renaissance!
 
+Meteor 3 starts a new era for building web applications, with multiplatform support, realtime features, modern JavaScript patterns, and a simple starting point. It gives you the flexibility of Node.js together with built-in tools and ready-to-use packages, so you can stay focused on the product.
+
 We're excited about what's to come and can't wait for you to join the Meteor renaissance!
 
 For feedback, questions, or support, visit our [forums](https://forums.meteor.com/) or join our [Discord channel](https://discord.com/invite/3w7EKdpghq).
