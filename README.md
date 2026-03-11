@@ -34,6 +34,53 @@
 - Last Updated At: Feb/12/2026
 - Meteor Version: 3.4
 
+#### Welcome Meteor Cordova
+- Demo: N/A
+- Repository: [CloudByGalaxy/welcome-meteor-cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova)
+- Why: To show how to set up a Meteor app with Cordova for mobile usage
+- Stack: Meteor, Cordova
+- Meteor Version: 3.4
+
+#### React Tutorial App
+- Demo: N/A
+- Tutorial: [docs.meteor.com/tutorials/react](https://docs.meteor.com/tutorials/react/)
+- Repository: [meteor/meteor3-react (3.4-rspack)](https://github.com/meteor/meteor3-react/tree/3.4-rspack)
+- Why: To show how to build a Meteor app with React following the official tutorial
+- Stack: Meteor, Rspack, React
+- Meteor Version: 3.4
+
+#### Solid Tutorial App
+- Demo: N/A
+- Tutorial: [docs.meteor.com/tutorials/solid](https://docs.meteor.com/tutorials/solid/)
+- Repository: [meteor/meteor3-solid (3.4-rspack)](https://github.com/meteor/meteor3-solid/tree/3.4-rspack)
+- Why: To show how to build a Meteor app with Solid following the official tutorial
+- Stack: Meteor, Rspack, Solid
+- Meteor Version: 3.4
+
+#### Vue 3 Tutorial App
+- Demo: N/A
+- Tutorial: [docs.meteor.com/tutorials/vue](https://docs.meteor.com/tutorials/vue/meteorjs3-vue3.html)
+- Repository: [meteor/meteor3-vue3 (3.4-rspack)](https://github.com/meteor/meteor3-vue3/tree/3.4-rspack)
+- Why: To show how to build a Meteor app with Vue 3 following the official tutorial
+- Stack: Meteor, Rspack, Vue 3
+- Meteor Version: 3.4
+
+#### Blaze Tutorial App
+- Demo: N/A
+- Tutorial: [docs.meteor.com/tutorials/blaze](https://docs.meteor.com/tutorials/blaze/)
+- Repository: [meteor/meteor3-blaze (3.4-rspack)](https://github.com/meteor/meteor3-blaze/tree/3.4-rspack)
+- Why: To show how to build a Meteor app with Blaze following the official tutorial
+- Stack: Meteor, Rspack, Blaze
+- Meteor Version: 3.4
+
+#### Svelte Tutorial App
+- Demo: N/A
+- Tutorial: [docs.meteor.com/tutorials/svelte](https://docs.meteor.com/tutorials/svelte/)
+- Repository: [meteor/meteor3-svelte (3.4-rspack)](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack)
+- Why: To show how to build a Meteor app with Svelte following the official tutorial
+- Stack: Meteor, Rspack, Svelte
+- Meteor Version: 3.4
+
 ### To migrate - WIP
 
 #### Tic tac toe
