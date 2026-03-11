@@ -21,6 +21,8 @@
 > - [Blaze](https://github.com/meteor/meteor3-blaze/tree/3.4-rspack) ([tutorial](https://docs.meteor.com/tutorials/blaze/))
 > - [Svelte](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack) ([tutorial](https://docs.meteor.com/tutorials/svelte/))
 
+> New to Meteor? Check out the [official documentation](https://docs.meteor.com/) and the [installation guide](https://docs.meteor.com/about/install.html) to get started.
+
 ---
 
 ### Ready
@@ -166,3 +168,11 @@
 We want to list only up-to-date examples here.
 
 If you see old examples that are no longer representing the current state of Meteor or that are not working please open a PR removing it from here.
+
+## Join the Meteor Renaissance!
+
+We're excited about what's to come and can't wait for you to join the Meteor renaissance!
+
+For feedback, questions, or support, visit our [forums](https://forums.meteor.com/) or join our [Discord channel](https://discord.com/invite/3w7EKdpghq).
+
+Follow us on [Twitter](https://x.com/meteorjs) and [GitHub](https://github.com/meteor).
