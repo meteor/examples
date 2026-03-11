@@ -14,7 +14,7 @@
     "jquery": "^3.4.1",
     "meteor-node-stubs": "^1.0.0",
     "node-cache": "^5.1.2",
-    "simpl-schema": "^1.10.2",
+    "simpl-schema": "^1.13.1",
     "svelte": "^3.31.2",
     "svelte-routing": "^1.6.0"
   },
