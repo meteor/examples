@@ -150,7 +150,7 @@
 ## How to add your example?
 
 - Create a PR including it in this README
-- Make sure you are using the latest Meteor
+- Make sure you are using the latest Meteor (Meteor 3.x)
 - Required fields: Repository, Why, Stack, Last Updated At and Meteor Version.
 
 ## Housekeeping
