@@ -91,6 +91,14 @@
 - Last Updated At: Mar/11/2026
 - Meteor Version: 3.4
 
+#### NFT Marketplace
+- Demo: N/A
+- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
+- Why: To show how to integrate web3 with Meteor
+- Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Last Updated At: Mar/14/2026
+- Meteor Version: 3.4
+
 ### To migrate - WIP
 
 #### Tic tac toe
@@ -117,13 +125,6 @@
 - Last Updated At: Jul/25/2021
 - Meteor Version: 2.13.3
 
-#### NFT Marketplace
-- Demo: https://meteor-nft-marketplace.meteorapp.com (Instructions on how to use it are in the README.md of the project)
-- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
-- Why: To show how to integrate web3 with Meteor
-- Stack: Meteor, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
-- Last Updated At: June/1/2022
-- Meteor Version: 2.7.2
 
 ### Simple photo
 - Demo: https://simple-photo.meteorapp.com/
