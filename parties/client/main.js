@@ -3,6 +3,8 @@ import { Template } from 'meteor/templating';
 import { Tracker } from 'meteor/tracker';
 import { Session } from 'meteor/session';
 import $ from 'jquery';
+import * as d3 from 'd3';
+import _ from 'lodash';
 import { Parties, displayName, attending } from '../imports/model'
 
 import './main.html';
@@ -90,7 +92,7 @@ Template.attendance.helpers({
     const party = Parties.findOne(this._id);
     return Meteor.users.find({$and: [
         {_id: {$in: party.invited}}, // they're invited
-        {_id: {$nin: _.pluck(party.rsvps, 'user')}} // but haven't RSVP'd
+        {_id: {$nin: _.map(party.rsvps, 'user')}} // but haven't RSVP'd
       ]});
   },
 
@@ -164,7 +166,7 @@ Template.map.onRendered(function () {
         .data(Parties.find().fetch(), function (party) { return party._id; });
 
       updateCircles(circles.enter().append("circle"));
-      updateCircles(circles.transition().duration(250).ease("cubic-out"));
+      updateCircles(circles.transition().duration(250).ease(d3.easeCubicOut));
       circles.exit().transition().duration(250).attr("r", 0).remove();
 
       // Label each with the current attendance count
@@ -182,12 +184,12 @@ Template.map.onRendered(function () {
         .data(Parties.find().fetch(), function (party) { return party._id; });
 
       updateLabels(labels.enter().append("text"));
-      updateLabels(labels.transition().duration(250).ease("cubic-out"));
+      updateLabels(labels.transition().duration(250).ease(d3.easeCubicOut));
       labels.exit().remove();
 
       // Draw a dashed circle around the currently selected party, if any
       const callout = d3.select(self.node).select("circle.callout")
-        .transition().duration(250).ease("cubic-out");
+        .transition().duration(250).ease(d3.easeCubicOut);
       if (selectedParty)
         callout.attr("cx", selectedParty.x * 500)
           .attr("cy", selectedParty.y * 500)
@@ -227,17 +229,19 @@ Template.createDialog.events({
     const coords = Session.get("createCoords");
 
     if (title.length && description.length) {
-      const id = Meteor.call('createParty', {
+      Meteor.call('createParty', {
         title: title,
         description: description,
         x: coords.x,
         y: coords.y,
         public: isPublic
+      }, function (error, id) {
+        if (id) {
+          Session.set("selected", id);
+          if (! isPublic && Meteor.users.find().count() > 1)
+            openInviteDialog();
+        }
       });
-
-      Session.set("selected", id);
-      if (! isPublic && Meteor.users.find().count() > 1)
-        openInviteDialog();
       Session.set("showCreateDialog", false);
     } else {
       Session.set("createError",

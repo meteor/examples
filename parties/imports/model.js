@@ -58,7 +58,7 @@ const Coordinate = Match.Where(function (x) {
 
 Meteor.methods({
   // options should include: title, description, x, y, public
-  createParty: function (options) {
+  createParty: async function (options) {
     check(options, {
       title: NonEmptyString,
       description: NonEmptyString,
@@ -74,7 +74,7 @@ Meteor.methods({
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
-    return Parties.insert({
+    const doc = {
       owner: this.userId,
       x: options.x,
       y: options.y,
@@ -83,47 +83,65 @@ Meteor.methods({
       public: !! options.public,
       invited: [],
       rsvps: []
-    });
+    };
+
+    if (Meteor.isServer) {
+      return await Parties.insertAsync(doc);
+    } else {
+      return Parties.insert(doc);
+    }
   },
 
-  invite: function (partyId, userId) {
+  invite: async function (partyId, userId) {
     check(partyId, String);
     check(userId, String);
-    const party = Parties.findOne(partyId);
+
+    const party = Meteor.isServer
+      ? await Parties.findOneAsync(partyId)
+      : Parties.findOne(partyId);
+
     if (! party || party.owner !== this.userId)
       throw new Meteor.Error(404, "No such party");
     if (party.public)
       throw new Meteor.Error(400,
                              "That party is public. No need to invite people.");
-    if (userId !== party.owner && ! _.contains(party.invited, userId)) {
-      Parties.update(partyId, { $addToSet: { invited: userId } });
+    if (userId !== party.owner && ! _.includes(party.invited, userId)) {
+      if (Meteor.isServer) {
+        await Parties.updateAsync(partyId, { $addToSet: { invited: userId } });
 
-      const from = contactEmail(Meteor.users.findOne(this.userId));
-      const to = contactEmail(Meteor.users.findOne(userId));
-      if (Meteor.isServer && to) {
-        // This code only runs on the server. If you didn't want clients
-        // to be able to see it, you could move it to a separate file.
-        Email.send({
-          from: "noreply@example.com",
-          to: to,
-          replyTo: from || undefined,
-          subject: "PARTY: " + party.title,
-          text:
+        const fromUser = await Meteor.users.findOneAsync(this.userId);
+        const toUser = await Meteor.users.findOneAsync(userId);
+        const from = contactEmail(fromUser);
+        const to = contactEmail(toUser);
+        if (to) {
+          Email.send({
+            from: "noreply@example.com",
+            to: to,
+            replyTo: from || undefined,
+            subject: "PARTY: " + party.title,
+            text:
 "Hey, I just invited you to '" + party.title + "' on All Tomorrow's Parties." +
 "\n\nCome check it out: " + Meteor.absoluteUrl() + "\n"
-        });
+          });
+        }
+      } else {
+        Parties.update(partyId, { $addToSet: { invited: userId } });
       }
     }
   },
 
-  rsvp: function (partyId, rsvp) {
+  rsvp: async function (partyId, rsvp) {
     check(partyId, String);
     check(rsvp, String);
     if (! this.userId)
       throw new Meteor.Error(403, "You must be logged in to RSVP");
     if (!['yes', 'no', 'maybe'].includes(rsvp))
       throw new Meteor.Error(400, "Invalid RSVP");
-    const party = Parties.findOne(partyId);
+
+    const party = Meteor.isServer
+      ? await Parties.findOneAsync(partyId)
+      : Parties.findOne(partyId);
+
     if (! party)
       throw new Meteor.Error(404, "No such party");
     if (! party.public && party.owner !== this.userId &&
@@ -134,10 +152,8 @@ Meteor.methods({
     const rsvpIndex = party.rsvps.map(rsvps => rsvps.user).indexOf(this.userId);
     if (rsvpIndex !== -1) {
       // update existing rsvp entry
-
       if (Meteor.isServer) {
-        // update the appropriate rsvp entry with $
-        Parties.update(
+        await Parties.updateAsync(
           {_id: partyId, "rsvps.user": this.userId},
           {$set: {"rsvps.$.rsvp": rsvp}});
       } else {
@@ -148,13 +164,15 @@ Meteor.methods({
         modifier.$set["rsvps." + rsvpIndex + ".rsvp"] = rsvp;
         Parties.update(partyId, modifier);
       }
-
-      // Possible improvement: send email to the other people that are
-      // coming to the party.
     } else {
       // add new rsvp entry
-      Parties.update(partyId,
-                     {$push: {rsvps: {user: this.userId, rsvp: rsvp}}});
+      if (Meteor.isServer) {
+        await Parties.updateAsync(partyId,
+                       {$push: {rsvps: {user: this.userId, rsvp: rsvp}}});
+      } else {
+        Parties.update(partyId,
+                       {$push: {rsvps: {user: this.userId, rsvp: rsvp}}});
+      }
     }
   }
 });
