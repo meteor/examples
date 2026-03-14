@@ -39,7 +39,8 @@
       "client": "client/main.jsx",
       "server": "server/main.js"
     },
-    "testModule": "tests/main.js"
+    "testModule": "tests/main.js",
+    "modern": true
   },
   "devDependencies": {
     "@meteorjs/rspack": "^1.0.0",
