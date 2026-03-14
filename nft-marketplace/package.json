@@ -47,6 +47,7 @@
     "@rspack/cli": "^1.7.1",
     "@rspack/core": "^1.7.1",
     "@rspack/plugin-react-refresh": "^1.4.3",
+    "postcss-loader": "^8.2.1",
     "react-refresh": "^0.17.0"
   }
 }
