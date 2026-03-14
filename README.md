@@ -83,6 +83,22 @@
 - Stack: Meteor, Rspack, Svelte
 - Meteor Version: 3.4
 
+#### Chakra UI
+- Demo: [chakraui.meteorapp.com](https://chakraui.meteorapp.com/)
+- Repository: [meteor/examples/chakra-ui](./chakra-ui)
+- Why: To show how to set up [Chakra UI](https://chakra-ui.com/) + Icons + Dark Mode with Meteor
+- Stack: Meteor, Rspack, Chakra UI, React
+- Last Updated At: Mar/11/2026
+- Meteor Version: 3.4
+
+#### NFT Marketplace
+- Demo: N/A
+- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
+- Why: To show how to integrate web3 with Meteor
+- Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Last Updated At: Mar/14/2026
+- Meteor Version: 3.4
+
 ### To migrate - WIP
 
 #### Tic tac toe
@@ -92,14 +108,6 @@
 - Stack: Meteor and React
 - Last Updated At: Sep/06/2022
 - Meteor Version: 2.7.3
-
-#### Chakra UI
-- Demo: [chakraui.meteorapp.com](https://chakraui.meteorapp.com/)
-- Repository: [meteor/examples/chakra-ui](./chakra-ui)
-- Why: To show how to set up [Chakra UI](https://chakra-ui.com/) + Icons + Dark Mode with Meteor
-- Stack: Chakra UI, Meteor and React
-- Last Updated At: Dec/02/2023
-- Meteor Version: 3.0-alpha
 
 #### Tailwindcss
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
@@ -117,13 +125,6 @@
 - Last Updated At: Jul/25/2021
 - Meteor Version: 2.13.3
 
-#### NFT Marketplace
-- Demo: https://meteor-nft-marketplace.meteorapp.com (Instructions on how to use it are in the README.md of the project)
-- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
-- Why: To show how to integrate web3 with Meteor
-- Stack: Meteor, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
-- Last Updated At: June/1/2022
-- Meteor Version: 2.7.2
 
 ### Simple photo
 - Demo: https://simple-photo.meteorapp.com/

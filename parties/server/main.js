@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Parties } from '../imports/model';
 
-Meteor.publish("directory", () => {
+Meteor.publish("directory", function () {
   return Meteor.users.find({}, {fields: {emails: 1, profile: 1}});
 });
 
-Meteor.publish("parties", () => {
+Meteor.publish("parties", function () {
   return Parties.find(
     {$or: [{"public": true}, {invited: this.userId}, {owner: this.userId}]});
 });

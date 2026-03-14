@@ -39,10 +39,10 @@ export function HeroCallToAction() {
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
             lineHeight="110%">
             <Text as="span" color="blue.600">
-              Meteor 3.0 {' '}
+              Meteor 3.4 {' '}
             </Text> + {' '}
             <Text as="span" color="green.400">
-              Node 20 {' '}
+              Rspack {' '}
             </Text>
             + Chakra UI
           </Heading>
