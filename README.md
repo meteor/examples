@@ -27,14 +27,6 @@
 
 ### Ready
 
-#### Complex Todos (Svelte)
-- Demo: N/A
-- Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
-- Why: A comprehensive task management app showcasing a scalable project structure with services, repositories, caching, rate limiting, migrations, and job scheduling
-- Stack: Meteor, Rspack, Svelte, jam:method, Zod, MongoDB
-- Last Updated At: Mar/16/2026
-- Meteor Version: 3.4
-
 #### Simple Tasks
 
 - Demo: [simpletasks2.meteorapp.com/](https://simpletasks2.meteorapp.com)
@@ -99,14 +91,6 @@
 - Last Updated At: Mar/11/2026
 - Meteor Version: 3.4
 
-#### NFT Marketplace
-- Demo: N/A
-- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
-- Why: To show how to integrate web3 with Meteor
-- Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
-- Last Updated At: Mar/14/2026
-- Meteor Version: 3.4
-
 #### Tic-Tac-Toe
 - Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
@@ -121,6 +105,22 @@
 - Why: To show how to set up [Tailwind CSS](https://tailwindcss.com/) with Meteor
 - Stack: Meteor, Rspack, React, Tailwind CSS
 - Last Updated At: Mar/16/2026
+- Meteor Version: 3.4
+
+#### Complex Todos (Svelte)
+- Demo: N/A
+- Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
+- Why: A comprehensive task management app showcasing a scalable project structure with services, repositories, caching, rate limiting, migrations, and job scheduling
+- Stack: Meteor, Rspack, Svelte, jam:method, Zod, MongoDB
+- Last Updated At: Mar/16/2026
+- Meteor Version: 3.4
+
+#### NFT Marketplace
+- Demo: N/A
+- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
+- Why: To show how to integrate web3 with Meteor
+- Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Last Updated At: Mar/14/2026
 - Meteor Version: 3.4
 
 ### To migrate - WIP
