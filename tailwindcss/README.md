@@ -1,44 +1,92 @@
-# tailwind Meteor example
+# Tailwind CSS Meteor Example
 
-## Tailwind setup
+A Meteor 3.4 example app using Tailwind CSS with Rspack as the bundler.
+
+## Tailwind Setup
 
 The setup is already done in this project, but if you want to do it in another project you can follow the steps below.
 
-They are very similar to the recommendation in the [installation page](https://tailwindcss.com/docs/installation) of Tailwind.
+They are very similar to the recommendation in the [official Rspack + Tailwind guide](https://tailwindcss.com/docs/installation/framework-guides/rspack/react).
+
+> You can also use `meteor create --tailwind` to start with a preconfigured Rspack Tailwind app.
 
 ### 1 - Install npm dependencies
+
 ```bash
-meteor npm install tailwindcss@latest postcss@latest postcss-load-config@latest autoprefixer@latest
+meteor npm install tailwindcss postcss autoprefixer postcss-loader
 ```
+
 See [package.json](package.json) as example.
 
-### 2 - Install Meteor package for postcss
-
-And remove the standard minifier.
+### 2 - Add the Rspack package
 
 ```bash
-meteor remove standard-minifier-css
-meteor add juliancwirko:postcss
+meteor add rspack
 ```
 
-See [packages](.meteor/packages) as example.
+On first run, the package installs the required Rspack dependencies automatically.
 
-### 3 - Configure postcss
+See [.meteor/packages](.meteor/packages) as example.
 
-See [.postcssrc.js](.postcssrc.js) as example.
+### 3 - Configure PostCSS
 
-### 4 - Include Tailwind in your CSS
+See [postcss.config.js](postcss.config.js) as example.
+
+### 4 - Configure Tailwind
+
+See [tailwind.config.js](tailwind.config.js) as example.
+
+### 5 - Include Tailwind in your CSS
 
 ```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 ```
+
 See [main.css](client/main.css) as example.
 
-### 5 - Configure Tailwind
+Import the CSS file from your client entry point:
 
-See [tailwind.config.js](tailwind.config.js) as example.
+```js
+import './main.css';
+```
+
+See [client/main.jsx](client/main.jsx) as example.
+
+### 6 - Configure Rspack to use PostCSS
+
+Enable the PostCSS loader in your `rspack.config.js` so Rspack processes Tailwind directives:
+
+```js
+const { defineConfig } = require('@meteorjs/rspack');
+
+module.exports = defineConfig(Meteor => {
+  return {
+    module: {
+      rules: [
+        Meteor.isClient && {
+          test: /\.css$/,
+          use: ['postcss-loader'],
+          type: 'css/auto',
+        },
+      ].filter(Boolean),
+    },
+  };
+});
+```
+
+See [rspack.config.js](rspack.config.js) as example.
+
+### 7 - Add a `.meteorignore` file
+
+Prevent Meteor from processing the CSS file directly (let Rspack handle it instead):
+
+```
+client/main.css
+```
+
+See [.meteorignore](.meteorignore) as example.
 
 ## Running the example
 
