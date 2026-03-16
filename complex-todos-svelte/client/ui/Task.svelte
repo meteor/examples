@@ -1,12 +1,12 @@
 <script>
-  import {useTracker} from 'meteor/rdb:svelte-meteor-data';
   import {tasksRemove, tasksUpdateAsChecked, tasksUpdateAsPrivate} from '../../imports/modules/tasks/tasks.methods.js';
 
   export let key;
   export let task;
+  let currentUser;
   let showButton = false;
 
-  $: currentUser = useTracker(() => Meteor.user());
+  $m: currentUser = Meteor.user();
 
   $: {
     if($currentUser) {
