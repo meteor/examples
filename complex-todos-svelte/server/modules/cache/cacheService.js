@@ -25,7 +25,7 @@ class CacheService
       log.fatal('MemcacheServerService can not be called from client side');
     }
     
-    const NodeCache = Npm.require('node-cache');
+    const NodeCache = require('node-cache');
     
     this.cache = new NodeCache({stdTTL: 0, checkperiod: CACHE_CONFIG.PERIOD});
     this.handles = new Map();
@@ -147,7 +147,7 @@ class CacheService
           }
           catch(e)
           {
-            log.error(__fn, `Exception setting cached value ${name}: ${e.toString()}`);
+            log.error('CacheService', `Exception setting cached value ${name}: ${e.toString()}`);
           }
         },
         updateInterval);

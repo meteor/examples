@@ -1,5 +1,4 @@
 import {log} from '../../../imports/shared/logger/logger.js';
-import {_} from 'meteor/underscore';
 import {migrationRepository} from './migrationRepository.js';
 import {EJSON} from 'meteor/ejson';
 
@@ -25,16 +24,16 @@ class MigrationService
    * @locus server
    * @returns {number}
    */
-  lastExecutedMigration()
+  async lastExecutedMigration()
   {
     let lastMigratedTo = 0;
-    let migrations = migrationRepository.findOne();
-    
+    let migrations = await migrationRepository.findOne();
+
     if(migrations)
     {
       lastMigratedTo = this._parseVersion(migrations.version);
     }
-    
+
     return lastMigratedTo;
   }
   
@@ -63,7 +62,7 @@ class MigrationService
     }
     catch(e)
     {
-      log.error(__fn, `An error occurred while parsing version ${EJSON.stringify(versionStr)}`);
+      log.error('MigrationService._parseVersion', `An error occurred while parsing version ${EJSON.stringify(versionStr)}`);
       throw e;
     }
   };
@@ -73,13 +72,13 @@ class MigrationService
    * @locus server
    * @param version {string}
    */
-  saveLastExecutedMigration(version)
+  async saveLastExecutedMigration(version)
   {
-    let migrations = migrationRepository.findOne();
-    
+    let migrations = await migrationRepository.findOne();
+
     if(migrations)
     {
-      migrationRepository.update({_id: migrations._id}, {
+      await migrationRepository.update({_id: migrations._id}, {
         $set: {
           version: version
         }
@@ -87,7 +86,7 @@ class MigrationService
     }
     else
     {
-      migrationRepository.insert({version: version});
+      await migrationRepository.insert({version: version});
     }
   }
   
@@ -117,59 +116,57 @@ class MigrationService
    * Executes provided migrations
    * @locus server
    */
-  run()
+  async run()
   {
-    let self = this;
-    
     if(this.migrationsExecuted)
     {
-      log.warn(__fn, 'Migrations already executed');
+      log.warn('MigrationService.run', 'Migrations already executed');
       return;
     }
-    
+
     //
     // Sort migrations using version number
     //
-    let sortedArray = _.sortBy(this.migrations, (m) =>
+    let sortedArray = [...this.migrations].sort((a, b) =>
     {
-      return this._parseVersion(m.version);
+      return this._parseVersion(a.version) - this._parseVersion(b.version);
     });
-    
-    sortedArray.forEach(function runMigration(migration)
+
+    for(const migration of sortedArray)
     {
-      let lastMigratedTo = self.lastExecutedMigration();
-      
-      let migrationVersion = self._parseVersion(migration.version);
-      
+      let lastMigratedTo = await this.lastExecutedMigration();
+
+      let migrationVersion = this._parseVersion(migration.version);
+
       if(migrationVersion <= lastMigratedTo)
       {
-        return; // No need to run this migration
+        continue; // No need to run this migration
       }
-      
+
       //
       // Provided version is newer. Let's execute it...
       //
       try
       {
-        log.info(__fn, `Migrating version to ${migration.version}`);
-  
+        log.info('MigrationService.run', `Migrating version to ${migration.version}`);
+
         let dateBeforeMigration = new Date();
-        
-        migration.upFunction();
-  
+
+        await migration.upFunction();
+
         let dateAfterMigration = new Date();
         let timeDiff = dateAfterMigration.getTime() - dateBeforeMigration.getTime();
-  
+
         log.info(migration.version, `Migrating version ${migration.version} completed in ${timeDiff} ms`);
-        
-        migrationService.saveLastExecutedMigration(migration.version);
+
+        await migrationService.saveLastExecutedMigration(migration.version);
       }
       catch(e)
       {
-        log.error(__fn, e.toString());
+        log.error('MigrationService.run', e.toString());
       }
-    });
-    
+    }
+
     migrationService.finish(); // Mark as true so we don't try to execute it again!
   }
 }

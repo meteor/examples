@@ -13,17 +13,17 @@ Meteor.methods({
    * @development
    * @locus server
    */
-  'clear.database'()
+  async 'clear.database'()
   {
-    dummiesService.clearDatabase();
+    await dummiesService.clearDatabase();
   },
   /**
    * Inserts dummy data to mimic real world examples before tests
    * @development
    * @locus server
    */
-  'insert.dummy.data'()
+  async 'insert.dummy.data'()
   {
-    dummiesService.insertDummyData();
+    await dummiesService.insertDummyData();
   }
 });

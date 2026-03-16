@@ -1,6 +1,7 @@
 import {log} from '../imports/shared/logger/logger.js';
-import {Jobs} from 'meteor/msavin:sjobs';
-import {JOB} from './shared/enums/job.js';
+import {runTasksExpire} from './modules/jobs/server/tasks.expire.js';
+
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
  * Initialize server at startup
@@ -14,21 +15,20 @@ class ServerInit
   constructor()
   {
     log.info('Server is starting');
-    
+
     this.initializeJobs();
   }
-  
+
   /**
-   * Run added jobs
+   * Run scheduled jobs using setInterval
    */
   initializeJobs()
   {
-    Jobs.run(JOB.TASKS.EXPIRE, {
-        in: {
-          days: 7
-        }
-      }
-    );
+    // Run task expiration every 7 days
+    Meteor.setInterval(() =>
+    {
+      runTasksExpire();
+    }, SEVEN_DAYS_MS);
   }
 }
 

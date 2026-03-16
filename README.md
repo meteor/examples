@@ -27,6 +27,14 @@
 
 ### Ready
 
+#### Complex Todos (Svelte)
+- Demo: N/A
+- Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
+- Why: A comprehensive task management app showcasing a scalable project structure with services, repositories, caching, rate limiting, migrations, and job scheduling
+- Stack: Meteor, Rspack, Svelte, jam:method, Zod, MongoDB
+- Last Updated At: Mar/16/2026
+- Meteor Version: 3.4
+
 #### Simple Tasks
 
 - Demo: [simpletasks2.meteorapp.com/](https://simpletasks2.meteorapp.com)

@@ -10,7 +10,7 @@ class UserCache
    * @param userId {string}
    * @returns {object|null}
    */
-  get(userId)
+  async get(userId)
   {
     if(memcache.hasKey(`${CACHE_KEY.USER}.${userId}`))
     {
@@ -18,13 +18,13 @@ class UserCache
     }
     else
     {
-      let userFromDB = Meteor.users.findOne(userId);
-      
+      let userFromDB = await Meteor.users.findOneAsync(userId);
+
       if(userFromDB !== null)
       {
         memcache.setValue(`${CACHE_KEY.USER}.${userId}`, userFromDB);
       }
-      
+
       return userFromDB;
     }
   }

@@ -2,7 +2,7 @@ import {log} from '../../../imports/shared/logger/logger.js';
 import {DUMMY_USERS} from './fixtures/dummyUsers.js';
 import {DUMMY_TASKS} from './fixtures/dummyTasks.js';
 import {taskRepository} from '../../../imports/modules/tasks/taskRepository.js';
-import {Mongo} from 'meteor/mongo';
+import {Tasks} from '../../../imports/modules/tasks/database/tasks.js';
 
 /**
  * This service adds dummy data to test all features including franchise and admin actions
@@ -23,78 +23,68 @@ class DummiesService
     {
       return true;
     }
-    
+
     this.tasks = DUMMY_TASKS;
     this.users = DUMMY_USERS;
   }
-  
+
   /**
    * Clears all database
    * @development
    * @locus server
    */
-  clearDatabase()
+  async clearDatabase()
   {
-    log.debug(__fn);
-    
-    const collections = Mongo.Collection.getAll();
-    
-    // Add special collections here to prevent restart to start the tests
-    const restrictedCollections = ['roles', 'migrations', 'jobs_data', 'jobs_dominator_3'];
-    
-    collections.forEach(collection =>
-    {
-      if(!restrictedCollections.includes(collection))
-      {
-        collection.instance.remove({});
-      }
-    });
+    log.debug('DummiesService.clearDatabase');
+
+    // Clear known application collections
+    await Tasks.removeAsync({});
+    await Meteor.users.removeAsync({});
   }
-  
+
   /**
    * Inserts dummy data
    * @development
    * @locus server
-   * @returns {boolean}
    */
-  insertDummyData()
+  async insertDummyData()
   {
-    log.debug(__fn);
-    
-    this._insertTasks();
-    this._insertUsers();
+    log.debug('DummiesService.insertDummyData');
+
+    await this._insertTasks();
+    await this._insertUsers();
   }
-  
+
   /**
    * @development
    * @locus server
    * @private
    */
-  _insertTasks()
+  async _insertTasks()
   {
-    log.debug(__fn);
-    
+    log.debug('DummiesService._insertTasks');
+
     this.tasks.forEach(task =>
     {
       taskRepository.insertBulk(task);
     });
-    
-    taskRepository.executeBulk();
+
+    await taskRepository.executeBulk();
   }
-  
+
   /**
    * @development
    * @locus server
    * @private
    */
-  _insertUsers()
+  async _insertUsers()
   {
-    log.debug(__fn);
-    
-    this.users.forEach(user =>
+    log.debug('DummiesService._insertUsers');
+
+    for(const user of this.users)
     {
-      Meteor.users.insert(user);
-    });
+      await Meteor.users.insertAsync(user);
+    }
   }
 }
 

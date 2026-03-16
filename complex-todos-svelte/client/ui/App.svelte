@@ -1,43 +1,56 @@
 <script>
-  import {Link, Route, Router} from 'svelte-routing';
-  import {BlazeTemplate} from 'meteor/svelte:blaze-integration';
+  import LoginButtons from './LoginButtons.svelte';
   import Tasks from './Tasks.svelte';
   import About from './About.svelte';
-  
-  export let url = '';
 
-  // Tasks svelte is the homepage of the application. Thus set "/tasks" on "/" load
-  if(window.location.pathname === '/')
+  let currentPage = $state('tasks');
+
+  function navigate(page)
   {
-    url = '/tasks';
+    currentPage = page;
+    window.history.pushState({page}, '', `/${page}`);
   }
+
+  // Set initial page from URL
+  const path = window.location.pathname.replace('/', '') || 'tasks';
+  currentPage = ['tasks', 'about'].includes(path) ? path : 'tasks';
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', (event) =>
+  {
+    if(event.state && event.state.page)
+    {
+      currentPage = event.state.page;
+    }
+  });
 </script>
 
-<Router url="{url}">
-  <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <Link to="tasks" class="navbar-brand">Meteor.js & Svelte Example</Link>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <Link to="tasks" class="nav-link">Tasks</Link>
-            </li>
-            <li class="nav-item">
-              <Link to="about" class="nav-link">About</Link>
-            </li>
-            <li class="nav-item nav-login">
-              <BlazeTemplate template="loginButtons"/>
-            </li>
-          </ul>
-        </div>
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a href="/tasks" class="navbar-brand" onclick={(e) => { e.preventDefault(); navigate('tasks'); }}>Meteor.js & Svelte Example</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a href="/tasks" class="nav-link" class:active={currentPage === 'tasks'} onclick={(e) => { e.preventDefault(); navigate('tasks'); }}>Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a href="/about" class="nav-link" class:active={currentPage === 'about'} onclick={(e) => { e.preventDefault(); navigate('about'); }}>About</a>
+          </li>
+          <li class="nav-item nav-login">
+            <LoginButtons/>
+          </li>
+        </ul>
       </div>
-    </nav>
-    
-    <Route path="tasks" component="{Tasks}"/>
-    <Route path="about" component="{About}"/>
-  </div>
-</Router>
+    </div>
+  </nav>
+
+  {#if currentPage === 'tasks'}
+    <Tasks/>
+  {:else if currentPage === 'about'}
+    <About/>
+  {/if}
+</div>

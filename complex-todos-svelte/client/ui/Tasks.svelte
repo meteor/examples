@@ -1,26 +1,25 @@
 <script>
   import {Meteor} from 'meteor/meteor';
-  import {useTracker} from 'meteor/rdb:svelte-meteor-data';
+  import {useTracker} from '../lib/useTracker.js';
   import Task from './Task.svelte';
   import {taskRepository} from '../../imports/modules/tasks/taskRepository.js';
   import TaskAddNewForm from './TaskAddNewForm.svelte';
   import {TASKS_PUBLICATION} from '../../imports/modules/tasks/enums/publications.js';
-  
+
   let hideCompleted = false;
+
+  Meteor.subscribe(TASKS_PUBLICATION.TASKS);
+
+  const incompleteCount = useTracker(() => taskRepository.find({checked: {$ne: true}}).count());
+
+  const currentUser = useTracker(() => Meteor.user());
+
+  const allTasks = useTracker(() => taskRepository.find({}, {sort: {createdAt: -1}}).fetch());
+
   let tasks;
-  let currentUser;
-  
-  $: Meteor.subscribe(TASKS_PUBLICATION.TASKS);
-  
-  $: incompleteCount = useTracker(() => taskRepository.find({checked: {$ne: true}}).count());
-  
-  $: currentUser = useTracker(() => Meteor.user());
-  
-  const taskStore = taskRepository.find({}, {sort: {createdAt: -1}});
-  
   $: {
-    tasks = $taskStore;
-  
+    tasks = $allTasks;
+
     if(hideCompleted)
     {
       tasks = tasks.filter(task => !task.checked);
@@ -60,9 +59,8 @@
         </tr>
         </thead>
         <tbody>
-        {#each tasks as task}
+        {#each tasks as task (task._id)}
           <Task
-            key={task._id}
             task={task}
           />
         {/each}
