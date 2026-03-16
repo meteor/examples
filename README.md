@@ -99,25 +99,25 @@
 - Last Updated At: Mar/14/2026
 - Meteor Version: 3.4
 
-### To migrate - WIP
-
-#### Tic tac toe
+#### Tic-Tac-Toe
 - Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
-- Why: To show that we can even build multiplayer games with meteor.
-- Stack: Meteor and React
-- Last Updated At: Sep/06/2022
-- Meteor Version: 2.7.3
+- Why: To show that we can even build multiplayer games with Meteor
+- Stack: Meteor, Rspack, React
+- Last Updated At: Mar/16/2026
+- Meteor Version: 3.4
 
-#### Tailwindcss
+#### Tailwind CSS
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
 - Repository: [meteor/examples/tailwindcss](./tailwindcss)
-- Why: To show how to set up [tailwindcss](https://tailwindcss.com/) with Meteor
-- Stack: Tailwindcss, Meteor and React
-- Last Updated At: Nov/10/2022
-- Meteor Version: 2.8
+- Why: To show how to set up [Tailwind CSS](https://tailwindcss.com/) with Meteor
+- Stack: Meteor, Rspack, React, Tailwind CSS
+- Last Updated At: Mar/16/2026
+- Meteor Version: 3.4
 
-### Leaderboards
+### To migrate - WIP
+
+#### Leaderboards
 - Demo: N/A
 - Repository [meteor/leaderboards](https://github.com/meteor/leaderboard/)
 - Why: Complete example of a small Blaze app with only client code that can update the DB.
@@ -126,7 +126,7 @@
 - Meteor Version: 2.13.3
 
 
-### Simple photo
+#### Simple photo
 - Demo: https://simple-photo.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-photo)
 - Why: A simple example of `mdg:camera` package that allows you to take pictures from your web/phone camera.
@@ -134,7 +134,7 @@
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
 
-### Simple map
+#### Simple map
 - Demo: https://simple-map.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-map)
 - Why: A simple example of using the `mdg:geolocation` package to get current geolocation and show them on maps.
@@ -142,7 +142,7 @@
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
 
-### Solomo
+#### Solomo
 - Demo: https://solomo.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/solomo)
 - Why: A simple example of using the `mdg:geolocation` and `mdg:camera` packages place images on a map.
@@ -150,7 +150,7 @@
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
 
-### Parties
+#### Parties
 - Demo: N/A
 - Repository: [meteor/examples/parties](./parties)
 - Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates.
