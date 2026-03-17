@@ -103,8 +103,8 @@
 - Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with Meteor
-- Stack: Meteor, Rspack, React
-- Last Updated At: Mar/16/2026
+- Stack: Meteor, Rspack, React, MUI (Material UI)
+- Last Updated At: Mar/17/2026
 - Meteor Version: 3.4
 
 #### Tailwind CSS

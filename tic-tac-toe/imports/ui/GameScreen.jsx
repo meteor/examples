@@ -1,77 +1,182 @@
-import "./game.css";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useTracker, useFind } from "meteor/react-meteor-data";
 import { RoomCollection } from "../api/rooms";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
+import CircularProgress from "@mui/material/CircularProgress";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Zoom from "@mui/material/Zoom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CloseIcon from "@mui/icons-material/Close";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
-const Slot = ({ id, room: { gameState, _id } }) => {
-  const location = useLocation();
-  const { color } = location.state;
-  return (
-    <div
-      className="slot"
-      onClick={async () => {
-        try {
-          await Meteor.callAsync("makePlay", {
-            roomId: _id,
-            playState: { play: id - 1, color },
-          });
-        } catch (e) {
-          if (e.error === "invalid-play") {
-            alert(
-              "This move is invalid. You might need to wait for your turn!"
-            );
-          } else {
-            alert(e.message);
-          }
-        }
-      }}
-    >
-      {gameState[id - 1] === "cross" ? <img src={"/cross.png"} /> : ""}
-      {gameState[id - 1] === "circle" ? <img src={"/circle.png"} /> : ""}
-    </div>
-  );
-};
+const CROSS_COLOR = "#1e88e5";
+const CIRCLE_COLOR = "#e53935";
+
+const Slot = ({ index, value, onPlay }) => (
+  <Paper
+    elevation={2}
+    onClick={onPlay}
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      cursor: value === "empty" ? "pointer" : "default",
+      transition: "background-color 0.2s",
+      "&:hover": value === "empty" ? { bgcolor: "action.hover" } : {},
+    }}
+  >
+    {value === "cross" && (
+      <Zoom in>
+        <CloseIcon sx={{ fontSize: 64, color: CROSS_COLOR }} />
+      </Zoom>
+    )}
+    {value === "circle" && (
+      <Zoom in>
+        <RadioButtonUncheckedIcon sx={{ fontSize: 64, color: CIRCLE_COLOR }} />
+      </Zoom>
+    )}
+  </Paper>
+);
 
 export const GameScreen = () => {
   const { id } = useParams();
   const location = useLocation();
   const history = useHistory();
   const { color } = location.state;
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" });
+
   const roomLoading = useTracker(() => {
-    // Note that this subscription will get cleaned up
-    // when your component is unmounted or deps change.
     const handle = Meteor.subscribe("room", { _id: id });
     return !handle.ready();
   }, [id]);
   const [room] = useFind(() => RoomCollection.find({ _id: id }), [id]);
 
-  useEffect(() => {
-    if (room && room.winner) {
-      alert(room.winner === color ? "You Won!" : "You Lost!!");
-      history.push("/");
-    }
-  }, [room]);
+  if (roomLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  if (roomLoading) return "Loading...";
+  const isMyTurn = room.colorTurn === color;
+  const gameOver = !!room.winner;
+  const won = room.winner === color;
+
+  const handlePlay = async (index) => {
+    if (gameOver) return;
+    try {
+      await Meteor.callAsync("makePlay", {
+        roomId: room._id,
+        playState: { play: index, color },
+      });
+    } catch (e) {
+      const message =
+        e.error === "invalid-play"
+          ? "Invalid move. You might need to wait for your turn!"
+          : e.message;
+      setSnackbar({ open: true, message });
+    }
+  };
 
   return (
-    <div className="game">
-      <div className="line">
-        <Slot id={1} room={room} />
-        <Slot id={2} room={room} />
-        <Slot id={3} room={room} />
-      </div>
-      <div className="line">
-        <Slot id={4} room={room} />
-        <Slot id={5} room={room} />
-        <Slot id={6} room={room} />
-      </div>
-      <div className="line">
-        <Slot id={7} room={room} />
-        <Slot id={8} room={room} />
-        <Slot id={9} room={room} />
-      </div>
-    </div>
+    <>
+      <Button
+        startIcon={<ArrowBackIcon />}
+        onClick={() => history.push("/")}
+        sx={{ mb: 2 }}
+      >
+        Back to Rooms
+      </Button>
+
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3, flexWrap: "wrap" }}>
+        <Chip
+          icon={color === "cross" ? <CloseIcon /> : <RadioButtonUncheckedIcon />}
+          label={`You are ${color === "cross" ? "X" : "O"}`}
+          variant="outlined"
+          sx={{
+            borderColor: color === "cross" ? CROSS_COLOR : CIRCLE_COLOR,
+            color: color === "cross" ? CROSS_COLOR : CIRCLE_COLOR,
+          }}
+        />
+        {!gameOver && (
+          <Chip
+            label={isMyTurn ? "Your turn" : "Opponent's turn"}
+            color={isMyTurn ? "success" : "default"}
+            size="small"
+          />
+        )}
+      </Box>
+
+      {room.capacity === 1 && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Waiting for another player to join. Share this room or open a new
+          browser tab and join from the room list.
+        </Alert>
+      )}
+
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 1,
+            width: 360,
+            height: 360,
+            maxWidth: "100%",
+            aspectRatio: "1",
+          }}
+        >
+          {room.gameState.map((value, index) => (
+            <Slot
+              key={index}
+              index={index}
+              value={value}
+              onPlay={() => handlePlay(index)}
+            />
+          ))}
+        </Box>
+      </Box>
+
+      <Dialog open={gameOver} maxWidth="xs" fullWidth>
+        <DialogTitle>Game Over!</DialogTitle>
+        <DialogContent>
+          <Typography
+            variant="h5"
+            sx={{ color: won ? "success.main" : "text.secondary", mt: 1 }}
+          >
+            {won ? "You Won!" : "You Lost!"}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => history.push("/")} variant="contained">
+            Back to Rooms
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ open: false, message: "" })}
+      >
+        <Alert
+          severity="error"
+          onClose={() => setSnackbar({ open: false, message: "" })}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
