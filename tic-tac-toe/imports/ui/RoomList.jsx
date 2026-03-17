@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSubscribe, useFind } from "meteor/react-meteor-data";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { RoomCollection } from "../api/rooms";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -26,7 +26,7 @@ const getRoomStatus = (capacity, winner) => {
 };
 
 export const RoomList = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const listLoading = useSubscribe("rooms");
   const rooms = useFind(() => RoomCollection.find({}, { sort: { createdAt: -1 } }), []);
   const [error, setError] = useState(null);
@@ -93,7 +93,7 @@ export const RoomList = () => {
                   onClick={() => {
                     Meteor.callAsync("joinRoom", { roomId: _id })
                       .then(({ room, color }) => {
-                        history.push(`/game/${room._id}`, { color });
+                        navigate(`/game/${room._id}`, { state: { color } });
                       })
                       .catch((err) => {
                         setError(err.reason || err.message);

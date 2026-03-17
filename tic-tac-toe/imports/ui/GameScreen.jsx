@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useTracker, useFind } from "meteor/react-meteor-data";
 import { RoomCollection } from "../api/rooms";
 import Box from "@mui/material/Box";
@@ -51,7 +51,7 @@ const Slot = ({ index, value, onPlay }) => (
 export const GameScreen = () => {
   const { id } = useParams();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { color } = location.state;
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
@@ -93,7 +93,7 @@ export const GameScreen = () => {
     <>
       <Button
         startIcon={<ArrowBackIcon />}
-        onClick={() => history.push("/")}
+        onClick={() => navigate("/")}
         sx={{ mb: 2 }}
       >
         Back to Rooms
@@ -159,7 +159,7 @@ export const GameScreen = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => history.push("/")} variant="contained">
+          <Button onClick={() => navigate("/")} variant="contained">
             Back to Rooms
           </Button>
         </DialogActions>

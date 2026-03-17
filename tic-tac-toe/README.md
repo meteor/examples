@@ -5,9 +5,9 @@ Simple multiplayer game with multi-room support, built with [Meteor](https://www
 ## Tech Stack
 
 - **Meteor 3.4**: Full-stack framework with real-time data via publications/subscriptions
-- **React 18**: UI components with hooks
-- **MUI v6**: Material Design component library (AppBar, Cards, Dialogs, Icons, etc.)
-- **React Router v5**: Client-side routing
+- **React 19**: UI components with hooks
+- **MUI v7**: Material Design component library (AppBar, Cards, Dialogs, Icons, etc.)
+- **React Router v7**: Client-side routing
 - **Rspack**: Rust-based bundler
 
 ## Running the example
