@@ -83,12 +83,12 @@
 - Stack: Meteor, Rspack, Svelte
 - Meteor Version: 3.4
 
-#### Chakra UI
-- Demo: [chakraui.meteorapp.com](https://chakraui.meteorapp.com/)
-- Repository: [meteor/examples/chakra-ui](./chakra-ui)
-- Why: To show how to set up [Chakra UI](https://chakra-ui.com/) + Icons + Dark Mode with Meteor
-- Stack: Meteor, Rspack, Chakra UI, React
-- Last Updated At: Mar/11/2026
+#### Notes Offline (formerly Chakra UI)
+- Demo: N/A
+- Repository: [meteor/examples/notes-offline](./notes-offline)
+- Why: To show how to build an offline-first notes app with Meteor using [jam:offline](https://docs.meteor.com/community-packages/offline), [jam:method](https://docs.meteor.com/community-packages/jam-method), [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub), [Mantine UI](https://mantine.dev), and Zod validation
+- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod
+- Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
 
 #### NFT Marketplace
