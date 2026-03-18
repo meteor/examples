@@ -1,9 +1,9 @@
 <head>
     <title>All Tomorrow's Parties</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -19,53 +19,60 @@
         {{> inviteDialog}}
     {{/if}}
 
-    <div class="container">
-        <div class="row">
-            <div class="span1"> </div>
-
-            <div class="span10">
-                <div class="header row">
-                    <div class="span5">
-                        <h3 style="margin-bottom: 0px">All Tomorrow's Parties</h3>
-                    </div>
-                    <div class="span5">
-                        <div style="float: right">
-                            {{> loginButtons align="right"}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="span6">
-                        {{> map}}
-                        {{#if currentUser}}
-                            <div class="pagination-centered">
-                                <em><small>Double click the map to post a party!</small></em>
-                            </div>
-                        {{/if}}
-                    </div>
-                    <div class="span4">
-                        {{> details}}
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-md bg-white border-bottom shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-stars me-2"></i>All Tomorrow's Parties
+            </a>
+            <div class="ms-auto">
+                {{> loginButtons align="right"}}
             </div>
+        </div>
+    </nav>
 
-            <div class="span1"> </div>
+    <div class="container py-4">
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-7 col-md-8">
+                {{> map}}
+                {{#if currentUser}}
+                    <p class="text-center text-muted mt-2">
+                        <i class="bi bi-cursor me-1"></i>
+                        <em>Double click the map to post a party!</em>
+                    </p>
+                {{/if}}
+            </div>
+            <div class="col-lg-5 col-md-4">
+                {{> details}}
+            </div>
         </div>
     </div>
 </template>
 
 <template name="map">
-    <div class="map">
-        <svg width="500" height="500">
-            <circle class="callout" cx=-100 cy=-100></circle>
-            <g class="circles"></g>
-            <g class="labels"></g>
-        </svg>
-        <div>
-            <small class="attribution muted">&copy;
+    <div class="card shadow-sm border-0 overflow-hidden">
+        <div class="map position-relative">
+            <svg width="500" height="500" class="d-block w-100" viewBox="0 0 500 500">
+                <defs>
+                    <filter id="circle-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.3"></feDropShadow>
+                    </filter>
+                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
+                        <feMerge>
+                            <feMergeNode in="blur"></feMergeNode>
+                            <feMergeNode in="SourceGraphic"></feMergeNode>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <circle class="callout" cx="-100" cy="-100"></circle>
+                <g class="circles"></g>
+                <g class="labels"></g>
+            </svg>
+        </div>
+        <div class="card-footer bg-transparent border-0 py-1 px-2">
+            <small class="text-muted">&copy;
                 <a href="http://www.openstreetmap.org/?lat=37.78212&lon=-122.40146&zoom=15&layers=M"
-                   target="_blank">OpenStreetMap</a> contributors</small>
+                   target="_blank" class="text-decoration-none text-muted">OpenStreetMap</a> contributors</small>
         </div>
     </div>
 </template>
@@ -74,128 +81,165 @@
     <div class="details">
         {{#if party}}
             {{#with party}}
-                <h1>{{title}}</h1>
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title fw-bold mb-1">{{title}}</h4>
+                        <p class="text-muted mb-3">{{description}}</p>
 
-                <div class="description">{{description}}</div>
+                        {{> attendance}}
 
-                {{> attendance}}
+                        <div class="rsvp-buttons text-center my-4">
+                            {{#if currentUser}}
+                                <div class="btn-group" role="group" aria-label="RSVP">
+                                    <button type="button"
+                                        class="btn rsvp_yes {{rsvpBtnClass "yes"}}">
+                                        <i class="bi bi-check-circle me-1"></i>Going!
+                                    </button>
+                                    <button type="button"
+                                        class="btn rsvp_maybe {{rsvpBtnClass "maybe"}}">
+                                        <i class="bi bi-question-circle me-1"></i>Maybe
+                                    </button>
+                                    <button type="button"
+                                        class="btn rsvp_no {{rsvpBtnClass "no"}}">
+                                        <i class="bi bi-x-circle me-1"></i>No
+                                    </button>
+                                </div>
+                            {{else}}
+                                <p class="text-muted fst-italic">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i>Sign in to RSVP for this party.
+                                </p>
+                            {{/if}}
+                        </div>
 
-                <div class="rsvp-buttons">
-                    {{#if currentUser}}
-                        <input type="button" value="I'm going!"
-                               class="btn btn-small rsvp_yes {{maybeChosen "yes"}}">
-                        <input type="button" value="Maybe"
-                               class="btn btn-small rsvp_maybe {{maybeChosen "maybe"}}">
-                        <input type="button" value="No"
-                               class="btn btn-small rsvp_no {{maybeChosen "no"}}">
-                    {{else}}
-                        <i>Sign in to RSVP for this party.</i>
+                        <div class="text-muted text-center">
+                            <small><i class="bi bi-person me-1"></i>Posted by {{creatorName}}</small>
+                        </div>
+                    </div>
+
+                    {{#if canRemove}}
+                        <div class="card-footer bg-transparent text-center border-top">
+                            <a href="#" class="btn btn-sm btn-outline-danger remove">
+                                <i class="bi bi-trash me-1"></i>Delete this listing
+                            </a>
+                        </div>
                     {{/if}}
-                    <p><small>Posted by {{creatorName}}</small></p>
                 </div>
-
-                {{#if canRemove}}
-                    <div class="alert alert-info"><small>
-                        You posted this party and nobody is signed up to go, so if
-                        you like, you could
-                        <b><a href="#" class="remove">delete this listing</a></b>.
-                    </small></div>
-                {{/if}}
             {{/with}}
         {{else}}
-            <h1 class="muted pagination-centered">
-                {{#if anyParties}}
-                    Click a party to select it
-                {{else}}
-                    Sign in and double click the map to post a party
-                {{/if}}
-            </h1>
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center py-5">
+                    <div class="text-muted">
+                        <i class="bi bi-geo-alt" style="font-size: 2.5rem;"></i>
+                        <h5 class="mt-3 fw-normal text-muted">
+                            {{#if anyParties}}
+                                Click a party on the map to see details
+                            {{else}}
+                                Sign in and double click the map to post a party
+                            {{/if}}
+                        </h5>
+                    </div>
+                </div>
+            </div>
         {{/if}}
     </div>
 </template>
 
 <template name="attendance">
-    <div class="attendance well well-small">
-        <div class="muted who"><b>Who</b></div>
-        {{#if public}}
-            <div>
-                <b>Everyone</b>
-                <span class="label label-inverse pull-right">Invited</span>
-            </div>
-        {{/if}}
+    <div class="attendance mb-3">
+        <h6 class="text-uppercase text-muted fw-bold small mb-2">
+            <i class="bi bi-people me-1"></i>Who's coming
+        </h6>
+        <ul class="list-group list-group-flush">
+            {{#if public}}
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <span><i class="bi bi-globe me-2 text-primary"></i>Everyone</span>
+                    <span class="badge bg-secondary rounded-pill">Invited</span>
+                </li>
+            {{/if}}
 
-        {{#each rsvps}}
-            <div>
-                {{rsvpName}}
-                {{#if rsvpIs "yes"}}
-                    <span class="label label-success pull-right">Going</span>
-                {{/if}}
-                {{#if rsvpIs "maybe"}}
-                    <span class="label label-info pull-right">Maybe</span>
-                {{/if}}
-                {{#if rsvpIs "no"}}
-                    <span class="label label pull-right">No</span>
-                {{/if}}
-            </div>
-        {{/each}}
-
-        {{#unless public}}
-            {{#each outstandingInvitations}}
-                <div>
-                    {{invitationName}}
-                    <span class="label label-inverse pull-right">Invited</span>
-                </div>
+            {{#each rsvps}}
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <span><i class="bi bi-person-fill me-2"></i>{{rsvpName}}</span>
+                    {{#if rsvpIs "yes"}}
+                        <span class="badge bg-success rounded-pill">Going</span>
+                    {{/if}}
+                    {{#if rsvpIs "maybe"}}
+                        <span class="badge bg-warning text-dark rounded-pill">Maybe</span>
+                    {{/if}}
+                    {{#if rsvpIs "no"}}
+                        <span class="badge bg-secondary rounded-pill">No</span>
+                    {{/if}}
+                </li>
             {{/each}}
-        {{/unless}}
 
-        {{#if nobody}}
-            <div>Nobody.</div>
-        {{/if}}
+            {{#unless public}}
+                {{#each outstandingInvitations}}
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span><i class="bi bi-person me-2 text-muted"></i>{{invitationName}}</span>
+                        <span class="badge bg-info rounded-pill">Invited</span>
+                    </li>
+                {{/each}}
+            {{/unless}}
+
+            {{#if nobody}}
+                <li class="list-group-item text-muted px-0">
+                    <i class="bi bi-emoji-neutral me-1"></i>Nobody yet.
+                </li>
+            {{/if}}
+        </ul>
 
         {{#if canInvite}}
-            <div class="invite">
-                <a href="#" class="btn btn-mini invite">Invite people</a>
+            <div class="text-center mt-2">
+                <a href="#" class="btn btn-sm btn-outline-primary invite">
+                    <i class="bi bi-person-plus me-1"></i>Invite people
+                </a>
             </div>
         {{/if}}
     </div>
 </template>
 
 <template name="createDialog">
-    <div class="mask"> </div>
-    <div class="modal">
-        <div class="modal-dialog">
-            <form class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close cancel">&times;</button>
-                    <h3>Add party</h3>
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content shadow-lg border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-calendar-plus me-2"></i>Add Party
+                    </h5>
+                    <button type="button" class="btn-close cancel" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
                     {{#if error}}
-                        <div class="alert alert-danger">{{error}}</div>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-triangle me-1"></i>{{error}}
+                        </div>
                     {{/if}}
 
-                    <div class="form-group">
-                        <label for="title">Title</label>
-                        <input name="title" type="text" class="title form-control">
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-semibold">Title</label>
+                        <input name="title" type="text" class="title form-control" placeholder="What's the occasion?">
                     </div>
 
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea name="description" class="description form-control" rows="3"></textarea>
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-semibold">Description</label>
+                        <textarea name="description" class="description form-control" rows="3" placeholder="Tell people what to expect..."></textarea>
                     </div>
 
-                    <div class="checkbox">
-                        <label for="private">
-                            <input type="checkbox" name="private" class="private">
-                            Private party &mdash; invitees only
+                    <div class="form-check form-switch">
+                        <input type="checkbox" name="private" class="private form-check-input" id="privateCheck">
+                        <label class="form-check-label" for="privateCheck">
+                            <i class="bi bi-lock me-1"></i>Private party &mdash; invitees only
                         </label>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <a href="#" class="btn cancel">Cancel</a>
-                    <a href="#" class="btn btn-primary save">Add party</a>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light cancel">Cancel</button>
+                    <button type="button" class="btn btn-primary save">
+                        <i class="bi bi-plus-lg me-1"></i>Add Party
+                    </button>
                 </div>
             </form>
         </div>
@@ -203,28 +247,35 @@
 </template>
 
 <template name="inviteDialog">
-    <div class="mask"> </div>
-    <div class="modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close done">&times;</button>
-                    <h3>Invite people</h3>
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-person-plus me-2"></i>Invite People
+                    </h5>
+                    <button type="button" class="btn-close done" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
                     {{#each uninvited}}
-                        <div class="invite-row">
-                            <a href="#" class="btn invite">Invite</a>
-                            {{displayName}}
+                        <div class="d-flex align-items-center justify-content-between py-2 border-bottom">
+                            <span><i class="bi bi-person me-2"></i>{{displayName}}</span>
+                            <button class="btn btn-sm btn-outline-primary invite">
+                                <i class="bi bi-send me-1"></i>Invite
+                            </button>
                         </div>
                     {{else}}
-                        Everyone on the site has already been invited.
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-check-circle" style="font-size: 2rem;"></i>
+                            <p class="mt-2 mb-0">Everyone on the site has already been invited.</p>
+                        </div>
                     {{/each}}
                 </div>
 
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-primary done">Done</a>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary done">Done</button>
                 </div>
             </div>
         </div>

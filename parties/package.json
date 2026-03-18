@@ -11,7 +11,7 @@
     "@babel/runtime": "^7.24.0",
     "@swc/helpers": "^0.5.17",
     "bcrypt": "^6.0.0",
-    "bootstrap": "^3.4.1",
+    "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
     "jquery": "^3.7.0",
     "lodash": "^4.17.21",
