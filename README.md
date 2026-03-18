@@ -83,28 +83,28 @@
 - Stack: Meteor, Rspack, Svelte
 - Meteor Version: 3.4
 
-#### Chakra UI
-- Demo: [chakraui.meteorapp.com](https://chakraui.meteorapp.com/)
-- Repository: [meteor/examples/chakra-ui](./chakra-ui)
-- Why: To show how to set up [Chakra UI](https://chakra-ui.com/) + Icons + Dark Mode with Meteor
-- Stack: Meteor, Rspack, Chakra UI, React
-- Last Updated At: Mar/11/2026
+#### Notes Offline
+- Demo: N/A
+- Repository: [meteor/examples/notes-offline](./notes-offline)
+- Why: To show how to build an offline-first PWA notes app with Meteor using [jam:offline](https://docs.meteor.com/community-packages/offline), [jam:method](https://docs.meteor.com/community-packages/jam-method), [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub), [Mantine UI](https://mantine.dev), [Workbox](https://developer.chrome.com/docs/workbox) for PWA service worker via Rspack, and Zod validation
+- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox
+- Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
 
 #### Tic-Tac-Toe
 - Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with Meteor
-- Stack: Meteor, Rspack, React
-- Last Updated At: Mar/16/2026
+- Stack: Meteor, Rspack, React, MUI (Material UI)
+- Last Updated At: Mar/17/2026
 - Meteor Version: 3.4
 
-#### Tailwind CSS
+#### Task Manager (formerly Tailwind CSS)
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
-- Repository: [meteor/examples/tailwindcss](./tailwindcss)
-- Why: To show how to set up [Tailwind CSS](https://tailwindcss.com/) with Meteor
-- Stack: Meteor, Rspack, React, Tailwind CSS
-- Last Updated At: Mar/16/2026
+- Repository: [meteor/examples/task-manager](./task-manager)
+- Why: To show how to build a dynamic task management app with [Meteor-RPC](https://docs.meteor.com/community-packages/meteor-rpc.html), [shadcn/ui](https://ui.shadcn.com/), and [Tailwind CSS](https://tailwindcss.com/) — featuring full CRUD, Zod validation, and real-time reactivity
+- Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS, React Query, Zod
+- Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
 
 #### Complex Todos (Svelte)

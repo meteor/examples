@@ -47,12 +47,11 @@ Template.details.helpers({
   canRemove: function () {
     return this.owner === Meteor.userId() && attending(this) === 0;
   },
-  maybeChosen: function (what) {
+  rsvpBtnClass: function (what) {
     const myRsvp = _.find(this.rsvps, function (r) {
       return r.user === Meteor.userId();
     }) || {};
-
-    return what == myRsvp.rsvp ? "chosen btn-inverse" : "";
+    return what === myRsvp.rsvp ? "rsvp-active-" + what : "";
   }
 });
 
@@ -116,14 +115,6 @@ Template.attendance.helpers({
 ///////////////////////////////////////////////////////////////////////////////
 // Map display
 
-// Use jquery to get the position clicked relative to the map element.
-const coordsRelativeToElement = function (element, event) {
-  const offset = $(element).offset();
-  const x = event.pageX - offset.left;
-  const y = event.pageY - offset.top;
-  return { x: x, y: y };
-};
-
 Template.map.events({
   'mousedown circle, mousedown text': function (event, template) {
     Session.set("selected", event.currentTarget.id);
@@ -131,8 +122,11 @@ Template.map.events({
   'dblclick .map': function (event, template) {
     if (! Meteor.userId()) // must be logged in to create events
       return;
-    const coords = coordsRelativeToElement(event.currentTarget, event);
-    openCreateDialog(coords.x / 500, coords.y / 500);
+    const svg = event.currentTarget.querySelector('svg');
+    const rect = svg.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+    openCreateDialog(x, y);
   }
 });
 
@@ -158,16 +152,34 @@ Template.map.onRendered(function () {
             return party.public ? "public" : "private";
           })
           .style('opacity', function (party) {
-            return selected === party._id ? 1 : 0.6;
-          });
+            return selected === party._id ? 1 : 0.7;
+          })
+          .style('cursor', 'pointer');
       };
 
       const circles = d3.select(self.node).select(".circles").selectAll("circle")
         .data(Parties.find().fetch(), function (party) { return party._id; });
 
-      updateCircles(circles.enter().append("circle"));
+      // Entrance animation for new circles
+      const entering = circles.enter().append("circle")
+        .attr("cx", function (party) { return party.x * 500; })
+        .attr("cy", function (party) { return party.y * 500; })
+        .attr("r", 0)
+        .attr("class", function (party) {
+          return party.public ? "public" : "private";
+        })
+        .attr("id", function (party) { return party._id; })
+        .style('cursor', 'pointer')
+        .style('opacity', 0);
+
+      entering.transition().duration(400).ease(d3.easeBackOut)
+        .attr("r", radius)
+        .style('opacity', function (party) {
+          return selected === party._id ? 1 : 0.7;
+        });
+
       updateCircles(circles.transition().duration(250).ease(d3.easeCubicOut));
-      circles.exit().transition().duration(250).attr("r", 0).remove();
+      circles.exit().transition().duration(250).attr("r", 0).style('opacity', 0).remove();
 
       // Label each with the current attendance count
       const updateLabels = (group) => {
@@ -187,13 +199,13 @@ Template.map.onRendered(function () {
       updateLabels(labels.transition().duration(250).ease(d3.easeCubicOut));
       labels.exit().remove();
 
-      // Draw a dashed circle around the currently selected party, if any
+      // Draw a glowing circle around the currently selected party
       const callout = d3.select(self.node).select("circle.callout")
-        .transition().duration(250).ease(d3.easeCubicOut);
+        .transition().duration(300).ease(d3.easeCubicOut);
       if (selectedParty)
         callout.attr("cx", selectedParty.x * 500)
           .attr("cy", selectedParty.y * 500)
-          .attr("r", radius(selectedParty) + 10)
+          .attr("r", radius(selectedParty) + 12)
           .attr("class", "callout")
           .attr("display", '');
       else
@@ -218,6 +230,9 @@ const openCreateDialog = function (x, y) {
 Template.page.helpers({
   showCreateDialog: function () {
     return Session.get("showCreateDialog");
+  },
+  showInviteDialog: function () {
+    return Session.get("showInviteDialog");
   }
 });
 
@@ -266,12 +281,6 @@ Template.createDialog.helpers({
 const openInviteDialog = function () {
   Session.set("showInviteDialog", true);
 };
-
-Template.page.helpers({
-  showInviteDialog: function () {
-    return Session.get("showInviteDialog");
-  }
-});
 
 Template.inviteDialog.events({
   'click .invite': function (event, template) {
