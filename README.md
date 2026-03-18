@@ -109,7 +109,7 @@
 
 #### Task Manager (formerly Tailwind CSS)
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
-- Repository: [meteor/examples/tailwindcss](./tailwindcss)
+- Repository: [meteor/examples/task-manager](./task-manager)
 - Why: To show how to build a dynamic task management app with [Meteor-RPC](https://docs.meteor.com/community-packages/meteor-rpc.html), [shadcn/ui](https://ui.shadcn.com/), and [Tailwind CSS](https://tailwindcss.com/) — featuring full CRUD, Zod validation, and real-time reactivity
 - Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS, React Query, Zod
 - Last Updated At: Mar/18/2026
