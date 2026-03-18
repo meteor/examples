@@ -83,11 +83,11 @@
 - Stack: Meteor, Rspack, Svelte
 - Meteor Version: 3.4
 
-#### Notes Offline (formerly Chakra UI)
+#### Notes Offline
 - Demo: N/A
 - Repository: [meteor/examples/notes-offline](./notes-offline)
-- Why: To show how to build an offline-first notes app with Meteor using [jam:offline](https://docs.meteor.com/community-packages/offline), [jam:method](https://docs.meteor.com/community-packages/jam-method), [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub), [Mantine UI](https://mantine.dev), and Zod validation
-- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod
+- Why: To show how to build an offline-first PWA notes app with Meteor using [jam:offline](https://docs.meteor.com/community-packages/offline), [jam:method](https://docs.meteor.com/community-packages/jam-method), [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub), [Mantine UI](https://mantine.dev), [Workbox](https://developer.chrome.com/docs/workbox) for PWA service worker via Rspack, and Zod validation
+- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox
 - Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
 
