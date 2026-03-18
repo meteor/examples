@@ -1,17 +1,30 @@
 {
-  "name": "tailwind-meteor-example",
+  "name": "task-manager",
   "scripts": {
     "start": "meteor run"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.6",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-slot": "^1.2.4",
     "@swc/helpers": "^0.5.19",
+    "@tanstack/react-query": "^5.90.21",
     "autoprefixer": "^10.4.27",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.577.0",
     "meteor-node-stubs": "^1.2.27",
+    "meteor-rpc": "^1.1.0",
     "postcss": "^8.5.8",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^3.4.19"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^3.4.19",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@meteorjs/rspack": "^1.0.1",
@@ -20,7 +33,7 @@
     "@rspack/core": "^1.7.1",
     "@rspack/plugin-react-refresh": "^1.4.3",
     "postcss-loader": "^8.2.1",
-    "react-refresh": "^0.17.0"
+    "react-refresh": "^0.18.0"
   },
   "meteor": {
     "mainModule": {

@@ -1,92 +1,57 @@
-# Tailwind CSS Meteor Example
+# Task Manager
 
-A Meteor 3.4 example app using Tailwind CSS with Rspack as the bundler.
+A Meteor 3.4 example app demonstrating a dynamic task management system with:
 
-## Tailwind Setup
+- **Meteor-RPC** for type-safe methods and publications with Zod validation
+- **shadcn/ui** components (manually installed) for a polished UI
+- **Tailwind CSS** with CSS custom properties for theming
+- **React Query** integration via Meteor-RPC hooks
+- **MongoDB** collection with full CRUD operations and real-time reactivity
+- **Rspack** as the bundler
 
-The setup is already done in this project, but if you want to do it in another project you can follow the steps below.
+## Features
 
-They are very similar to the recommendation in the [official Rspack + Tailwind guide](https://tailwindcss.com/docs/installation/framework-guides/rspack/react).
+- Create, edit, and delete tasks
+- Status management (To Do, In Progress, Done) with one-click cycling
+- Priority levels (Low, Medium, High)
+- Filter tasks by status and priority
+- Real-time dashboard with task metrics
+- Responsive design
 
-> You can also use `meteor create --tailwind` to start with a preconfigured Rspack Tailwind app.
+## Tech Stack
 
-### 1 - Install npm dependencies
+| Technology | Purpose |
+|---|---|
+| [Meteor 3.4](https://docs.meteor.com) | Full-stack framework |
+| [Meteor-RPC](https://docs.meteor.com/community-packages/meteor-rpc.html) | Type-safe methods & publications |
+| [shadcn/ui](https://ui.shadcn.com) | UI components (Radix + Tailwind) |
+| [Tailwind CSS 3](https://tailwindcss.com) | Utility-first styling |
+| [React Query](https://tanstack.com/query) | Server state management |
+| [Zod](https://zod.dev) | Schema validation |
+| [Rspack](https://rspack.dev) | Bundler |
 
-```bash
-meteor npm install tailwindcss postcss autoprefixer postcss-loader
-```
-
-See [package.json](package.json) as example.
-
-### 2 - Add the Rspack package
-
-```bash
-meteor add rspack
-```
-
-On first run, the package installs the required Rspack dependencies automatically.
-
-See [.meteor/packages](.meteor/packages) as example.
-
-### 3 - Configure PostCSS
-
-See [postcss.config.js](postcss.config.js) as example.
-
-### 4 - Configure Tailwind
-
-See [tailwind.config.js](tailwind.config.js) as example.
-
-### 5 - Include Tailwind in your CSS
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-See [main.css](client/main.css) as example.
-
-Import the CSS file from your client entry point:
-
-```js
-import './main.css';
-```
-
-See [client/main.jsx](client/main.jsx) as example.
-
-### 6 - Configure Rspack to use PostCSS
-
-Enable the PostCSS loader in your `rspack.config.js` so Rspack processes Tailwind directives:
-
-```js
-const { defineConfig } = require('@meteorjs/rspack');
-
-module.exports = defineConfig(Meteor => {
-  return {
-    module: {
-      rules: [
-        Meteor.isClient && {
-          test: /\.css$/,
-          use: ['postcss-loader'],
-          type: 'css/auto',
-        },
-      ].filter(Boolean),
-    },
-  };
-});
-```
-
-See [rspack.config.js](rspack.config.js) as example.
-
-### 7 - Add a `.meteorignore` file
-
-Prevent Meteor from processing the CSS file directly (let Rspack handle it instead):
+## Project Structure
 
 ```
-client/main.css
+imports/
+  api/
+    tasks.js        # Collection, Zod schemas, Meteor-RPC module
+    client.js       # Client API (createClient)
+  lib/
+    utils.js        # cn() utility for Tailwind class merging
+  ui/
+    App.jsx         # Main app layout
+    Dashboard.jsx   # Reactive metrics cards
+    TaskList.jsx    # Task table with filters and actions
+    TaskForm.jsx    # Create/edit dialog
+    components/ui/  # shadcn/ui components
+client/
+  main.jsx          # Entry point with QueryClientProvider
+  main.css          # Tailwind + shadcn/ui CSS variables
+  main.html         # HTML template
+server/
+  main.js           # Server entry (imports API module)
 ```
-
-See [.meteorignore](.meteorignore) as example.
 
 ## Running the example
 
@@ -96,8 +61,20 @@ See [.meteorignore](.meteorignore) as example.
 meteor npm install
 ```
 
-### Running
+### Start the app
 
 ```bash
 meteor
 ```
+
+The app will be available at `http://localhost:3000`.
+
+## shadcn/ui Setup Notes
+
+Since shadcn/ui doesn't officially support Meteor, components are manually installed:
+
+1. Radix UI primitives are installed as npm dependencies
+2. Component source files are copied into `imports/ui/components/ui/`
+3. The `cn()` utility uses `clsx` + `tailwind-merge`
+4. Tailwind is configured with CSS custom properties for theming
+5. Path alias `@` maps to `imports/` via Rspack config

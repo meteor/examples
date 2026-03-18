@@ -1,33 +1,52 @@
-const colors = require('tailwindcss/colors');
-
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './imports/ui/**/*.{js,jsx,ts,tsx}',
     './client/**/*.html',
   ],
   theme: {
-    fontFamily: {
-      display: ['Martel Sans', 'sans-serif'],
-      body: ['Martel Sans', 'sans-serif'],
-    },
     extend: {
-      spacing: {
-        '128': '32rem',
-        '112': '28rem',
-        '96': '24rem',
-        '80': '20rem',
-        '7': '1.875rem',
-      },
-      fontSize: {
-        '4xs': '0.625rem',
-        '3xs': '0.6875rem',
-        '2xs': '0.75rem',
-        xs: '0.8125rem',
-      },
       colors: {
-        fuchsia: colors.amber,
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };
