@@ -66,12 +66,6 @@ yarn.lock
 **/.idea/*
 !.idea/runConfigurations
 
-# Rspack build artifacts
-_build/
-*/build-assets/
-*/build-chunks/
-.rsdoctor/
-
 # Meteor Modern-Tools build context directories
 _build
 */build-assets
