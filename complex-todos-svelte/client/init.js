@@ -3,6 +3,8 @@ import {log} from '../imports/shared/logger/logger.js';
 import {mount, unmount} from 'svelte';
 import App from './ui/App.svelte';
 
+document.documentElement.setAttribute('data-theme', 'cerberus');
+
 let app;
 
 /**

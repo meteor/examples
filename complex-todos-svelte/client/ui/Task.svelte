@@ -1,22 +1,15 @@
 <script>
+  import {Meteor} from 'meteor/meteor';
   import {useTracker} from '../lib/useTracker.js';
   import {tasksRemove, tasksUpdateAsChecked, tasksUpdateAsPrivate} from '../../imports/modules/tasks/tasks.methods.js';
 
-  export let task;
-  let showButton = false;
+  let {task} = $props();
 
-  $: currentUser = useTracker(() => Meteor.user());
+  const currentUser = useTracker(() => Meteor.user());
 
-  $: {
-    if($currentUser) {
-      showButton = task.owner === $currentUser._id;
-    } else {
-      showButton = false;
-    }
-  }
+  let showButton = $derived($currentUser ? task.owner === $currentUser._id : false);
 
   function toggleChecked() {
-    // Set the checked property to the opposite of its current value
     tasksUpdateAsChecked({taskId: task._id, setChecked: !task.checked});
   }
 
@@ -29,33 +22,40 @@
   }
 </script>
 
-<tr class:checked="{task.checked}"
-    class:private="{task.private}"
-    class:text-danger="{task.expired}">
-  <td>
-    <div class="form-check">
-      <label><strong>{ task.username }</strong>: { task.text }
-        {#if showButton}
-          <input type="checkbox"
-                 class="form-check-input"
-                 readonly
-                 checked={!!task.checked}
-                 on:click={toggleChecked}
-          />
-        {/if}
-      </label>
-    </div>
-  </td>
-  <td class="text-end">
+<div
+  class="card preset-filled-surface-100-900 p-3 flex items-center gap-3 transition-opacity"
+  class:opacity-50={task.checked}
+  data-testid="task-card"
+>
+  {#if showButton}
+    <input
+      type="checkbox"
+      class="checkbox"
+      checked={!!task.checked}
+      data-testid="task-checkbox"
+      onclick={toggleChecked}
+    />
+  {/if}
+
+  <div class="flex-1 min-w-0">
+    <span class="badge preset-tonal-secondary text-xs mr-1" data-testid="task-owner">{task.username}</span>
+    <span class:line-through={task.checked} data-testid="task-text">{task.text}</span>
+  </div>
+
+  <div class="flex items-center gap-1 flex-shrink-0">
+    {#if task.expired}
+      <span class="badge preset-filled-error-500 text-xs">Expired</span>
+    {/if}
+    {#if task.private}
+      <span class="badge preset-filled-warning-500 text-xs">Private</span>
+    {/if}
     {#if showButton}
-      <button class="btn btn-sm btn-outline btn-success"
-              on:click={togglePrivate}>
-        { task.private ? "Private" : "Public" }
+      <button class="btn btn-sm preset-tonal-warning" data-testid="toggle-private-btn" onclick={togglePrivate}>
+        {task.private ? 'Make Public' : 'Make Private'}
       </button>
-      <button class="btn btn-sm btn-outline btn-danger"
-              on:click={deleteThisTask}>
+      <button class="btn btn-sm preset-filled-error-500" data-testid="delete-task-btn" onclick={deleteThisTask}>
         Delete
       </button>
     {/if}
-  </td>
-</tr>
+  </div>
+</div>

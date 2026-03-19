@@ -1,12 +1,12 @@
 <script>
+  import {AppBar} from '@skeletonlabs/skeleton-svelte';
   import LoginButtons from './LoginButtons.svelte';
   import Tasks from './Tasks.svelte';
   import About from './About.svelte';
 
   let currentPage = $state('tasks');
 
-  function navigate(page)
-  {
+  function navigate(page) {
     currentPage = page;
     window.history.pushState({page}, '', `/${page}`);
   }
@@ -16,41 +16,45 @@
   currentPage = ['tasks', 'about'].includes(path) ? path : 'tasks';
 
   // Handle browser back/forward
-  window.addEventListener('popstate', (event) =>
-  {
-    if(event.state && event.state.page)
-    {
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.page) {
       currentPage = event.state.page;
     }
   });
 </script>
 
-<div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a href="/tasks" class="navbar-brand" onclick={(e) => { e.preventDefault(); navigate('tasks'); }}>Meteor.js & Svelte Example</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a href="/tasks" class="nav-link" class:active={currentPage === 'tasks'} onclick={(e) => { e.preventDefault(); navigate('tasks'); }}>Tasks</a>
-          </li>
-          <li class="nav-item">
-            <a href="/about" class="nav-link" class:active={currentPage === 'about'} onclick={(e) => { e.preventDefault(); navigate('about'); }}>About</a>
-          </li>
-          <li class="nav-item nav-login">
-            <LoginButtons/>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<AppBar>
+  <AppBar.Toolbar>
+    <AppBar.Lead>
+      <a href="/tasks" class="text-lg font-bold no-underline" onclick={(e) => { e.preventDefault(); navigate('tasks'); }}>
+        Meteor & Svelte Todos
+      </a>
+    </AppBar.Lead>
+    <AppBar.Trail>
+      <nav class="flex items-center gap-2">
+        <a
+          href="/tasks"
+          class="btn btn-sm {currentPage === 'tasks' ? 'preset-filled-primary-500' : 'preset-tonal-surface'}"
+          data-testid="nav-tasks"
+          onclick={(e) => { e.preventDefault(); navigate('tasks'); }}
+        >Tasks</a>
+        <a
+          href="/about"
+          class="btn btn-sm {currentPage === 'about' ? 'preset-filled-primary-500' : 'preset-tonal-surface'}"
+          data-testid="nav-about"
+          onclick={(e) => { e.preventDefault(); navigate('about'); }}
+        >About</a>
+        <span class="border-l border-surface-300 dark:border-surface-600 h-6 mx-1"></span>
+        <LoginButtons />
+      </nav>
+    </AppBar.Trail>
+  </AppBar.Toolbar>
+</AppBar>
 
+<main class="max-w-2xl mx-auto p-4">
   {#if currentPage === 'tasks'}
-    <Tasks/>
+    <Tasks />
   {:else if currentPage === 'about'}
-    <About/>
+    <About />
   {/if}
-</div>
+</main>

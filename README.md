@@ -110,9 +110,9 @@
 #### Complex Todos (Svelte)
 - Demo: N/A
 - Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
-- Why: A comprehensive task management app showcasing a scalable project structure with services, repositories, caching, rate limiting, migrations, and job scheduling
-- Stack: Meteor, Rspack, Svelte, jam:method, Zod, MongoDB
-- Last Updated At: Mar/16/2026
+- Why: A comprehensive task management app with a modular monolith architecture (services, repositories, EventEmitter), [Skeleton UI](https://www.skeleton.dev/) + [Tailwind CSS v4](https://tailwindcss.com/) styling, Svelte 5 runes, [Cypress](https://www.cypress.io/) E2E tests (authentication, navigation, task CRUD), rate limiting, caching, migrations, and job scheduling
+- Stack: Meteor, Rspack, Svelte 5, Skeleton UI, Tailwind CSS v4, jam:method, Zod, Cypress, Mocha, MongoDB
+- Last Updated At: Mar/19/2026
 - Meteor Version: 3.4
 
 #### NFT Marketplace

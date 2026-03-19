@@ -1,4 +1,4 @@
-import {waitForMeteorSubscriptions} from '../../support/commands.js';
+import {waitForMeteor} from '../../support/commands.js';
 
 /**
  * Wait for provided ms
@@ -10,12 +10,11 @@ export function wait(timeMs = 500)
 }
 
 /**
- * Subscription aware visit function
+ * Visit a URL and wait for Meteor to load
  * @param url {string}
  */
 export function visit(url)
 {
   cy.visit(url);
-  
-  waitForMeteorSubscriptions();
+  waitForMeteor();
 }
