@@ -66,7 +66,7 @@ test.describe("Parties", () => {
 
     // Double-click on the map SVG to open create dialog
     const svg = page.locator("svg").first();
-    await svg.dblclick({ position: { x: 250, y: 250 } });
+    await svg.dblclick({ position: { x: 100, y: 100 } });
 
     // Fill in the create party form
     await expect(page.getByRole("heading", { name: "Add Party" })).toBeVisible({ timeout: 5000 });
@@ -88,18 +88,19 @@ test.describe("Parties", () => {
   test("should RSVP to a party", async ({ page }) => {
     await signUp(page);
 
-    // Create a party
+    // Create a party at a unique position to avoid overlapping with other tests
     const svg = page.locator("svg").first();
-    await svg.dblclick({ position: { x: 250, y: 250 } });
+    await svg.dblclick({ position: { x: 350, y: 150 } });
     const partyTitle = `RSVP Party ${uid()}`;
     await page.locator("input.title").fill(partyTitle);
     await page.locator("textarea.description").fill("Testing RSVP");
     await page.locator("button.save").click();
 
-    // Wait for the party circle to appear and click it
-    const circle = page.locator("svg .circles circle").first();
-    await expect(circle).toBeVisible({ timeout: 5000 });
-    await circle.click();
+    // Wait for the party circle to appear and click it using force
+    // to avoid interception by overlapping circles from other tests
+    const circles = page.locator("svg .circles circle");
+    await expect(circles.last()).toBeVisible({ timeout: 5000 });
+    await circles.last().click({ force: true });
 
     // Details sidebar should show the party and RSVP buttons
     await expect(page.locator("button.rsvp_yes")).toBeVisible({ timeout: 5000 });
@@ -122,12 +123,11 @@ test.describe("Parties", () => {
     await page.locator("textarea.description").fill("Will be deleted");
     await page.locator("button.save").click();
 
-    // Wait for circle to appear, then click the SVG at the party's position
+    // Wait for circle to appear, then click at the party's position
     await expect(page.locator("svg .circles circle").first()).toBeVisible({
       timeout: 5000,
     });
-    // Click near where we placed the party to select it
-    await svg.click({ position: { x: 50, y: 50 } });
+    await svg.click({ position: { x: 50, y: 50 }, force: true });
 
     // Verify we selected our party
     await expect(page.getByText(partyTitle)).toBeVisible({ timeout: 5000 });
