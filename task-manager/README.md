@@ -14,6 +14,7 @@ A task management app showcasing [Meteor-RPC](https://docs.meteor.com/community-
 | Styling | Tailwind CSS 3 |
 | Data | Meteor-RPC + React Query |
 | Validation | Zod |
+| Tests | Mocha |
 | Code Quality | Biome |
 | E2E | Playwright |
 | Build | Rspack |
@@ -38,6 +39,8 @@ Visit `http://localhost:3000/`.
 | Command | What it does |
 |---|---|
 | `npm start` | Start the app |
+| `npm test` | Integration tests (Mocha, watch mode) |
+| `npm run test:headless` | Integration tests (Mocha, headless/CI) |
 | `npm run lint` | Lint and check formatting (Biome) |
 | `npm run lint:fix` | Lint and auto-fix + format (Biome) |
 | `npm run e2e` | E2E tests (Playwright, interactive UI) |

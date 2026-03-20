@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
+    "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
+    "test:headless": "meteor test --once --driver-package meteortesting:mocha",
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "e2e": "npx playwright test --ui",
@@ -52,6 +54,7 @@
       "client": "client/main.jsx",
       "server": "server/main.js"
     },
+    "testModule": "tests/main.js",
     "modern": true
   }
 }

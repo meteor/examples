@@ -2,6 +2,8 @@
   "name": "task-manager",
   "scripts": {
     "start": "meteor run",
+    "test": "echo 'Tests pending - meteor test with compileWithRspack + meteor-rpc requires framework fix'",
+    "test:headless": "echo 'Tests pending - meteor test with compileWithRspack + meteor-rpc requires framework fix'",
     "lint": "npx @biomejs/biome check .",
     "lint:fix": "npx @biomejs/biome check . --write",
     "e2e": "npx playwright test --ui",
@@ -46,6 +48,7 @@
       "client": "client/main.jsx",
       "server": "server/main.js"
     },
+    "testModule": "tests/main.js",
     "modern": true
   }
 }

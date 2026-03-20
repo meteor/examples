@@ -37,7 +37,7 @@ Visit `http://localhost:3000/`.
 | Command | What it does |
 |---|---|
 | `npm start` | Start the Meteor app |
-| `npm test` | Unit tests (Mocha) |
+| `npm test` | Integration tests (Mocha) |
 | `npm run test-app` | Full-app tests (Mocha, watch mode) |
 | `npm run visualize` | Bundle analyzer in production mode |
 

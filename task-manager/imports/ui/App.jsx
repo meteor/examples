@@ -1,4 +1,5 @@
 import { CheckSquare } from "lucide-react";
+import { Suspense } from "react";
 import { Dashboard } from "./Dashboard";
 import { TaskList } from "./TaskList";
 
@@ -12,8 +13,16 @@ export const App = () => {
         </div>
       </header>
       <main className="container mx-auto px-4 py-8 space-y-8">
-        <Dashboard />
-        <TaskList />
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center py-12 text-muted-foreground">
+              Loading...
+            </div>
+          }
+        >
+          <Dashboard />
+          <TaskList />
+        </Suspense>
       </main>
     </div>
   );

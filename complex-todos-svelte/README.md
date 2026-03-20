@@ -18,7 +18,7 @@ Built with Meteor 3.4, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 | Validation | Zod + jam:method |
 | Caching | node-cache |
 | Code Quality | oxlint (OXC) + import plugin |
-| Tests | Mocha (unit), Cypress (E2E) |
+| Tests | Mocha (integration), Cypress (E2E) |
 
 ## Running it
 
@@ -32,7 +32,8 @@ Other commands:
 
 | Command | What it does |
 |---|---|
-| `npm test` | Unit tests (Mocha, watch mode) |
+| `npm test` | Integration tests (Mocha, watch mode) |
+| `npm run test:headless` | Integration tests (Mocha, headless/CI) |
 | `npm run e2e` | Open Cypress UI for interactive E2E testing |
 | `npm run e2e:headless` | Run E2E tests headless (CI-friendly) |
 | `npm run visualize` | Bundle analyzer in production mode |

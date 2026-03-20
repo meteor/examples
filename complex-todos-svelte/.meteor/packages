@@ -31,3 +31,6 @@ accounts-password@3.0.0
 #
 jam:method
 
+# Testing
+meteortesting:mocha
+

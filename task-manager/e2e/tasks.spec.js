@@ -5,7 +5,9 @@ const uid = () => Math.random().toString(36).slice(2, 8);
 test.describe("Task Manager", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
-    await page.waitForLoadState("networkidle");
+    await expect(page.getByText("Task Manager")).toBeVisible();
+    // Wait for Suspense to resolve and data-dependent UI to render
+    await expect(page.getByRole("button", { name: "Add Task" })).toBeVisible({ timeout: 15000 });
   });
 
   test("should display the app header and dashboard", async ({ page }) => {

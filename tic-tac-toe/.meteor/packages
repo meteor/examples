@@ -21,3 +21,6 @@ insecure                # Allow all DB writes from clients (for prototyping)
 static-html             # Define static page content in .html files
 react-meteor-data
 rspack
+
+# Testing
+meteortesting:mocha

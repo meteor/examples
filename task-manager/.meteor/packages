@@ -13,3 +13,6 @@ static-html@1.5.0
 hot-module-replacement@0.5.4
 
 rspack
+
+# Testing
+meteortesting:mocha

@@ -24,3 +24,6 @@ jam:offline
 jam:method
 jam:pub-sub
 jam:soft-delete
+
+# Testing
+meteortesting:mocha

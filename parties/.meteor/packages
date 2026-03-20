@@ -25,3 +25,6 @@ email
 accounts-password
 accounts-ui
 rspack
+
+# Testing
+meteortesting:mocha

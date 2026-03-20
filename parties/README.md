@@ -28,8 +28,8 @@ Visit `http://localhost:3000/`.
 | Command | What it does |
 |---|---|
 | `npm start` | Start the app |
-| `npm test` | Unit tests (Mocha) |
-| `npm run test-app` | Full-app tests (Mocha, watch mode) |
+| `npm test` | Integration tests (Mocha, watch mode) |
+| `npm run test:headless` | Integration tests (Mocha, headless/CI) |
 | `npm run visualize` | Bundle analyzer in production mode |
 | `npm run lint` | Lint (RSLint) |
 | `npm run lint:fix` | Lint and auto-fix (RSLint) |

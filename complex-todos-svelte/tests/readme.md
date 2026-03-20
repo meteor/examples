@@ -1,6 +1,6 @@
-# Unit Tests
+# Integration Tests
 
-This folder contains unit tests
+This folder contains integration tests
 
 ### Test Strategy
 

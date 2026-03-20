@@ -11,6 +11,7 @@ module.exports = defineConfig(Meteor => {
       alias: {
         '@': path.resolve(__dirname, 'imports'),
       },
+      modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
     },
     module: {
       rules: [
