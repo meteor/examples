@@ -87,7 +87,7 @@
 - Demo: N/A
 - Repository: [meteor/examples/notes-offline](./notes-offline)
 - Why: To show how to build an offline-first PWA notes app with Meteor using [jam:offline](https://docs.meteor.com/community-packages/offline), [jam:method](https://docs.meteor.com/community-packages/jam-method), [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub), [Mantine UI](https://mantine.dev), [Workbox](https://developer.chrome.com/docs/workbox) for PWA service worker via Rspack, and Zod validation
-- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox
+- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, Playwright
 - Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
 
@@ -95,15 +95,15 @@
 - Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: To show that we can even build multiplayer games with Meteor
-- Stack: Meteor, Rspack, React, MUI (Material UI)
+- Stack: Meteor, Rspack, React, MUI (Material UI), Playwright
 - Last Updated At: Mar/17/2026
 - Meteor Version: 3.4
 
-#### Task Manager (formerly Tailwind CSS)
+#### Task Manager
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
 - Repository: [meteor/examples/task-manager](./task-manager)
 - Why: To show how to build a dynamic task management app with [Meteor-RPC](https://docs.meteor.com/community-packages/meteor-rpc.html), [shadcn/ui](https://ui.shadcn.com/), and [Tailwind CSS](https://tailwindcss.com/) — featuring full CRUD, Zod validation, and real-time reactivity
-- Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS, React Query, Zod
+- Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS, React Query, Zod, Playwright
 - Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
 
@@ -162,9 +162,9 @@
 - Demo: N/A
 - Repository: [meteor/examples/parties](./parties)
 - Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates.
-- Stack: Meteor, Blaze
+- Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, Playwright
 - Last Updated At: August/23/2021
-- Meteor Version: 2.3.5
+- Meteor Version: 3.4
 
 ## How to add your example?
 

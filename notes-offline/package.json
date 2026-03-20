@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "eslint": "eslint . --fix"
+    "eslint": "eslint . --fix",
+    "e2e": "npx playwright test --ui",
+    "e2e:headless": "npx playwright test"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.6",
@@ -24,6 +26,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.50.0",
     "@meteorjs/rspack": "^1.0.1",
     "@quave/eslint-config-quave": "^3.0.0",
     "@rsdoctor/rspack-plugin": "^1.5.3",

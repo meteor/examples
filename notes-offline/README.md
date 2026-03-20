@@ -17,6 +17,7 @@ An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persist
 | Soft Delete | jam:soft-delete |
 | Validation | Zod |
 | PWA | Workbox (via workbox-webpack-plugin + Rspack) |
+| E2E | Playwright |
 | Build | Rspack |
 
 ## Features
@@ -46,6 +47,10 @@ Visit `http://localhost:3000/`.
 |---|---|
 | `npm start` | Start the app |
 | `npm run eslint` | Lint and auto-fix |
+| `npm run e2e` | E2E tests (Playwright, interactive UI) |
+| `npm run e2e:headless` | E2E tests (Playwright, headless) |
+
+Before running E2E tests for the first time, install Playwright's browsers with `npx playwright install`.
 
 ## How it's structured
 

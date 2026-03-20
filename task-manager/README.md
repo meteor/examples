@@ -14,6 +14,7 @@ A task management app showcasing [Meteor-RPC](https://docs.meteor.com/community-
 | Styling | Tailwind CSS 3 |
 | Data | Meteor-RPC + React Query |
 | Validation | Zod |
+| E2E | Playwright |
 | Build | Rspack |
 
 ## Features
@@ -32,6 +33,14 @@ npm start
 ```
 
 Visit `http://localhost:3000/`.
+
+| Command | What it does |
+|---|---|
+| `npm start` | Start the app |
+| `npm run e2e` | E2E tests (Playwright, interactive UI) |
+| `npm run e2e:headless` | E2E tests (Playwright, headless) |
+
+Before running E2E tests for the first time, install Playwright's browsers with `npx playwright install`.
 
 ## How it's structured
 
