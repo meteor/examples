@@ -1,0 +1,42 @@
+name: parties
+
+on:
+  push:
+    paths:
+      - "parties/**"
+      - ".github/workflows/parties.yml"
+  pull_request:
+    paths:
+      - "parties/**"
+      - ".github/workflows/parties.yml"
+
+defaults:
+  run:
+    working-directory: parties
+
+jobs:
+  lint:
+    name: Lint (RSLint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: meteorengineer/setup-meteor@v2
+      - run: meteor npm install
+      - run: npm run lint
+
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: meteorengineer/setup-meteor@v2
+      - run: meteor npm install
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e:headless
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: parties-test-results
+          path: parties/test-results/
+          retention-days: 7
