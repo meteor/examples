@@ -2,6 +2,7 @@ name: notes-offline
 
 on:
   push:
+    branches: [main]
     paths:
       - "notes-offline/**"
       - ".github/workflows/notes-offline.yml"

@@ -2,6 +2,7 @@ name: complex-todos-svelte
 
 on:
   push:
+    branches: [main]
     paths:
       - "complex-todos-svelte/**"
       - ".github/workflows/complex-todos-svelte.yml"

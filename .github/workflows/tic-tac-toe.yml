@@ -2,6 +2,7 @@ name: tic-tac-toe
 
 on:
   push:
+    branches: [main]
     paths:
       - "tic-tac-toe/**"
       - ".github/workflows/tic-tac-toe.yml"

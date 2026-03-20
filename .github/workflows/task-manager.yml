@@ -2,6 +2,7 @@ name: task-manager
 
 on:
   push:
+    branches: [main]
     paths:
       - "task-manager/**"
       - ".github/workflows/task-manager.yml"
