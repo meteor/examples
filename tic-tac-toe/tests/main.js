@@ -19,7 +19,7 @@ describe("tic-tac-toe", function () {
       assert.strictEqual(Meteor.isClient, false);
     });
 
-    describe("createRoom", function () {
+    describe("createRoom method", function () {
       it("creates a room with correct defaults", async function () {
         const room = await Meteor.callAsync("createRoom");
         assert.strictEqual(room.capacity, 2);
@@ -27,21 +27,52 @@ describe("tic-tac-toe", function () {
         assert.strictEqual(room.colorTurn, "cross");
         assert.strictEqual(room.gameState.length, 9);
         assert.ok(room.gameState.every((s) => s === "empty"));
+        assert.ok(room.createdAt instanceof Date);
 
-        // cleanup
         await RoomCollection.removeAsync(room._id);
       });
     });
 
-    describe("joinRoom", function () {
-      it("decrements capacity on join", async function () {
+    describe("joinRoom method", function () {
+      it("first player gets cross, capacity decrements to 1", async function () {
         const room = await Meteor.callAsync("createRoom");
-        const { room: updated } = await Meteor.callAsync("joinRoom", {
+        const result = await Meteor.callAsync("joinRoom", {
           roomId: room._id,
         });
-        assert.strictEqual(updated.capacity, 1);
+        assert.strictEqual(result.color, "cross");
+        assert.strictEqual(result.room.capacity, 1);
 
-        // cleanup
+        await RoomCollection.removeAsync(room._id);
+      });
+
+      it("second player gets circle, capacity decrements to 0", async function () {
+        const room = await Meteor.callAsync("createRoom");
+        await Meteor.callAsync("joinRoom", { roomId: room._id });
+        const result = await Meteor.callAsync("joinRoom", {
+          roomId: room._id,
+        });
+        assert.strictEqual(result.color, "circle");
+        assert.strictEqual(result.room.capacity, 0);
+
+        await RoomCollection.removeAsync(room._id);
+      });
+    });
+
+    describe("makePlay method", function () {
+      it("places a cross on the board", async function () {
+        const room = await Meteor.callAsync("createRoom");
+        await Meteor.callAsync("joinRoom", { roomId: room._id });
+        await Meteor.callAsync("joinRoom", { roomId: room._id });
+
+        await Meteor.callAsync("makePlay", {
+          roomId: room._id,
+          playState: { color: "cross", play: 0 },
+        });
+
+        const updated = await RoomCollection.findOneAsync(room._id);
+        assert.strictEqual(updated.gameState[0], "cross");
+        assert.strictEqual(updated.colorTurn, "circle");
+
         await RoomCollection.removeAsync(room._id);
       });
     });

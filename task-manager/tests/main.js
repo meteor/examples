@@ -1,53 +1,94 @@
-import { Mongo } from "meteor/mongo";
-
-const TestTasks = new Mongo.Collection("tasks");
+import assert from "assert";
+import { Meteor } from "meteor/meteor";
+// Import the API module to register Meteor methods
+import "../imports/api/tasks";
 
 describe("task-manager", function () {
   it("package.json has correct name", async function () {
     const { name } = await import("../package.json");
-    if (name !== "task-manager") throw new Error("Expected task-manager");
+    assert.strictEqual(name, "task-manager");
   });
 
   if (Meteor.isClient) {
     it("client is not server", function () {
-      if (Meteor.isServer) throw new Error("Expected client");
+      assert.strictEqual(Meteor.isServer, false);
     });
   }
 
   if (Meteor.isServer) {
     it("server is not client", function () {
-      if (Meteor.isClient) throw new Error("Expected server");
+      assert.strictEqual(Meteor.isClient, false);
     });
 
-    it("inserts and finds a task", async function () {
-      const taskId = await TestTasks.insertAsync({
-        title: "Test task",
-        description: "",
-        status: "todo",
-        priority: "medium",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    describe("createTask method", function () {
+      it("creates a task with defaults", async function () {
+        const taskId = await Meteor.callAsync("createTask", {
+          title: "Integration test task",
+        });
+        assert.ok(taskId);
+
+        const { TasksCollection } = await import("../imports/api/tasks");
+        const task = await TasksCollection.findOneAsync(taskId);
+        assert.strictEqual(task.title, "Integration test task");
+        assert.strictEqual(task.status, "todo");
+        assert.strictEqual(task.priority, "medium");
+        assert.strictEqual(task.description, "");
+        assert.ok(task.createdAt instanceof Date);
+
+        await TasksCollection.removeAsync(taskId);
       });
 
-      const task = await TestTasks.findOneAsync(taskId);
-      if (task.title !== "Test task") throw new Error("Title mismatch");
-      if (task.status !== "todo") throw new Error("Status mismatch");
+      it("creates a task with custom status and priority", async function () {
+        const taskId = await Meteor.callAsync("createTask", {
+          title: "High priority task",
+          status: "in-progress",
+          priority: "high",
+          description: "Urgent work",
+        });
 
-      await TestTasks.removeAsync(taskId);
+        const { TasksCollection } = await import("../imports/api/tasks");
+        const task = await TasksCollection.findOneAsync(taskId);
+        assert.strictEqual(task.status, "in-progress");
+        assert.strictEqual(task.priority, "high");
+        assert.strictEqual(task.description, "Urgent work");
+
+        await TasksCollection.removeAsync(taskId);
+      });
     });
 
-    it("removes a task", async function () {
-      const taskId = await TestTasks.insertAsync({
-        title: "Task to remove",
-        status: "todo",
-        priority: "low",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+    describe("updateTask method", function () {
+      it("updates task fields", async function () {
+        const taskId = await Meteor.callAsync("createTask", {
+          title: "Task to update",
+        });
 
-      await TestTasks.removeAsync(taskId);
-      const task = await TestTasks.findOneAsync(taskId);
-      if (task !== undefined) throw new Error("Expected undefined");
+        await Meteor.callAsync("updateTask", {
+          _id: taskId,
+          title: "Updated title",
+          status: "done",
+        });
+
+        const { TasksCollection } = await import("../imports/api/tasks");
+        const task = await TasksCollection.findOneAsync(taskId);
+        assert.strictEqual(task.title, "Updated title");
+        assert.strictEqual(task.status, "done");
+
+        await TasksCollection.removeAsync(taskId);
+      });
+    });
+
+    describe("removeTask method", function () {
+      it("deletes a task", async function () {
+        const taskId = await Meteor.callAsync("createTask", {
+          title: "Task to delete",
+        });
+
+        await Meteor.callAsync("removeTask", { _id: taskId });
+
+        const { TasksCollection } = await import("../imports/api/tasks");
+        const task = await TasksCollection.findOneAsync(taskId);
+        assert.strictEqual(task, undefined);
+      });
     });
   }
 });

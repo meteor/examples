@@ -2,8 +2,8 @@
   "name": "task-manager",
   "scripts": {
     "start": "meteor run",
-    "test": "echo 'Tests pending - meteor test with compileWithRspack + meteor-rpc requires framework fix'",
-    "test:headless": "echo 'Tests pending - meteor test with compileWithRspack + meteor-rpc requires framework fix'",
+    "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
+    "test:headless": "meteor test --once --driver-package meteortesting:mocha",
     "lint": "npx @biomejs/biome check .",
     "lint:fix": "npx @biomejs/biome check . --write",
     "e2e": "npx playwright test --ui",
