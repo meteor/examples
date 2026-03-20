@@ -1,0 +1,66 @@
+# Parties
+
+A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.4 with Blaze 3 and async database operations.
+
+## Stack
+
+| | |
+|---|---|
+| Runtime | Meteor 3.4 |
+| Frontend | Blaze 3 |
+| UI | Bootstrap 5 |
+| Visualization | D3.js v7 (interactive map) |
+| Database | MongoDB |
+| Auth | Meteor Accounts (password) |
+| Build | Rspack |
+
+## Running it
+
+```bash
+meteor npm install
+npm start
+```
+
+Visit `http://localhost:3000/`.
+
+| Command | What it does |
+|---|---|
+| `npm start` | Start the app |
+| `npm test` | Unit tests (Mocha) |
+| `npm run test-app` | Full-app tests (Mocha, watch mode) |
+| `npm run visualize` | Bundle analyzer in production mode |
+
+## What it does
+
+- Create public or private parties with a title, description, and map coordinates
+- Parties appear as circles on a D3-rendered map, sized by attendance
+- RSVP to parties with Yes, Maybe, or No
+- Invite specific users to private parties (with email notifications)
+- Real-time updates across all connected clients
+
+## How it's structured
+
+```
+client/
+  main.html        # All Blaze templates (map, details, RSVP, dialogs)
+  main.js          # Template helpers, event handlers, D3 rendering
+server/
+  main.js          # Publications (parties, users directory)
+imports/
+  model.js         # Parties collection, methods (createParty, invite, rsvp), helpers
+```
+
+The data model uses `Collection.allow()` for client-side security rules and Meteor methods for operations that need server-side validation (creating parties, inviting users, RSVPs).
+
+## Deployment
+
+- **[Galaxy](https://galaxycloud.app/)**: `meteor deploy your-app.meteorapp.com`
+  - To try it quickly with a free tier and shared MongoDB: `meteor deploy your-app.meteorapp.com --free --mongo`
+- **Any Node.js host**: `meteor build` gives you a standard Node bundle
+- **MUP**: automated deploy to your own server over SSH
+
+## Links
+
+- [Meteor docs](https://docs.meteor.com/) · [Meteor guide](https://guide.meteor.com/)
+- [Blaze docs](https://www.blazejs.org/)
+- [D3.js](https://d3js.org/) · [Bootstrap](https://getbootstrap.com/)

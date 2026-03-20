@@ -2,16 +2,22 @@
 
 *Your notes, always available.*
 
-A minimal offline-first notes app built with Meteor 3.4 demonstrating instant startup, IndexedDB persistence, optimistic UI, and PWA support.
+An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
 
-## What This Demonstrates
+## Stack
 
-- **Offline-first architecture** with `jam:offline` — IndexedDB persistence, auto-sync, cross-tab data sharing
-- **Optimistic methods** with `jam:method` — instant UI updates that queue when offline and replay on reconnect
-- **Cached subscriptions** with `jam:pub-sub` — data loads instantly from cache
-- **Soft delete** with `jam:soft-delete` — recoverable deletion with trash view, recovery, and permanent delete
-- **PWA** with [Workbox](https://developer.chrome.com/docs/workbox) via `workbox-webpack-plugin` + Rspack — installable app with service worker caching (NetworkFirst for pages, StaleWhileRevalidate for assets, CacheFirst for images)
-- **Mantine UI** — modern React component library with PostCSS integration
+| | |
+|---|---|
+| Runtime | Meteor 3.4 |
+| Frontend | React 19 |
+| UI | Mantine UI |
+| Offline | jam:offline (IndexedDB, auto-sync, cross-tab) |
+| Methods | jam:method (optimistic, offline queuing) |
+| Pub/Sub | jam:pub-sub (cached subscriptions) |
+| Soft Delete | jam:soft-delete |
+| Validation | Zod |
+| PWA | Workbox (via workbox-webpack-plugin + Rspack) |
+| Build | Rspack |
 
 ## Features
 
@@ -25,36 +31,28 @@ A minimal offline-first notes app built with Meteor 3.4 demonstrating instant st
 - Dark mode toggle
 - Keyboard shortcuts (`Ctrl+N` new note, `Esc` deselect)
 - Online/offline/syncing status indicator
-- Installable as PWA — works fully offline
+- Installable as PWA, works fully offline
 
-## Running
+## Running it
 
 ```bash
 meteor npm install
-meteor
+npm start
 ```
 
-## Stack
+Visit `http://localhost:3000/`.
 
-| Technology | Purpose |
+| Command | What it does |
 |---|---|
-| [Meteor 3.4](https://docs.meteor.com) | Full-stack framework |
-| [Rspack](https://rspack.dev) | Bundler |
-| [React 19](https://react.dev) | UI library |
-| [Mantine UI](https://mantine.dev) | Component library |
-| [jam:offline](https://docs.meteor.com/community-packages/offline) | IndexedDB persistence |
-| [jam:method](https://docs.meteor.com/community-packages/jam-method) | Typed methods with offline queuing |
-| [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub) | Cached subscriptions |
-| [jam:soft-delete](https://docs.meteor.com/community-packages/soft-delete) | Soft delete support |
-| [Zod](https://zod.dev) | Schema validation |
-| [Workbox](https://developer.chrome.com/docs/workbox) | PWA service worker via `workbox-webpack-plugin` + Rspack |
+| `npm start` | Start the app |
+| `npm run eslint` | Lint and auto-fix |
 
-## Project Structure
+## How it's structured
 
 ```
 imports/
   api/notes/
-    collection.js   # Mongo.Collection + jam:soft-delete
+    collection.js    # Mongo.Collection + jam:soft-delete
     schema.js        # Zod schemas
     methods.js       # jam:method definitions
     publications.js  # Publications
@@ -66,7 +64,28 @@ imports/
 client/
   main.jsx           # Entry point
   main.css           # Mantine styles
-  main.html          # HTML template
 server/
   main.js            # Import API modules
 ```
+
+### What makes it offline-first
+
+- `jam:offline` stores data in IndexedDB and syncs with the server when connected
+- `jam:method` queues method calls while offline and replays them on reconnect
+- `jam:pub-sub` caches subscription data so the app loads instantly from cache
+- `jam:soft-delete` marks items as deleted instead of removing them, enabling trash and recovery
+- Workbox service worker (configured through Rspack) caches pages and assets for full offline PWA support
+
+## Deployment
+
+- **[Galaxy](https://galaxycloud.app/)**: `meteor deploy your-app.meteorapp.com`
+  - To try it quickly with a free tier and shared MongoDB: `meteor deploy your-app.meteorapp.com --free --mongo`
+- **Any Node.js host**: `meteor build` gives you a standard Node bundle
+- **MUP**: automated deploy to your own server over SSH
+
+## Links
+
+- [Meteor docs](https://docs.meteor.com/) · [Meteor guide](https://guide.meteor.com/)
+- [React docs](https://react.dev/)
+- [Mantine UI](https://mantine.dev/) · [Workbox](https://developer.chrome.com/docs/workbox)
+- [jam:offline](https://docs.meteor.com/community-packages/offline) · [jam:method](https://docs.meteor.com/community-packages/jam-method) · [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub)

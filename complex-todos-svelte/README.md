@@ -85,11 +85,12 @@ Getting Skeleton UI to work with Rspack required a few tweaks in `rspack.config.
 
 ## Deployment
 
-- **Galaxy**: `meteor deploy your-app.meteorapp.com`
+- **[Galaxy](https://galaxycloud.app/)**: `meteor deploy your-app.meteorapp.com`
+  - To try it quickly with a free tier and shared MongoDB: `meteor deploy your-app.meteorapp.com --free --mongo`
 - **Any Node.js host**: `meteor build` gives you a standard Node bundle
 - **MUP**: automated deploy to your own server over SSH
 
-For monitoring in production, [MontiAPM](https://montiapm.com/) drops in with minimal config. Galaxy has its own built-in APM.
+For monitoring in production, [MontiAPM](https://montiapm.com/) drops in with minimal config. [Galaxy](https://galaxycloud.app/) has its own built-in APM.
 
 ## Links
 
