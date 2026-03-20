@@ -28,9 +28,7 @@ describe('notes-offline', function () {
         });
         assert.ok(noteId);
 
-        const { NotesCollection } = await import(
-          '../imports/api/notes/collection'
-        );
+        const { NotesCollection } = await import('../imports/api/notes/collection');
         const note = await NotesCollection.findOneAsync(noteId);
         assert.strictEqual(note.title, 'Integration test note');
         assert.strictEqual(note.body, 'Test body content');
@@ -55,9 +53,7 @@ describe('notes-offline', function () {
           body: 'Updated body',
         });
 
-        const { NotesCollection } = await import(
-          '../imports/api/notes/collection'
-        );
+        const { NotesCollection } = await import('../imports/api/notes/collection');
         const note = await NotesCollection.findOneAsync(noteId);
         assert.strictEqual(note.title, 'Updated title');
         assert.strictEqual(note.body, 'Updated body');
@@ -75,9 +71,7 @@ describe('notes-offline', function () {
 
         await Meteor.callAsync('notes.togglePin', { _id: noteId });
 
-        const { NotesCollection } = await import(
-          '../imports/api/notes/collection'
-        );
+        const { NotesCollection } = await import('../imports/api/notes/collection');
         const pinned = await NotesCollection.findOneAsync(noteId);
         assert.strictEqual(pinned.pinned, true);
 
@@ -100,9 +94,7 @@ describe('notes-offline', function () {
         await Meteor.callAsync('notes.remove', { _id: noteId });
 
         // Soft-deleted note should have `deleted: true`
-        const { NotesCollection } = await import(
-          '../imports/api/notes/collection'
-        );
+        const { NotesCollection } = await import('../imports/api/notes/collection');
         const note = await NotesCollection.findOneAsync(noteId);
         assert.strictEqual(note.deleted, true);
 
