@@ -6,6 +6,9 @@ _build
 */build-chunks
 .rsdoctor
 
+# Source maps
+*.map
+
 # Playwright
 test-results/
 playwright-report/

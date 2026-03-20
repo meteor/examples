@@ -1,5 +1,8 @@
 node_modules/
 
+# Source maps
+*.map
+
 # Meteor Modern-Tools build context directories
 _build
 */build-assets
