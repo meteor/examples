@@ -6,7 +6,9 @@
     "test": "TEST_WATCH=1 meteor -s settings.json --port 3000 test --driver-package meteortesting:mocha",
     "e2e": "npx cypress open",
     "e2e:headless": "npx cypress run",
-    "visualize": "meteor -s settings.json --production --extra-packages bundle-visualizer"
+    "visualize": "meteor -s settings.json --production --extra-packages bundle-visualizer",
+    "lint": "npx oxlint --import-plugin .",
+    "lint:fix": "npx oxlint --import-plugin . --fix"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.6",
@@ -17,6 +19,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "oxlint": "^1.56.0",
     "@meteorjs/rspack": "^1.0.1",
     "@rsdoctor/rspack-plugin": "^1.5.3",
     "@rspack/cli": "^1.7.8",

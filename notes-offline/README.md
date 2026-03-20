@@ -1,24 +1,25 @@
 # Notes Offline
 
-*Your notes, always available.*
+_Your notes, always available._
 
 An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
 
 ## Stack
 
-| | |
-|---|---|
-| Runtime | Meteor 3.4 |
-| Frontend | React 19 |
-| UI | Mantine UI |
-| Offline | jam:offline (IndexedDB, auto-sync, cross-tab) |
-| Methods | jam:method (optimistic, offline queuing) |
-| Pub/Sub | jam:pub-sub (cached subscriptions) |
-| Soft Delete | jam:soft-delete |
-| Validation | Zod |
-| PWA | Workbox (via workbox-webpack-plugin + Rspack) |
-| E2E | Playwright |
-| Build | Rspack |
+|              |                                               |
+| ------------ | --------------------------------------------- |
+| Runtime      | Meteor 3.4                                    |
+| Frontend     | React 19                                      |
+| UI           | Mantine UI                                    |
+| Offline      | jam:offline (IndexedDB, auto-sync, cross-tab) |
+| Methods      | jam:method (optimistic, offline queuing)      |
+| Pub/Sub      | jam:pub-sub (cached subscriptions)            |
+| Soft Delete  | jam:soft-delete                               |
+| Validation   | Zod                                           |
+| PWA          | Workbox (via workbox-webpack-plugin + Rspack) |
+| Code Quality | ESLint (Airbnb) + Prettier                    |
+| E2E          | Playwright                                    |
+| Build        | Rspack                                        |
 
 ## Features
 
@@ -43,12 +44,13 @@ npm start
 
 Visit `http://localhost:3000/`.
 
-| Command | What it does |
-|---|---|
-| `npm start` | Start the app |
-| `npm run eslint` | Lint and auto-fix |
-| `npm run e2e` | E2E tests (Playwright, interactive UI) |
-| `npm run e2e:headless` | E2E tests (Playwright, headless) |
+| Command                | What it does                           |
+| ---------------------- | -------------------------------------- |
+| `npm start`            | Start the app                          |
+| `npm run lint`         | Lint and check formatting              |
+| `npm run lint:fix`     | Lint and auto-fix + format             |
+| `npm run e2e`          | E2E tests (Playwright, interactive UI) |
+| `npm run e2e:headless` | E2E tests (Playwright, headless)       |
 
 Before running E2E tests for the first time, install Playwright's browsers with `npx playwright install`.
 

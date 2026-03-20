@@ -1,44 +1,63 @@
-import React, { useState } from 'react';
-import { Plus, MoreHorizontal, Pencil, Trash2, ArrowRightLeft } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './components/ui/table';
-import { Badge } from './components/ui/badge';
-import { Button } from './components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './components/ui/dropdown-menu';
-import { api } from '../api/client';
-import { TaskForm } from './TaskForm';
+import { ArrowRightLeft, MoreHorizontal, Pencil, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { api } from "../api/client";
+import { Badge } from "./components/ui/badge";
+import { Button } from "./components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./components/ui/table";
+import { TaskForm } from "./TaskForm";
 
 const STATUS_CONFIG = {
-  'todo': { label: 'To Do', variant: 'outline' },
-  'in-progress': { label: 'In Progress', variant: 'secondary' },
-  'done': { label: 'Done', variant: 'default' },
+  todo: { label: "To Do", variant: "outline" },
+  "in-progress": { label: "In Progress", variant: "secondary" },
+  done: { label: "Done", variant: "default" },
 };
 
 const PRIORITY_CONFIG = {
-  'low': { label: 'Low', variant: 'outline' },
-  'medium': { label: 'Medium', variant: 'secondary' },
-  'high': { label: 'High', variant: 'destructive' },
+  low: { label: "Low", variant: "outline" },
+  medium: { label: "Medium", variant: "secondary" },
+  high: { label: "High", variant: "destructive" },
 };
 
 const NEXT_STATUS = {
-  'todo': 'in-progress',
-  'in-progress': 'done',
-  'done': 'todo',
+  todo: "in-progress",
+  "in-progress": "done",
+  done: "todo",
 };
 
 export const TaskList = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [priorityFilter, setPriorityFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
   const { data: tasks } = api.tasks.usePublication();
   const removeMutation = api.removeTask.useMutation();
   const updateMutation = api.updateTask.useMutation();
 
-  const filteredTasks = tasks.filter(task => {
-    if (statusFilter !== 'all' && task.status !== statusFilter) return false;
-    if (priorityFilter !== 'all' && task.priority !== priorityFilter) return false;
+  const filteredTasks = tasks.filter((task) => {
+    if (statusFilter !== "all" && task.status !== statusFilter) return false;
+    if (priorityFilter !== "all" && task.priority !== priorityFilter) return false;
     return true;
   });
 
@@ -61,9 +80,11 @@ export const TaskList = () => {
   };
 
   const formatDate = (date) => {
-    if (!date) return '-';
-    return new Date(date).toLocaleDateString('en-US', {
-      month: 'short', day: 'numeric', year: 'numeric',
+    if (!date) return "-";
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
@@ -119,19 +140,19 @@ export const TaskList = () => {
               <TableRow>
                 <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
                   {tasks.length === 0
-                    ? 'No tasks yet. Create your first task!'
-                    : 'No tasks match the current filters.'}
+                    ? "No tasks yet. Create your first task!"
+                    : "No tasks match the current filters."}
                 </TableCell>
               </TableRow>
             ) : (
               filteredTasks.map((task) => {
-                const statusCfg = STATUS_CONFIG[task.status] || STATUS_CONFIG['todo'];
-                const priorityCfg = PRIORITY_CONFIG[task.priority] || PRIORITY_CONFIG['medium'];
+                const statusCfg = STATUS_CONFIG[task.status] || STATUS_CONFIG.todo;
+                const priorityCfg = PRIORITY_CONFIG[task.priority] || PRIORITY_CONFIG.medium;
                 return (
                   <TableRow key={task._id}>
                     <TableCell className="font-medium">{task.title}</TableCell>
                     <TableCell className="hidden md:table-cell max-w-[200px] truncate text-muted-foreground">
-                      {task.description || '-'}
+                      {task.description || "-"}
                     </TableCell>
                     <TableCell>
                       <Badge variant={statusCfg.variant}>{statusCfg.label}</Badge>
@@ -159,7 +180,10 @@ export const TaskList = () => {
                             Move to {STATUS_CONFIG[NEXT_STATUS[task.status]]?.label}
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={() => handleDelete(task)} className="text-destructive">
+                          <DropdownMenuItem
+                            onClick={() => handleDelete(task)}
+                            className="text-destructive"
+                          >
                             <Trash2 className="mr-2 h-4 w-4" />
                             Delete
                           </DropdownMenuItem>

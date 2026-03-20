@@ -2,6 +2,8 @@
   "name": "task-manager",
   "scripts": {
     "start": "meteor run",
+    "lint": "npx @biomejs/biome check .",
+    "lint:fix": "npx @biomejs/biome check . --write",
     "e2e": "npx playwright test --ui",
     "e2e:headless": "npx playwright test"
   },
@@ -29,6 +31,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
     "@playwright/test": "^1.50.0",
     "@meteorjs/rspack": "^1.0.1",
     "@rsdoctor/rspack-plugin": "^1.2.3",

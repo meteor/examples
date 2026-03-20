@@ -18,7 +18,7 @@ Meteor.subscribe("parties");
 Meteor.startup(function () {
   Tracker.autorun(function () {
     const selected = Session.get("selected");
-    if (! selected || ! Parties.findOne(selected)) {
+    if (!selected || !Parties.findOne(selected)) {
       const party = Parties.findOne();
       if (party)
         Session.set("selected", party._id);
@@ -104,11 +104,11 @@ Template.attendance.helpers({
   },
 
   nobody: function () {
-    return ! this.public && (this.rsvps.length + this.invited.length === 0);
+    return !this.public && (this.rsvps.length + this.invited.length === 0);
   },
 
   canInvite: function () {
-    return ! this.public && this.owner === Meteor.userId();
+    return !this.public && this.owner === Meteor.userId();
   }
 });
 
@@ -120,7 +120,7 @@ Template.map.events({
     Session.set("selected", event.currentTarget.id);
   },
   'dblclick .map': function (event, template) {
-    if (! Meteor.userId()) // must be logged in to create events
+    if (!Meteor.userId()) // must be logged in to create events
       return;
     const svg = event.currentTarget.querySelector('svg');
     const rect = svg.getBoundingClientRect();
@@ -134,7 +134,7 @@ Template.map.onRendered(function () {
   const self = this;
   self.node = self.find("svg");
 
-  if (! self.handle) {
+  if (!self.handle) {
     self.handle = Tracker.autorun(function () {
       const selected = Session.get('selected');
       const selectedParty = selected && Parties.findOne(selected);
@@ -253,7 +253,7 @@ Template.createDialog.events({
       }, function (error, id) {
         if (id) {
           Session.set("selected", id);
-          if (! isPublic && Meteor.users.find().count() > 1)
+          if (!isPublic && Meteor.users.find().count() > 1)
             openInviteDialog();
         }
       });
@@ -295,7 +295,7 @@ Template.inviteDialog.events({
 Template.inviteDialog.helpers({
   uninvited: function () {
     const party = Parties.findOne(Session.get("selected"));
-    if (! party)
+    if (!party)
       return []; // party hasn't loaded yet
     return Meteor.users.find({$nor: [{_id: {$in: party.invited}},
         {_id: party.owner}]});

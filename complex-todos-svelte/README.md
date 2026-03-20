@@ -17,6 +17,7 @@ Built with Meteor 3.4, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 | Database | MongoDB |
 | Validation | Zod + jam:method |
 | Caching | node-cache |
+| Code Quality | oxlint (OXC) + import plugin |
 | Tests | Mocha (unit), Cypress (E2E) |
 
 ## Running it
@@ -35,6 +36,8 @@ Other commands:
 | `npm run e2e` | Open Cypress UI for interactive E2E testing |
 | `npm run e2e:headless` | Run E2E tests headless (CI-friendly) |
 | `npm run visualize` | Bundle analyzer in production mode |
+| `npm run lint` | Lint (oxlint) |
+| `npm run lint:fix` | Lint and auto-fix (oxlint) |
 
 The app must be running (`npm start`) before you run Cypress.
 

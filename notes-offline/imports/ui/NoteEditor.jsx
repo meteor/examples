@@ -1,13 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useFind } from 'meteor/react-meteor-data';
 import {
-  TextInput, Textarea, Group, ActionIcon, Stack, Text, Tooltip,
-  Badge, SegmentedControl, TypographyStylesProvider, Divider,
+  TextInput,
+  Textarea,
+  Group,
+  ActionIcon,
+  Stack,
+  Text,
+  Tooltip,
+  Badge,
+  SegmentedControl,
+  TypographyStylesProvider,
+  Divider,
 } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
 import {
-  IconPin, IconPinFilled, IconTrash, IconArrowLeft,
-  IconEye, IconEdit, IconTag, IconX,
+  IconPin,
+  IconPinFilled,
+  IconTrash,
+  IconArrowLeft,
+  IconEye,
+  IconEdit,
+  IconTag,
+  IconX,
 } from '@tabler/icons-react';
 import Markdown from 'react-markdown';
 import { NotesCollection } from '../api/notes/collection';
@@ -71,11 +86,15 @@ export const NoteEditor = ({ noteId, onClose }) => {
 
   const handleRemoveTag = (tagToRemove) => {
     const currentTags = note?.tags || [];
-    updateNote({ _id: noteId, tags: currentTags.filter(t => t !== tagToRemove) });
+    updateNote({ _id: noteId, tags: currentTags.filter((t) => t !== tagToRemove) });
   };
 
   if (!note) {
-    return <Text c="dimmed" ta="center" py="xl" size="lg">Note not found</Text>;
+    return (
+      <Text c="dimmed" ta="center" py="xl" size="lg">
+        Note not found
+      </Text>
+    );
   }
 
   return (
@@ -91,17 +110,48 @@ export const NoteEditor = ({ noteId, onClose }) => {
             value={viewMode}
             onChange={setViewMode}
             data={[
-              { label: <Group gap={6}><IconEdit size={18} /><Text size="sm" visibleFrom="md">Edit</Text></Group>, value: 'edit' },
-              { label: <Group gap={6}><IconEye size={18} /><Text size="sm" visibleFrom="md">Preview</Text></Group>, value: 'preview' },
+              {
+                label: (
+                  <Group gap={6}>
+                    <IconEdit size={18} />
+                    <Text size="sm" visibleFrom="md">
+                      Edit
+                    </Text>
+                  </Group>
+                ),
+                value: 'edit',
+              },
+              {
+                label: (
+                  <Group gap={6}>
+                    <IconEye size={18} />
+                    <Text size="sm" visibleFrom="md">
+                      Preview
+                    </Text>
+                  </Group>
+                ),
+                value: 'preview',
+              },
             ]}
           />
           <Tooltip label={note.pinned ? 'Unpin' : 'Pin'}>
-            <ActionIcon variant="subtle" size="lg" onClick={handleTogglePin} aria-label="Toggle pin">
+            <ActionIcon
+              variant="subtle"
+              size="lg"
+              onClick={handleTogglePin}
+              aria-label="Toggle pin"
+            >
               {note.pinned ? <IconPinFilled size={22} /> : <IconPin size={22} />}
             </ActionIcon>
           </Tooltip>
           <Tooltip label="Delete">
-            <ActionIcon variant="subtle" size="lg" color="red" onClick={handleDelete} aria-label="Delete note">
+            <ActionIcon
+              variant="subtle"
+              size="lg"
+              color="red"
+              onClick={handleDelete}
+              aria-label="Delete note"
+            >
               <IconTrash size={22} />
             </ActionIcon>
           </Tooltip>
@@ -137,7 +187,9 @@ export const NoteEditor = ({ noteId, onClose }) => {
           {body ? (
             <Markdown>{body}</Markdown>
           ) : (
-            <Text c="dimmed" fs="italic" size="lg">Nothing to preview</Text>
+            <Text c="dimmed" fs="italic" size="lg">
+              Nothing to preview
+            </Text>
           )}
         </TypographyStylesProvider>
       )}
@@ -147,7 +199,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
       {/* Tags */}
       <Group gap={8} wrap="wrap" align="center">
         <IconTag size={18} color="var(--mantine-color-dimmed)" />
-        {note.tags?.map(tag => (
+        {note.tags?.map((tag) => (
           <Badge
             key={tag}
             size="lg"
@@ -155,7 +207,12 @@ export const NoteEditor = ({ noteId, onClose }) => {
             radius="sm"
             style={{ cursor: 'pointer' }}
             rightSection={
-              <ActionIcon size="xs" variant="transparent" onClick={() => handleRemoveTag(tag)} aria-label={`Remove tag ${tag}`}>
+              <ActionIcon
+                size="xs"
+                variant="transparent"
+                onClick={() => handleRemoveTag(tag)}
+                aria-label={`Remove tag ${tag}`}
+              >
                 <IconX size={12} />
               </ActionIcon>
             }
@@ -176,9 +233,13 @@ export const NoteEditor = ({ noteId, onClose }) => {
 
       {/* Metadata */}
       <Text size="sm" c="dimmed">
-        Last updated: {note.updatedAt?.toLocaleString(undefined, {
-          month: 'short', day: 'numeric', year: 'numeric',
-          hour: '2-digit', minute: '2-digit',
+        Last updated:{' '}
+        {note.updatedAt?.toLocaleString(undefined, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
         })}
       </Text>
     </Stack>

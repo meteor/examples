@@ -71,7 +71,7 @@ Meteor.methods({
       throw new Meteor.Error(413, "Title too long");
     if (options.description.length > 1000)
       throw new Meteor.Error(413, "Description too long");
-    if (! this.userId)
+    if (!this.userId)
       throw new Meteor.Error(403, "You must be logged in");
 
     const doc = {
@@ -80,7 +80,7 @@ Meteor.methods({
       y: options.y,
       title: options.title,
       description: options.description,
-      public: !! options.public,
+      public: !!options.public,
       invited: [],
       rsvps: []
     };
@@ -100,12 +100,12 @@ Meteor.methods({
       ? await Parties.findOneAsync(partyId)
       : Parties.findOne(partyId);
 
-    if (! party || party.owner !== this.userId)
+    if (!party || party.owner !== this.userId)
       throw new Meteor.Error(404, "No such party");
     if (party.public)
       throw new Meteor.Error(400,
                              "That party is public. No need to invite people.");
-    if (userId !== party.owner && ! _.includes(party.invited, userId)) {
+    if (userId !== party.owner && !_.includes(party.invited, userId)) {
       if (Meteor.isServer) {
         await Parties.updateAsync(partyId, { $addToSet: { invited: userId } });
 
@@ -133,7 +133,7 @@ Meteor.methods({
   rsvp: async function (partyId, rsvp) {
     check(partyId, String);
     check(rsvp, String);
-    if (! this.userId)
+    if (!this.userId)
       throw new Meteor.Error(403, "You must be logged in to RSVP");
     if (!['yes', 'no', 'maybe'].includes(rsvp))
       throw new Meteor.Error(400, "Invalid RSVP");
@@ -142,9 +142,9 @@ Meteor.methods({
       ? await Parties.findOneAsync(partyId)
       : Parties.findOne(partyId);
 
-    if (! party)
+    if (!party)
       throw new Meteor.Error(404, "No such party");
-    if (! party.public && party.owner !== this.userId &&
+    if (!party.public && party.owner !== this.userId &&
         !party.invited?.includes(this.userId))
       // private, but let's not tell this to the user
       throw new Meteor.Error(403, "No such party");

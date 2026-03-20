@@ -6,6 +6,8 @@
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "lint": "npx rslint .",
+    "lint:fix": "npx rslint . --fix",
     "e2e": "npx playwright test --ui",
     "e2e:headless": "npx playwright test"
   },
@@ -28,6 +30,7 @@
     "modern": true
   },
   "devDependencies": {
+    "@rslint/core": "^0.3.0",
     "@playwright/test": "^1.50.0",
     "@meteorjs/rspack": "^1.0.0",
     "@rsdoctor/rspack-plugin": "^1.2.3",

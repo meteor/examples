@@ -1,32 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './components/ui/dialog';
-import { Button } from './components/ui/button';
-import { Input } from './components/ui/input';
-import { Label } from './components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
-import { api } from '../api/client';
+import { useEffect, useState } from "react";
+import { api } from "../api/client";
+import { Button } from "./components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./components/ui/dialog";
+import { Input } from "./components/ui/input";
+import { Label } from "./components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select";
 
 export const TaskForm = ({ open, onOpenChange, task }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('todo');
-  const [priority, setPriority] = useState('medium');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("todo");
+  const [priority, setPriority] = useState("medium");
 
   const isEditing = !!task;
 
   useEffect(() => {
     if (task) {
-      setTitle(task.title || '');
-      setDescription(task.description || '');
-      setStatus(task.status || 'todo');
-      setPriority(task.priority || 'medium');
+      setTitle(task.title || "");
+      setDescription(task.description || "");
+      setStatus(task.status || "todo");
+      setPriority(task.priority || "medium");
     } else {
-      setTitle('');
-      setDescription('');
-      setStatus('todo');
-      setPriority('medium');
+      setTitle("");
+      setDescription("");
+      setStatus("todo");
+      setPriority("medium");
     }
-  }, [task, open]);
+  }, [task]);
 
   const createMutation = api.createTask.useMutation();
   const updateMutation = api.updateTask.useMutation();
@@ -36,13 +48,19 @@ export const TaskForm = ({ open, onOpenChange, task }) => {
     if (!title.trim()) return;
 
     if (isEditing) {
-      updateMutation.mutate({ _id: task._id, title, description, status, priority }, {
-        onSuccess: () => onOpenChange(false),
-      });
+      updateMutation.mutate(
+        { _id: task._id, title, description, status, priority },
+        {
+          onSuccess: () => onOpenChange(false),
+        }
+      );
     } else {
-      createMutation.mutate({ title, description, status, priority }, {
-        onSuccess: () => onOpenChange(false),
-      });
+      createMutation.mutate(
+        { title, description, status, priority },
+        {
+          onSuccess: () => onOpenChange(false),
+        }
+      );
     }
   };
 
@@ -52,7 +70,7 @@ export const TaskForm = ({ open, onOpenChange, task }) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Task' : 'Create Task'}</DialogTitle>
+          <DialogTitle>{isEditing ? "Edit Task" : "Create Task"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -109,7 +127,7 @@ export const TaskForm = ({ open, onOpenChange, task }) => {
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading || !title.trim()}>
-              {isLoading ? 'Saving...' : isEditing ? 'Update' : 'Create'}
+              {isLoading ? "Saving..." : isEditing ? "Update" : "Create"}
             </Button>
           </DialogFooter>
         </form>

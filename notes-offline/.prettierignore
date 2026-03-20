@@ -1,0 +1,4 @@
+node_modules/
+.meteor/
+_build/
+public/sw.js

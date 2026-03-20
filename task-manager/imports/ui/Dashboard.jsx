@@ -1,21 +1,20 @@
-import React from 'react';
-import { ListTodo, Clock, Loader2, CheckCircle2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
-import { api } from '../api/client';
+import { CheckCircle2, Clock, ListTodo, Loader2 } from "lucide-react";
+import { api } from "../api/client";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 
 export const Dashboard = () => {
   const { data: tasks } = api.tasks.usePublication();
 
   const total = tasks.length;
-  const todo = tasks.filter(t => t.status === 'todo').length;
-  const inProgress = tasks.filter(t => t.status === 'in-progress').length;
-  const done = tasks.filter(t => t.status === 'done').length;
+  const todo = tasks.filter((t) => t.status === "todo").length;
+  const inProgress = tasks.filter((t) => t.status === "in-progress").length;
+  const done = tasks.filter((t) => t.status === "done").length;
 
   const metrics = [
-    { label: 'Total Tasks', value: total, icon: ListTodo, color: 'text-blue-500' },
-    { label: 'To Do', value: todo, icon: Clock, color: 'text-yellow-500' },
-    { label: 'In Progress', value: inProgress, icon: Loader2, color: 'text-orange-500' },
-    { label: 'Completed', value: done, icon: CheckCircle2, color: 'text-green-500' },
+    { label: "Total Tasks", value: total, icon: ListTodo, color: "text-blue-500" },
+    { label: "To Do", value: todo, icon: Clock, color: "text-yellow-500" },
+    { label: "In Progress", value: inProgress, icon: Loader2, color: "text-orange-500" },
+    { label: "Completed", value: done, icon: CheckCircle2, color: "text-green-500" },
   ];
 
   return (

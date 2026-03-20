@@ -12,6 +12,7 @@ A collaborative event planning app where users create parties, place them on an 
 | Visualization | D3.js v7 (interactive map) |
 | Database | MongoDB |
 | Auth | Meteor Accounts (password) |
+| Code Quality | RSLint |
 | E2E | Playwright |
 | Build | Rspack |
 
@@ -30,6 +31,8 @@ Visit `http://localhost:3000/`.
 | `npm test` | Unit tests (Mocha) |
 | `npm run test-app` | Full-app tests (Mocha, watch mode) |
 | `npm run visualize` | Bundle analyzer in production mode |
+| `npm run lint` | Lint (RSLint) |
+| `npm run lint:fix` | Lint and auto-fix (RSLint) |
 | `npm run e2e` | E2E tests (Playwright, interactive UI) |
 | `npm run e2e:headless` | E2E tests (Playwright, headless) |
 

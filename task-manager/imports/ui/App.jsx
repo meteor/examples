@@ -1,7 +1,6 @@
-import React from 'react';
-import { CheckSquare } from 'lucide-react';
-import { Dashboard } from './Dashboard';
-import { TaskList } from './TaskList';
+import { CheckSquare } from "lucide-react";
+import { Dashboard } from "./Dashboard";
+import { TaskList } from "./TaskList";
 
 export const App = () => {
   return (

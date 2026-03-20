@@ -32,7 +32,7 @@ export const App = () => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
         e.preventDefault();
-        createNote({ title: 'Untitled', body: '' }).then(id => setSelectedNoteId(id));
+        createNote({ title: 'Untitled', body: '' }).then((id) => setSelectedNoteId(id));
       }
       if (e.key === 'Escape') {
         setSelectedNoteId(null);
@@ -45,22 +45,13 @@ export const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="auto">
       <Notifications position="top-right" />
-      <AppShell
-        navbar={{ width: 380, breakpoint: 'sm' }}
-        padding="xl"
-      >
+      <AppShell navbar={{ width: 380, breakpoint: 'sm' }} padding="xl">
         <AppShell.Navbar p="lg">
-          <NotesList
-            selectedNoteId={selectedNoteId}
-            onSelectNote={setSelectedNoteId}
-          />
+          <NotesList selectedNoteId={selectedNoteId} onSelectNote={setSelectedNoteId} />
         </AppShell.Navbar>
         <AppShell.Main>
           {selectedNoteId ? (
-            <NoteEditor
-              noteId={selectedNoteId}
-              onClose={() => setSelectedNoteId(null)}
-            />
+            <NoteEditor noteId={selectedNoteId} onClose={() => setSelectedNoteId(null)} />
           ) : (
             <EmptyState />
           )}

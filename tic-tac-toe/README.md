@@ -11,6 +11,7 @@ Multiplayer tic-tac-toe with room support, built with Meteor, React, and Materia
 | UI | MUI v7 (Material UI) |
 | Routing | React Router v7 |
 | Database | MongoDB |
+| Code Quality | oxlint (OXC) + react, import plugins |
 | E2E | Playwright |
 | Build | Rspack |
 
@@ -29,6 +30,8 @@ Visit `http://localhost:3000/`.
 | `npm test` | Unit tests (Mocha) |
 | `npm run test-app` | Full-app tests (Mocha, watch mode) |
 | `npm run visualize` | Bundle analyzer in production mode |
+| `npm run lint` | Lint (oxlint) |
+| `npm run lint:fix` | Lint and auto-fix (oxlint) |
 | `npm run e2e` | E2E tests (Playwright, interactive UI) |
 | `npm run e2e:headless` | E2E tests (Playwright, headless) |
 

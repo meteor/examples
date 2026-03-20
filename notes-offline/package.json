@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "eslint": "eslint . --fix",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint . --fix && prettier --write .",
     "e2e": "npx playwright test --ui",
     "e2e:headless": "npx playwright test"
   },
@@ -28,7 +29,15 @@
   "devDependencies": {
     "@playwright/test": "^1.50.0",
     "@meteorjs/rspack": "^1.0.1",
-    "@quave/eslint-config-quave": "^3.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^10.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "eslint-plugin-prettier": "^5.2.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.4.0",
     "@rsdoctor/rspack-plugin": "^1.5.3",
     "@rspack/cli": "^1.7.8",
     "@rspack/core": "^1.7.8",
@@ -44,10 +53,5 @@
       "server": "server/main.js"
     },
     "modern": true
-  },
-  "eslintConfig": {
-    "extends": [
-      "@quave/quave"
-    ]
   }
 }

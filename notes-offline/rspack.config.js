@@ -20,7 +20,7 @@ class CopySWToPublic {
   }
 }
 
-module.exports = defineConfig(Meteor => {
+module.exports = defineConfig((Meteor) => {
   return {
     module: {
       rules: [
@@ -32,58 +32,59 @@ module.exports = defineConfig(Meteor => {
       ].filter(Boolean),
     },
     plugins: [
-      Meteor.isClient && new GenerateSW({
-        swDest: 'sw.js',
-        skipWaiting: false,
-        clientsClaim: false,
-        cleanupOutdatedCaches: true,
-        inlineWorkboxRuntime: true,
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
-        exclude: [/main\.html$/, /\.map$/],
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) => url.pathname.includes('/sockjs/'),
-            handler: 'NetworkOnly',
-          },
-          {
-            urlPattern: ({ request }) => request.mode === 'navigate',
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'pages',
-              networkTimeoutSeconds: 15,
-              expiration: {
-                maxEntries: 20,
+      Meteor.isClient &&
+        new GenerateSW({
+          swDest: 'sw.js',
+          skipWaiting: false,
+          clientsClaim: false,
+          cleanupOutdatedCaches: true,
+          inlineWorkboxRuntime: true,
+          maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+          exclude: [/main\.html$/, /\.map$/],
+          runtimeCaching: [
+            {
+              urlPattern: ({ url }) => url.pathname.includes('/sockjs/'),
+              handler: 'NetworkOnly',
+            },
+            {
+              urlPattern: ({ request }) => request.mode === 'navigate',
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'pages',
+                networkTimeoutSeconds: 15,
+                expiration: {
+                  maxEntries: 20,
+                },
               },
             },
-          },
-          {
-            urlPattern: ({ request }) =>
-              request.destination === 'style' ||
-              request.destination === 'script' ||
-              request.destination === 'worker',
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'assets',
-              cacheableResponse: {
-                statuses: [200],
-              },
-              expiration: {
-                maxEntries: 60,
-                maxAgeSeconds: 7 * 24 * 60 * 60,
+            {
+              urlPattern: ({ request }) =>
+                request.destination === 'style' ||
+                request.destination === 'script' ||
+                request.destination === 'worker',
+              handler: 'StaleWhileRevalidate',
+              options: {
+                cacheName: 'assets',
+                cacheableResponse: {
+                  statuses: [200],
+                },
+                expiration: {
+                  maxEntries: 60,
+                  maxAgeSeconds: 7 * 24 * 60 * 60,
+                },
               },
             },
-          },
-          {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|gif|ico)$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'images',
-              expiration: { maxEntries: 30 },
-              matchOptions: { ignoreVary: true },
+            {
+              urlPattern: /\.(?:png|jpg|jpeg|svg|gif|ico)$/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'images',
+                expiration: { maxEntries: 30 },
+                matchOptions: { ignoreVary: true },
+              },
             },
-          },
-        ],
-      }),
+          ],
+        }),
       Meteor.isClient && new CopySWToPublic(),
     ].filter(Boolean),
   };

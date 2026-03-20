@@ -2,13 +2,36 @@ import React, { useState, useMemo } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useFind, useTracker } from 'meteor/react-meteor-data';
 import {
-  TextInput, ActionIcon, Stack, Card, Text, Group, Badge, ScrollArea,
-  Tooltip, Menu, Divider, Button, useMantineColorScheme,
+  TextInput,
+  ActionIcon,
+  Stack,
+  Card,
+  Text,
+  Group,
+  Badge,
+  ScrollArea,
+  Tooltip,
+  Menu,
+  Divider,
+  Button,
+  useMantineColorScheme,
 } from '@mantine/core';
 import {
-  IconPlus, IconSearch, IconPin, IconSun, IconMoon, IconDots,
-  IconDownload, IconUpload, IconWifi, IconWifiOff, IconRefresh,
-  IconTrash, IconNote, IconArrowBackUp, IconTrashX,
+  IconPlus,
+  IconSearch,
+  IconPin,
+  IconSun,
+  IconMoon,
+  IconDots,
+  IconDownload,
+  IconUpload,
+  IconWifi,
+  IconWifiOff,
+  IconRefresh,
+  IconTrash,
+  IconNote,
+  IconArrowBackUp,
+  IconTrashX,
 } from '@tabler/icons-react';
 import { isSyncing } from 'meteor/jam:offline';
 import { NotesCollection } from '../api/notes/collection';
@@ -29,20 +52,24 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
   }, []);
 
   const trashedNotes = useFind(() => {
-    return NotesCollection.find({ deleted: true }, {
-      sort: { deletedAt: -1 },
-      softDelete: false,
-    });
+    return NotesCollection.find(
+      { deleted: true },
+      {
+        sort: { deletedAt: -1 },
+        softDelete: false,
+      }
+    );
   }, []);
 
   const filteredNotes = useMemo(() => {
     const list = showTrash ? trashedNotes : notes;
     if (!search.trim()) return list;
     const q = search.toLowerCase();
-    return list.filter(n =>
-      n.title?.toLowerCase().includes(q) ||
-      n.body?.toLowerCase().includes(q) ||
-      n.tags?.some(t => t.toLowerCase().includes(q))
+    return list.filter(
+      (n) =>
+        n.title?.toLowerCase().includes(q) ||
+        n.body?.toLowerCase().includes(q) ||
+        n.tags?.some((t) => t.toLowerCase().includes(q))
     );
   }, [notes, trashedNotes, search, showTrash]);
 
@@ -68,7 +95,12 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
   const handleExport = () => {
     const data = NotesCollection.find({}, { sort: { updatedAt: -1 } }).fetch();
     const exportData = data.map(({ _id, title, body, pinned, tags, createdAt, updatedAt }) => ({
-      title, body, pinned, tags, createdAt, updatedAt,
+      title,
+      body,
+      pinned,
+      tags,
+      createdAt,
+      updatedAt,
     }));
     const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -108,19 +140,27 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
       {/* Header */}
       <Group justify="space-between" py={4}>
         <Group gap="sm">
-          <Text fw={800} size="xl">{showTrash ? 'Trash' : 'Notes'}</Text>
+          <Text fw={800} size="xl">
+            {showTrash ? 'Trash' : 'Notes'}
+          </Text>
           <Tooltip label={syncing ? 'Syncing...' : isConnected ? 'Online' : 'Offline'}>
-            {syncing
-              ? <IconRefresh size={18} color="var(--mantine-color-blue-6)" className="spin" />
-              : isConnected
-                ? <IconWifi size={18} color="var(--mantine-color-green-6)" />
-                : <IconWifiOff size={18} color="var(--mantine-color-red-6)" />
-            }
+            {syncing ? (
+              <IconRefresh size={18} color="var(--mantine-color-blue-6)" className="spin" />
+            ) : isConnected ? (
+              <IconWifi size={18} color="var(--mantine-color-green-6)" />
+            ) : (
+              <IconWifiOff size={18} color="var(--mantine-color-red-6)" />
+            )}
           </Tooltip>
         </Group>
         <Group gap="sm">
           <Tooltip label={colorScheme === 'dark' ? 'Light mode' : 'Dark mode'}>
-            <ActionIcon variant="subtle" size="lg" onClick={toggleColorScheme} aria-label="Toggle color scheme">
+            <ActionIcon
+              variant="subtle"
+              size="lg"
+              onClick={toggleColorScheme}
+              aria-label="Toggle color scheme"
+            >
               {colorScheme === 'dark' ? <IconSun size={22} /> : <IconMoon size={22} />}
             </ActionIcon>
           </Tooltip>
@@ -176,7 +216,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
       {/* Notes list */}
       <ScrollArea flex={1} offsetScrollbars>
         <Stack gap="sm">
-          {filteredNotes.map(note => (
+          {filteredNotes.map((note) => (
             <Card
               key={note._id}
               withBorder
@@ -185,8 +225,14 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
               style={{
                 cursor: showTrash ? 'default' : 'pointer',
                 borderWidth: note._id === selectedNoteId && !showTrash ? 2 : 1,
-                borderColor: note._id === selectedNoteId && !showTrash ? 'var(--mantine-color-blue-5)' : undefined,
-                backgroundColor: note._id === selectedNoteId && !showTrash ? 'var(--mantine-color-blue-light)' : undefined,
+                borderColor:
+                  note._id === selectedNoteId && !showTrash
+                    ? 'var(--mantine-color-blue-5)'
+                    : undefined,
+                backgroundColor:
+                  note._id === selectedNoteId && !showTrash
+                    ? 'var(--mantine-color-blue-light)'
+                    : undefined,
                 opacity: showTrash ? 0.8 : 1,
               }}
             >
@@ -194,15 +240,19 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
                 <Text fw={600} size="md" lineClamp={1} style={{ flex: 1 }}>
                   {note.title || 'Untitled'}
                 </Text>
-                {!showTrash && note.pinned && <IconPin size={18} color="var(--mantine-color-blue-6)" />}
+                {!showTrash && note.pinned && (
+                  <IconPin size={18} color="var(--mantine-color-blue-6)" />
+                )}
               </Group>
               <Text size="sm" c="dimmed" lineClamp={2} mb={8}>
                 {note.body || 'No content'}
               </Text>
               {!showTrash && note.tags?.length > 0 && (
                 <Group gap={6} mb={6}>
-                  {note.tags.map(tag => (
-                    <Badge key={tag} size="sm" variant="light" radius="sm">{tag}</Badge>
+                  {note.tags.map((tag) => (
+                    <Badge key={tag} size="sm" variant="light" radius="sm">
+                      {tag}
+                    </Badge>
                   ))}
                 </Group>
               )}
@@ -210,18 +260,33 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
                 <Text size="xs" c="dimmed">
                   {showTrash
                     ? `Deleted ${note.deletedAt?.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`
-                    : note.updatedAt?.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
-                  }
+                    : note.updatedAt?.toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
                 </Text>
                 {showTrash && (
                   <Group gap="xs">
                     <Tooltip label="Recover">
-                      <ActionIcon size="md" variant="subtle" color="green" onClick={() => handleRecover(note._id)} aria-label="Recover note">
+                      <ActionIcon
+                        size="md"
+                        variant="subtle"
+                        color="green"
+                        onClick={() => handleRecover(note._id)}
+                        aria-label="Recover note"
+                      >
                         <IconArrowBackUp size={18} />
                       </ActionIcon>
                     </Tooltip>
                     <Tooltip label="Delete forever">
-                      <ActionIcon size="md" variant="subtle" color="red" onClick={() => handlePermanentDelete(note._id)} aria-label="Delete permanently">
+                      <ActionIcon
+                        size="md"
+                        variant="subtle"
+                        color="red"
+                        onClick={() => handlePermanentDelete(note._id)}
+                        aria-label="Delete permanently"
+                      >
                         <IconTrashX size={18} />
                       </ActionIcon>
                     </Tooltip>
@@ -234,8 +299,9 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
             <Text c="dimmed" ta="center" size="md" py={40}>
               {showTrash
                 ? 'Trash is empty'
-                : search ? 'No notes match your search' : 'No notes yet. Create one!'
-              }
+                : search
+                  ? 'No notes match your search'
+                  : 'No notes yet. Create one!'}
             </Text>
           )}
         </Stack>
@@ -248,15 +314,17 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
         <Text size="sm" c="dimmed">
           {showTrash
             ? `${trashedNotes.length} in trash`
-            : `${notes.length} note${notes.length !== 1 ? 's' : ''}`
-          }
+            : `${notes.length} note${notes.length !== 1 ? 's' : ''}`}
         </Text>
         <Tooltip label={showTrash ? 'Back to notes' : 'View trash'}>
           <ActionIcon
             variant={showTrash ? 'filled' : 'subtle'}
             color={showTrash ? 'red' : 'gray'}
             size="lg"
-            onClick={() => { setShowTrash(!showTrash); onSelectNote(null); }}
+            onClick={() => {
+              setShowTrash(!showTrash);
+              onSelectNote(null);
+            }}
             aria-label={showTrash ? 'Back to notes' : 'View trash'}
           >
             {showTrash ? <IconNote size={20} /> : <IconTrash size={20} />}
