@@ -3,7 +3,11 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "Meteor": "readonly"
   },
   "parserOptions": {
     "ecmaVersion": "latest",

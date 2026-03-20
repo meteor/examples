@@ -17,7 +17,7 @@ An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persist
 | Soft Delete  | jam:soft-delete                               |
 | Validation   | Zod                                           |
 | PWA          | Workbox (via workbox-webpack-plugin + Rspack) |
-| Tests        | Mocha                                      |
+| Tests        | Mocha                                         |
 | Code Quality | ESLint (Airbnb) + Prettier                    |
 | E2E          | Playwright                                    |
 | Build        | Rspack                                        |
@@ -45,15 +45,15 @@ npm start
 
 Visit `http://localhost:3000/`.
 
-| Command                | What it does                           |
-| ---------------------- | -------------------------------------- |
-| `npm start`            | Start the app                          |
-| `npm test`             | Integration tests (Mocha, watch mode)      |
-| `npm run test:headless`| Integration tests (Mocha, headless/CI)     |
-| `npm run lint`         | Lint and check formatting              |
-| `npm run lint:fix`     | Lint and auto-fix + format             |
-| `npm run e2e`          | E2E tests (Playwright, interactive UI) |
-| `npm run e2e:headless` | E2E tests (Playwright, headless)       |
+| Command                 | What it does                           |
+| ----------------------- | -------------------------------------- |
+| `npm start`             | Start the app                          |
+| `npm test`              | Integration tests (Mocha, watch mode)  |
+| `npm run test:headless` | Integration tests (Mocha, headless/CI) |
+| `npm run lint`          | Lint and check formatting              |
+| `npm run lint:fix`      | Lint and auto-fix + format             |
+| `npm run e2e`           | E2E tests (Playwright, interactive UI) |
+| `npm run e2e:headless`  | E2E tests (Playwright, headless)       |
 
 Before running E2E tests for the first time, install Playwright's browsers with `npx playwright install`.
 
