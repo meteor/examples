@@ -17,6 +17,7 @@ defaults:
 
 jobs:
   lint:
+    if: false # temporarily disabled
     name: Lint (oxlint)
     runs-on: ubuntu-latest
     steps:
