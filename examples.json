@@ -1,0 +1,245 @@
+[
+  {
+    "title": "Simple Tasks",
+    "slug": "simple-tasks",
+    "demo": "https://simpletasks2.meteorapp.com",
+    "repository": "fredmaiaarantes/simpletasks",
+    "repositoryUrl": "https://github.com/fredmaiaarantes/simpletasks",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "To show how to use Meteor with Chakra UI + Formik + MongoDB",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Chakra UI",
+      "React",
+      "Formik",
+      "MongoDB"
+    ],
+    "lastUpdatedAt": "Feb/12/2026",
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Welcome Meteor Cordova",
+    "slug": "welcome-meteor-cordova",
+    "demo": null,
+    "repository": "CloudByGalaxy/welcome-meteor-cordova",
+    "repositoryUrl": "https://github.com/CloudByGalaxy/welcome-meteor-cordova",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "To show how to set up a Meteor app with Cordova for mobile usage",
+    "stack": [
+      "Meteor",
+      "Cordova"
+    ],
+    "lastUpdatedAt": null,
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "React Tutorial App",
+    "slug": "react-tutorial-app",
+    "demo": null,
+    "repository": "meteor/meteor3-react",
+    "repositoryUrl": "https://github.com/meteor/meteor3-react/tree/3.4-rspack",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "To show how to build a Meteor app with React following the official tutorial",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React"
+    ],
+    "lastUpdatedAt": null,
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Solid Tutorial App",
+    "slug": "solid-tutorial-app",
+    "demo": null,
+    "repository": "meteor/meteor3-solid",
+    "repositoryUrl": "https://github.com/meteor/meteor3-solid/tree/3.4-rspack",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "To show how to build a Meteor app with Solid following the official tutorial",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Solid"
+    ],
+    "lastUpdatedAt": null,
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Vue 3 Tutorial App",
+    "slug": "vue-3-tutorial-app",
+    "demo": null,
+    "repository": "meteor/meteor3-vue3",
+    "repositoryUrl": "https://github.com/meteor/meteor3-vue3/tree/3.4-rspack",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "To show how to build a Meteor app with Vue 3 following the official tutorial",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Vue 3"
+    ],
+    "lastUpdatedAt": null,
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Blaze Tutorial App",
+    "slug": "blaze-tutorial-app",
+    "demo": null,
+    "repository": "meteor/meteor3-blaze",
+    "repositoryUrl": "https://github.com/meteor/meteor3-blaze/tree/3.4-rspack",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "To show how to build a Meteor app with Blaze following the official tutorial",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze"
+    ],
+    "lastUpdatedAt": null,
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Svelte Tutorial App",
+    "slug": "svelte-tutorial-app",
+    "demo": null,
+    "repository": "meteor/meteor3-svelte",
+    "repositoryUrl": "https://github.com/meteor/meteor3-svelte/tree/3.4-rspack",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "To show how to build a Meteor app with Svelte following the official tutorial",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Svelte"
+    ],
+    "lastUpdatedAt": null,
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Notes Offline",
+    "slug": "notes-offline",
+    "demo": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/notes-offline",
+    "isInternal": true,
+    "internalPath": "notes-offline",
+    "why": "To show how to build an offline-first PWA notes app with Meteor using jam:offline, jam:method, jam:pub-sub, Mantine UI, Workbox for PWA service worker via Rspack, and Zod validation",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "Mantine UI",
+      "jam:offline",
+      "jam:method",
+      "jam:pub-sub",
+      "jam:soft-delete",
+      "Zod",
+      "Workbox",
+      "Mocha",
+      "ESLint",
+      "Prettier",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Mar/18/2026",
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Tic-Tac-Toe",
+    "slug": "tic-tac-toe",
+    "demo": "https://tic-tac-toe.meteorapp.com",
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/tic-tac-toe",
+    "isInternal": true,
+    "internalPath": "tic-tac-toe",
+    "why": "To show that we can even build multiplayer games with Meteor",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "MUI (Material UI)",
+      "Mocha",
+      "oxlint",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Mar/17/2026",
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Task Manager",
+    "slug": "task-manager",
+    "demo": "https://tailwindcss.meteorapp.com",
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/task-manager",
+    "isInternal": true,
+    "internalPath": "task-manager",
+    "why": "To show how to build a dynamic task management app with Meteor-RPC, shadcn/ui, and Tailwind CSS — featuring full CRUD, Zod validation, and real-time reactivity",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "Meteor-RPC",
+      "shadcn/ui",
+      "Tailwind CSS",
+      "React Query",
+      "Zod",
+      "Mocha",
+      "Biome",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Mar/18/2026",
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "Complex Todos (Svelte)",
+    "slug": "complex-todos-svelte",
+    "demo": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/complex-todos-svelte",
+    "isInternal": true,
+    "internalPath": "complex-todos-svelte",
+    "why": "A comprehensive task management app with a modular monolith architecture (services, repositories, EventEmitter), Skeleton UI + Tailwind CSS v4 styling, Svelte 5 runes, Cypress E2E tests (authentication, navigation, task CRUD), rate limiting, caching, migrations, and job scheduling",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Svelte 5",
+      "Skeleton UI",
+      "Tailwind CSS v4",
+      "jam:method",
+      "Zod",
+      "oxlint",
+      "Cypress",
+      "Mocha",
+      "MongoDB"
+    ],
+    "lastUpdatedAt": "Mar/19/2026",
+    "meteorVersion": "3.4"
+  },
+  {
+    "title": "NFT Marketplace",
+    "slug": "nft-marketplace",
+    "demo": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/nft-marketplace",
+    "isInternal": true,
+    "internalPath": "nft-marketplace",
+    "why": "To show how to integrate web3 with Meteor",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "TailwindCSS",
+      "Polygon",
+      "Solidity",
+      "Hardhat",
+      "Ethers.js",
+      "and IPFS"
+    ],
+    "lastUpdatedAt": "Mar/14/2026",
+    "meteorVersion": "3.4"
+  }
+]
