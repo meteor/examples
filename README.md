@@ -52,6 +52,14 @@
 - Last Updated At: Mar/17/2026
 - Meteor Version: 3.4
 
+#### Simple Blog
+- Demo: [example-simple-blog.sandbox.galaxycloud.app](https://example-simple-blog.sandbox.galaxycloud.app)
+- Repository: [dupontbertrand/meteor-blog](https://github.com/dupontbertrand/meteor-blog)
+- Why: A mini blog with role-based access control (admin, moderator, editor, viewer), post and comment management, MJML email notifications, and a dev-mode mail preview
+- Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, Flow Router, MJML
+- Last Updated At: Mar/24/2026
+- Meteor Version: 3.4
+
 #### Notes Offline
 - Demo: N/A
 - Repository: [meteor/examples/notes-offline](./notes-offline)

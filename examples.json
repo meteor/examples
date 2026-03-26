@@ -66,6 +66,26 @@
     "meteorVersion": "3.4"
   },
   {
+    "title": "Simple Blog",
+    "slug": "simple-blog",
+    "demo": "https://example-simple-blog.sandbox.galaxycloud.app",
+    "repository": "dupontbertrand/meteor-blog",
+    "repositoryUrl": "https://github.com/dupontbertrand/meteor-blog",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "A mini blog with role-based access control (admin, moderator, editor, viewer), post and comment management, MJML email notifications, and a dev-mode mail preview",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze 3",
+      "Bootstrap 5",
+      "Flow Router",
+      "MJML"
+    ],
+    "lastUpdatedAt": "Mar/24/2026",
+    "meteorVersion": "3.4"
+  },
+  {
     "title": "Notes Offline",
     "slug": "notes-offline",
     "demo": null,
