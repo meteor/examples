@@ -91,6 +91,14 @@
 - Stack: Meteor, Rspack, React
 - Meteor Version: 3.4
 
+#### Blaze Tutorial App
+- Demo: N/A
+- Tutorial: [docs.meteor.com/tutorials/blaze](https://docs.meteor.com/tutorials/blaze/)
+- Repository: [meteor/meteor3-blaze (3.4-rspack)](https://github.com/meteor/meteor3-blaze/tree/3.4-rspack)
+- Why: Step-by-step tutorial app for learning Meteor fundamentals with Blaze
+- Stack: Meteor, Rspack, Blaze
+- Meteor Version: 3.4
+
 #### Solid Tutorial App
 - Demo: N/A
 - Tutorial: [docs.meteor.com/tutorials/solid](https://docs.meteor.com/tutorials/solid/)
@@ -107,20 +115,12 @@
 - Stack: Meteor, Rspack, Vue 3
 - Meteor Version: 3.4
 
-#### Blaze Tutorial App
-- Demo: N/A
-- Tutorial: [docs.meteor.com/tutorials/blaze](https://docs.meteor.com/tutorials/blaze/)
-- Repository: [meteor/meteor3-blaze (3.4-rspack)](https://github.com/meteor/meteor3-blaze/tree/3.4-rspack)
-- Why: Step-by-step tutorial app for learning Meteor fundamentals with Blaze
-- Stack: Meteor, Rspack, Blaze
-- Meteor Version: 3.4
-
 #### Svelte Tutorial App
 - Demo: N/A
 - Tutorial: [docs.meteor.com/tutorials/svelte](https://docs.meteor.com/tutorials/svelte/)
 - Repository: [meteor/meteor3-svelte (3.4-rspack)](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack)
 - Why: Step-by-step tutorial app for learning Meteor fundamentals with Svelte
-- Stack: Meteor, Rspack, Svelte
+- Stack: Meteor, Rspack, Svelte 5
 - Meteor Version: 3.4
 
 #### NFT Marketplace

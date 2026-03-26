@@ -180,6 +180,24 @@
     "meteorVersion": "3.4"
   },
   {
+    "title": "Blaze Tutorial App",
+    "slug": "blaze-tutorial-app",
+    "demo": null,
+    "tutorial": "https://docs.meteor.com/tutorials/blaze/",
+    "repository": "meteor/meteor3-blaze",
+    "repositoryUrl": "https://github.com/meteor/meteor3-blaze/tree/3.4-rspack",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "Step-by-step tutorial app for learning Meteor fundamentals with Blaze",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze"
+    ],
+    "lastUpdatedAt": null,
+    "meteorVersion": "3.4"
+  },
+  {
     "title": "Solid Tutorial App",
     "slug": "solid-tutorial-app",
     "demo": null,
@@ -216,24 +234,6 @@
     "meteorVersion": "3.4"
   },
   {
-    "title": "Blaze Tutorial App",
-    "slug": "blaze-tutorial-app",
-    "demo": null,
-    "tutorial": "https://docs.meteor.com/tutorials/blaze/",
-    "repository": "meteor/meteor3-blaze",
-    "repositoryUrl": "https://github.com/meteor/meteor3-blaze/tree/3.4-rspack",
-    "isInternal": false,
-    "internalPath": null,
-    "why": "Step-by-step tutorial app for learning Meteor fundamentals with Blaze",
-    "stack": [
-      "Meteor",
-      "Rspack",
-      "Blaze"
-    ],
-    "lastUpdatedAt": null,
-    "meteorVersion": "3.4"
-  },
-  {
     "title": "Svelte Tutorial App",
     "slug": "svelte-tutorial-app",
     "demo": null,
@@ -246,7 +246,7 @@
     "stack": [
       "Meteor",
       "Rspack",
-      "Svelte"
+      "Svelte 5"
     ],
     "lastUpdatedAt": null,
     "meteorVersion": "3.4"
