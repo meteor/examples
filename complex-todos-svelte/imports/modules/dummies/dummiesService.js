@@ -1,8 +1,8 @@
-import {log} from '../../../imports/shared/logger/logger.js';
+import {log} from '../../shared/logger/logger.js';
 import {DUMMY_USERS} from './fixtures/dummyUsers.js';
 import {DUMMY_TASKS} from './fixtures/dummyTasks.js';
-import {taskRepository} from '../../../imports/modules/tasks/taskRepository.js';
-import {Tasks} from '../../../imports/modules/tasks/database/tasks.js';
+import {taskRepository} from '../tasks/taskRepository.js';
+import {Tasks} from '../tasks/database/tasks.js';
 
 /**
  * This service adds dummy data to test all features including franchise and admin actions

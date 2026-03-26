@@ -1,7 +1,7 @@
 import assert from "assert";
 import { Meteor } from "meteor/meteor";
 // Import the API module to register Meteor methods
-import "../imports/api/tasks";
+import "/imports/api/tasks";
 
 describe("task-manager", function () {
   it("package.json has correct name", async function () {
@@ -27,7 +27,7 @@ describe("task-manager", function () {
         });
         assert.ok(taskId);
 
-        const { TasksCollection } = await import("../imports/api/tasks");
+        const { TasksCollection } = await import("/imports/api/tasks");
         const task = await TasksCollection.findOneAsync(taskId);
         assert.strictEqual(task.title, "Integration test task");
         assert.strictEqual(task.status, "todo");
@@ -46,7 +46,7 @@ describe("task-manager", function () {
           description: "Urgent work",
         });
 
-        const { TasksCollection } = await import("../imports/api/tasks");
+        const { TasksCollection } = await import("/imports/api/tasks");
         const task = await TasksCollection.findOneAsync(taskId);
         assert.strictEqual(task.status, "in-progress");
         assert.strictEqual(task.priority, "high");
@@ -68,7 +68,7 @@ describe("task-manager", function () {
           status: "done",
         });
 
-        const { TasksCollection } = await import("../imports/api/tasks");
+        const { TasksCollection } = await import("/imports/api/tasks");
         const task = await TasksCollection.findOneAsync(taskId);
         assert.strictEqual(task.title, "Updated title");
         assert.strictEqual(task.status, "done");
@@ -85,7 +85,7 @@ describe("task-manager", function () {
 
         await Meteor.callAsync("removeTask", { _id: taskId });
 
-        const { TasksCollection } = await import("../imports/api/tasks");
+        const { TasksCollection } = await import("/imports/api/tasks");
         const task = await TasksCollection.findOneAsync(taskId);
         assert.strictEqual(task, undefined);
       });

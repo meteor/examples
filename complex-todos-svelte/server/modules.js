@@ -1,7 +1,7 @@
-import '../imports/modules/tasks/server';
-import '../imports/modules/users/server';
+import '/imports/modules/tasks/server';
+import '/imports/modules/users/server';
 
-import './modules/cache/server';
-import './modules/dummies/server';
-import './modules/jobs/server';
-import './modules/migrations/server';
+import '/imports/modules/cache/server';
+import '/imports/modules/dummies/server';
+import '/imports/modules/jobs/server';
+import '/imports/modules/migrations/server';

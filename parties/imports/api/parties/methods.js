@@ -1,60 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 import { check, Match } from 'meteor/check';
-import _ from 'lodash'
-// All Tomorrow's Parties -- data model
-// Loaded on both the client and the server
-
-///////////////////////////////////////////////////////////////////////////////
-// Parties
-
-/*
-  Each party is represented by a document in the Parties collection:
-    owner: user id
-    x, y: Number (screen coordinates in the interval [0, 1])
-    title, description: String
-    public: Boolean
-    invited: Array of user id's that are invited (only if !public)
-    rsvps: Array of objects like {user: userId, rsvp: "yes"} (or "no"/"maybe")
-*/
-export const Parties = new Mongo.Collection("parties");
-
-Parties.allow({
-  insert: function (userId, party) {
-    return false; // no cowboy inserts -- use createParty method
-  },
-  update: function (userId, party, fields, modifier) {
-    if (userId !== party.owner)
-      return false; // not the owner
-
-    const allowed = ["title", "description", "x", "y"];
-    if ([fields, allowed].reduce((a, b) => a.filter(c => !b.includes(c))).length)
-      return false; // tried to write to forbidden field
-
-    // A good improvement would be to validate the type of the new
-    // value of the field (and if a string, the length.) In the
-    // future Meteor will have a schema system to makes that easier.
-    return true;
-  },
-  remove: function (userId, party) {
-    // You can only remove parties that you created and nobody is going to.
-    return party.owner === userId && attending(party) === 0;
-  }
-});
-
-export const attending = function (party) {
-  return (_.groupBy(party.rsvps, 'rsvp').yes || []).length;
-};
-
-const NonEmptyString = Match.Where(function (x) {
-  check(x, String);
-  return x.length !== 0;
-});
-
-const Coordinate = Match.Where(function (x) {
-  check(x, Number);
-  return x >= 0 && x <= 1;
-});
+import _ from 'lodash';
+import { Parties } from './collection';
+import { NonEmptyString, Coordinate, contactEmail } from './helpers';
 
 Meteor.methods({
   // options should include: title, description, x, y, public
@@ -176,20 +124,3 @@ Meteor.methods({
     }
   }
 });
-
-///////////////////////////////////////////////////////////////////////////////
-// Users
-
-export const displayName = function (user) {
-  if (user.profile?.name)
-    return user.profile.name;
-  return user.emails[0].address;
-};
-
-export const contactEmail = function (user) {
-  if (user.emails?.length)
-    return user.emails[0].address;
-  if (user.services?.facebook && user.services?.facebook.email)
-    return user.services.facebook.email;
-  return null;
-};

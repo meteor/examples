@@ -20,7 +20,7 @@ describe("parties", function () {
 
     describe("Parties collection", function () {
       it("inserts and retrieves a party", async function () {
-        const { Parties } = await import("../imports/model");
+        const { Parties } = await import("/imports/api/parties/collection");
         const partyId = await Parties.insertAsync({
           owner: "test-user",
           title: "Test Party",
@@ -43,7 +43,7 @@ describe("parties", function () {
 
     describe("RSVP behavior", function () {
       it("stores rsvp in the party document", async function () {
-        const { Parties } = await import("../imports/model");
+        const { Parties } = await import("/imports/api/parties/collection");
         const partyId = await Parties.insertAsync({
           owner: "test-user",
           title: "RSVP Party",
@@ -66,7 +66,7 @@ describe("parties", function () {
 
     describe("attending helper", function () {
       it("counts yes RSVPs correctly", async function () {
-        const { attending } = await import("../imports/model");
+        const { attending } = await import("/imports/api/parties/helpers");
         const party = {
           rsvps: [
             { user: "a", rsvp: "yes" },

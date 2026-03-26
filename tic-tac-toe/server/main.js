@@ -1,5 +1,5 @@
 import "/imports/api/rooms";
-import { RoomCollection } from "../imports/api/rooms";
+import { RoomCollection } from "/imports/api/rooms";
 
 Meteor.publish("rooms", function() {
   return RoomCollection.find({});

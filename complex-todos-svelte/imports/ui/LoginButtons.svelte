@@ -1,7 +1,7 @@
 <script>
   import {Meteor} from 'meteor/meteor';
   import {Accounts} from 'meteor/accounts-base';
-  import {useTracker} from '../lib/useTracker.js';
+  import {useTracker} from './lib/useTracker.js';
   import {Dialog} from '@skeletonlabs/skeleton-svelte';
 
   let username = $state('');

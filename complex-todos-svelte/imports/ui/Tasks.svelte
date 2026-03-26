@@ -1,10 +1,10 @@
 <script>
   import {Meteor} from 'meteor/meteor';
-  import {useTracker} from '../lib/useTracker.js';
+  import {useTracker} from './lib/useTracker.js';
   import Task from './Task.svelte';
-  import {taskRepository} from '../../imports/modules/tasks/taskRepository.js';
+  import {taskRepository} from '../modules/tasks/taskRepository.js';
   import TaskAddNewForm from './TaskAddNewForm.svelte';
-  import {TASKS_PUBLICATION} from '../../imports/modules/tasks/enums/publications.js';
+  import {TASKS_PUBLICATION} from '../modules/tasks/enums/publications.js';
 
   let hideCompleted = $state(false);
 

@@ -1,5 +1,5 @@
 <script>
-  import {tasksInsert} from '../../imports/modules/tasks/tasks.methods.js';
+  import {tasksInsert} from '../modules/tasks/tasks.methods.js';
 
   let newTask = $state('');
 

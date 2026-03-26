@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Meteor } from 'meteor/meteor';
-import { Routes } from "../app/ui/common/Routes";
+import { Routes } from "/imports/ui/common/Routes";
 import './main.css';
 
 Meteor.startup(() => {

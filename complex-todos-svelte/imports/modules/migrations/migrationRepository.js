@@ -1,4 +1,4 @@
-import {BaseRepository} from '../../../imports/shared/repository/baseRepository.js';
+import {BaseRepository} from '../../shared/repository/baseRepository.js';
 import {Migrations} from './database/migrations.js';
 
 /**

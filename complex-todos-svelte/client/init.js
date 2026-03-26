@@ -1,7 +1,7 @@
 import {Meteor} from 'meteor/meteor';
-import {log} from '../imports/shared/logger/logger.js';
+import {log} from '/imports/shared/logger/logger.js';
 import {mount, unmount} from 'svelte';
-import App from './ui/App.svelte';
+import App from '/imports/ui/App.svelte';
 
 document.documentElement.setAttribute('data-theme', 'cerberus');
 

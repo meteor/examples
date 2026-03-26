@@ -1,6 +1,6 @@
 import assert from "assert";
 import { Meteor } from "meteor/meteor";
-import { RoomCollection } from "../imports/api/rooms";
+import { RoomCollection } from "/imports/api/rooms";
 
 describe("tic-tac-toe", function () {
   it("package.json has correct name", async function () {

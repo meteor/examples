@@ -1,4 +1,4 @@
-import {log} from '../../../imports/shared/logger/logger.js';
+import {log} from '../../shared/logger/logger.js';
 import {migrationRepository} from './migrationRepository.js';
 import {EJSON} from 'meteor/ejson';
 

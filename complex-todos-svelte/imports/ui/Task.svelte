@@ -1,7 +1,7 @@
 <script>
   import {Meteor} from 'meteor/meteor';
-  import {useTracker} from '../lib/useTracker.js';
-  import {tasksRemove, tasksUpdateAsChecked, tasksUpdateAsPrivate} from '../../imports/modules/tasks/tasks.methods.js';
+  import {useTracker} from './lib/useTracker.js';
+  import {tasksRemove, tasksUpdateAsChecked, tasksUpdateAsPrivate} from '../modules/tasks/tasks.methods.js';
 
   let {task} = $props();
 
