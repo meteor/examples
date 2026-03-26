@@ -27,7 +27,7 @@
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/task-manager",
     "isInternal": true,
     "internalPath": "task-manager",
-    "why": "A task management app with full CRUD, status workflows, priority levels, filtering, a real-time dashboard, and type-safe client-server communication",
+    "why": "Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC",
     "stack": [
       "Meteor",
       "Rspack",
@@ -52,7 +52,7 @@
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/tic-tac-toe",
     "isInternal": true,
     "internalPath": "tic-tac-toe",
-    "why": "A real-time multiplayer game with room-based matchmaking, demonstrating Meteor's pub/sub for live game state sync between players",
+    "why": "Real-time multiplayer game with room-based matchmaking and live state sync via pub/sub",
     "stack": [
       "Meteor",
       "Rspack",
@@ -73,7 +73,7 @@
     "repositoryUrl": "https://github.com/dupontbertrand/meteor-blog",
     "isInternal": false,
     "internalPath": null,
-    "why": "A mini blog with role-based access control (admin, moderator, editor, viewer), post and comment management, MJML email notifications, and a dev-mode mail preview",
+    "why": "Mini blog with role-based access control, post/comment management, email notifications, and dev-mode mail preview",
     "stack": [
       "Meteor",
       "Rspack",
@@ -93,7 +93,7 @@
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/notes-offline",
     "isInternal": true,
     "internalPath": "notes-offline",
-    "why": "An offline-first PWA notes app with auto-save, markdown preview, search, tagging, pinning, trash/recovery, import/export, dark mode, and cross-tab sync — works fully without internet",
+    "why": "Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, and cross-tab sync",
     "stack": [
       "Meteor",
       "Rspack",
@@ -121,7 +121,7 @@
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/complex-todos-svelte",
     "isInternal": true,
     "internalPath": "complex-todos-svelte",
-    "why": "A production-grade todo app showcasing modular monolith architecture (services, repositories, events), rate limiting, caching, database migrations, scheduled jobs, and E2E tests",
+    "why": "Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests",
     "stack": [
       "Meteor",
       "Rspack",
@@ -247,7 +247,7 @@
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/nft-marketplace",
     "isInternal": true,
     "internalPath": "nft-marketplace",
-    "why": "A decentralized marketplace for minting, listing, and buying NFTs with wallet-based authentication and on-chain transactions",
+    "why": "Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions",
     "stack": [
       "Meteor",
       "Rspack",

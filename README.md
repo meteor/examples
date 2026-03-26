@@ -39,7 +39,7 @@
 #### Task Manager
 - Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
 - Repository: [meteor/examples/task-manager](./task-manager)
-- Why: A task management app with full CRUD, status workflows, priority levels, filtering, a real-time dashboard, and type-safe client-server communication
+- Why: Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC
 - Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS, React Query, Zod, Mocha, Biome, Playwright
 - Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
@@ -47,7 +47,7 @@
 #### Tic-Tac-Toe
 - Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
-- Why: A real-time multiplayer game with room-based matchmaking, demonstrating Meteor's pub/sub for live game state sync between players
+- Why: Real-time multiplayer game with room-based matchmaking and live state sync via pub/sub
 - Stack: Meteor, Rspack, React, MUI (Material UI), Mocha, oxlint, Playwright
 - Last Updated At: Mar/17/2026
 - Meteor Version: 3.4
@@ -55,7 +55,7 @@
 #### Simple Blog
 - Demo: [example-simple-blog.sandbox.galaxycloud.app](https://example-simple-blog.sandbox.galaxycloud.app)
 - Repository: [dupontbertrand/meteor-blog](https://github.com/dupontbertrand/meteor-blog)
-- Why: A mini blog with role-based access control (admin, moderator, editor, viewer), post and comment management, MJML email notifications, and a dev-mode mail preview
+- Why: Mini blog with role-based access control, post/comment management, email notifications, and dev-mode mail preview
 - Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, Flow Router, MJML
 - Last Updated At: Mar/24/2026
 - Meteor Version: 3.4
@@ -63,7 +63,7 @@
 #### Notes Offline
 - Demo: N/A
 - Repository: [meteor/examples/notes-offline](./notes-offline)
-- Why: An offline-first PWA notes app with auto-save, markdown preview, search, tagging, pinning, trash/recovery, import/export, dark mode, and cross-tab sync — works fully without internet
+- Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, and cross-tab sync
 - Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, Mocha, ESLint, Prettier, Playwright
 - Last Updated At: Mar/18/2026
 - Meteor Version: 3.4
@@ -71,7 +71,7 @@
 #### Complex Todos (Svelte)
 - Demo: N/A
 - Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
-- Why: A production-grade todo app showcasing modular monolith architecture (services, repositories, events), rate limiting, caching, database migrations, scheduled jobs, and E2E tests
+- Why: Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests
 - Stack: Meteor, Rspack, Svelte 5, Skeleton UI, Tailwind CSS v4, jam:method, Zod, oxlint, Cypress, Mocha, MongoDB
 - Last Updated At: Mar/19/2026
 - Meteor Version: 3.4
@@ -126,7 +126,7 @@
 #### NFT Marketplace
 - Demo: N/A
 - Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
-- Why: A decentralized marketplace for minting, listing, and buying NFTs with wallet-based authentication and on-chain transactions
+- Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
 - Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
 - Last Updated At: Mar/14/2026
 - Meteor Version: 3.4
