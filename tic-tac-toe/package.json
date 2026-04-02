@@ -25,13 +25,13 @@
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
-    "oxlint": "^1.56.0",
+    "@meteorjs/rspack": "^1.1.0-beta.34",
     "@playwright/test": "^1.50.0",
-    "@meteorjs/rspack": "^1.0.0",
-    "@rsdoctor/rspack-plugin": "^1.5.4",
+    "@rsdoctor/rspack-plugin": "^1.5.7",
     "@rspack/cli": "^1.7.9",
     "@rspack/core": "^1.7.9",
     "@rspack/plugin-react-refresh": "^1.6.1",
+    "oxlint": "^1.56.0",
     "react-refresh": "^0.18.0"
   },
   "meteor": {

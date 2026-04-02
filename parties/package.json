@@ -30,10 +30,10 @@
     "modern": true
   },
   "devDependencies": {
-    "@rslint/core": "^0.3.0",
+    "@meteorjs/rspack": "^1.1.0-beta.34",
     "@playwright/test": "^1.50.0",
-    "@meteorjs/rspack": "^1.0.0",
-    "@rsdoctor/rspack-plugin": "^1.2.3",
+    "@rsdoctor/rspack-plugin": "^1.5.7",
+    "@rslint/core": "^0.3.0",
     "@rspack/cli": "^1.7.1",
     "@rspack/core": "^1.7.1"
   }
