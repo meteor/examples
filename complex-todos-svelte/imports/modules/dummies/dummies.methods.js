@@ -1,4 +1,4 @@
-import {dummiesService} from '../dummiesService.js';
+import {dummiesService} from './dummiesService.js';
 
 /**
  * These methods and dummiesService are not working

@@ -1,4 +1,4 @@
-import {Tasks} from '../database/tasks.js';
+import {Tasks} from './database/tasks.js';
 
 Tasks.allow({
   insert()

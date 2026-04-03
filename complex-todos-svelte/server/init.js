@@ -1,5 +1,5 @@
 import {log} from '/imports/shared/logger/logger.js';
-import {runTasksExpire} from '/imports/modules/jobs/server/tasks.expire.js';
+import {runTasksExpire} from '/imports/modules/jobs/tasks.expire.js';
 
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 

@@ -53,7 +53,7 @@ export const User = {
       return Meteor.users.findOne(this._id);
     }
 
-    const {userCache} = require('../../modules/users/server/user.cache.js');
+    const {userCache} = require('../../modules/users/user.cache.js');
     return userCache.get(this._id);
   }
 };

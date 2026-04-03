@@ -1,5 +1,5 @@
-import {memcache} from '../../cache/cacheService.js';
-import {CACHE_KEY} from '../enums/cacheKey.js';
+import {memcache} from '../cache/cacheService.js';
+import {CACHE_KEY} from './enums/cacheKey.js';
 import {Meteor} from 'meteor/meteor';
 
 class UserCache

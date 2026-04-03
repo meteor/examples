@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Parties } from '../collection';
+import { Parties } from './collection';
 
 Meteor.publish("directory", function () {
   return Meteor.users.find({}, {fields: {emails: 1, profile: 1}});
