@@ -29,7 +29,6 @@
 
 #### Simple Tasks
 
-- Demo: [simpletasks2.meteorapp.com/](https://simpletasks2.meteorapp.com)
 - Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
 - Why: A task management app showcasing form handling, user accounts, and a polished component-based UI
 - Stack: Meteor, Rspack, Chakra UI, React, Formik, MongoDB
@@ -37,7 +36,6 @@
 - Meteor Version: 3.4
 
 #### Task Manager
-- Demo: [tailwindcss.meteorapp.com](https://tailwindcss.meteorapp.com)
 - Repository: [meteor/examples/task-manager](./task-manager)
 - Why: Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC
 - Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS, React Query, Zod, Mocha, Biome, Playwright
@@ -45,7 +43,6 @@
 - Meteor Version: 3.4
 
 #### Tic-Tac-Toe
-- Demo: [tic-tac-toe.meteorapp.com](https://tic-tac-toe.meteorapp.com)
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: Real-time multiplayer game with room-based matchmaking and live state sync via pub/sub
 - Stack: Meteor, Rspack, React, MUI (Material UI), Mocha, oxlint, Playwright
@@ -53,7 +50,6 @@
 - Meteor Version: 3.4
 
 #### Simple Blog
-- Demo: [example-simple-blog.sandbox.galaxycloud.app](https://example-simple-blog.sandbox.galaxycloud.app)
 - Repository: [dupontbertrand/meteor-blog](https://github.com/dupontbertrand/meteor-blog)
 - Why: Mini blog with role-based access control, post/comment management, email notifications, and dev-mode mail preview
 - Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, Flow Router, MJML
@@ -61,7 +57,6 @@
 - Meteor Version: 3.4
 
 #### Notes Offline
-- Demo: N/A
 - Repository: [meteor/examples/notes-offline](./notes-offline)
 - Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, and cross-tab sync
 - Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, Mocha, ESLint, Prettier, Playwright
@@ -69,7 +64,6 @@
 - Meteor Version: 3.4
 
 #### Complex Todos (Svelte)
-- Demo: N/A
 - Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
 - Why: Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests
 - Stack: Meteor, Rspack, Svelte 5, Skeleton UI, Tailwind CSS v4, jam:method, Zod, oxlint, Cypress, Mocha, MongoDB
@@ -77,14 +71,12 @@
 - Meteor Version: 3.4
 
 #### Welcome Meteor Cordova
-- Demo: N/A
 - Repository: [CloudByGalaxy/welcome-meteor-cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova)
 - Why: To show how to set up a Meteor app with Cordova for mobile usage
 - Stack: Meteor, Cordova
 - Meteor Version: 3.4
 
 #### React Tutorial App
-- Demo: N/A
 - Tutorial: [docs.meteor.com/tutorials/react](https://docs.meteor.com/tutorials/react/)
 - Repository: [meteor/meteor3-react (3.4-rspack)](https://github.com/meteor/meteor3-react/tree/3.4-rspack)
 - Why: Step-by-step tutorial app for learning Meteor fundamentals with React
@@ -92,7 +84,6 @@
 - Meteor Version: 3.4
 
 #### Blaze Tutorial App
-- Demo: N/A
 - Tutorial: [docs.meteor.com/tutorials/blaze](https://docs.meteor.com/tutorials/blaze/)
 - Repository: [meteor/meteor3-blaze (3.4-rspack)](https://github.com/meteor/meteor3-blaze/tree/3.4-rspack)
 - Why: Step-by-step tutorial app for learning Meteor fundamentals with Blaze
@@ -100,7 +91,6 @@
 - Meteor Version: 3.4
 
 #### Solid Tutorial App
-- Demo: N/A
 - Tutorial: [docs.meteor.com/tutorials/solid](https://docs.meteor.com/tutorials/solid/)
 - Repository: [meteor/meteor3-solid (3.4-rspack)](https://github.com/meteor/meteor3-solid/tree/3.4-rspack)
 - Why: Step-by-step tutorial app for learning Meteor fundamentals with Solid
@@ -108,7 +98,6 @@
 - Meteor Version: 3.4
 
 #### Vue 3 Tutorial App
-- Demo: N/A
 - Tutorial: [docs.meteor.com/tutorials/vue](https://docs.meteor.com/tutorials/vue/meteorjs3-vue3.html)
 - Repository: [meteor/meteor3-vue3 (3.4-rspack)](https://github.com/meteor/meteor3-vue3/tree/3.4-rspack)
 - Why: Step-by-step tutorial app for learning Meteor fundamentals with Vue 3
@@ -116,7 +105,6 @@
 - Meteor Version: 3.4
 
 #### Svelte Tutorial App
-- Demo: N/A
 - Tutorial: [docs.meteor.com/tutorials/svelte](https://docs.meteor.com/tutorials/svelte/)
 - Repository: [meteor/meteor3-svelte (3.4-rspack)](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack)
 - Why: Step-by-step tutorial app for learning Meteor fundamentals with Svelte
@@ -124,7 +112,6 @@
 - Meteor Version: 3.4
 
 #### NFT Marketplace
-- Demo: N/A
 - Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
 - Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
 - Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
@@ -134,7 +121,6 @@
 ### To migrate - WIP
 
 #### Leaderboards
-- Demo: N/A
 - Repository [meteor/leaderboards](https://github.com/meteor/leaderboard/)
 - Why: Complete example of a small Blaze app with only client code that can update the DB.
 - Stack: Meteor and Blaze
@@ -143,7 +129,6 @@
 
 
 #### Simple photo
-- Demo: https://simple-photo.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-photo)
 - Why: A simple example of `mdg:camera` package that allows you to take pictures from your web/phone camera.
 - Stack: Meteor and Blaze
@@ -151,7 +136,6 @@
 - Meteor Version: 3.2.2
 
 #### Simple map
-- Demo: https://simple-map.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-map)
 - Why: A simple example of using the `mdg:geolocation` package to get current geolocation and show them on maps.
 - Stack: Meteor and Blaze
@@ -159,7 +143,6 @@
 - Meteor Version: 3.2.2
 
 #### Solomo
-- Demo: https://solomo.meteorapp.com/
 - Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/solomo)
 - Why: A simple example of using the `mdg:geolocation` and `mdg:camera` packages place images on a map.
 - Stack: Meteor and Blaze
@@ -167,7 +150,6 @@
 - Meteor Version: 3.2.2
 
 #### Parties
-- Demo: N/A
 - Repository: [meteor/examples/parties](./parties)
 - Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates.
 - Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright

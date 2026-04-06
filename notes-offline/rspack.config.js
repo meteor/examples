@@ -43,6 +43,10 @@ module.exports = defineConfig((Meteor) => {
           exclude: [/main\.html$/, /\.map$/],
           runtimeCaching: [
             {
+              urlPattern: ({ url }) => url.pathname.includes('/__rspack__/'),
+              handler: 'NetworkOnly',
+            },
+            {
               urlPattern: ({ url }) => url.pathname.includes('/sockjs/'),
               handler: 'NetworkOnly',
             },
