@@ -76,6 +76,15 @@
 - Stack: Meteor, Cordova
 - Meteor Version: 3.4.1-beta.1
 
+#### NFT Marketplace
+- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
+- Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
+- Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Last Updated At: Mar/14/2026
+- Meteor Version: 3.4.1-beta.1
+
+### To migrate - WIP
+
 #### React Tutorial App
 - Tutorial: [docs.meteor.com/tutorials/react](https://docs.meteor.com/tutorials/react/)
 - Repository: [meteor/meteor3-react (3.4-rspack)](https://github.com/meteor/meteor3-react/tree/3.4-rspack)
@@ -110,15 +119,6 @@
 - Why: Step-by-step tutorial app for learning Meteor fundamentals with Svelte
 - Stack: Meteor, Rspack, Svelte 5
 - Meteor Version: 3.4
-
-#### NFT Marketplace
-- Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
-- Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
-- Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
-- Last Updated At: Mar/14/2026
-- Meteor Version: 3.4.1-beta.1
-
-### To migrate - WIP
 
 #### Leaderboards
 - Repository [meteor/leaderboards](https://github.com/meteor/leaderboard/)
