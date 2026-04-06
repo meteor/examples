@@ -1,2 +1,0 @@
-# Ignore Meteor CSS handling; let Rspack resolve Mantine styles
-client/main.css

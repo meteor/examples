@@ -2,6 +2,7 @@
   {
     "title": "Simple Tasks",
     "slug": "simple-tasks",
+    "demo": null,
     "tutorial": null,
     "repository": "fredmaiaarantes/simpletasks",
     "repositoryUrl": "https://github.com/fredmaiaarantes/simpletasks",
@@ -22,6 +23,7 @@
   {
     "title": "Task Manager",
     "slug": "task-manager",
+    "demo": null,
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/task-manager",
@@ -42,11 +44,12 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Mar/18/2026",
-    "meteorVersion": "3.4"
+    "meteorVersion": "3.4.1-beta.1"
   },
   {
     "title": "Tic-Tac-Toe",
     "slug": "tic-tac-toe",
+    "demo": null,
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/tic-tac-toe",
@@ -63,11 +66,12 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Mar/17/2026",
-    "meteorVersion": "3.4"
+    "meteorVersion": "3.4.1-beta.1"
   },
   {
     "title": "Simple Blog",
     "slug": "simple-blog",
+    "demo": null,
     "tutorial": null,
     "repository": "dupontbertrand/meteor-blog",
     "repositoryUrl": "https://github.com/dupontbertrand/meteor-blog",
@@ -88,6 +92,7 @@
   {
     "title": "Notes Offline",
     "slug": "notes-offline",
+    "demo": null,
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/notes-offline",
@@ -111,11 +116,12 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Mar/18/2026",
-    "meteorVersion": "3.4"
+    "meteorVersion": "3.4.1-beta.1"
   },
   {
     "title": "Complex Todos (Svelte)",
     "slug": "complex-todos-svelte",
+    "demo": null,
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/complex-todos-svelte",
@@ -136,11 +142,12 @@
       "MongoDB"
     ],
     "lastUpdatedAt": "Mar/19/2026",
-    "meteorVersion": "3.4"
+    "meteorVersion": "3.4.1-beta.1"
   },
   {
     "title": "Welcome Meteor Cordova",
     "slug": "welcome-meteor-cordova",
+    "demo": null,
     "tutorial": null,
     "repository": "CloudByGalaxy/welcome-meteor-cordova",
     "repositoryUrl": "https://github.com/CloudByGalaxy/welcome-meteor-cordova",
@@ -152,11 +159,12 @@
       "Cordova"
     ],
     "lastUpdatedAt": null,
-    "meteorVersion": "3.4"
+    "meteorVersion": "3.4.1-beta.1"
   },
   {
     "title": "React Tutorial App",
     "slug": "react-tutorial-app",
+    "demo": null,
     "tutorial": "https://docs.meteor.com/tutorials/react/",
     "repository": "meteor/meteor3-react",
     "repositoryUrl": "https://github.com/meteor/meteor3-react/tree/3.4-rspack",
@@ -174,6 +182,7 @@
   {
     "title": "Blaze Tutorial App",
     "slug": "blaze-tutorial-app",
+    "demo": null,
     "tutorial": "https://docs.meteor.com/tutorials/blaze/",
     "repository": "meteor/meteor3-blaze",
     "repositoryUrl": "https://github.com/meteor/meteor3-blaze/tree/3.4-rspack",
@@ -191,6 +200,7 @@
   {
     "title": "Solid Tutorial App",
     "slug": "solid-tutorial-app",
+    "demo": null,
     "tutorial": "https://docs.meteor.com/tutorials/solid/",
     "repository": "meteor/meteor3-solid",
     "repositoryUrl": "https://github.com/meteor/meteor3-solid/tree/3.4-rspack",
@@ -208,6 +218,7 @@
   {
     "title": "Vue 3 Tutorial App",
     "slug": "vue-3-tutorial-app",
+    "demo": null,
     "tutorial": "https://docs.meteor.com/tutorials/vue/meteorjs3-vue3.html",
     "repository": "meteor/meteor3-vue3",
     "repositoryUrl": "https://github.com/meteor/meteor3-vue3/tree/3.4-rspack",
@@ -225,6 +236,7 @@
   {
     "title": "Svelte Tutorial App",
     "slug": "svelte-tutorial-app",
+    "demo": null,
     "tutorial": "https://docs.meteor.com/tutorials/svelte/",
     "repository": "meteor/meteor3-svelte",
     "repositoryUrl": "https://github.com/meteor/meteor3-svelte/tree/3.4-rspack",
@@ -242,6 +254,7 @@
   {
     "title": "NFT Marketplace",
     "slug": "nft-marketplace",
+    "demo": null,
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/nft-marketplace",
@@ -260,6 +273,6 @@
       "and IPFS"
     ],
     "lastUpdatedAt": "Mar/14/2026",
-    "meteorVersion": "3.4"
+    "meteorVersion": "3.4.1-beta.1"
   }
 ]
