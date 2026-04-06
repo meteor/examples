@@ -41,15 +41,10 @@ module.exports = defineConfig((Meteor) => {
           inlineWorkboxRuntime: true,
           maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
           exclude: [/\.map$/],
+          // Let __rspack__ and sockjs requests bypass the service worker
+          // entirely so they don't produce noisy errors when offline.
+          navigateFallbackDenylist: [/__rspack__/, /sockjs/],
           runtimeCaching: [
-            {
-              urlPattern: ({ url }) => url.pathname.includes('/__rspack__/'),
-              handler: 'NetworkOnly',
-            },
-            {
-              urlPattern: ({ url }) => url.pathname.includes('/sockjs/'),
-              handler: 'NetworkOnly',
-            },
             {
               urlPattern: ({ request }) => request.mode === 'navigate',
               handler: 'NetworkFirst',
@@ -62,10 +57,12 @@ module.exports = defineConfig((Meteor) => {
               },
             },
             {
-              urlPattern: ({ request }) =>
-                request.destination === 'style' ||
-                request.destination === 'script' ||
-                request.destination === 'worker',
+              urlPattern: ({ request, url }) =>
+                (request.destination === 'style' ||
+                  request.destination === 'script' ||
+                  request.destination === 'worker') &&
+                !url.pathname.includes('/__rspack__/') &&
+                !url.pathname.includes('/sockjs/'),
               handler: 'StaleWhileRevalidate',
               options: {
                 cacheName: 'assets',
