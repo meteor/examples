@@ -40,7 +40,7 @@ module.exports = defineConfig((Meteor) => {
           cleanupOutdatedCaches: true,
           inlineWorkboxRuntime: true,
           maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
-          exclude: [/main\.html$/, /\.map$/],
+          exclude: [/\.map$/],
           runtimeCaching: [
             {
               urlPattern: ({ url }) => url.pathname.includes('/__rspack__/'),

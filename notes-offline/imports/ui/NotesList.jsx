@@ -316,20 +316,19 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
             ? `${trashedNotes.length} in trash`
             : `${notes.length} note${notes.length !== 1 ? 's' : ''}`}
         </Text>
-        <Tooltip label={showTrash ? 'Back to notes' : 'View trash'}>
-          <ActionIcon
-            variant={showTrash ? 'filled' : 'subtle'}
-            color={showTrash ? 'red' : 'gray'}
-            size="lg"
-            onClick={() => {
-              setShowTrash(!showTrash);
-              onSelectNote(null);
-            }}
-            aria-label={showTrash ? 'Back to notes' : 'View trash'}
-          >
-            {showTrash ? <IconNote size={20} /> : <IconTrash size={20} />}
-          </ActionIcon>
-        </Tooltip>
+        <Button
+          variant="subtle"
+          color="gray"
+          size="compact-sm"
+          leftSection={showTrash ? <IconNote size={16} /> : <IconTrash size={16} />}
+          onClick={() => {
+            setShowTrash(!showTrash);
+            onSelectNote(null);
+          }}
+          aria-label={showTrash ? 'Back to notes' : 'View trash'}
+        >
+          {showTrash ? 'Back to notes' : `Trash (${trashedNotes.length})`}
+        </Button>
       </Group>
     </Stack>
   );
