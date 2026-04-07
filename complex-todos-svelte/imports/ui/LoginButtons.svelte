@@ -53,7 +53,12 @@
 
 {#if $currentUser}
   <div class="flex items-center gap-2">
-    <span class="badge preset-tonal-primary" data-testid="logged-in-user">{$currentUser.username}</span>
+    <span class="badge preset-tonal-primary" data-testid="logged-in-user">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />
+      </svg>
+      {$currentUser.username}
+    </span>
     <button class="btn btn-sm preset-tonal-error" data-testid="sign-out-btn" onclick={handleLogout}>
       Sign Out
     </button>
@@ -61,7 +66,12 @@
 {:else}
   <Dialog>
     <Dialog.Trigger>
-      <button class="btn btn-sm preset-filled-primary-500" data-testid="open-sign-in-btn">Sign In</button>
+      <button class="btn btn-sm preset-filled-primary-500" data-testid="open-sign-in-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" y1="12" x2="3" y2="12" />
+        </svg>
+        Sign In
+      </button>
     </Dialog.Trigger>
     <Dialog.Backdrop class="fixed inset-0 bg-black/50 z-40" />
     <Dialog.Positioner class="fixed inset-0 flex items-center justify-center z-50">

@@ -1,5 +1,13 @@
 @import 'tailwindcss';
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton-svelte';
+
+/*
+ * Skeleton UI Theme
+ * Change the import below to switch themes instantly.
+ * Available built-in themes: cerberus, legacy, modern, rose, seafoam, vintage, wintry
+ * Docs: https://skeleton.dev/docs/design/themes
+ */
 @import '@skeletonlabs/skeleton/themes/cerberus';
+
 @plugin '@tailwindcss/forms';
