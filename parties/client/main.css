@@ -5,13 +5,15 @@
 :root {
   --atp-primary: #6366f1;
   --atp-primary-hover: #4f46e5;
+  --atp-primary-light: #e0e7ff;
+  --atp-gradient: linear-gradient(135deg, #6366f1, #818cf8);
   --atp-success: #22c55e;
   --atp-warning: #f59e0b;
   --atp-muted: #94a3b8;
   --atp-danger: #ef4444;
   --atp-public: #06b6d4;
   --atp-private: #f472b6;
-  --atp-bg: #f8fafc;
+  --atp-bg: #eef0fb;
   --atp-card: #ffffff;
   --atp-text: #1e293b;
   --atp-text-muted: #64748b;
@@ -29,15 +31,21 @@ body {
 }
 
 /* --- Navbar --- */
+.navbar {
+  background: var(--atp-gradient) !important;
+  border-bottom: none !important;
+}
+
 .navbar-brand {
   font-size: 1.25rem;
   letter-spacing: -0.01em;
-  color: var(--atp-primary) !important;
+  color: #ffffff !important;
 }
 
 /* --- Cards --- */
 .card {
   border-radius: var(--atp-radius);
+  border-top: 3px solid var(--atp-primary);
   transition: box-shadow 0.2s ease;
 }
 
@@ -228,6 +236,15 @@ body {
 /* --- Accounts UI polish --- */
 #login-buttons {
   font-size: 0.875rem;
+}
+
+#login-buttons a,
+.navbar #login-sign-in-link {
+  color: rgba(255,255,255,0.9) !important;
+}
+
+.navbar #login-sign-in-link:hover {
+  color: #ffffff !important;
 }
 
 /* --- Responsive --- */
