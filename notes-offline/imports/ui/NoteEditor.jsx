@@ -112,22 +112,18 @@ export const NoteEditor = ({ noteId, onClose }) => {
             data={[
               {
                 label: (
-                  <Group gap={6}>
+                  <Group gap={6} wrap="nowrap">
                     <IconEdit size={18} />
-                    <Text size="sm" visibleFrom="md">
-                      Edit
-                    </Text>
+                    <Text size="sm">Edit</Text>
                   </Group>
                 ),
                 value: 'edit',
               },
               {
                 label: (
-                  <Group gap={6}>
+                  <Group gap={6} wrap="nowrap">
                     <IconEye size={18} />
-                    <Text size="sm" visibleFrom="md">
-                      Preview
-                    </Text>
+                    <Text size="sm">Preview</Text>
                   </Group>
                 ),
                 value: 'preview',

@@ -6,8 +6,20 @@ import { NoteEditor } from './NoteEditor';
 import { EmptyState } from './EmptyState';
 import { createNote } from '../api/notes/methods';
 
+/**
+ * Mantine Theme Configuration
+ *
+ * This theme showcases the key areas of Mantine's createTheme API:
+ * - primaryColor / primaryShade: which color swatch + shade to use
+ * - fontSizes / headings: typography scale
+ * - defaultRadius: global border radius token
+ * - components: per-component default props and style overrides
+ *
+ * Docs: https://mantine.dev/theming/theme-object/
+ */
 const theme = createTheme({
-  primaryColor: 'blue',
+  primaryColor: 'indigo',
+  primaryShade: { light: 6, dark: 8 },
   defaultRadius: 'md',
   fontSizes: {
     xs: '0.8rem',
@@ -21,6 +33,25 @@ const theme = createTheme({
       h1: { fontSize: '2rem' },
       h2: { fontSize: '1.6rem' },
       h3: { fontSize: '1.35rem' },
+    },
+  },
+  components: {
+    AppShell: {
+      styles: () => ({
+        navbar: {
+          backgroundColor: 'light-dark(var(--mantine-color-indigo-0), var(--mantine-color-dark-7))',
+        },
+      }),
+    },
+    Card: {
+      defaultProps: {
+        withBorder: true,
+      },
+    },
+    ActionIcon: {
+      defaultProps: {
+        variant: 'light',
+      },
     },
   },
 });
