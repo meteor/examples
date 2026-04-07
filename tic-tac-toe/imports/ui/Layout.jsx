@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -9,10 +10,12 @@ export const Layout = ({ children }) => (
   <>
     <AppBar position="static">
       <Toolbar>
-        <GridOnIcon sx={{ mr: 1.5 }} />
-        <Typography variant="h6" component="div">
-          Tic-Tac-Toe
-        </Typography>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', color: 'inherit', textDecoration: 'none' }}>
+          <GridOnIcon sx={{ mr: 1.5 }} />
+          <Typography variant="h6" component="div">
+            Tic-Tac-Toe
+          </Typography>
+        </Link>
       </Toolbar>
     </AppBar>
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>

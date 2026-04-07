@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useTracker, useFind } from "meteor/react-meteor-data";
 import { RoomCollection } from "../api/rooms";
@@ -30,6 +30,7 @@ const Slot = ({ index, value, onPlay }) => (
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      aspectRatio: "1",
       cursor: value === "empty" ? "pointer" : "default",
       transition: "background-color 0.2s",
       "&:hover": value === "empty" ? { bgcolor: "action.hover" } : {},
@@ -52,7 +53,8 @@ export const GameScreen = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { color } = location.state;
+  const [color, setColor] = useState(location.state?.color || null);
+  const [joining, setJoining] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
   const roomLoading = useTracker(() => {
@@ -61,7 +63,20 @@ export const GameScreen = () => {
   }, [id]);
   const [room] = useFind(() => RoomCollection.find({ _id: id }), [id]);
 
-  if (roomLoading) {
+  useEffect(() => {
+    if (color || roomLoading || !room || joining) return;
+    setJoining(true);
+    Meteor.callAsync("joinRoom", { roomId: id })
+      .then(({ color: assignedColor }) => {
+        setColor(assignedColor);
+      })
+      .catch(() => {
+        navigate("/");
+      })
+      .finally(() => setJoining(false));
+  }, [color, roomLoading, room, joining, id, navigate]);
+
+  if (roomLoading || !color) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
         <CircularProgress />
