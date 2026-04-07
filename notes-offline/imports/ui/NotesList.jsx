@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useFind, useTracker } from 'meteor/react-meteor-data';
 import {
@@ -42,7 +42,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
   const [showTrash, setShowTrash] = useState(false);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
-  const isLoading = useSubscribe('notes');
+  useSubscribe('notes');
   useSubscribe('notes.trash');
   const isConnected = useTracker(() => Meteor.status().connected);
   const syncing = useTracker(() => isSyncing());
@@ -94,7 +94,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
 
   const handleExport = () => {
     const data = NotesCollection.find({}, { sort: { updatedAt: -1 } }).fetch();
-    const exportData = data.map(({ _id, title, body, pinned, tags, createdAt, updatedAt }) => ({
+    const exportData = data.map(({ title, body, pinned, tags, createdAt, updatedAt }) => ({
       title,
       body,
       pinned,

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Stack, Text, Title, Kbd, Group } from '@mantine/core';
 import { IconNotes } from '@tabler/icons-react';
 

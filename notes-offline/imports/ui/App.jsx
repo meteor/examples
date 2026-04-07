@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MantineProvider, AppShell, createTheme } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { NotesList } from './NotesList';
