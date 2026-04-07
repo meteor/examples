@@ -6,9 +6,9 @@ import { TaskList } from "./TaskList";
 export const App = () => {
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <header className="border-b bg-primary text-primary-foreground">
         <div className="container mx-auto flex items-center gap-2 px-4 py-4">
-          <CheckSquare className="h-6 w-6 text-primary" />
+          <CheckSquare className="h-6 w-6" />
           <h1 className="text-xl font-semibold">Task Manager</h1>
         </div>
       </header>
