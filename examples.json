@@ -8,7 +8,7 @@
     "repositoryUrl": "https://github.com/fredmaiaarantes/simpletasks",
     "isInternal": false,
     "internalPath": null,
-    "why": "A task management app showcasing form handling, user accounts, and a polished component-based UI",
+    "why": "A task management app showcasing form handling, user accounts, DB migrations, and a polished component-based UI",
     "stack": [
       "Meteor",
       "Rspack",
@@ -119,6 +119,28 @@
     "meteorVersion": "3.4.1-beta.1"
   },
   {
+    "title": "Parties",
+    "slug": "parties",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/parties",
+    "isInternal": true,
+    "internalPath": "parties",
+    "why": "One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze 3",
+      "Bootstrap 5",
+      "D3.js",
+      "RSLint",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "August/23/2021",
+    "meteorVersion": "3.4.1-beta.1"
+  },
+  {
     "title": "Complex Todos (Svelte)",
     "slug": "complex-todos-svelte",
     "demo": null,
@@ -159,28 +181,6 @@
       "Cordova"
     ],
     "lastUpdatedAt": null,
-    "meteorVersion": "3.4.1-beta.1"
-  },
-  {
-    "title": "Parties",
-    "slug": "parties",
-    "demo": null,
-    "tutorial": null,
-    "repository": "meteor/examples",
-    "repositoryUrl": "https://github.com/meteor/examples/tree/main/parties",
-    "isInternal": true,
-    "internalPath": "parties",
-    "why": "One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates",
-    "stack": [
-      "Meteor",
-      "Rspack",
-      "Blaze 3",
-      "Bootstrap 5",
-      "D3.js",
-      "RSLint",
-      "Playwright"
-    ],
-    "lastUpdatedAt": "August/23/2021",
     "meteorVersion": "3.4.1-beta.1"
   }
 ]

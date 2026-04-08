@@ -28,9 +28,8 @@
 ### Official examples
 
 #### Simple Tasks
-
 - Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
-- Why: A task management app showcasing form handling, user accounts, and a polished component-based UI
+- Why: A task management app showcasing form handling, user accounts, DB migrations, and a polished component-based UI
 - Stack: Meteor, Rspack, Chakra UI, React, Formik, MongoDB
 - Last Updated At: Feb/12/2026
 - Meteor Version: 3.4
@@ -63,6 +62,13 @@
 - Last Updated At: Mar/18/2026
 - Meteor Version: 3.4.1-beta.1
 
+#### Parties
+- Repository: [meteor/examples/parties](./parties)
+- Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates
+- Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
+- Last Updated At: August/23/2021
+- Meteor Version: 3.4.1-beta.1
+
 #### Complex Todos (Svelte)
 - Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
 - Why: Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests
@@ -74,13 +80,6 @@
 - Repository: [CloudByGalaxy/welcome-meteor-cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova)
 - Why: To show how to set up a Meteor app with Cordova for mobile usage
 - Stack: Meteor, Cordova
-- Meteor Version: 3.4.1-beta.1
-
-#### Parties
-- Repository: [meteor/examples/parties](./parties)
-- Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates
-- Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
-- Last Updated At: August/23/2021
 - Meteor Version: 3.4.1-beta.1
 
 ### Other examples
