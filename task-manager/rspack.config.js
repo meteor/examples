@@ -29,7 +29,7 @@ module.exports = defineConfig(Meteor => {
         Meteor.isClient && {
           test: /\.css$/,
           use: ['postcss-loader'],
-          type: 'css/auto',
+          type: 'css',
         },
       ].filter(Boolean),
     },
