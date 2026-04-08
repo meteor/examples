@@ -25,7 +25,7 @@
 
 ---
 
-### Ready
+### Official examples
 
 #### Simple Tasks
 
@@ -38,7 +38,7 @@
 #### Task Manager
 - Repository: [meteor/examples/task-manager](./task-manager)
 - Why: Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC
-- Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS, React Query, Zod, Mocha, Biome, Playwright
+- Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS v4, React Query, Zod, Mocha, Biome, Playwright
 - Last Updated At: Mar/18/2026
 - Meteor Version: 3.4.1-beta.1
 
@@ -76,14 +76,23 @@
 - Stack: Meteor, Cordova
 - Meteor Version: 3.4.1-beta.1
 
+#### Parties
+- Repository: [meteor/examples/parties](./parties)
+- Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates
+- Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
+- Last Updated At: August/23/2021
+- Meteor Version: 3.4.1-beta.1
+
+### Other examples
+
+Additional examples covering tutorials, integrations, and specialized use cases.
+
 #### NFT Marketplace
 - Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
 - Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
-- Stack: Meteor, Rspack, React, TailwindCSS, Polygon, Solidity, Hardhat, Ethers.js, and IPFS
+- Stack: Meteor, Rspack, React, Tailwind CSS v4, Polygon, Solidity, Hardhat, Ethers.js, IPFS
 - Last Updated At: Mar/14/2026
 - Meteor Version: 3.4.1-beta.1
-
-### To migrate - WIP
 
 #### React Tutorial App
 - Tutorial: [docs.meteor.com/tutorials/react](https://docs.meteor.com/tutorials/react/)
@@ -121,40 +130,36 @@
 - Meteor Version: 3.4
 
 #### Leaderboards
-- Repository [meteor/leaderboards](https://github.com/meteor/leaderboard/)
-- Why: Complete example of a small Blaze app with only client code that can update the DB.
-- Stack: Meteor and Blaze
+- Repository: [meteor/leaderboards](https://github.com/meteor/leaderboard/)
+- Why: Complete example of a small Blaze app with only client code that can update the DB
+- Stack: Meteor, Blaze
 - Last Updated At: Jul/25/2021
 - Meteor Version: 2.13.3
 
+### Mobile examples
+
+These examples are not yet available for Meteor 3.x. They will be revisited once CapacitorJS integration is in place.
 
 #### Simple photo
-- Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-photo)
-- Why: A simple example of `mdg:camera` package that allows you to take pictures from your web/phone camera.
-- Stack: Meteor and Blaze
+- Repository: [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-photo)
+- Why: A simple example of `mdg:camera` package that allows you to take pictures from your web/phone camera
+- Stack: Meteor, Blaze
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
 
 #### Simple map
-- Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-map)
-- Why: A simple example of using the `mdg:geolocation` package to get current geolocation and show them on maps.
-- Stack: Meteor and Blaze
+- Repository: [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/simple-map)
+- Why: A simple example of using the `mdg:geolocation` package to get current geolocation and show them on maps
+- Stack: Meteor, Blaze
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
 
 #### Solomo
-- Repository [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/solomo)
-- Why: A simple example of using the `mdg:geolocation` and `mdg:camera` packages place images on a map.
-- Stack: Meteor and Blaze
+- Repository: [meteor/mobile-packages](https://github.com/meteor/mobile-packages/tree/devel/examples/solomo)
+- Why: A simple example of using the `mdg:geolocation` and `mdg:camera` packages to place images on a map
+- Stack: Meteor, Blaze
 - Last Updated At: May/19/2025
 - Meteor Version: 3.2.2
-
-#### Parties
-- Repository: [meteor/examples/parties](./parties)
-- Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates.
-- Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
-- Last Updated At: August/23/2021
-- Meteor Version: 3.4.1-beta.1
 
 ## How to add your example?
 

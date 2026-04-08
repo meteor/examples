@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Parses the "### Ready" section of README.md and generates examples.json.
+ * Parses the "### Official examples" section of README.md and generates examples.json.
  *
  * Usage:
  *   node scripts/update-examples-json.mjs
@@ -172,11 +172,11 @@ function extractHeadingBlocks(lines) {
 function parseReadySection(markdown) {
   const lines = markdown.split("\n");
 
-  // Strategy 1: find a "### Ready" heading and scope to that section
+  // Strategy 1: find a "### Official examples" heading and scope to that section
   let readyStart = -1;
   let readySectionDepth = 0;
   for (let i = 0; i < lines.length; i++) {
-    const m = lines[i].trim().match(/^(#{1,6})\s+ready\b/i);
+    const m = lines[i].trim().match(/^(#{1,6})\s+official\s+examples\b/i);
     if (m) {
       readyStart = i + 1;
       readySectionDepth = m[1].length; // e.g. 3 for ###
@@ -197,7 +197,7 @@ function parseReadySection(markdown) {
     }
   } else {
     console.warn(
-      'No "Ready" section found — falling back to pattern detection across the entire README.'
+      'No "Official examples" section found — falling back to pattern detection across the entire README.'
     );
     scopedLines = lines;
   }
@@ -269,7 +269,7 @@ const examples = parseReadySection(readme);
 
 if (examples.length === 0) {
   console.error(
-    'WARNING: No examples found in the "### Ready" section. Check README.md formatting.'
+    'WARNING: No examples found in the "### Official examples" section. Check README.md formatting.'
   );
   process.exit(1);
 }

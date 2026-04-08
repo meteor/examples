@@ -36,7 +36,7 @@
       "React",
       "Meteor-RPC",
       "shadcn/ui",
-      "Tailwind CSS",
+      "Tailwind CSS v4",
       "React Query",
       "Zod",
       "Mocha",
@@ -162,27 +162,25 @@
     "meteorVersion": "3.4.1-beta.1"
   },
   {
-    "title": "NFT Marketplace",
-    "slug": "nft-marketplace",
+    "title": "Parties",
+    "slug": "parties",
     "demo": null,
     "tutorial": null,
     "repository": "meteor/examples",
-    "repositoryUrl": "https://github.com/meteor/examples/tree/main/nft-marketplace",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/parties",
     "isInternal": true,
-    "internalPath": "nft-marketplace",
-    "why": "Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions",
+    "internalPath": "parties",
+    "why": "One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates",
     "stack": [
       "Meteor",
       "Rspack",
-      "React",
-      "TailwindCSS",
-      "Polygon",
-      "Solidity",
-      "Hardhat",
-      "Ethers.js",
-      "and IPFS"
+      "Blaze 3",
+      "Bootstrap 5",
+      "D3.js",
+      "RSLint",
+      "Playwright"
     ],
-    "lastUpdatedAt": "Mar/14/2026",
+    "lastUpdatedAt": "August/23/2021",
     "meteorVersion": "3.4.1-beta.1"
   }
 ]
