@@ -44,7 +44,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Mar/18/2026",
-    "meteorVersion": "3.4.1-beta.1"
+    "meteorVersion": "3.4.1-rc.0"
   },
   {
     "title": "Tic-Tac-Toe",
@@ -66,7 +66,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Mar/17/2026",
-    "meteorVersion": "3.4.1-beta.1"
+    "meteorVersion": "3.4.1-rc.0"
   },
   {
     "title": "Simple Blog",
@@ -116,7 +116,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Mar/18/2026",
-    "meteorVersion": "3.4.1-beta.1"
+    "meteorVersion": "3.4.1-rc.0"
   },
   {
     "title": "Parties",
@@ -138,7 +138,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "August/23/2021",
-    "meteorVersion": "3.4.1-beta.1"
+    "meteorVersion": "3.4.1-rc.0"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -164,7 +164,7 @@
       "MongoDB"
     ],
     "lastUpdatedAt": "Mar/19/2026",
-    "meteorVersion": "3.4.1-beta.1"
+    "meteorVersion": "3.4.1-rc.0"
   },
   {
     "title": "Welcome Meteor Cordova",
@@ -181,6 +181,6 @@
       "Cordova"
     ],
     "lastUpdatedAt": null,
-    "meteorVersion": "3.4.1-beta.1"
+    "meteorVersion": "3.4.1-rc.0"
   }
 ]
