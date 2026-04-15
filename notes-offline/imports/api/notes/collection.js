@@ -25,5 +25,5 @@ SoftDelete.configure({
   overrideRemove: true,
 });
 
-// Keep all notes offline (including soft-deleted for trash view)
-NotesCollection.keep({}, { sort: { updatedAt: -1 }, limit: 500 });
+// Keep active notes offline — trash uses its own subscription
+NotesCollection.keep({ deleted: { $ne: true } }, { sort: { updatedAt: -1 }, limit: 500 });
