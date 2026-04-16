@@ -140,6 +140,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
       {/* Header */}
       <Group justify="space-between" py={4}>
         <Group gap="sm">
+          <img src="/icons/icon-192.png" alt="Notes Offline" width={28} height={28} style={{ borderRadius: 6 }} />
           <Text fw={800} size="xl">
             {showTrash ? 'Trash' : 'Notes'}
           </Text>
