@@ -29,6 +29,7 @@
 
 #### Simple Tasks
 - Repository: [fredmaiaarantes/simpletasks](https://github.com/fredmaiaarantes/simpletasks)
+- Demo: https://simpletasks.sandbox.galaxycloud.app/
 - Why: A task management app showcasing form handling, user accounts, DB migrations, and a polished component-based UI
 - Stack: Meteor, Rspack, Chakra UI, React, Formik, MongoDB
 - Last Updated At: Feb/12/2026
