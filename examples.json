@@ -77,6 +77,27 @@
     "meteorVersion": "3.4.1-rc.1"
   },
   {
+    "title": "Simple Blog",
+    "slug": "simple-blog",
+    "demo": null,
+    "tutorial": null,
+    "repository": "dupontbertrand/meteor-blog",
+    "repositoryUrl": "https://github.com/dupontbertrand/meteor-blog",
+    "isInternal": false,
+    "internalPath": null,
+    "why": "Mini blog with role-based access control, post/comment management, email notifications, and dev-mode mail preview",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze 3",
+      "Bootstrap 5",
+      "Flow Router",
+      "MJML"
+    ],
+    "lastUpdatedAt": "Mar/24/2026",
+    "meteorVersion": "3.4"
+  },
+  {
     "title": "Tic-Tac-Toe",
     "slug": "tic-tac-toe",
     "demo": "https://tic-tac-toe.sandbox.galaxycloud.app",
@@ -97,27 +118,6 @@
     ],
     "lastUpdatedAt": "Apr/21/2026",
     "meteorVersion": "3.4.1-rc.1"
-  },
-  {
-    "title": "Simple Blog",
-    "slug": "simple-blog",
-    "demo": null,
-    "tutorial": null,
-    "repository": "dupontbertrand/meteor-blog",
-    "repositoryUrl": "https://github.com/dupontbertrand/meteor-blog",
-    "isInternal": false,
-    "internalPath": null,
-    "why": "Mini blog with role-based access control, post/comment management, email notifications, and dev-mode mail preview",
-    "stack": [
-      "Meteor",
-      "Rspack",
-      "Blaze 3",
-      "Bootstrap 5",
-      "Flow Router",
-      "MJML"
-    ],
-    "lastUpdatedAt": "Mar/24/2026",
-    "meteorVersion": "3.4"
   },
   {
     "title": "Parties",
