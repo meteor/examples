@@ -47,6 +47,36 @@
     "meteorVersion": "3.4.1-rc.1"
   },
   {
+    "title": "Notes Offline",
+    "slug": "notes-offline",
+    "demo": "https://notes-offline.sandbox.galaxycloud.app",
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/notes-offline",
+    "isInternal": true,
+    "internalPath": "notes-offline",
+    "why": "Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "Mantine UI",
+      "jam:offline",
+      "jam:method",
+      "jam:pub-sub",
+      "jam:soft-delete",
+      "Zod",
+      "Workbox",
+      "LinguiJS",
+      "Mocha",
+      "ESLint",
+      "Prettier",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Apr/21/2026",
+    "meteorVersion": "3.4.1-rc.1"
+  },
+  {
     "title": "Tic-Tac-Toe",
     "slug": "tic-tac-toe",
     "demo": "https://tic-tac-toe.sandbox.galaxycloud.app",
@@ -88,36 +118,6 @@
     ],
     "lastUpdatedAt": "Mar/24/2026",
     "meteorVersion": "3.4"
-  },
-  {
-    "title": "Notes Offline",
-    "slug": "notes-offline",
-    "demo": "https://notes-offline.sandbox.galaxycloud.app",
-    "tutorial": null,
-    "repository": "meteor/examples",
-    "repositoryUrl": "https://github.com/meteor/examples/tree/main/notes-offline",
-    "isInternal": true,
-    "internalPath": "notes-offline",
-    "why": "Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)",
-    "stack": [
-      "Meteor",
-      "Rspack",
-      "React",
-      "Mantine UI",
-      "jam:offline",
-      "jam:method",
-      "jam:pub-sub",
-      "jam:soft-delete",
-      "Zod",
-      "Workbox",
-      "LinguiJS",
-      "Mocha",
-      "ESLint",
-      "Prettier",
-      "Playwright"
-    ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1-rc.1"
   },
   {
     "title": "Parties",
