@@ -13,20 +13,6 @@ module.exports = defineConfig((Meteor) => {
         },
       ].filter(Boolean),
     },
-    devServer: {
-      devMiddleware: {
-        // Meteor 3.4.1 will include this config as default
-        writeToDisk: (filePath) => {
-          if (filePath.endsWith('sw.js')) {
-            // Only write sw.js on first build, skip on HMR rebuilds to
-            // avoid re-registering the service worker and forcing a full
-            // page reload.
-            return !fs.existsSync(`${__dirname}/public/sw.js`);
-          }
-          return filePath.endsWith('.html');
-        },
-      },
-    },
     plugins: [
       // Only generate the service worker for the client build
       Meteor.isClient &&
