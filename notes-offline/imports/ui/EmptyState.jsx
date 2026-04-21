@@ -28,5 +28,9 @@ export const EmptyState = () => (
         </Text>
       </Group>
     </Stack>
+    <Text size="sm" c="dimmed" ta="center" maw={440} mt="md">
+      Notes are tied to this device. Clearing browser data will unlink them. Use Export from the
+      menu to keep a backup.
+    </Text>
   </Stack>
 );

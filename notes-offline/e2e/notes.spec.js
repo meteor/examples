@@ -154,7 +154,7 @@ test.describe('Notes Offline', () => {
     await page.getByRole('button', { name: 'New note' }).click();
     await page.getByLabel('Delete note').click();
 
-    // Go to trash — should have at least one note
+    // Go to trash. Should have at least one note
     await page.getByLabel('View trash').click();
     await expect(page.getByText('Trash', { exact: true })).toBeVisible();
     const trashCountBefore = await sidebar.locator('.mantine-Card-root').count();
@@ -166,7 +166,7 @@ test.describe('Notes Offline', () => {
     // Trash count should decrease
     await expect(sidebar.locator('.mantine-Card-root')).toHaveCount(trashCountBefore - 1);
 
-    // Go back to notes view — recovered note should be there
+    // Go back to notes view. Recovered note should be there
     await page.getByLabel('Back to notes').click();
     await expect(page.getByText('Notes', { exact: true })).toBeVisible();
   });
@@ -204,5 +204,44 @@ test.describe('Notes Offline', () => {
     await page.getByText('Edit').click();
 
     await expect(page.getByPlaceholder('Start writing... (supports Markdown)')).toBeVisible();
+  });
+
+  test('notes are isolated per device (different ownerIds)', async ({ browser }) => {
+    const ctxA = await browser.newContext();
+    const ctxB = await browser.newContext();
+    try {
+      const pageA = await ctxA.newPage();
+      const pageB = await ctxB.newPage();
+
+      await pageA.goto('/');
+      await pageA.waitForLoadState('networkidle');
+      await pageB.goto('/');
+      await pageB.waitForLoadState('networkidle');
+
+      const ownerA = await pageA.evaluate(() => localStorage.getItem('notes-offline.ownerId'));
+      const ownerB = await pageB.evaluate(() => localStorage.getItem('notes-offline.ownerId'));
+      expect(ownerA).toBeTruthy();
+      expect(ownerB).toBeTruthy();
+      expect(ownerA).not.toBe(ownerB);
+
+      const secretTitle = `Secret ${uid()}`;
+      await pageA.getByRole('button', { name: 'New note' }).click();
+      await pageA.getByPlaceholder('Note title').fill(secretTitle);
+
+      const sidebarA = pageA.locator('.mantine-AppShell-navbar');
+      await expect(sidebarA.getByText(secretTitle)).toBeVisible({ timeout: 5000 });
+
+      // Give server-side sync time to settle, then refresh context B
+      await pageB.waitForTimeout(500);
+      await pageB.reload();
+      await pageB.waitForLoadState('networkidle');
+
+      const sidebarB = pageB.locator('.mantine-AppShell-navbar');
+      await expect(sidebarB.getByText(secretTitle)).not.toBeVisible();
+      await expect(sidebarB.getByText('No notes yet. Create one!')).toBeVisible();
+    } finally {
+      await ctxA.close();
+      await ctxB.close();
+    }
   });
 });

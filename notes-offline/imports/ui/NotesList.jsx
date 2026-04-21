@@ -36,14 +36,16 @@ import {
 import { isSyncing } from 'meteor/jam:offline';
 import { NotesCollection } from '../api/notes/collection';
 import { createNote, recoverNote, permanentDeleteNote, emptyTrash } from '../api/notes/methods';
+import { getOwnerId } from './owner';
 
 export const NotesList = ({ selectedNoteId, onSelectNote }) => {
   const [search, setSearch] = useState('');
   const [showTrash, setShowTrash] = useState(false);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const ownerId = getOwnerId();
 
-  useSubscribe('notes');
-  useSubscribe('notes.trash');
+  useSubscribe('notes', ownerId);
+  useSubscribe('notes.trash', ownerId);
   const isConnected = useTracker(() => Meteor.status().connected);
   const syncing = useTracker(() => isSyncing());
 
@@ -74,21 +76,21 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
   }, [notes, trashedNotes, search, showTrash]);
 
   const handleNewNote = async () => {
-    const noteId = await createNote({ title: 'Untitled', body: '' });
+    const noteId = await createNote({ ownerId, title: 'Untitled', body: '' });
     onSelectNote(noteId);
   };
 
   const handleRecover = async (noteId) => {
-    await recoverNote({ _id: noteId });
+    await recoverNote({ _id: noteId, ownerId });
   };
 
   const handlePermanentDelete = async (noteId) => {
-    await permanentDeleteNote({ _id: noteId });
+    await permanentDeleteNote({ _id: noteId, ownerId });
     if (selectedNoteId === noteId) onSelectNote(null);
   };
 
   const handleEmptyTrash = async () => {
-    await emptyTrash({});
+    await emptyTrash({ ownerId });
     onSelectNote(null);
   };
 
@@ -124,6 +126,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
         if (!Array.isArray(imported)) return;
         for (const note of imported) {
           await createNote({
+            ownerId,
             title: note.title || 'Imported',
             body: note.body || '',
           });
@@ -140,7 +143,13 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
       {/* Header */}
       <Group justify="space-between" py={4}>
         <Group gap="sm">
-          <img src="/icons/icon-192.png" alt="Notes Offline" width={28} height={28} style={{ borderRadius: 6 }} />
+          <img
+            src="/icons/icon-192.png"
+            alt="Notes Offline"
+            width={28}
+            height={28}
+            style={{ borderRadius: 6 }}
+          />
           <Text fw={800} size="xl">
             {showTrash ? 'Trash' : 'Notes'}
           </Text>

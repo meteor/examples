@@ -27,7 +27,7 @@ export default [
   // Import rules
   importXPlugin.flatConfigs.recommended,
 
-  // Prettier (disables conflicting formatting rules — must be last)
+  // Prettier (disables conflicting formatting rules, must be last)
   prettierConfig,
 
   // Project-specific overrides

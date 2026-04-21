@@ -27,8 +27,10 @@ import {
 import Markdown from 'react-markdown';
 import { NotesCollection } from '../api/notes/collection';
 import { updateNote, removeNote, togglePin } from '../api/notes/methods';
+import { getOwnerId } from './owner';
 
 export const NoteEditor = ({ noteId, onClose }) => {
+  const ownerId = getOwnerId();
   const [note] = useFind(() => NotesCollection.find({ _id: noteId }), [noteId]);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -48,7 +50,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
   }, [noteId]);
 
   const debouncedSave = useDebouncedCallback((fields) => {
-    updateNote({ _id: noteId, ...fields });
+    updateNote({ _id: noteId, ownerId, ...fields });
   }, 500);
 
   const handleTitleChange = (e) => {
@@ -64,12 +66,12 @@ export const NoteEditor = ({ noteId, onClose }) => {
   };
 
   const handleDelete = async () => {
-    await removeNote({ _id: noteId });
+    await removeNote({ _id: noteId, ownerId });
     onClose();
   };
 
   const handleTogglePin = () => {
-    togglePin({ _id: noteId });
+    togglePin({ _id: noteId, ownerId });
   };
 
   const handleAddTag = (e) => {
@@ -78,7 +80,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
       const newTag = tagInput.trim().toLowerCase();
       const currentTags = note?.tags || [];
       if (!currentTags.includes(newTag) && currentTags.length < 20) {
-        updateNote({ _id: noteId, tags: [...currentTags, newTag] });
+        updateNote({ _id: noteId, ownerId, tags: [...currentTags, newTag] });
       }
       setTagInput('');
     }
@@ -86,7 +88,11 @@ export const NoteEditor = ({ noteId, onClose }) => {
 
   const handleRemoveTag = (tagToRemove) => {
     const currentTags = note?.tags || [];
-    updateNote({ _id: noteId, tags: currentTags.filter((t) => t !== tagToRemove) });
+    updateNote({
+      _id: noteId,
+      ownerId,
+      tags: currentTags.filter((t) => t !== tagToRemove),
+    });
   };
 
   if (!note) {

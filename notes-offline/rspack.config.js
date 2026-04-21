@@ -41,13 +41,11 @@ module.exports = defineConfig((Meteor) => {
           // Embed the Workbox runtime in sw.js instead of loading it from a CDN
           inlineWorkboxRuntime: true,
           maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
-          // Skip precaching for build output — runtime caching handles app bundles
+          // Skip precaching for build output. Runtime caching handles app bundles
           exclude: [/./],
           // Precache static files that should be available offline immediately
           // (these are cached during SW installation, no fetch required)
-          additionalManifestEntries: [
-            { url: '/favicon.ico', revision: '1' },
-          ],
+          additionalManifestEntries: [{ url: '/favicon.ico', revision: '1' }],
           runtimeCaching: [
             // Never cache HMR hot-update files
             {

@@ -5,6 +5,7 @@ import { NotesList } from './NotesList';
 import { NoteEditor } from './NoteEditor';
 import { EmptyState } from './EmptyState';
 import { createNote } from '../api/notes/methods';
+import { getOwnerId } from './owner';
 
 /**
  * Mantine Theme Configuration
@@ -63,7 +64,9 @@ export const App = () => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
         e.preventDefault();
-        createNote({ title: 'Untitled', body: '' }).then((id) => setSelectedNoteId(id));
+        createNote({ ownerId: getOwnerId(), title: 'Untitled', body: '' }).then((id) =>
+          setSelectedNoteId(id)
+        );
       }
       if (e.key === 'Escape') {
         setSelectedNoteId(null);
