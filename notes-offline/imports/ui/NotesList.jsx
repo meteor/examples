@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useSubscribe, useFind, useTracker } from 'meteor/react-meteor-data';
 import {
@@ -52,7 +52,23 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
 
   useSubscribe('notes', ownerId);
   useSubscribe('notes.trash', ownerId);
-  const isConnected = useTracker(() => Meteor.status().connected);
+  // Browser reports offline almost instantly; DDP's heartbeat can take 15s+ to
+  // notice, so combine both signals for a responsive connectivity indicator.
+  const [browserOnline, setBrowserOnline] = useState(
+    typeof navigator === 'undefined' ? true : navigator.onLine
+  );
+  useEffect(() => {
+    const handleOnline = () => setBrowserOnline(true);
+    const handleOffline = () => setBrowserOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+  const meteorConnected = useTracker(() => Meteor.status().connected);
+  const isConnected = browserOnline && meteorConnected;
   const syncing = useTracker(() => isSyncing());
 
   const notes = useFind(() => {
