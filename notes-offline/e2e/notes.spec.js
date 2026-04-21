@@ -244,4 +244,25 @@ test.describe('Notes Offline', () => {
       await ctxB.close();
     }
   });
+
+  test('should switch language and translate UI strings', async ({ page }) => {
+    const sidebar = page.locator('.mantine-AppShell-navbar');
+
+    // Default locale is English; header shows "Notes"
+    await expect(sidebar.getByText('Notes', { exact: true })).toBeVisible();
+
+    // Open the actions menu and switch to Spanish
+    await page.getByLabel('More actions').click();
+    await page.getByRole('menuitem', { name: 'Español' }).click();
+
+    // Header should now show the Spanish translation
+    await expect(sidebar.getByText('Notas', { exact: true })).toBeVisible();
+
+    // Placeholder in the search input should also be translated
+    await expect(page.getByPlaceholder('Buscar notas...')).toBeVisible();
+
+    // Choice should persist in localStorage
+    const stored = await page.evaluate(() => localStorage.getItem('notes-offline.locale'));
+    expect(stored).toBe('es');
+  });
 });

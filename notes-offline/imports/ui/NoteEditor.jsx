@@ -25,12 +25,15 @@ import {
   IconX,
 } from '@tabler/icons-react';
 import Markdown from 'react-markdown';
+import { t, Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { NotesCollection } from '../api/notes/collection';
 import { updateNote, removeNote, togglePin } from '../api/notes/methods';
 import { getOwnerId } from './owner';
 
 export const NoteEditor = ({ noteId, onClose }) => {
   const ownerId = getOwnerId();
+  const { i18n } = useLingui();
   const [note] = useFind(() => NotesCollection.find({ _id: noteId }), [noteId]);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -91,23 +94,39 @@ export const NoteEditor = ({ noteId, onClose }) => {
     updateNote({
       _id: noteId,
       ownerId,
-      tags: currentTags.filter((t) => t !== tagToRemove),
+      tags: currentTags.filter((tag) => tag !== tagToRemove),
     });
   };
 
   if (!note) {
     return (
       <Text c="dimmed" ta="center" py="xl" size="lg">
-        Note not found
+        <Trans>Note not found</Trans>
       </Text>
     );
   }
+
+  const formattedUpdatedAt = note.updatedAt
+    ? i18n.date(note.updatedAt, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : '';
 
   return (
     <Stack h="100%" gap="md">
       {/* Toolbar */}
       <Group justify="space-between" py={4}>
-        <ActionIcon variant="subtle" size="xl" onClick={onClose} hiddenFrom="sm" aria-label="Back">
+        <ActionIcon
+          variant="subtle"
+          size="xl"
+          onClick={onClose}
+          hiddenFrom="sm"
+          aria-label={t`Back`}
+        >
           <IconArrowLeft size={24} />
         </ActionIcon>
         <Group gap="sm" ml="auto">
@@ -120,7 +139,9 @@ export const NoteEditor = ({ noteId, onClose }) => {
                 label: (
                   <Group gap={6} wrap="nowrap">
                     <IconEdit size={18} />
-                    <Text size="sm">Edit</Text>
+                    <Text size="sm">
+                      <Trans>Edit</Trans>
+                    </Text>
                   </Group>
                 ),
                 value: 'edit',
@@ -129,30 +150,32 @@ export const NoteEditor = ({ noteId, onClose }) => {
                 label: (
                   <Group gap={6} wrap="nowrap">
                     <IconEye size={18} />
-                    <Text size="sm">Preview</Text>
+                    <Text size="sm">
+                      <Trans>Preview</Trans>
+                    </Text>
                   </Group>
                 ),
                 value: 'preview',
               },
             ]}
           />
-          <Tooltip label={note.pinned ? 'Unpin' : 'Pin'}>
+          <Tooltip label={note.pinned ? t`Unpin` : t`Pin`}>
             <ActionIcon
               variant="subtle"
               size="lg"
               onClick={handleTogglePin}
-              aria-label="Toggle pin"
+              aria-label={t`Toggle pin`}
             >
               {note.pinned ? <IconPinFilled size={22} /> : <IconPin size={22} />}
             </ActionIcon>
           </Tooltip>
-          <Tooltip label="Delete">
+          <Tooltip label={t`Delete`}>
             <ActionIcon
               variant="subtle"
               size="lg"
               color="red"
               onClick={handleDelete}
-              aria-label="Delete note"
+              aria-label={t`Delete note`}
             >
               <IconTrash size={22} />
             </ActionIcon>
@@ -166,7 +189,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
       <TextInput
         value={title}
         onChange={handleTitleChange}
-        placeholder="Note title"
+        placeholder={t`Note title`}
         variant="unstyled"
         styles={{ input: { fontWeight: 800, fontSize: '2rem', lineHeight: 1.2 } }}
       />
@@ -176,7 +199,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
         <Textarea
           value={body}
           onChange={handleBodyChange}
-          placeholder="Start writing... (supports Markdown)"
+          placeholder={t`Start writing... (supports Markdown)`}
           autosize
           minRows={12}
           maxRows={40}
@@ -190,7 +213,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
             <Markdown>{body}</Markdown>
           ) : (
             <Text c="dimmed" fs="italic" size="lg">
-              Nothing to preview
+              <Trans>Nothing to preview</Trans>
             </Text>
           )}
         </TypographyStylesProvider>
@@ -213,7 +236,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
                 size="xs"
                 variant="transparent"
                 onClick={() => handleRemoveTag(tag)}
-                aria-label={`Remove tag ${tag}`}
+                aria-label={t`Remove tag ${tag}`}
               >
                 <IconX size={12} />
               </ActionIcon>
@@ -226,7 +249,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
           value={tagInput}
           onChange={(e) => setTagInput(e.currentTarget.value)}
           onKeyDown={handleAddTag}
-          placeholder="Add tag..."
+          placeholder={t`Add tag...`}
           size="sm"
           variant="unstyled"
           w={140}
@@ -235,14 +258,7 @@ export const NoteEditor = ({ noteId, onClose }) => {
 
       {/* Metadata */}
       <Text size="sm" c="dimmed">
-        Last updated:{' '}
-        {note.updatedAt?.toLocaleString(undefined, {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        })}
+        <Trans>Last updated: {formattedUpdatedAt}</Trans>
       </Text>
     </Stack>
   );

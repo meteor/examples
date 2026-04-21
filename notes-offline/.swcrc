@@ -4,6 +4,9 @@
       "react": {
         "runtime": "automatic"
       }
+    },
+    "experimental": {
+      "plugins": [["@lingui/swc-plugin", {}]]
     }
   }
 }

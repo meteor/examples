@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MantineProvider, AppShell, createTheme } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { t } from '@lingui/macro';
 import { NotesList } from './NotesList';
 import { NoteEditor } from './NoteEditor';
 import { EmptyState } from './EmptyState';
@@ -64,7 +65,7 @@ export const App = () => {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
         e.preventDefault();
-        createNote({ ownerId: getOwnerId(), title: 'Untitled', body: '' }).then((id) =>
+        createNote({ ownerId: getOwnerId(), title: t`Untitled`, body: '' }).then((id) =>
           setSelectedNoteId(id)
         );
       }

@@ -57,9 +57,9 @@
 
 #### Notes Offline
 - Repository: [meteor/examples/notes-offline](./notes-offline)
-- Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, and cross-tab sync
-- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, Mocha, ESLint, Prettier, Playwright
-- Last Updated At: Mar/18/2026
+- Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)
+- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, LinguiJS, Mocha, ESLint, Prettier, Playwright
+- Last Updated At: Apr/21/2026
 - Meteor Version: 3.4.1-rc.0
 
 #### Parties

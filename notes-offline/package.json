@@ -8,10 +8,14 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "e2e": "npx playwright test --ui",
-    "e2e:headless": "npx playwright test"
+    "e2e:headless": "npx playwright test",
+    "i18n:extract": "lingui extract --clean"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.6",
+    "@lingui/core": "^5.9.5",
+    "@lingui/macro": "^5.9.5",
+    "@lingui/react": "^5.9.5",
     "@mantine/core": "^8.3.18",
     "@mantine/hooks": "^8.3.18",
     "@mantine/notifications": "^8.3.18",
@@ -30,6 +34,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@lingui/cli": "^5.9.5",
+    "@lingui/format-json": "^5.9.5",
+    "@lingui/loader": "^5.9.5",
+    "@lingui/swc-plugin": "^5.11.0",
     "@meteorjs/rspack": "^1.1.0-beta.35",
     "@playwright/test": "^1.50.0",
     "@rsdoctor/rspack-plugin": "^1.5.7",

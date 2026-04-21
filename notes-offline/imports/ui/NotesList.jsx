@@ -32,16 +32,22 @@ import {
   IconNote,
   IconArrowBackUp,
   IconTrashX,
+  IconCheck,
+  IconLanguage,
 } from '@tabler/icons-react';
 import { isSyncing } from 'meteor/jam:offline';
+import { t, Trans, Plural } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { NotesCollection } from '../api/notes/collection';
 import { createNote, recoverNote, permanentDeleteNote, emptyTrash } from '../api/notes/methods';
 import { getOwnerId } from './owner';
+import { activateLocale, SUPPORTED_LOCALES, LOCALE_LABELS } from './i18n';
 
 export const NotesList = ({ selectedNoteId, onSelectNote }) => {
   const [search, setSearch] = useState('');
   const [showTrash, setShowTrash] = useState(false);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { i18n } = useLingui();
   const ownerId = getOwnerId();
 
   useSubscribe('notes', ownerId);
@@ -71,12 +77,12 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
       (n) =>
         n.title?.toLowerCase().includes(q) ||
         n.body?.toLowerCase().includes(q) ||
-        n.tags?.some((t) => t.toLowerCase().includes(q))
+        n.tags?.some((tag) => tag.toLowerCase().includes(q))
     );
   }, [notes, trashedNotes, search, showTrash]);
 
   const handleNewNote = async () => {
-    const noteId = await createNote({ ownerId, title: 'Untitled', body: '' });
+    const noteId = await createNote({ ownerId, title: t`Untitled`, body: '' });
     onSelectNote(noteId);
   };
 
@@ -127,7 +133,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
         for (const note of imported) {
           await createNote({
             ownerId,
-            title: note.title || 'Imported',
+            title: note.title || t`Imported`,
             body: note.body || '',
           });
         }
@@ -137,6 +143,11 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
     };
     input.click();
   };
+
+  const formatShortDate = (date) =>
+    date ? i18n.date(date, { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+  const formatDeletedDate = (date) =>
+    date ? i18n.date(date, { month: 'short', day: 'numeric' }) : '';
 
   return (
     <Stack h="100%" gap="md">
@@ -151,9 +162,9 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
             style={{ borderRadius: 6 }}
           />
           <Text fw={800} size="xl">
-            {showTrash ? 'Trash' : 'Notes'}
+            {showTrash ? <Trans>Trash</Trans> : <Trans>Notes</Trans>}
           </Text>
-          <Tooltip label={syncing ? 'Syncing...' : isConnected ? 'Online' : 'Offline'}>
+          <Tooltip label={syncing ? t`Syncing...` : isConnected ? t`Online` : t`Offline`}>
             {syncing ? (
               <IconRefresh size={18} color="var(--mantine-color-blue-6)" className="spin" />
             ) : isConnected ? (
@@ -164,34 +175,61 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
           </Tooltip>
         </Group>
         <Group gap="sm">
-          <Tooltip label={colorScheme === 'dark' ? 'Light mode' : 'Dark mode'}>
+          <Tooltip label={colorScheme === 'dark' ? t`Light mode` : t`Dark mode`}>
             <ActionIcon
               variant="subtle"
               size="lg"
               onClick={toggleColorScheme}
-              aria-label="Toggle color scheme"
+              aria-label={t`Toggle color scheme`}
             >
               {colorScheme === 'dark' ? <IconSun size={22} /> : <IconMoon size={22} />}
             </ActionIcon>
           </Tooltip>
-          <Menu position="bottom-end" width={200}>
+          <Menu position="bottom-end" width={220}>
             <Menu.Target>
-              <ActionIcon variant="subtle" size="lg" aria-label="More actions">
+              <ActionIcon variant="subtle" size="lg" aria-label={t`More actions`}>
                 <IconDots size={22} />
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item leftSection={<IconDownload size={18} />} onClick={handleExport}>
-                Export notes
+                <Trans>Export notes</Trans>
               </Menu.Item>
               <Menu.Item leftSection={<IconUpload size={18} />} onClick={handleImport}>
-                Import notes
+                <Trans>Import notes</Trans>
               </Menu.Item>
+              <Menu.Divider />
+              <Menu.Label>
+                <Group gap={6}>
+                  <IconLanguage size={14} />
+                  <Trans>Language</Trans>
+                </Group>
+              </Menu.Label>
+              {SUPPORTED_LOCALES.map((locale) => (
+                <Menu.Item
+                  key={locale}
+                  leftSection={
+                    i18n.locale === locale ? (
+                      <IconCheck size={18} />
+                    ) : (
+                      <span style={{ width: 18, display: 'inline-block' }} />
+                    )
+                  }
+                  onClick={() => activateLocale(locale)}
+                >
+                  {LOCALE_LABELS[locale]}
+                </Menu.Item>
+              ))}
             </Menu.Dropdown>
           </Menu>
           {!showTrash && (
-            <Tooltip label="New note (Ctrl+N)">
-              <ActionIcon variant="filled" size="lg" onClick={handleNewNote} aria-label="New note">
+            <Tooltip label={t`New note (Ctrl+N)`}>
+              <ActionIcon
+                variant="filled"
+                size="lg"
+                onClick={handleNewNote}
+                aria-label={t`New note`}
+              >
                 <IconPlus size={22} />
               </ActionIcon>
             </Tooltip>
@@ -201,7 +239,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
 
       {/* Search */}
       <TextInput
-        placeholder={showTrash ? 'Search trash...' : 'Search notes...'}
+        placeholder={showTrash ? t`Search trash...` : t`Search notes...`}
         leftSection={<IconSearch size={20} />}
         size="md"
         value={search}
@@ -219,7 +257,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
           leftSection={<IconTrashX size={18} />}
           onClick={handleEmptyTrash}
         >
-          Empty trash ({trashedNotes.length})
+          <Trans>Empty trash ({trashedNotes.length})</Trans>
         </Button>
       )}
 
@@ -248,14 +286,14 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
             >
               <Group justify="space-between" mb={6}>
                 <Text fw={600} size="md" lineClamp={1} style={{ flex: 1 }}>
-                  {note.title || 'Untitled'}
+                  {note.title || <Trans>Untitled</Trans>}
                 </Text>
                 {!showTrash && note.pinned && (
                   <IconPin size={18} color="var(--mantine-color-blue-6)" />
                 )}
               </Group>
               <Text size="sm" c="dimmed" lineClamp={2} mb={8}>
-                {note.body || 'No content'}
+                {note.body || <Trans>No content</Trans>}
               </Text>
               {!showTrash && note.tags?.length > 0 && (
                 <Group gap={6} mb={6}>
@@ -268,34 +306,32 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
               )}
               <Group justify="space-between" align="center">
                 <Text size="xs" c="dimmed">
-                  {showTrash
-                    ? `Deleted ${note.deletedAt?.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`
-                    : note.updatedAt?.toLocaleDateString(undefined, {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                  {showTrash ? (
+                    <Trans>Deleted {formatDeletedDate(note.deletedAt)}</Trans>
+                  ) : (
+                    formatShortDate(note.updatedAt)
+                  )}
                 </Text>
                 {showTrash && (
                   <Group gap="xs">
-                    <Tooltip label="Recover">
+                    <Tooltip label={t`Recover`}>
                       <ActionIcon
                         size="md"
                         variant="subtle"
                         color="green"
                         onClick={() => handleRecover(note._id)}
-                        aria-label="Recover note"
+                        aria-label={t`Recover note`}
                       >
                         <IconArrowBackUp size={18} />
                       </ActionIcon>
                     </Tooltip>
-                    <Tooltip label="Delete forever">
+                    <Tooltip label={t`Delete forever`}>
                       <ActionIcon
                         size="md"
                         variant="subtle"
                         color="red"
                         onClick={() => handlePermanentDelete(note._id)}
-                        aria-label="Delete permanently"
+                        aria-label={t`Delete permanently`}
                       >
                         <IconTrashX size={18} />
                       </ActionIcon>
@@ -307,11 +343,13 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
           ))}
           {filteredNotes.length === 0 && (
             <Text c="dimmed" ta="center" size="md" py={40}>
-              {showTrash
-                ? 'Trash is empty'
-                : search
-                  ? 'No notes match your search'
-                  : 'No notes yet. Create one!'}
+              {showTrash ? (
+                <Trans>Trash is empty</Trans>
+              ) : search ? (
+                <Trans>No notes match your search</Trans>
+              ) : (
+                <Trans>No notes yet. Create one!</Trans>
+              )}
             </Text>
           )}
         </Stack>
@@ -322,9 +360,11 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
       {/* Footer with trash toggle */}
       <Group justify="space-between" py={2}>
         <Text size="sm" c="dimmed">
-          {showTrash
-            ? `${trashedNotes.length} in trash`
-            : `${notes.length} note${notes.length !== 1 ? 's' : ''}`}
+          {showTrash ? (
+            <Plural value={trashedNotes.length} one="# in trash" other="# in trash" />
+          ) : (
+            <Plural value={notes.length} one="# note" other="# notes" />
+          )}
         </Text>
         <Button
           variant="subtle"
@@ -335,9 +375,9 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
             setShowTrash(!showTrash);
             onSelectNote(null);
           }}
-          aria-label={showTrash ? 'Back to notes' : 'View trash'}
+          aria-label={showTrash ? t`Back to notes` : t`View trash`}
         >
-          {showTrash ? 'Back to notes' : `Trash (${trashedNotes.length})`}
+          {showTrash ? <Trans>Back to notes</Trans> : <Trans>Trash ({trashedNotes.length})</Trans>}
         </Button>
       </Group>
     </Stack>

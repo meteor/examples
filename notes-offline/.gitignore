@@ -81,3 +81,6 @@ public/sw.js
 # Playwright
 test-results/
 playwright-report/
+
+# SWC plugin cache (created when loading @lingui/swc-plugin)
+.swc/
