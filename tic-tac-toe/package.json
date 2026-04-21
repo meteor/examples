@@ -25,7 +25,7 @@
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^1.1.0-beta.35",
+    "@meteorjs/rspack": "^1.1.0-beta.36",
     "@playwright/test": "^1.50.0",
     "@rsdoctor/rspack-plugin": "^1.5.7",
     "@rspack/cli": "^1.7.9",
