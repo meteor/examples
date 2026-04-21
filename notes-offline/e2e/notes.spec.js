@@ -251,9 +251,9 @@ test.describe('Notes Offline', () => {
     // Default locale is English; header shows "Notes"
     await expect(sidebar.getByText('Notes', { exact: true })).toBeVisible();
 
-    // Open the actions menu and switch to Spanish
-    await page.getByLabel('More actions').click();
-    await page.getByRole('menuitem', { name: 'Español' }).click();
+    // Switch to Spanish via the language menu in the sidebar header
+    await sidebar.getByLabel('Language').click();
+    await page.getByRole('menuitem', { name: 'ES' }).click();
 
     // Header should now show the Spanish translation
     await expect(sidebar.getByText('Notas', { exact: true })).toBeVisible();

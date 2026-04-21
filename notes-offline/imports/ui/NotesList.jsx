@@ -32,8 +32,8 @@ import {
   IconNote,
   IconArrowBackUp,
   IconTrashX,
+  IconChevronDown,
   IconCheck,
-  IconLanguage,
 } from '@tabler/icons-react';
 import { isSyncing } from 'meteor/jam:offline';
 import { t, Trans, Plural } from '@lingui/macro';
@@ -41,7 +41,7 @@ import { useLingui } from '@lingui/react';
 import { NotesCollection } from '../api/notes/collection';
 import { createNote, recoverNote, permanentDeleteNote, emptyTrash } from '../api/notes/methods';
 import { getOwnerId } from './owner';
-import { activateLocale, SUPPORTED_LOCALES, LOCALE_LABELS } from './i18n';
+import { activateLocale, SUPPORTED_LOCALES } from './i18n';
 
 export const NotesList = ({ selectedNoteId, onSelectNote }) => {
   const [search, setSearch] = useState('');
@@ -191,6 +191,31 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
           </Tooltip>
         </Group>
         <Group gap="sm">
+          <Menu position="bottom-end" width={120}>
+            <Menu.Target>
+              <Button
+                variant="subtle"
+                color="gray"
+                size="compact-sm"
+                rightSection={<IconChevronDown size={14} />}
+                aria-label={t`Language`}
+                styles={{ label: { fontWeight: 600, letterSpacing: 0.5 } }}
+              >
+                {i18n.locale.toUpperCase()}
+              </Button>
+            </Menu.Target>
+            <Menu.Dropdown>
+              {SUPPORTED_LOCALES.map((locale) => (
+                <Menu.Item
+                  key={locale}
+                  onClick={() => activateLocale(locale)}
+                  rightSection={i18n.locale === locale ? <IconCheck size={14} /> : null}
+                >
+                  {locale.toUpperCase()}
+                </Menu.Item>
+              ))}
+            </Menu.Dropdown>
+          </Menu>
           <Tooltip label={colorScheme === 'dark' ? t`Light mode` : t`Dark mode`}>
             <ActionIcon
               variant="subtle"
@@ -214,28 +239,6 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
               <Menu.Item leftSection={<IconUpload size={18} />} onClick={handleImport}>
                 <Trans>Import notes</Trans>
               </Menu.Item>
-              <Menu.Divider />
-              <Menu.Label>
-                <Group gap={6}>
-                  <IconLanguage size={14} />
-                  <Trans>Language</Trans>
-                </Group>
-              </Menu.Label>
-              {SUPPORTED_LOCALES.map((locale) => (
-                <Menu.Item
-                  key={locale}
-                  leftSection={
-                    i18n.locale === locale ? (
-                      <IconCheck size={18} />
-                    ) : (
-                      <span style={{ width: 18, display: 'inline-block' }} />
-                    )
-                  }
-                  onClick={() => activateLocale(locale)}
-                >
-                  {LOCALE_LABELS[locale]}
-                </Menu.Item>
-              ))}
             </Menu.Dropdown>
           </Menu>
           {!showTrash && (
@@ -373,7 +376,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
 
       <Divider />
 
-      {/* Footer with trash toggle */}
+      {/* Footer: note count + trash toggle */}
       <Group justify="space-between" py={2}>
         <Text size="sm" c="dimmed">
           {showTrash ? (

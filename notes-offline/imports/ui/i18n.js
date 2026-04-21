@@ -1,7 +1,6 @@
 import { i18n } from '@lingui/core';
 
 export const SUPPORTED_LOCALES = ['en', 'es', 'pt'];
-export const LOCALE_LABELS = { en: 'English', es: 'Español', pt: 'Português' };
 const DEFAULT_LOCALE = 'en';
 const STORAGE_KEY = 'notes-offline.locale';
 

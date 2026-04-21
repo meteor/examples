@@ -102,7 +102,7 @@ Lingui is integrated into the build pipeline in two complementary ways:
 - **`@lingui/swc-plugin`** is registered in `.swcrc` so the macros (`t`, `<Trans>`, `<Plural>`) are transformed by Meteor's built-in SWC loader at compile time. No rspack config changes, no Babel.
 - **`@lingui/loader`** compiles the JSON catalogs on the fly during bundling (see the inline-loader import in `imports/ui/i18n.js`), so there's no separate compile step and no generated `.mjs` files to commit or ignore.
 
-Catalogs live as minimal flat JSON under `imports/locales/{en,es,pt}/messages.json`. The initial locale comes from `localStorage` if set, otherwise from `navigator.language`, falling back to English. A language switcher in the header menu writes the choice to `localStorage['notes-offline.locale']`.
+Catalogs live as minimal flat JSON under `imports/locales/{en,es,pt}/messages.json`. The initial locale comes from `localStorage` if set, otherwise from `navigator.language`, falling back to English. A language dropdown in the sidebar header lets users switch locale, and the choice is persisted to `localStorage['notes-offline.locale']`.
 
 **Macros in use:**
 
@@ -127,7 +127,7 @@ At build time `@lingui/swc-plugin` rewrites each macro call into a plain `i18n._
 3. Fill in translations in `imports/locales/es/messages.json` and `imports/locales/pt/messages.json`.
 4. No compile step. `@lingui/loader` picks up the updated JSON on the next bundle.
 
-To add a new locale, append it to `locales` in `lingui.config.js`, add it to `SUPPORTED_LOCALES` / `LOCALE_LABELS` in `imports/ui/i18n.js`, then run `npm run i18n:extract`.
+To add a new locale, append it to `locales` in `lingui.config.js`, add it to `SUPPORTED_LOCALES` in `imports/ui/i18n.js`, then run `npm run i18n:extract`.
 
 ## Deployment
 
