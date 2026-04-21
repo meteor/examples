@@ -80,7 +80,7 @@ export const App = () => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="auto">
       <Notifications position="top-right" />
-      <AppShell navbar={{ width: 380, breakpoint: 'sm' }} padding="xl">
+      <AppShell navbar={{ width: 400, breakpoint: 'sm' }} padding="xl">
         <AppShell.Navbar p="lg">
           <NotesList selectedNoteId={selectedNoteId} onSelectNote={setSelectedNoteId} />
         </AppShell.Navbar>

@@ -191,13 +191,14 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
           </Tooltip>
         </Group>
         <Group gap="sm">
-          <Menu position="bottom-end" width={120}>
+          <Menu position="bottom-end" width={100}>
             <Menu.Target>
               <Button
                 variant="subtle"
                 color="gray"
-                size="compact-sm"
-                rightSection={<IconChevronDown size={14} />}
+                size="compact-xs"
+                px={6}
+                rightSection={<IconChevronDown size={12} />}
                 aria-label={t`Language`}
                 styles={{ label: { fontWeight: 600, letterSpacing: 0.5 } }}
               >
