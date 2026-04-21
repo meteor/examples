@@ -90,8 +90,8 @@ Additional examples covering tutorials, integrations, and specialized use cases.
 - Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
 - Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
 - Stack: Meteor, Rspack, React, Tailwind CSS v4, Polygon, Solidity, Hardhat, Ethers.js, IPFS
-- Last Updated At: Apr/21/2026
-- Meteor Version: 3.4.1-rc.1
+- Last Updated At: Mar/14/2026
+- Meteor Version: 3.4.1-rc.0
 
 #### React Tutorial App
 - Tutorial: [docs.meteor.com/tutorials/react](https://docs.meteor.com/tutorials/react/)
