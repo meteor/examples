@@ -43,8 +43,8 @@
       "Biome",
       "Playwright"
     ],
-    "lastUpdatedAt": "Mar/18/2026",
-    "meteorVersion": "3.4.1-rc.0"
+    "lastUpdatedAt": "Apr/21/2026",
+    "meteorVersion": "3.4.1-rc.1"
   },
   {
     "title": "Tic-Tac-Toe",
@@ -65,8 +65,8 @@
       "oxlint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Mar/17/2026",
-    "meteorVersion": "3.4.1-rc.0"
+    "lastUpdatedAt": "Apr/21/2026",
+    "meteorVersion": "3.4.1-rc.1"
   },
   {
     "title": "Simple Blog",
@@ -98,7 +98,7 @@
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/notes-offline",
     "isInternal": true,
     "internalPath": "notes-offline",
-    "why": "Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, and cross-tab sync",
+    "why": "Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)",
     "stack": [
       "Meteor",
       "Rspack",
@@ -110,13 +110,14 @@
       "jam:soft-delete",
       "Zod",
       "Workbox",
+      "LinguiJS",
       "Mocha",
       "ESLint",
       "Prettier",
       "Playwright"
     ],
-    "lastUpdatedAt": "Mar/18/2026",
-    "meteorVersion": "3.4.1-rc.0"
+    "lastUpdatedAt": "Apr/21/2026",
+    "meteorVersion": "3.4.1-rc.1"
   },
   {
     "title": "Parties",
@@ -137,8 +138,8 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "August/23/2021",
-    "meteorVersion": "3.4.1-rc.0"
+    "lastUpdatedAt": "Apr/21/2026",
+    "meteorVersion": "3.4.1-rc.1"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -163,8 +164,8 @@
       "Mocha",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Mar/19/2026",
-    "meteorVersion": "3.4.1-rc.0"
+    "lastUpdatedAt": "Apr/21/2026",
+    "meteorVersion": "3.4.1-rc.1"
   },
   {
     "title": "Welcome Meteor Cordova",

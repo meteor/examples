@@ -38,15 +38,15 @@
 - Repository: [meteor/examples/task-manager](./task-manager)
 - Why: Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC
 - Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS v4, React Query, Zod, Mocha, Biome, Playwright
-- Last Updated At: Mar/18/2026
-- Meteor Version: 3.4.1-rc.0
+- Last Updated At: Apr/21/2026
+- Meteor Version: 3.4.1-rc.1
 
 #### Tic-Tac-Toe
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Why: Real-time multiplayer game with room-based matchmaking and live state sync via pub/sub
 - Stack: Meteor, Rspack, React, MUI (Material UI), Mocha, oxlint, Playwright
-- Last Updated At: Mar/17/2026
-- Meteor Version: 3.4.1-rc.0
+- Last Updated At: Apr/21/2026
+- Meteor Version: 3.4.1-rc.1
 
 #### Simple Blog
 - Repository: [dupontbertrand/meteor-blog](https://github.com/dupontbertrand/meteor-blog)
@@ -60,21 +60,21 @@
 - Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)
 - Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, LinguiJS, Mocha, ESLint, Prettier, Playwright
 - Last Updated At: Apr/21/2026
-- Meteor Version: 3.4.1-rc.0
+- Meteor Version: 3.4.1-rc.1
 
 #### Parties
 - Repository: [meteor/examples/parties](./parties)
 - Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates
 - Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
-- Last Updated At: August/23/2021
-- Meteor Version: 3.4.1-rc.0
+- Last Updated At: Apr/21/2026
+- Meteor Version: 3.4.1-rc.1
 
 #### Complex Todos (Svelte)
 - Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
 - Why: Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests
 - Stack: Meteor, Rspack, Svelte 5, Skeleton UI, Tailwind CSS v4, jam:method, Zod, oxlint, Cypress, Mocha, MongoDB
-- Last Updated At: Mar/19/2026
-- Meteor Version: 3.4.1-rc.0
+- Last Updated At: Apr/21/2026
+- Meteor Version: 3.4.1-rc.1
 
 #### Welcome Meteor Cordova
 - Repository: [CloudByGalaxy/welcome-meteor-cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova)
@@ -90,8 +90,8 @@ Additional examples covering tutorials, integrations, and specialized use cases.
 - Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
 - Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
 - Stack: Meteor, Rspack, React, Tailwind CSS v4, Polygon, Solidity, Hardhat, Ethers.js, IPFS
-- Last Updated At: Mar/14/2026
-- Meteor Version: 3.4.1-rc.0
+- Last Updated At: Apr/21/2026
+- Meteor Version: 3.4.1-rc.1
 
 #### React Tutorial App
 - Tutorial: [docs.meteor.com/tutorials/react](https://docs.meteor.com/tutorials/react/)
