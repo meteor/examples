@@ -13,7 +13,7 @@ export const EmptyState = () => (
     </Text>
     <Stack gap="sm" mt="lg">
       <Group gap="xs" justify="center">
-        <Kbd size="lg">Ctrl</Kbd>
+        <Kbd size="lg">Alt</Kbd>
         <Text size="md" c="dimmed">
           +
         </Text>

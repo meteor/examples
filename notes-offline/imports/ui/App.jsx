@@ -63,7 +63,10 @@ export const App = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+      // Alt+N (Option+N on macOS) — Ctrl/Cmd+N is reserved by browsers to
+      // open a new window, so we can't intercept it outside PWA standalone.
+      // Match on e.code so Option+N on macOS (which types ˜) still triggers.
+      if (e.altKey && e.code === 'KeyN') {
         e.preventDefault();
         createNote({ ownerId: getOwnerId(), title: t`Untitled`, body: '' }).then((id) =>
           setSelectedNoteId(id)

@@ -24,7 +24,7 @@ test.describe('Notes Offline', () => {
   });
 
   test('should create a new note with keyboard shortcut', async ({ page }) => {
-    await page.keyboard.press('Control+n');
+    await page.keyboard.press('Alt+n');
 
     await expect(page.getByPlaceholder('Note title')).toBeVisible();
   });

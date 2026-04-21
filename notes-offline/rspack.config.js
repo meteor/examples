@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { defineConfig } = require('@meteorjs/rspack');
 const { GenerateSW } = require('workbox-webpack-plugin');
 

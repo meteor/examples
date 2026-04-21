@@ -33,7 +33,7 @@ An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persist
 - Markdown editing with live preview
 - Export/import notes as JSON
 - Dark mode toggle
-- Keyboard shortcuts (`Ctrl+N` new note, `Esc` deselect)
+- Keyboard shortcuts (`Alt+N` new note, `Esc` deselect)
 - Online/offline/syncing status indicator
 - Installable as PWA, works fully offline
 - Multi-language UI (English, Spanish, Portuguese) with per-device preference

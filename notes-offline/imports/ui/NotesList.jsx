@@ -243,7 +243,7 @@ export const NotesList = ({ selectedNoteId, onSelectNote }) => {
             </Menu.Dropdown>
           </Menu>
           {!showTrash && (
-            <Tooltip label={t`New note (Ctrl+N)`}>
+            <Tooltip label={t`New note (Alt+N)`}>
               <ActionIcon
                 variant="filled"
                 size="lg"
