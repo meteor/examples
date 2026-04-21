@@ -23,7 +23,7 @@
   {
     "title": "Task Manager",
     "slug": "task-manager",
-    "demo": null,
+    "demo": "https://task-manager.sandbox.galaxycloud.app",
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/task-manager",
@@ -49,7 +49,7 @@
   {
     "title": "Tic-Tac-Toe",
     "slug": "tic-tac-toe",
-    "demo": null,
+    "demo": "https://tic-tac-toe.sandbox.galaxycloud.app",
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/tic-tac-toe",
@@ -92,7 +92,7 @@
   {
     "title": "Notes Offline",
     "slug": "notes-offline",
-    "demo": null,
+    "demo": "https://notes-offline.sandbox.galaxycloud.app",
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/notes-offline",
@@ -122,7 +122,7 @@
   {
     "title": "Parties",
     "slug": "parties",
-    "demo": null,
+    "demo": "https://parties.sandbox.galaxycloud.app",
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/parties",
@@ -144,7 +144,7 @@
   {
     "title": "Complex Todos (Svelte)",
     "slug": "complex-todos-svelte",
-    "demo": null,
+    "demo": "https://complex-todos-svelte.sandbox.galaxycloud.app",
     "tutorial": null,
     "repository": "meteor/examples",
     "repositoryUrl": "https://github.com/meteor/examples/tree/main/complex-todos-svelte",
