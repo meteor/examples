@@ -2,7 +2,7 @@
 
 Same idea as the [simple Svelte tutorial](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack), but not simple. This app covers things you'll actually run into when building something real: module boundaries, validation, rate limiting, caching, migrations, jobs, and proper separation of concerns.
 
-Built with Meteor 3.4, Svelte 5, Skeleton UI, and Tailwind CSS v4.
+Built with Meteor 3.4.1-rc.1, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 
 ![screenshot](screenshot.jpg)
 
@@ -10,7 +10,7 @@ Built with Meteor 3.4, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 
 | | |
 |---|---|
-| Runtime | Meteor 3.4 |
+| Runtime | Meteor 3.4.1-rc.1 |
 | Frontend | Svelte 5 (runes) |
 | UI | Skeleton UI v4 + Tailwind CSS v4, Cerberus theme |
 | Build | Rspack |
@@ -18,7 +18,7 @@ Built with Meteor 3.4, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 | Validation | Zod + jam:method |
 | Caching | node-cache |
 | Code Quality | oxlint (OXC) + import plugin |
-| Tests | Mocha (integration), Cypress (E2E) |
+| Tests | Mocha + Chai (integration), Cypress (E2E) |
 
 ## Running it
 
@@ -50,10 +50,13 @@ The code follows a [modular monolith](https://github.com/kgrzybek/modular-monoli
 imports/modules/tasks/
 ├── database/tasks.js          # Collection
 ├── enums/                     # Method names, publication names, rate limits
-├── server/                    # Publications, guards, indexes, events
 ├── taskRepository.js          # Data access (extends BaseRepository)
 ├── taskService.js             # Business logic
-└── tasks.methods.js           # Methods with Zod validation
+├── tasks.methods.js           # Methods with Zod validation
+├── tasks.publications.js      # Publications
+├── tasks.guards.js            # Authorization guards
+├── tasks.ensureIndexes.js     # Mongo index setup
+└── tasks.events.js            # EventEmitter handlers (e.g. expire)
 ```
 
 Methods are controllers: they take a request and return a result, nothing more. Services hold the business logic. Repositories talk to the database. If a service needs to notify another module, it fires an event through a shared EventEmitter instead of importing that module directly.

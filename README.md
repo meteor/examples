@@ -135,7 +135,7 @@ Additional examples covering tutorials, integrations, and specialized use cases.
 - Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
 - Stack: Meteor, Rspack, React, Tailwind CSS v4, Polygon, Solidity, Hardhat, Ethers.js, IPFS
 - Last Updated At: Mar/14/2026
-- Meteor Version: 3.4.1-rc.0
+- Meteor Version: 3.4.1-rc.1
 
 ## How to add your example?
 

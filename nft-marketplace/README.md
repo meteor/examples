@@ -1,36 +1,38 @@
 # NFT Marketplace
 
-An NFT marketplace built with Meteor and Ethereum. Based on [Nader's tutorial](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb), adapted to run on Meteor 3.4 with Rspack. Users can mint, list, and buy NFTs using MetaMask and IPFS for storage.
+An NFT marketplace built with Meteor and Ethereum. Based on [Nader's tutorial](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb), adapted to run on Meteor 3.4.1-rc.1 with Rspack. Users can mint, list, and buy NFTs using MetaMask and IPFS (via Infura's gateway) for storage.
 
 ## Stack
 
 | | |
 |---|---|
-| Runtime | Meteor 3.4 |
-| Frontend | React 18 |
-| Styling | Tailwind CSS 3, Headless UI, Heroicons |
+| Runtime | Meteor 3.4.1-rc.1 |
+| Frontend | React 19 |
+| Styling | Tailwind CSS v4 (`@tailwindcss/postcss`), Headless UI, Heroicons |
 | Smart Contracts | Solidity, Hardhat, OpenZeppelin |
 | Blockchain | Ethereum (localhost or Polygon Mumbai) |
-| Web3 | Ethers.js v5, Web3Modal |
-| Storage | IPFS (via ipfs-http-client) |
+| Web3 | Ethers.js v5, Web3Modal v1 |
+| Storage | IPFS via Infura gateway (`ipfs-http-client`, `https://ipfs.infura.io`) |
 | Build | Rspack |
 
 ## Running it locally
 
 You need two terminals.
 
-**Terminal 1** — start a local Hardhat node:
+**Terminal 1**, start a local Hardhat node:
 ```bash
 meteor npm install
 npx hardhat node
 ```
-This gives you 20 accounts with 10000 ETH each. Copy a private key for MetaMask.
+This gives you 20 accounts with 10000 ETH each on `localhost:8545` (the default Hardhat port). Copy a private key for MetaMask.
 
-**Terminal 2** — deploy contracts and start Meteor:
+**Terminal 2**, deploy contracts and start Meteor:
 ```bash
 npx hardhat run scripts/deploy.js --network localhost
 npm start
 ```
+
+`scripts/deploy.js` writes the deployed contract address to `config.js` at the project root (auto-generated, imported by the client). Re-run the deploy step whenever you restart the Hardhat node so `config.js` stays in sync.
 
 Visit `http://localhost:3000/`.
 
@@ -56,11 +58,9 @@ If you get "Nonce too high" errors during transactions:
 2. Go to **Advanced**
 3. Click **Reset Accounts**
 
-## Testing the deployed version
+## Running against a public testnet
 
-A deployed version is available at: https://meteor-nft-marketplace.meteorapp.com
-
-To use it, add the **Mumbai Testnet** to MetaMask:
+To run the app against Polygon Mumbai instead of a local Hardhat node, deploy the contract to Mumbai with `npx hardhat run scripts/deploy.js --network mumbai` (after configuring the `mumbai` network in `hardhat.config.js`), and add the network to MetaMask:
 
 | Field | Value |
 |---|---|

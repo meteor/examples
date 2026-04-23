@@ -6,11 +6,12 @@ Multiplayer tic-tac-toe with room support, built with Meteor, React, and Materia
 
 | | |
 |---|---|
-| Runtime | Meteor 3.4 |
-| Frontend | React 19 |
+| Runtime | Meteor 3.4.1-rc.1 |
+| Frontend | React 19 (`react-meteor-data` for `useTracker` / `useFind`) |
 | UI | MUI v7 (Material UI) |
 | Routing | React Router v7 |
 | Database | MongoDB |
+| Tests | Mocha (via `meteortesting:mocha`) |
 | Code Quality | oxlint (OXC) + react, import plugins |
 | E2E | Playwright |
 | Build | Rspack |

@@ -1,12 +1,12 @@
 # Parties
 
-A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.4 with Blaze 3 and async database operations.
+A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.4.1-rc.1 with Blaze 3 and async database operations.
 
 ## Stack
 
 | | |
 |---|---|
-| Runtime | Meteor 3.4 |
+| Runtime | Meteor 3.4.1-rc.1 |
 | Frontend | Blaze 3 |
 | UI | Bootstrap 5 |
 | Visualization | D3.js v7 (interactive map) |
@@ -50,15 +50,27 @@ Before running E2E tests for the first time, install Playwright's browsers with 
 
 ```
 client/
-  main.html        # All Blaze templates (map, details, RSVP, dialogs)
-  main.js          # Template helpers, event handlers, D3 rendering
+  main.html             # Shell HTML
+  main.js               # Entry: imports UI templates and styles
 server/
-  main.js          # Publications (parties, users directory)
+  main.js               # Publications (parties, users directory)
 imports/
-  model.js         # Parties collection, methods (createParty, invite, rsvp), helpers
+  api/
+    parties/
+      collection.js     # Parties collection + Collection.allow rules
+      methods.js        # createParty, invite, rsvp
+      publications.js   # Party publications
+      helpers.js        # Reactive helpers shared by UI and methods
+  ui/
+    page.js             # Top-level Blaze layout
+    map.js              # D3-rendered party map
+    details.js          # Party detail panel
+    attendance.js       # RSVP controls and counts
+    createDialog.js     # New party dialog
+    inviteDialog.js     # Invite-user dialog
 ```
 
-The data model uses `Collection.allow()` for client-side security rules and Meteor methods for operations that need server-side validation (creating parties, inviting users, RSVPs).
+The data model uses `Collection.allow()` for client-side security rules (owner-only updates, no cowboy inserts) and Meteor methods for operations that need server-side validation (creating parties, inviting users, RSVPs).
 
 ## Deployment
 

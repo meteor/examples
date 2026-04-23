@@ -8,7 +8,7 @@ A task management app showcasing [Meteor-RPC](https://docs.meteor.com/community-
 
 | | |
 |---|---|
-| Runtime | Meteor 3.4 |
+| Runtime | Meteor 3.4.1-rc.1 |
 | Frontend | React 19 |
 | UI | shadcn/ui (Radix + Tailwind) |
 | Styling | Tailwind CSS 3 |
@@ -53,7 +53,7 @@ Before running E2E tests for the first time, install Playwright's browsers with 
 ```
 imports/
   api/
-    tasks.js        # Collection, Zod schemas, Meteor-RPC module
+    tasks.js        # Collection, Zod schemas, Meteor-RPC module (exports `_server`)
     client.js       # Client API (createClient)
   lib/
     utils.js        # cn() utility for Tailwind class merging

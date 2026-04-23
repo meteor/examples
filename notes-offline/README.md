@@ -2,13 +2,13 @@
 
 _Your notes, always available._
 
-An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
+An offline-first notes app built with Meteor 3.4.1-rc.1. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
 
 ## Stack
 
 |              |                                               |
 | ------------ | --------------------------------------------- |
-| Runtime      | Meteor 3.4                                    |
+| Runtime      | Meteor 3.4.1-rc.1                             |
 | Frontend     | React 19                                      |
 | UI           | Mantine UI                                    |
 | Offline      | jam:offline (IndexedDB, auto-sync, cross-tab) |
@@ -19,7 +19,7 @@ An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persist
 | PWA          | Workbox (via workbox-webpack-plugin + Rspack) |
 | i18n         | Lingui (SWC macro + minimal JSON catalogs)    |
 | Tests        | Mocha                                         |
-| Code Quality | ESLint (Airbnb) + Prettier                    |
+| Code Quality | ESLint (flat config: react, hooks, jsx-a11y, import-x) + Prettier |
 | E2E          | Playwright                                    |
 | Build        | Rspack                                        |
 
@@ -32,7 +32,7 @@ An offline-first notes app built with Meteor 3.4. Demonstrates IndexedDB persist
 - Tags support
 - Markdown editing with live preview
 - Export/import notes as JSON
-- Dark mode toggle
+- Auto dark mode (follows system preference via Mantine `colorScheme="auto"`)
 - Keyboard shortcuts (`Alt+N` new note, `Esc` deselect)
 - Online/offline/syncing status indicator
 - Installable as PWA, works fully offline
