@@ -7,70 +7,60 @@ describe('Tasks methods', () =>
 {
   const userId = UNIT_TEST.USER_ID;
   let taskId;
-  
-  beforeEach(function()
+
+  beforeEach(async function()
   {
-    taskRepository.remove({});
+    await taskRepository.remove({});
   });
-  
-  it('tasksInsert', () =>
+
+  it('tasksInsert', async () =>
   {
-    // Set up method arguments and context
     const context = {userId};
-    
     const args = {text: 'new task'};
-    
-    // Execute the method
-    tasksInsert._execute(context, args);
-    
-    // Verify that the method does what we expected
-    assert.equal(taskRepository.find().count(), 1);
+
+    await tasksInsert.call(context, args);
+
+    assert.equal(await taskRepository.count(), 1);
   });
-  
-  it('tasksRemove', () =>
+
+  it('tasksRemove', async () =>
   {
-    // Set up method arguments and context
     const context = {userId};
-    
-    taskId = taskRepository.insert({
+
+    taskId = await taskRepository.insert({
       text: 'test task',
       createdAt: new Date(),
       owner: userId,
       username: 'john doe'
     });
-    
+
     const args = {taskId};
-    
-    // Execute the method
-    tasksRemove._execute(context, args);
-    
-    // Verify that the method does what we expected
-    assert.equal(taskRepository.find().count(), 0);
+
+    await tasksRemove.call(context, args);
+
+    assert.equal(await taskRepository.count(), 0);
   });
-  
-  it('tasksUpdateAsChecked', () =>
+
+  it('tasksUpdateAsChecked', async () =>
   {
-    // Set up method arguments and context
     const context = {userId};
-  
-    taskId = taskRepository.insert({
+
+    taskId = await taskRepository.insert({
       text: 'test task',
       createdAt: new Date(),
       owner: userId,
       username: 'john doe'
     });
-  
+
     const args = {
       taskId: taskId,
       setChecked: true
     };
-  
-    // Execute the method
-    tasksUpdateAsChecked._execute(context, args);
-    
-    let task = taskRepository.findOne(taskId);
-  
-    // Verify that the method does what we expected
+
+    await tasksUpdateAsChecked.call(context, args);
+
+    let task = await taskRepository.findOne(taskId);
+
     assert.equal(task.checked, true);
   });
 });

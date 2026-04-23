@@ -3,30 +3,47 @@
   "private": true,
   "scripts": {
     "start": "meteor -s settings.json --port 3000",
-    "test": "TEST_WATCH=1 meteor -s settings.json --port 3000 test --driver-package meteortesting:mocha",
-    "cypress": "cypress open",
+    "test": "TEST_WATCH=1 meteor test -s settings.json --driver-package meteortesting:mocha",
+    "test:headless": "meteor test --once -s settings.json --driver-package meteortesting:mocha",
+    "e2e": "npx cypress open",
+    "e2e:headless": "npx cypress run",
     "visualize": "meteor -s settings.json --production --extra-packages bundle-visualizer",
-    "deploy": "cd .deploy && mup deploy"
+    "lint": "npx oxlint --import-plugin .",
+    "lint:fix": "npx oxlint --import-plugin . --fix"
   },
   "dependencies": {
-    "@babel/runtime": "^7.15.3",
-    "bcrypt": "^5.0.1",
-    "jquery": "^3.4.1",
-    "meteor-node-stubs": "^1.0.0",
+    "@babel/runtime": "^7.28.6",
+    "@swc/helpers": "^0.5.19",
+    "bcrypt": "^6.0.0",
+    "meteor-node-stubs": "^1.2.27",
     "node-cache": "^5.1.2",
-    "simpl-schema": "^1.10.2",
-    "svelte": "^3.31.2",
-    "svelte-routing": "^1.6.0"
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@meteorjs/rspack": "^1.1.0-beta.36",
+    "@rsdoctor/rspack-plugin": "^1.5.7",
+    "@rspack/cli": "^1.7.8",
+    "@rspack/core": "^1.7.8",
+    "@skeletonlabs/skeleton": "^4.13.0",
+    "@skeletonlabs/skeleton-svelte": "^4.13.0",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/postcss": "^4.2.2",
+    "chai": "^5.2.0",
+    "oxlint": "^1.56.0",
+    "postcss": "^8.5.8",
+    "postcss-load-config": "^6.0.1",
+    "svelte": "^5.53.10",
+    "svelte-check": "^4.4.5",
+    "svelte-loader": "^3.2.4",
+    "svelte-preprocess": "^6.0.3",
+    "tailwindcss": "^4.2.2"
   },
   "meteor": {
     "mainModule": {
       "client": "client/main.js",
       "server": "server/main.js"
     },
-    "testModule": "tests/main.js"
-  },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "cypress": "^7.3.0"
+    "testModule": "tests/main.js",
+    "modern": true
   }
 }

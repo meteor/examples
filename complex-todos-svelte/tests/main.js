@@ -1,6 +1,6 @@
 import assert from 'assert';
 import './package.json.test.js';
-import '../imports/modules/tasks/tasks.methods.test.js';
+import '/imports/modules/tasks/tasks.methods.test.js';
 
 describe('Meteor tests', function()
 {

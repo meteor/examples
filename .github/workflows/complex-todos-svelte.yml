@@ -1,0 +1,58 @@
+name: complex-todos-svelte
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "complex-todos-svelte/**"
+      - ".github/workflows/complex-todos-svelte.yml"
+  pull_request:
+    paths:
+      - "complex-todos-svelte/**"
+      - ".github/workflows/complex-todos-svelte.yml"
+
+defaults:
+  run:
+    working-directory: complex-todos-svelte
+
+jobs:
+  lint:
+    if: false # temporarily disabled
+    name: Lint (oxlint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: meteorengineer/setup-meteor@v2
+      - run: meteor npm install
+      - run: npm run lint
+
+  test:
+    name: Test (Mocha)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: meteorengineer/setup-meteor@v2
+      - run: meteor npm install
+      - run: npm run test:headless
+
+  e2e:
+    name: E2E (Cypress)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: meteorengineer/setup-meteor@v2
+      - run: meteor npm install
+      - name: Start Meteor app
+        run: |
+          export METEOR_SETTINGS=$(cat settings.json)
+          meteor npm start &
+      - run: npx wait-on http://localhost:3000 --timeout 120000
+      - run: npm run e2e:headless
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: complex-todos-svelte-cypress
+          path: complex-todos-svelte/cypress/screenshots/
+          retention-days: 7

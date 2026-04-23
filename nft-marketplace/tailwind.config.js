@@ -1,5 +1,5 @@
 module.exports = {
-  content: ["./app/ui/**/*.{js,jsx}"],
+  content: ["./imports/ui/**/*.{js,jsx}"],
   theme: {
     colors: {
       // Primary

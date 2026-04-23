@@ -1,0 +1,68 @@
+{
+  "name": "notes-offline",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
+    "test:headless": "meteor test --once --driver-package meteortesting:mocha",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint . --fix && prettier --write .",
+    "e2e": "npx playwright test --ui",
+    "e2e:headless": "npx playwright test",
+    "i18n:extract": "lingui extract --clean"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.28.6",
+    "@lingui/core": "^5.9.5",
+    "@lingui/macro": "^5.9.5",
+    "@lingui/react": "^5.9.5",
+    "@mantine/core": "^8.3.18",
+    "@mantine/hooks": "^8.3.18",
+    "@mantine/notifications": "^8.3.18",
+    "@swc/helpers": "^0.5.19",
+    "@tabler/icons-react": "^3.40.0",
+    "meteor-node-stubs": "^1.2.27",
+    "postcss": "^8.5.8",
+    "postcss-loader": "^8.2.1",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-markdown": "^10.1.0",
+    "workbox-webpack-plugin": "^7.4.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@lingui/cli": "^5.9.5",
+    "@lingui/format-json": "^5.9.5",
+    "@lingui/loader": "^5.9.5",
+    "@lingui/swc-plugin": "^5.11.0",
+    "@meteorjs/rspack": "^1.1.0-beta.36",
+    "@playwright/test": "^1.50.0",
+    "@rsdoctor/rspack-plugin": "^1.5.7",
+    "@rspack/cli": "^1.7.8",
+    "@rspack/core": "^1.7.8",
+    "@rspack/plugin-react-refresh": "^1.6.1",
+    "@types/meteor": "^2.9.11",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import-x": "^4.16.2",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^17.4.0",
+    "prettier": "^3.4.0",
+    "react-refresh": "^0.18.0"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.jsx",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js",
+    "modern": true
+  }
+}

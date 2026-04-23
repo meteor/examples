@@ -1,0 +1,265 @@
+import { useState, useEffect } from 'react';
+import { useFind } from 'meteor/react-meteor-data';
+import {
+  TextInput,
+  Textarea,
+  Group,
+  ActionIcon,
+  Stack,
+  Text,
+  Tooltip,
+  Badge,
+  SegmentedControl,
+  TypographyStylesProvider,
+  Divider,
+} from '@mantine/core';
+import { useDebouncedCallback } from '@mantine/hooks';
+import {
+  IconPin,
+  IconPinFilled,
+  IconTrash,
+  IconArrowLeft,
+  IconEye,
+  IconEdit,
+  IconTag,
+  IconX,
+} from '@tabler/icons-react';
+import Markdown from 'react-markdown';
+import { t, Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { NotesCollection } from '../api/notes/collection';
+import { updateNote, removeNote, togglePin } from '../api/notes/methods';
+import { getOwnerId } from './owner';
+
+export const NoteEditor = ({ noteId, onClose }) => {
+  const ownerId = getOwnerId();
+  const { i18n } = useLingui();
+  const [note] = useFind(() => NotesCollection.find({ _id: noteId }), [noteId]);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [tagInput, setTagInput] = useState('');
+  const [viewMode, setViewMode] = useState('edit');
+
+  useEffect(() => {
+    if (note) {
+      setTitle(note.title);
+      setBody(note.body);
+    }
+  }, [note?._id]);
+
+  useEffect(() => {
+    setViewMode('edit');
+    setTagInput('');
+  }, [noteId]);
+
+  const debouncedSave = useDebouncedCallback((fields) => {
+    updateNote({ _id: noteId, ownerId, ...fields });
+  }, 500);
+
+  const handleTitleChange = (e) => {
+    const newTitle = e.currentTarget.value;
+    setTitle(newTitle);
+    debouncedSave({ title: newTitle });
+  };
+
+  const handleBodyChange = (e) => {
+    const newBody = e.currentTarget.value;
+    setBody(newBody);
+    debouncedSave({ body: newBody });
+  };
+
+  const handleDelete = async () => {
+    await removeNote({ _id: noteId, ownerId });
+    onClose();
+  };
+
+  const handleTogglePin = () => {
+    togglePin({ _id: noteId, ownerId });
+  };
+
+  const handleAddTag = (e) => {
+    if (e.key === 'Enter' && tagInput.trim()) {
+      e.preventDefault();
+      const newTag = tagInput.trim().toLowerCase();
+      const currentTags = note?.tags || [];
+      if (!currentTags.includes(newTag) && currentTags.length < 20) {
+        updateNote({ _id: noteId, ownerId, tags: [...currentTags, newTag] });
+      }
+      setTagInput('');
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    const currentTags = note?.tags || [];
+    updateNote({
+      _id: noteId,
+      ownerId,
+      tags: currentTags.filter((tag) => tag !== tagToRemove),
+    });
+  };
+
+  if (!note) {
+    return (
+      <Text c="dimmed" ta="center" py="xl" size="lg">
+        <Trans>Note not found</Trans>
+      </Text>
+    );
+  }
+
+  const formattedUpdatedAt = note.updatedAt
+    ? i18n.date(note.updatedAt, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : '';
+
+  return (
+    <Stack h="100%" gap="md">
+      {/* Toolbar */}
+      <Group justify="space-between" py={4}>
+        <ActionIcon
+          variant="subtle"
+          size="xl"
+          onClick={onClose}
+          hiddenFrom="sm"
+          aria-label={t`Back`}
+        >
+          <IconArrowLeft size={24} />
+        </ActionIcon>
+        <Group gap="sm" ml="auto">
+          <SegmentedControl
+            size="sm"
+            value={viewMode}
+            onChange={setViewMode}
+            data={[
+              {
+                label: (
+                  <Group gap={6} wrap="nowrap">
+                    <IconEdit size={18} />
+                    <Text size="sm">
+                      <Trans>Edit</Trans>
+                    </Text>
+                  </Group>
+                ),
+                value: 'edit',
+              },
+              {
+                label: (
+                  <Group gap={6} wrap="nowrap">
+                    <IconEye size={18} />
+                    <Text size="sm">
+                      <Trans>Preview</Trans>
+                    </Text>
+                  </Group>
+                ),
+                value: 'preview',
+              },
+            ]}
+          />
+          <Tooltip label={note.pinned ? t`Unpin` : t`Pin`}>
+            <ActionIcon
+              variant="subtle"
+              size="lg"
+              onClick={handleTogglePin}
+              aria-label={t`Toggle pin`}
+            >
+              {note.pinned ? <IconPinFilled size={22} /> : <IconPin size={22} />}
+            </ActionIcon>
+          </Tooltip>
+          <Tooltip label={t`Delete`}>
+            <ActionIcon
+              variant="subtle"
+              size="lg"
+              color="red"
+              onClick={handleDelete}
+              aria-label={t`Delete note`}
+            >
+              <IconTrash size={22} />
+            </ActionIcon>
+          </Tooltip>
+        </Group>
+      </Group>
+
+      <Divider />
+
+      {/* Title */}
+      <TextInput
+        value={title}
+        onChange={handleTitleChange}
+        placeholder={t`Note title`}
+        variant="unstyled"
+        styles={{ input: { fontWeight: 800, fontSize: '2rem', lineHeight: 1.2 } }}
+      />
+
+      {/* Body */}
+      {viewMode === 'edit' ? (
+        <Textarea
+          value={body}
+          onChange={handleBodyChange}
+          placeholder={t`Start writing... (supports Markdown)`}
+          autosize
+          minRows={12}
+          maxRows={40}
+          variant="unstyled"
+          styles={{ input: { fontSize: '1.1rem', lineHeight: 1.7 } }}
+          flex={1}
+        />
+      ) : (
+        <TypographyStylesProvider flex={1} fz="md" style={{ minHeight: 250 }}>
+          {body ? (
+            <Markdown>{body}</Markdown>
+          ) : (
+            <Text c="dimmed" fs="italic" size="lg">
+              <Trans>Nothing to preview</Trans>
+            </Text>
+          )}
+        </TypographyStylesProvider>
+      )}
+
+      <Divider />
+
+      {/* Tags */}
+      <Group gap={8} wrap="wrap" align="center">
+        <IconTag size={18} color="var(--mantine-color-dimmed)" />
+        {note.tags?.map((tag) => (
+          <Badge
+            key={tag}
+            size="lg"
+            variant="light"
+            radius="sm"
+            style={{ cursor: 'pointer' }}
+            rightSection={
+              <ActionIcon
+                size="xs"
+                variant="transparent"
+                onClick={() => handleRemoveTag(tag)}
+                aria-label={t`Remove tag ${tag}`}
+              >
+                <IconX size={12} />
+              </ActionIcon>
+            }
+          >
+            {tag}
+          </Badge>
+        ))}
+        <TextInput
+          value={tagInput}
+          onChange={(e) => setTagInput(e.currentTarget.value)}
+          onKeyDown={handleAddTag}
+          placeholder={t`Add tag...`}
+          size="sm"
+          variant="unstyled"
+          w={140}
+        />
+      </Group>
+
+      {/* Metadata */}
+      <Text size="sm" c="dimmed">
+        <Trans>Last updated: {formattedUpdatedAt}</Trans>
+      </Text>
+    </Stack>
+  );
+};

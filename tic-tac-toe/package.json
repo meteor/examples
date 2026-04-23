@@ -3,22 +3,43 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "test": "meteor test --once --driver-package meteortesting:mocha",
-    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "visualize": "meteor --production --extra-packages bundle-visualizer"
+    "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
+    "test:headless": "meteor test --once --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "lint": "npx oxlint --react-plugin --import-plugin .",
+    "lint:fix": "npx oxlint --react-plugin --import-plugin . --fix",
+    "e2e": "npx playwright test --ui",
+    "e2e:headless": "npx playwright test"
   },
   "dependencies": {
-    "@babel/runtime": "^7.19.0",
-    "meteor-node-stubs": "^1.2.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router": "^5.3.3",
-    "react-router-dom": "^5.3.3"
+    "@babel/runtime": "^7.29.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.9",
+    "@mui/material": "^7.3.9",
+    "@swc/helpers": "^0.5.19",
+    "meteor-node-stubs": "^1.2.27",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router": "^7.13.1",
+    "react-router-dom": "^7.13.1"
+  },
+  "devDependencies": {
+    "@meteorjs/rspack": "^1.1.0-beta.36",
+    "@playwright/test": "^1.50.0",
+    "@rsdoctor/rspack-plugin": "^1.5.7",
+    "@rspack/cli": "^1.7.9",
+    "@rspack/core": "^1.7.9",
+    "@rspack/plugin-react-refresh": "^1.6.1",
+    "oxlint": "^1.56.0",
+    "react-refresh": "^0.18.0"
   },
   "meteor": {
     "mainModule": {
       "client": "client/main.jsx",
       "server": "server/main.js"
-    }
+    },
+    "testModule": "tests/main.js",
+    "modern": true
   }
 }

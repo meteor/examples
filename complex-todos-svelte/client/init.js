@@ -1,49 +1,35 @@
-import {log} from '../imports/shared/logger/logger.js';
-import {Accounts} from 'meteor/accounts-base';
-import App from './ui/App.svelte';
+import {Meteor} from 'meteor/meteor';
+import {log} from '/imports/shared/logger/logger.js';
+import {mount, unmount} from 'svelte';
+import App from '/imports/ui/App.svelte';
+
+document.documentElement.setAttribute('data-theme', 'cerberus');
+
+let app;
 
 /**
  * Initialize client at startup
- * @locus server
- */
-class ClientInit
-{
-  /**
-   * @constructor
-   */
-  constructor()
-  {
-    log.info('Client is starting');
-    
-    this._accountUIConfig();
-    
-    this._renderApp();
-  }
-  
-  _accountUIConfig()
-  {
-    log.debug('Configuring accounts user interface');
-    
-    Accounts.ui.config({
-      passwordSignupFields: 'USERNAME_ONLY'
-    });
-  }
-  
-  _renderApp()
-  {
-    log.debug('Rendering app');
-    
-    new App({
-      target: document.getElementById('app')
-    });
-  }
-}
-
-/**
- * No need to export it
- * It will only run once on client initialize
+ * @locus client
  */
 Meteor.startup(function()
 {
-  new ClientInit;
+  log.info('Client is starting');
+
+  const target = document.getElementById('app');
+
+  app = mount(App, {target});
+
+  if(import.meta.webpackHot)
+  {
+    import.meta.webpackHot.accept();
+    import.meta.webpackHot.dispose(() =>
+    {
+      if(app)
+      {
+        unmount(app, {outro: false});
+        app = null;
+      }
+      target.innerHTML = '';
+    });
+  }
 });

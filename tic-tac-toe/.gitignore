@@ -1,2 +1,15 @@
 node_modules/
 .idea/
+
+# Meteor Modern-Tools build context directories
+_build
+*/build-assets
+*/build-chunks
+.rsdoctor
+
+# Source maps
+*.map
+
+# Playwright
+test-results/
+playwright-report/

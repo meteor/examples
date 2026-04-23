@@ -18,12 +18,12 @@ class BaseRepository
      * @type {Mongo.Collection}
      */
     this._collection = collection;
-    
+
     /**
      * @private
      */
     this._collectionName = collection._name;
-    
+
     if(Meteor.isServer)
     {
       /**
@@ -32,7 +32,7 @@ class BaseRepository
       this._bulkOperation = null; // Will be created by first insert/update function
     }
   }
-  
+
   /**
    * Finds documents based on provided selector and options
    * @param selector {string|object} [optional]
@@ -43,110 +43,107 @@ class BaseRepository
   {
     return this._collection.find(selector, options);
   }
-  
+
   /**
    * Finds one document only
    * @param selector {string|object}
    * @param options {object} [optional]
-   * @returns {object}
+   * @returns {Promise<object>}
    */
-  findOne(selector = {}, options = {})
+  async findOne(selector = {}, options = {})
   {
-    return this._collection.findOne(selector, options);
+    return this._collection.findOneAsync(selector, options);
   }
-  
+
   /**
    * Inserts a document and returns the id of it
    * @param document {object}
-   * @returns {string}
+   * @returns {Promise<string>}
    */
-  insert(document)
+  async insert(document)
   {
-    return this._collection.insert(document);
+    return this._collection.insertAsync(document);
   }
-  
+
   /**
    * Inserts or updates a document
    * @param selector {string|object}
    * @param updateObject {object}
    * @param options {object}
    */
-  upsert(selector, updateObject, options = null)
+  async upsert(selector, updateObject, options = null)
   {
-    this._collection.upsert(selector, updateObject, options);
+    return this._collection.upsertAsync(selector, updateObject, options);
   }
-  
+
   /**
    * Updates a document
-   * @example Notifications.update({assignedTo: userId}, {$set: {'isRead': true}}, {multi: true});
    * @param selector {string|object}
    * @param updateObject {object}
    * @param options {object}
    */
-  update(selector, updateObject, options = null)
+  async update(selector, updateObject, options = null)
   {
-    this._collection.update(selector, updateObject, options);
+    return this._collection.updateAsync(selector, updateObject, options);
   }
-  
+
   /**
    * Updates all matching documents
    * @param selector {string|object}
    * @param updateObject {object}
    */
-  updateMany(selector, updateObject)
+  async updateMany(selector, updateObject)
   {
-    this._collection.update(selector, updateObject, {multi: true});
+    return this._collection.updateAsync(selector, updateObject, {multi: true});
   }
-  
+
   /**
    * Updates id of provided document
    * @param document {object}
    * @param newId {string}
    */
-  updateId(document, newId)
+  async updateId(document, newId)
   {
-    this.remove(document._id);
-    
+    await this.remove(document._id);
+
     document._id = newId;
-    
-    this.insert(document);
+
+    await this.insert(document);
   }
-  
+
   /**
    * Removes a document with id or selector
    * @param selector {string|object}
-   * @returns {number} affected row count
+   * @returns {Promise<number>} affected row count
    */
-  remove(selector)
+  async remove(selector)
   {
-    return this._collection.remove(selector);
+    return this._collection.removeAsync(selector);
   }
-  
+
   /**
    * Counts the number of documents for provided selector
    * @param selector {object}
    * @param options {object}
-   * @returns {number}
+   * @returns {Promise<number>}
    */
-  count(selector = {}, options = {})
+  async count(selector = {}, options = {})
   {
-    return this.find(selector, options).count();
+    return this._collection.find(selector, options).countAsync();
   }
-  
+
   /**
    * Creates a new 'ordered' bulk operation
-   * IMPORTANT: Bulk operations are not reusable. We should create a new one after each bulk.execute call!
-   * @returns {Mongo.Collection}
+   * @returns {object}
    * @private
    */
   _createBulkOperation()
   {
     return this._collection.rawCollection().initializeOrderedBulkOp();
   }
-  
+
   /**
    * Inserts a document as a bulk operation
-   * @link https://docs.meteor.com/api/collections.html#Mongo-Collection
    * @param document {object}
    */
   insertBulk(document)
@@ -156,12 +153,12 @@ class BaseRepository
       log.fatal(`Bulk operations for ${this._collectionName} can only be called from server side`);
       return;
     }
-    
+
     if(this._bulkOperation === null)
     {
       this._bulkOperation = this._createBulkOperation();
     }
-    
+
     //
     // IMPORTANT
     // Bulk insert creates 'MONGO' _id which creates reactivity problem in UI.
@@ -171,10 +168,10 @@ class BaseRepository
     {
       document._id = this.newId();
     }
-    
+
     this._bulkOperation.insert(document);
   }
-  
+
   /**
    * Updates a document as a bulk operation
    * @param selector {object}
@@ -188,20 +185,17 @@ class BaseRepository
       log.fatal(`Bulk operations for ${this._collectionName} can only be called from server side`);
       return;
     }
-    
+
     if(this._bulkOperation === null)
     {
       this._bulkOperation = this._createBulkOperation();
     }
-    
+
     delete updateObject._id; // In case we were provided with a document, updating id is not possible
-    
-    //
-    // Convert object to an update object
-    //
+
     this._bulkOperation.find(selector).update(updateObject, options);
   }
-  
+
   /**
    * Removes a document as a bulk operation
    * @param selector {object}
@@ -213,39 +207,36 @@ class BaseRepository
       log.fatal(`Remove bulk operations for ${this._collectionName} can only be called from server side`);
       return;
     }
-    
+
     if(this._bulkOperation === null)
     {
       this._bulkOperation = this._createBulkOperation();
     }
-    
+
     this._bulkOperation.find(selector).remove();
   }
-  
+
   /**
    * Executes the bulk operation
    */
-  executeBulk()
+  async executeBulk()
   {
     if(Meteor.isClient)
     {
       log.fatal(`Bulk operations for ${this._collectionName} can only be called from server side`);
       return;
     }
-    
+
     if(this._bulkOperation === null)
     {
       return;
     }
-    
+
     log.info(`Executing bulk operations for ${this._collectionName}.`);
-    
-    //
-    // Execute bulk operation and delete it for insert/update functions to create a new one
-    //
+
     try
     {
-      this._bulkOperation.execute();
+      await this._bulkOperation.execute();
     }
     catch(e)
     {
@@ -256,7 +247,7 @@ class BaseRepository
       this._bulkOperation = null;
     }
   }
-  
+
   /**
    * @return {string}
    */
@@ -264,7 +255,7 @@ class BaseRepository
   {
     return Random.id();
   }
-  
+
   /**
    * @param indexName {string}
    */

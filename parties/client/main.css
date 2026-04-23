@@ -1,83 +1,265 @@
-.header {
-  padding: 20px 0;
+/* ============================================
+   All Tomorrow's Parties — Modern Restyle
+   ============================================ */
+
+:root {
+  --atp-primary: #6366f1;
+  --atp-primary-hover: #4f46e5;
+  --atp-primary-light: #e0e7ff;
+  --atp-gradient: linear-gradient(135deg, #6366f1, #818cf8);
+  --atp-success: #22c55e;
+  --atp-warning: #f59e0b;
+  --atp-muted: #94a3b8;
+  --atp-danger: #ef4444;
+  --atp-public: #06b6d4;
+  --atp-private: #f472b6;
+  --atp-bg: #eef0fb;
+  --atp-card: #ffffff;
+  --atp-text: #1e293b;
+  --atp-text-muted: #64748b;
+  --atp-border: #e2e8f0;
+  --atp-radius: 0.75rem;
+  --atp-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --atp-shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
 }
 
-.details {
-  margin-top: -18px;
+/* --- Global --- */
+body {
+  background-color: var(--atp-bg);
+  color: var(--atp-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-.mask {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  background-color: #000000;
-  opacity: .4;
-  z-index: 1;
+/* --- Navbar --- */
+.navbar {
+  background: var(--atp-gradient) !important;
+  border-bottom: none !important;
 }
 
-.invite-row .invite {
-  margin: 10px 10px 10px 0;
+.navbar-brand {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  color: #ffffff !important;
 }
 
-.rsvp-buttons {
-  text-align: center;
-  margin: 40px 0 40px 0;
+/* --- Cards --- */
+.card {
+  border-radius: var(--atp-radius);
+  border-top: 3px solid var(--atp-primary);
+  transition: box-shadow 0.2s ease;
 }
 
-.attendance .who {
-  margin-bottom: 5px;
-}
-
-.attendance .invite {
-  text-align: center;
-}
-
-input.chosen {
-  font-weight: bold;
-}
-
+/* --- Map --- */
 .map {
   position: relative;
   background-image: url('/soma.png');
-  background-position: -20px -20px;
-  width: 500px;
-  height: 500px;
+  background-size: cover;
+  background-position: center;
+  border-radius: var(--atp-radius) var(--atp-radius) 0 0;
+  overflow: hidden;
+}
+
+.map svg {
+  display: block;
 }
 
 .map circle.public {
-  fill: #49AFCD;
+  fill: #0891b2;
+  stroke: #ffffff;
+  stroke-width: 2px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.map circle.public:hover {
+  opacity: 0.85;
 }
 
 .map circle.private {
-  fill: #DA4F49;
+  fill: #e11d48;
+  stroke: #ffffff;
+  stroke-width: 2px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.map circle.private:hover {
+  opacity: 0.85;
 }
 
 .map text {
   text-anchor: middle;
   fill: white;
-  font-weight: bold;
+  font-weight: 700;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,0.3);
+  stroke-width: 2px;
 }
 
 .map circle.callout {
-  stroke-width: 5px;
-  stroke-dasharray: 9, 5;
-  stroke-opacity: .8;
+  stroke-width: 3px;
+  stroke-dasharray: none;
+  stroke-opacity: 0.6;
   fill: none;
-  stroke: red;
+  stroke: var(--atp-primary);
+  filter: url(#glow);
 }
 
-.attribution {
-  position: absolute;
-  bottom: 0;
-  background-color: white;
-  padding: 3px;
-  padding-bottom: 0;
+/* --- Details Sidebar --- */
+.details .card-title {
+  color: var(--atp-text);
+  font-size: 1.5rem;
 }
 
-.modal {
-  display: block !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+/* --- RSVP Buttons --- */
+.rsvp-buttons .btn-group {
+  border-radius: 50rem;
+  overflow: hidden;
+}
+
+.rsvp-buttons .btn-group .btn {
+  border-radius: 0;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border: 1px solid var(--atp-border);
+  background: var(--atp-card);
+  color: var(--atp-text-muted);
+  transition: all 0.2s ease;
+}
+
+.rsvp-buttons .btn-group .btn:first-child {
+  border-radius: 50rem 0 0 50rem;
+}
+
+.rsvp-buttons .btn-group .btn:last-child {
+  border-radius: 0 50rem 50rem 0;
+}
+
+.rsvp-buttons .btn.rsvp-active-yes {
+  background-color: var(--atp-success);
+  border-color: var(--atp-success);
+  color: white;
+}
+
+.rsvp-buttons .btn.rsvp-active-maybe {
+  background-color: var(--atp-warning);
+  border-color: var(--atp-warning);
+  color: white;
+}
+
+.rsvp-buttons .btn.rsvp-active-no {
+  background-color: var(--atp-muted);
+  border-color: var(--atp-muted);
+  color: white;
+}
+
+.rsvp-buttons .btn.rsvp_yes:hover:not(.rsvp-active-yes) {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: var(--atp-success);
+}
+
+.rsvp-buttons .btn.rsvp_maybe:hover:not(.rsvp-active-maybe) {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--atp-warning);
+}
+
+.rsvp-buttons .btn.rsvp_no:hover:not(.rsvp-active-no) {
+  background-color: rgba(148, 163, 184, 0.1);
+  color: var(--atp-muted);
+}
+
+/* --- Attendance --- */
+.attendance .list-group-item {
+  border-color: var(--atp-border);
+  background: transparent;
+}
+
+.attendance .badge {
+  font-weight: 500;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+}
+
+/* --- Modals --- */
+.modal-backdrop.show {
+  opacity: 0.4;
+}
+
+.modal-content {
+  border-radius: var(--atp-radius);
+}
+
+.modal .form-control {
+  border-radius: 0.5rem;
+  border-color: var(--atp-border);
+  padding: 0.625rem 0.875rem;
+}
+
+.modal .form-control:focus {
+  border-color: var(--atp-primary);
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.15);
+}
+
+.modal .form-switch .form-check-input:checked {
+  background-color: var(--atp-primary);
+  border-color: var(--atp-primary);
+}
+
+/* --- Buttons --- */
+.btn-primary {
+  background-color: var(--atp-primary);
+  border-color: var(--atp-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--atp-primary-hover);
+  border-color: var(--atp-primary-hover);
+}
+
+.btn-outline-primary {
+  color: var(--atp-primary);
+  border-color: var(--atp-primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--atp-primary);
+  border-color: var(--atp-primary);
+  color: white;
+}
+
+.btn-outline-danger {
+  color: var(--atp-danger);
+  border-color: var(--atp-danger);
+}
+
+/* --- Accounts UI polish --- */
+#login-buttons {
+  font-size: 0.875rem;
+}
+
+#login-buttons a,
+.navbar #login-sign-in-link {
+  color: rgba(255,255,255,0.9) !important;
+}
+
+.navbar #login-sign-in-link:hover {
+  color: #ffffff !important;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .rsvp-buttons .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .rsvp-buttons .btn-group .btn {
+    border-radius: 0 !important;
+  }
+  .rsvp-buttons .btn-group .btn:first-child {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+  }
+  .rsvp-buttons .btn-group .btn:last-child {
+    border-radius: 0 0 0.5rem 0.5rem !important;
+  }
 }

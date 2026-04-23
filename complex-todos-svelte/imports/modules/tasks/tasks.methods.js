@@ -1,82 +1,60 @@
-import {ValidatedMethod} from 'meteor/mdg:validated-method';
-import SimpleSchema from 'simpl-schema';
+import {createMethod} from 'meteor/jam:method';
+import {z} from 'zod';
 import {taskService} from './taskService.js';
-import {LoggedInMixin} from '../../shared/mixins/LoggedInMixin.js';
 import {TASKS_METHOD} from './enums/methodNames.js';
+import {RATE_LIMITER} from './enums/rateLimitter.js';
 
-/**
- * @type {ValidatedMethod}
- */
-export const tasksInsert = new ValidatedMethod({
+const rateLimit = {
+  limit: RATE_LIMITER.REQUEST_COUNT,
+  interval: RATE_LIMITER.TIME_INTERVAL
+};
+
+export const tasksInsert = createMethod({
   name: TASKS_METHOD.INSERT,
-  mixins: [LoggedInMixin],
-  validate: new SimpleSchema({
-    text: {type: String}
-  }).validator(),
-  /**
-   * @param text {string}
-   * @returns {string}
-   */
-  run({text})
+  schema: z.object({
+    text: z.string()
+  }),
+  rateLimit,
+  async run({text})
   {
     return taskService.insert(text);
   }
 });
 
-/**
- * @type {ValidatedMethod}
- */
-export const tasksRemove = new ValidatedMethod({
+export const tasksRemove = createMethod({
   name: TASKS_METHOD.REMOVE,
-  mixins: [LoggedInMixin],
-  validate: new SimpleSchema({
-    taskId: {type: String}
-  }).validator(),
-  /**
-   * @param taskId {string}
-   */
-  run({taskId})
+  schema: z.object({
+    taskId: z.string()
+  }),
+  rateLimit,
+  async run({taskId})
   {
-    taskService.remove(taskId);
+    return taskService.remove(taskId);
   }
 });
 
-/**
- * @type {ValidatedMethod}
- */
-export const tasksUpdateAsChecked = new ValidatedMethod({
+export const tasksUpdateAsChecked = createMethod({
   name: TASKS_METHOD.UPDATE_AS_CHECKED,
-  mixins: [LoggedInMixin],
-  validate: new SimpleSchema({
-    taskId: {type: String},
-    setChecked: {type: Boolean}
-  }).validator(),
-  /**
-   * @param taskId {string}
-   * @param setChecked {boolean}
-   */
-  run({taskId, setChecked})
+  schema: z.object({
+    taskId: z.string(),
+    setChecked: z.boolean()
+  }),
+  rateLimit,
+  async run({taskId, setChecked})
   {
-    taskService.updateAsChecked(taskId, setChecked);
+    return taskService.updateAsChecked(taskId, setChecked);
   }
 });
 
-/**
- * @type {ValidatedMethod}
- */
-export const tasksUpdateAsPrivate = new ValidatedMethod({
+export const tasksUpdateAsPrivate = createMethod({
   name: TASKS_METHOD.UPDATE_AS_PRIVATE,
-  mixins: [LoggedInMixin],
-  validate: new SimpleSchema({
-    taskId: {type: String},
-    setPrivate: {type: Boolean}
-  }).validator(),
-  /**
-   * @param taskId {string}
-   * @param setPrivate {boolean}
-   */
-  run({taskId, setPrivate})
+  schema: z.object({
+    taskId: z.string(),
+    setPrivate: z.boolean()
+  }),
+  rateLimit,
+  async run({taskId, setPrivate})
   {
-    taskService.updateAsPrivate(taskId, setPrivate);
+    return taskService.updateAsPrivate(taskId, setPrivate);
   }
 });

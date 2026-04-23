@@ -1,80 +1,87 @@
 # NFT Marketplace
 
-This is from Nader's tutorial, but with Meteor. You can check the original tutorial here: https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb
+An NFT marketplace built with Meteor and Ethereum. Based on [Nader's tutorial](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb), adapted to run on Meteor 3.4 with Rspack. Users can mint, list, and buy NFTs using MetaMask and IPFS for storage.
 
-To run it locally, you will need to open two terminals.
+## Stack
 
-But first, you need to clone the project and run a `meteor npm install` to install all the dependencies.
+| | |
+|---|---|
+| Runtime | Meteor 3.4 |
+| Frontend | React 18 |
+| Styling | Tailwind CSS 3, Headless UI, Heroicons |
+| Smart Contracts | Solidity, Hardhat, OpenZeppelin |
+| Blockchain | Ethereum (localhost or Polygon Mumbai) |
+| Web3 | Ethers.js v5, Web3Modal |
+| Storage | IPFS (via ipfs-http-client) |
+| Build | Rspack |
 
-In terminal #1, you will run the following command:
+## Running it locally
 
-`npx hardhat node`
+You need two terminals.
 
-The command above will give you 20 accounts with 10000 ETH each, that you can add to your Metamask and test the application locally.
-
-In terminal #2, you will then run the following commands:
-
+**Terminal 1** — start a local Hardhat node:
+```bash
+meteor npm install
+npx hardhat node
 ```
+This gives you 20 accounts with 10000 ETH each. Copy a private key for MetaMask.
+
+**Terminal 2** — deploy contracts and start Meteor:
+```bash
 npx hardhat run scripts/deploy.js --network localhost
-meteor
+npm start
 ```
 
-The command above will deploy the contract and run the Meteor application.
+Visit `http://localhost:3000/`.
 
-## Adding a wallet to MetaMask
+| Command | What it does |
+|---|---|
+| `npm start` | Start the Meteor app |
+| `npm test` | Integration tests (Mocha) |
+| `npm run test-app` | Full-app tests (Mocha, watch mode) |
+| `npm run visualize` | Bundle analyzer in production mode |
 
-The `npx hardhat node` command will give you 20 accounts for you to test locally. To add one of these accounts to your Metamask, you will need to copy one of the private keys hardhat gave you.
+## MetaMask setup
 
-Then you will make sure you are in the localhost network, like in the screenshot below:
+### Adding a local wallet
 
-![metamask network](https://user-images.githubusercontent.com/41165990/170504915-dfe5e75b-f4d2-423f-90a7-d856af49a6a2.png)
+1. Make sure MetaMask is set to the **Localhost 8545** network
+2. Click the account icon, then **Import Account**
+3. Paste one of the private keys from `npx hardhat node`
 
-After that, you will click in the top right icon to open a menu, where you will click on Import Account, like in the image below:
+### Resetting accounts
 
-![metamask wallet 1](https://user-images.githubusercontent.com/41165990/170505136-75fbd41b-af46-4d54-8d0a-bd15eacd2765.png)
+If you get "Nonce too high" errors during transactions:
+1. Open MetaMask settings
+2. Go to **Advanced**
+3. Click **Reset Accounts**
 
-Then you will paste your private key and click Import.
+## Testing the deployed version
 
-## Possible issues when testing locally
+A deployed version is available at: https://meteor-nft-marketplace.meteorapp.com
 
-If you're getting errors like "Nonce too high" when trying to add an NFT or doing any kind of transaction in the app, you can do the following steps:
+To use it, add the **Mumbai Testnet** to MetaMask:
 
-1. Access the top right menu like you did in the last section
-2. Go to Settings and then Advanced
-3. Click on Reset Accounts
+| Field | Value |
+|---|---|
+| Network Name | Mumbai TestNet |
+| RPC URL | https://rpc-mumbai.maticvigil.com |
+| Chain ID | 80001 |
+| Currency Symbol | Matic |
 
-## How to test our deployed version
+You can get testnet Matic tokens from the [Polygon faucet](https://faucet.matic.network/).
 
-You can check our deployed version using this link: https://meteor-nft-marketplace.meteorapp.com
+## Deployment
 
-To use this version you will need to add the Mumbai Testnet to your Metamask. You can do it by following the screenshots from Nader's tutorial. You will go to Metamask settings:
+- **[Galaxy](https://galaxycloud.app/)**: `meteor deploy your-app.meteorapp.com`
+  - To try it quickly with a free tier and shared MongoDB: `meteor deploy your-app.meteorapp.com --free --mongo`
+  - Note: smart contracts need to be deployed separately to a public network (Polygon Mumbai, etc.)
+- **Any Node.js host**: `meteor build` gives you a standard Node bundle
+- **MUP**: automated deploy to your own server over SSH
 
-![1](https://user-images.githubusercontent.com/41165990/171486860-3f06f3ea-1915-48c2-9cb8-7b58b66c4127.png)
+## Links
 
-Then Networks and then Add Network.
-
-![2](https://user-images.githubusercontent.com/41165990/171486872-855eca67-a453-4cc3-945e-16a8774c1edb.png)
-
-After that, you will add the following info from Polygon [docs](https://docs.polygon.technology/docs/develop/network-details/network/):
-
-Network Name: Mumbai TestNet
-
-New RPC URL: https://rpc-mumbai.maticvigil.com
-
-Chain ID: 80001
-
-Currency Symbol: Matic
-
-Click save and then you should be able to switch to this new network and use it. You will need some testnet Matic tokens, but you can get them [here](https://faucet.matic.network/)
-
-## Screenshots of the application
-
-![Screenshot 2022-05-25 at 11-23-41 Dummy Page](https://user-images.githubusercontent.com/41165990/170509257-e4adabaa-c0d4-4d4d-9fb5-4a4e851f365e.png)
-
-![Screenshot 2022-06-28 at 23-51-54 Dummy Page](https://user-images.githubusercontent.com/41165990/176348036-67f4d3fd-8eba-4cde-bacb-c14abecef9ed.png)
-
-![Screenshot 2022-06-28 at 23-52-15 Dummy Page](https://user-images.githubusercontent.com/41165990/176348065-05ef0658-3366-4eca-bbf8-db729b057b19.png)
-
-![Screenshot 2022-06-28 at 23-53-22 Dummy Page](https://user-images.githubusercontent.com/41165990/176348085-3896af2b-2e36-41d1-9df5-e1e7de7c7d98.png)
-
-![Screenshot 2022-06-28 at 23-54-11 Dummy Page](https://user-images.githubusercontent.com/41165990/176348099-baadb92b-9a8b-4db0-ae47-ccce00e02625.png)
+- [Meteor docs](https://docs.meteor.com/) · [Meteor guide](https://guide.meteor.com/)
+- [React docs](https://react.dev/)
+- [Hardhat](https://hardhat.org/) · [Ethers.js](https://docs.ethers.org/v5/) · [Tailwind CSS](https://tailwindcss.com/)
+- [Original tutorial](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb)

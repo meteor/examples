@@ -1,0 +1,16 @@
+{
+  "name": "meteor-examples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A collection of example apps built with Meteor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meteor/examples.git"
+  },
+  "homepage": "https://github.com/meteor/examples#readme",
+  "license": "MIT",
+  "scripts": {
+    "update:examples": "node scripts/update-examples-json.mjs",
+    "check:examples": "node scripts/update-examples-json.mjs --check"
+  }
+}
