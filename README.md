@@ -2,9 +2,7 @@
 
 With Meteor 3.4 introducing the Rspack bundler, modern build optimizations, and full ESM support, our application examples needed a refresh. We've revamped this repository to reflect the current state of Meteor and showcase what's possible with the latest tools.
 
-These examples serve two purposes: help newcomers get started with a solid foundation, and show existing users how to adopt new features like Rspack, modern UI frameworks, and async patterns in real-world scenarios.
-
-All in-house examples now run on Meteor 3.4.1-rc.1 with Rspack enabled, async MongoDB operations, and modern frontend setups. Each one ships with CI/CD via GitHub Actions, linting, and E2E testing (Playwright or Cypress). Every in-house example is also deployed to a Galaxy sandbox, so you can try the finished product in your browser before cloning the repo.
+Each example doubles as a reference for [community packages](https://docs.meteor.com/community-packages/) and the conventions you'll find in real-world Meteor apps. Several apps push the Rspack bundler further to integrate with the wider JS ecosystem (PostCSS, SWC, Workbox, Lingui, Tailwind v4, and more), replacing legacy Meteor approaches with tooling the rest of the JavaScript world already uses.
 
 ## Table of contents
 
