@@ -26,6 +26,14 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  const sameOrigin = url.origin === self.location.origin;
+  // Skip Rspack devServer
+  if (sameOrigin && url.pathname.includes('/__rspack__/')) {
+    event.respondWith(fetch(event.request, { cache: 'no-store' }));
+    return;
+  }
+
   const requestToFetch = event.request.clone();
   event.respondWith(
     caches.match(event.request.clone()).then(cached => {

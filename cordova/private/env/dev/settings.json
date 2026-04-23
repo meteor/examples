@@ -1,0 +1,10 @@
+{
+  "public": {
+    "native": {
+      "appleItunesAppId": "",
+      "appleTeamId": "",
+      "appleBundleId": "localhost.mobile",
+      "googlePlayAppId": ""
+    }
+  }
+}

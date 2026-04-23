@@ -1,4 +1,52 @@
-body {
-  padding: 10px;
-  font-family: sans-serif;
+/*
+ * Framework7 CSS Variable Overrides
+ * F7 exposes CSS custom properties for deep theming without touching JS.
+ * Docs: https://framework7.io/docs/color-theme#css-variables
+ */
+:root {
+  --f7-page-bg-color: #fef5f2;
+}
+
+.contact-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.contact-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 32px;
+  margin: 20px auto;
+}
+
+.detail-header {
+  text-align: center;
+  padding: 20px 16px 0;
+}
+
+.detail-header h2 {
+  margin: 8px 0 2px;
+}
+
+.detail-header p {
+  color: var(--f7-list-item-after-text-color);
+  margin: 0;
+}
+
+.favorite-star {
+  color: #ff9500;
 }

@@ -1,31 +1,19 @@
-import { Meteor } from "meteor/meteor";
+import { Meteor } from 'meteor/meteor';
 
-// TODO mobile replace values in settings.
-// replace cordova-example native details in the settings
-export const APPLE_ITUNES_APP_ID =
-  Meteor.settings.public.native.appleItunesAppId;
-const APPLE_TEAM_ID = Meteor.settings.public.native.appleTeamId;
-const APPLE_BUNDLE_ID =
-  Meteor.settings.public.native.appleBundleId;
-const GOOGLE_PLAY_APP_ID =
-  Meteor.settings.public.native.googlePlayAppId;
-const ONE_SIGNAL_GCM_SENDER_ID = Meteor.settings.public.oneSignalGcmSenderId;
-export const ONE_SIGNAL_REST_API_KEY =
-  Meteor.settings.public.native.oneSignalRestApiKey;
-export const ONE_SIGNAL_APP_ID =
-  Meteor.settings.public.native.oneSignalAppId;
+const nativeSettings = (Meteor.settings && Meteor.settings.public && Meteor.settings.public.native) || {};
 
-export const getGoolePlayAppUrl = ({googlePlayAppId}) => {
-  if (!googlePlayAppId) {
-    return null;
-  }
+export const APPLE_ITUNES_APP_ID = nativeSettings.appleItunesAppId || '';
+export const APPLE_TEAM_ID = nativeSettings.appleTeamId || '';
+export const APPLE_BUNDLE_ID = nativeSettings.appleBundleId || '';
+export const GOOGLE_PLAY_APP_ID = nativeSettings.googlePlayAppId || '';
+
+export const getGooglePlayAppUrl = ({ googlePlayAppId }) => {
+  if (!googlePlayAppId) return null;
   return `https://play.google.com/store/apps/details?id=${googlePlayAppId}`;
 };
 
-export const getAppleItunesAppUrl = ({appleItunesAppId}) => {
-  if (!appleItunesAppId) {
-    return null;
-  }
+export const getAppleItunesAppUrl = ({ appleItunesAppId }) => {
+  if (!appleItunesAppId) return null;
   return `https://itunes.apple.com/app/id${appleItunesAppId}`;
 };
 
@@ -34,7 +22,5 @@ export const getNativeStoresInfo = () => ({
   googlePlayAppId: GOOGLE_PLAY_APP_ID,
   appleTeamId: APPLE_TEAM_ID,
   appleBundleId: APPLE_BUNDLE_ID,
-  oneSignalGcmSenderId: ONE_SIGNAL_GCM_SENDER_ID,
-  // change to true to disable native stuff
-  nativeAppEnabled: true,
+  nativeAppEnabled: !!(APPLE_ITUNES_APP_ID || GOOGLE_PLAY_APP_ID),
 });
