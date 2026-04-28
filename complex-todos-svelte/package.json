@@ -20,7 +20,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^1.1.0-beta.36",
+    "@meteorjs/rspack": "^2.0.1",
     "@rsdoctor/rspack-plugin": "^1.5.7",
     "@rspack/cli": "^1.7.8",
     "@rspack/core": "^1.7.8",

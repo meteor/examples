@@ -44,7 +44,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1-rc.1"
+    "meteorVersion": "3.4.1"
   },
   {
     "title": "Notes Offline",
@@ -74,7 +74,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1-rc.1"
+    "meteorVersion": "3.4.1"
   },
   {
     "title": "Simple Blog",
@@ -117,7 +117,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1-rc.1"
+    "meteorVersion": "3.4.1"
   },
   {
     "title": "Parties",
@@ -139,7 +139,7 @@
       "Playwright"
     ],
     "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1-rc.1"
+    "meteorVersion": "3.4.1"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -165,7 +165,7 @@
       "MongoDB"
     ],
     "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1-rc.1"
+    "meteorVersion": "3.4.1"
   },
   {
     "title": "Welcome Meteor Cordova",

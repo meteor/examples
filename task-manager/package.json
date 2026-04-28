@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
-    "@meteorjs/rspack": "^1.1.0-beta.36",
+    "@meteorjs/rspack": "^2.0.1",
     "@playwright/test": "^1.50.0",
     "@rsdoctor/rspack-plugin": "^1.5.7",
     "@rspack/cli": "^1.7.1",
