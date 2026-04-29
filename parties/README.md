@@ -2,6 +2,8 @@
 
 A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.4.1-rc.1 with Blaze 3 and async database operations.
 
+Demo: https://parties.sandbox.galaxycloud.app/
+
 ## Stack
 
 | | |

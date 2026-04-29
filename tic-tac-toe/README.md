@@ -2,6 +2,8 @@
 
 Multiplayer tic-tac-toe with room support, built with Meteor, React, and Material UI. Shows how Meteor's real-time pub/sub works for game state synchronization between two players.
 
+Demo: https://tic-tac-toe.sandbox.galaxycloud.app/
+
 ## Stack
 
 | | |
@@ -46,8 +48,6 @@ This is a two-player game. Open the app in **two separate browser tabs**:
 2. Click **Join Room** from both tabs on the same room
 3. Players alternate turns: one plays as X, the other as O
 4. The game announces the winner via a dialog when three in a row is achieved
-
-![MUI Tic-Tac-Toe](https://github-production-user-asset-6210df.s3.amazonaws.com/2581993/564637741-c9e13036-4d67-4dfc-b9b6-fed5588d4490.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260317%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260317T084448Z&X-Amz-Expires=300&X-Amz-Signature=a40ed6342ea5a3c43f6f59f89e44ba4699ad58d7caa5966a6e6f14eb72ecdb60&X-Amz-SignedHeaders=host)
 
 ## Deployment
 

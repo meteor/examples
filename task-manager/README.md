@@ -2,7 +2,7 @@
 
 A task management app showcasing [Meteor-RPC](https://docs.meteor.com/community-packages/meteor-rpc.html) for type-safe methods and publications, [shadcn/ui](https://ui.shadcn.com/) components, and Tailwind CSS. Full CRUD with real-time reactivity, status and priority filters, and a live dashboard.
 
-![Task Manager](https://private-user-images.githubusercontent.com/2581993/565387883-c3db44fe-2493-4d9a-b077-47158db8f51f.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzM4MjEzODUsIm5iZiI6MTc3MzgyMTA4NSwicGF0aCI6Ii8yNTgxOTkzLzU2NTM4Nzg4My1jM2RiNDRmZS0yNDkzLTRkOWEtYjA3Ny00NzE1OGRiOGY1MWYucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDMxOCUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjAzMThUMDgwNDQ1WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9ZWFiY2ViNjViNDU0NzhmYTJkN2UzNTJlNGRkYzdhMzI0NzJhZWExMTcwZjAwYjMwOWNkNmQxMTI5ZTYwZDUwZSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.Vy9bNzDD-dRMZbbzk94_XKe17RKUGqcFGRC-93IeVzo)
+Demo: https://task-manager.sandbox.galaxycloud.app/
 
 ## Stack
 

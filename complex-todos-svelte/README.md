@@ -4,7 +4,7 @@ Same idea as the [simple Svelte tutorial](https://github.com/meteor/meteor3-svel
 
 Built with Meteor 3.4.1-rc.1, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 
-![screenshot](screenshot.jpg)
+Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
 
 ## Stack
 
