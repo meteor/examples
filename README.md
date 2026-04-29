@@ -34,7 +34,7 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Why: A task management app showcasing form handling, user accounts, DB migrations, and a polished component-based UI
 - Stack: Meteor, Rspack, Chakra UI, React, Formik, MongoDB
 - Last Updated At: Feb/12/2026
-- Meteor Version: 3.4
+- Meteor Version: 3.4.1
 
 ### Task Manager
 - Repository: [meteor/examples/task-manager](./task-manager)
