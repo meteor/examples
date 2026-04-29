@@ -33,7 +33,7 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Demo: https://simpletasks.sandbox.galaxycloud.app/
 - Why: A task management app showcasing form handling, user accounts, DB migrations, and a polished component-based UI
 - Stack: Meteor, Rspack, Chakra UI, React, Formik, MongoDB
-- Last Updated At: Feb/12/2026
+- Last Updated At: Apr/29/2026
 - Meteor Version: 3.4.1
 
 ### Task Manager
@@ -87,7 +87,8 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Repository: [CloudByGalaxy/welcome-meteor-cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova)
 - Why: To show how to set up a Meteor app with Cordova for mobile usage
 - Stack: Meteor, Cordova
-- Meteor Version: 3.4
+- Last Updated At: Apr/29/2026
+- Meteor Version: 3.4.1
 
 ## Other examples
 

@@ -17,7 +17,7 @@
       "Formik",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Feb/12/2026",
+    "lastUpdatedAt": "Apr/29/2026",
     "meteorVersion": "3.4.1"
   },
   {
@@ -181,7 +181,7 @@
       "Meteor",
       "Cordova"
     ],
-    "lastUpdatedAt": null,
-    "meteorVersion": "3.4"
+    "lastUpdatedAt": "Apr/29/2026",
+    "meteorVersion": "3.4.1"
   }
 ]
