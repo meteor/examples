@@ -1,18 +1,18 @@
 meteor-base@1.5.2
 mobile-experience@1.1.2
-mongo@2.2.1-rc341.1
+mongo@2.4.0-beta350.10
 reactive-var@1.0.13
 
-standard-minifier-css@1.10.1-rc341.1
+standard-minifier-css@1.10.1
 standard-minifier-js@3.2.0
 es5-shim@4.8.1
-ecmascript@0.18.0-rc341.1
+ecmascript@0.18.0
 shell-server@0.7.0
 
 static-html@1.5.0
-hot-module-replacement@0.6.0-rc341.1
+hot-module-replacement@0.6.0
 
-rspack@1.1.0-rc341.1
+rspack@1.1.0
 
 # Testing
 meteortesting:mocha

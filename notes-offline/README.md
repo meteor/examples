@@ -2,28 +2,28 @@
 
 _Your notes, always available._
 
-An offline-first notes app built with Meteor 3.4.1-rc.1. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
+An offline-first notes app built with Meteor 3.5-beta.10. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
 
 Demo: https://notes-offline.sandbox.galaxycloud.app/
 
 ## Stack
 
-|              |                                               |
-| ------------ | --------------------------------------------- |
-| Runtime      | Meteor 3.4.1-rc.1                             |
-| Frontend     | React 19                                      |
-| UI           | Mantine UI                                    |
-| Offline      | jam:offline (IndexedDB, auto-sync, cross-tab) |
-| Methods      | jam:method (optimistic, offline queuing)      |
-| Pub/Sub      | jam:pub-sub (cached subscriptions)            |
-| Soft Delete  | jam:soft-delete                               |
-| Validation   | Zod                                           |
-| PWA          | Workbox (via workbox-webpack-plugin + Rspack) |
-| i18n         | Lingui (SWC macro + minimal JSON catalogs)    |
-| Tests        | Mocha                                         |
+|              |                                                                   |
+| ------------ | ----------------------------------------------------------------- |
+| Runtime      | Meteor 3.5-beta.10                                                |
+| Frontend     | React 19                                                          |
+| UI           | Mantine UI                                                        |
+| Offline      | jam:offline (IndexedDB, auto-sync, cross-tab)                     |
+| Methods      | jam:method (optimistic, offline queuing)                          |
+| Pub/Sub      | jam:pub-sub (cached subscriptions)                                |
+| Soft Delete  | jam:soft-delete                                                   |
+| Validation   | Zod                                                               |
+| PWA          | Workbox (via workbox-webpack-plugin + Rspack)                     |
+| i18n         | Lingui (SWC macro + minimal JSON catalogs)                        |
+| Tests        | Mocha                                                             |
 | Code Quality | ESLint (flat config: react, hooks, jsx-a11y, import-x) + Prettier |
-| E2E          | Playwright                                    |
-| Build        | Rspack                                        |
+| E2E          | Playwright                                                        |
+| Build        | Rspack                                                            |
 
 ## Features
 

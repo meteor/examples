@@ -2,7 +2,7 @@
 
 Same idea as the [simple Svelte tutorial](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack), but not simple. This app covers things you'll actually run into when building something real: module boundaries, validation, rate limiting, caching, migrations, jobs, and proper separation of concerns.
 
-Built with Meteor 3.4.1-rc.1, Svelte 5, Skeleton UI, and Tailwind CSS v4.
+Built with Meteor 3.5-beta.10, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 
 Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
 
@@ -10,7 +10,7 @@ Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
 
 | | |
 |---|---|
-| Runtime | Meteor 3.4.1-rc.1 |
+| Runtime | Meteor 3.5-beta.10 |
 | Frontend | Svelte 5 (runes) |
 | UI | Skeleton UI v4 + Tailwind CSS v4, Cerberus theme |
 | Build | Rspack |
