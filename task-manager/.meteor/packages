@@ -1,6 +1,6 @@
 meteor-base@1.5.2
 mobile-experience@1.1.2
-mongo@2.2.1-rc341.1
+mongo@2.4.0-rc350.2
 reactive-var@1.0.13
 
 standard-minifier-css@1.10.1-rc341.1

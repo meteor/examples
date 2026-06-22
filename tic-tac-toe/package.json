@@ -2,7 +2,7 @@
   "name": "tic-tac-toe",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "meteor run --settings settings.json",
     "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
     "test:headless": "meteor test --once --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
