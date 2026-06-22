@@ -1,8 +1,5 @@
 {
   "packages": {
-    "mongo": {
-      "reactivity": "changeStreams"
-    },
     "ddp-server": {
       "transport": "uws"
     }
