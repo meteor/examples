@@ -135,7 +135,7 @@ export function MissionStage({ game, now, busy, connected, onAction }) {
 
         <div className="mission-stage__signal">
           <span className={`mission-stage__signal-dot${connected ? ' is-online' : ''}`} aria-hidden="true" />
-          <span>{connected ? 'Reactive feed connected' : 'Reconnecting ship systems'}</span>
+          <span>{connected ? 'Reactive feed connected' : 'Mission controls paused'}</span>
         </div>
 
         <ShipArt emergency={game.emergency} turn={game.turn} status={game.status} />

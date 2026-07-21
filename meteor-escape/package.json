@@ -16,6 +16,7 @@
     "@capacitor/core": "^7.4.3",
     "@capacitor/haptics": "^7.0.5",
     "@capacitor/ios": "^7.6.7",
+    "@capacitor/network": "^7.0.4",
     "@capacitor/share": "^7.0.4",
     "@swc/helpers": "^0.5.19",
     "konsta": "^5.2.0",

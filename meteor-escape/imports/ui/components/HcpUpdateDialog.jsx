@@ -1,0 +1,44 @@
+import React from 'react';
+import { Button } from 'konsta/react';
+
+export function HcpUpdateDialog({ installing, updateVersion, onDismiss, onInstall }) {
+  if (!updateVersion) {
+    return null;
+  }
+
+  return (
+    <div className="dialog-backdrop" onClick={installing ? undefined : onDismiss}>
+      <section
+        className="dialog-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="meteor-hcp-dialog-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="dialog-sheet__header">
+          <p className="eyebrow">Update ready</p>
+          <h2 id="meteor-hcp-dialog-title">New app update available</h2>
+        </div>
+
+        <p className="dialog-sheet__detail">
+          Version {updateVersion} is ready to install. The app will refresh after the update is
+          applied.
+        </p>
+
+        <div className="dialog-sheet__actions">
+          <Button className="dialog-sheet__button" onClick={onDismiss} disabled={installing}>
+            Not now
+          </Button>
+          <Button
+            tonal={false}
+            className="dialog-sheet__button dialog-sheet__button--primary"
+            onClick={onInstall}
+            disabled={installing}
+          >
+            Install update
+          </Button>
+        </div>
+      </section>
+    </div>
+  );
+}

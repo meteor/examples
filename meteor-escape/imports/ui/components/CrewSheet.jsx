@@ -25,7 +25,17 @@ function getInlineError(value) {
   return '';
 }
 
-export function CrewSheet({ mode, opened, roomCode, busy, error, onCreate, onJoin, onClose }) {
+export function CrewSheet({
+  mode,
+  opened,
+  roomCode,
+  busy,
+  disabled,
+  error,
+  onCreate,
+  onJoin,
+  onClose,
+}) {
   const [joinCode, setJoinCode] = useState('');
   const [joinTouched, setJoinTouched] = useState(false);
   const [shareBusy, setShareBusy] = useState(false);
@@ -143,7 +153,7 @@ export function CrewSheet({ mode, opened, roomCode, busy, error, onCreate, onJoi
                   className="crew-sheet__button crew-sheet__button--primary"
                   tonal={false}
                   onClick={onCreate}
-                  disabled={busy}
+                  disabled={busy || disabled}
                 >
                   {busy ? 'Creating Room' : 'Create Crew Room'}
                 </Button>
@@ -191,6 +201,7 @@ export function CrewSheet({ mode, opened, roomCode, busy, error, onCreate, onJoi
                 spellCheck="false"
                 placeholder="ABC234"
                 value={joinCode}
+                disabled={busy}
                 onChange={(event) => {
                   setJoinCode(normalizeRoomCode(event.target.value));
                 }}
@@ -207,7 +218,7 @@ export function CrewSheet({ mode, opened, roomCode, busy, error, onCreate, onJoi
                 type="submit"
                 className="crew-sheet__button crew-sheet__button--primary"
                 tonal={false}
-                disabled={busy}
+                disabled={busy || disabled}
               >
                 {busy ? 'Joining' : 'Join Mission'}
               </Button>

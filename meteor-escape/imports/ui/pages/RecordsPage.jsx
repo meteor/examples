@@ -20,7 +20,7 @@ function formatRelativeDate(value) {
   return formatter.format(diffDays, 'day');
 }
 
-export function RecordsPage({ games, ready, onPlay }) {
+export function RecordsPage({ games, ready, onPlay, actionLabel, disabled }) {
   if (!ready) {
     return (
       <Block strong className="records-empty">
@@ -35,8 +35,8 @@ export function RecordsPage({ games, ready, onPlay }) {
       <Block strong className="records-empty">
         <h1>Records</h1>
         <p>Your completed missions land here with score, streak, and outcome.</p>
-        <Button className="records-page__action" onClick={onPlay}>
-          Start Quick Mission
+        <Button className="records-page__action" onClick={onPlay} disabled={disabled}>
+          {actionLabel}
         </Button>
       </Block>
     );
@@ -49,8 +49,8 @@ export function RecordsPage({ games, ready, onPlay }) {
           <p className="eyebrow">Recent outcomes</p>
           <h1>Records</h1>
         </div>
-        <Button className="records-page__action" onClick={onPlay}>
-          Play
+        <Button className="records-page__action" onClick={onPlay} disabled={disabled}>
+          {actionLabel}
         </Button>
       </div>
 

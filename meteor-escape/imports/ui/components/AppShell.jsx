@@ -20,7 +20,12 @@ export function AppShell({ view, onNavigate, children, connection }) {
         subtitle="Meteor + Capacitor"
       />
 
-      <ConnectionBanner connection={connection} />
+      <ConnectionBanner
+        connected={connection.connected}
+        status={connection.status}
+        ddpEnabled={connection.ddpEnabled}
+        networkStatus={connection.networkStatus}
+      />
 
       <div className="app-shell__layout">
         {showNavigation ? (

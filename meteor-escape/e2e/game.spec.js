@@ -45,6 +45,47 @@ test('opens on understandable mobile game home', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Create Crew Mission' })).toBeVisible();
 });
 
+test('keeps technical controls on System Information', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByText('DDP endpoint')).toHaveCount(0);
+  await expect(page.getByText(/Meteor.isCapacitor/)).toHaveCount(0);
+  await expect(page.getByText('App updates')).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'System' }).click();
+
+  await expect(page.getByRole('heading', { name: 'System information' })).toBeVisible();
+  await expect(page.getByText('DDP endpoint')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Preview HCP update' })).toBeVisible();
+  await expect(page.getByLabel(/DDP connected|DDP connecting/)).toBeVisible();
+  await expect(page.getByLabel(/Meteor.isCapacitor false/)).toBeVisible();
+
+  await page.getByRole('button', { name: 'Preview HCP update' }).click();
+  await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
+});
+
+test('shows a global offline banner and disables mission controls until the link returns', async ({ page }) => {
+  await page.goto('/?testMode=1');
+  await page.getByRole('button', { name: 'Quick Mission' }).click();
+  await expect(getTurnChip(page)).toHaveText('Your turn');
+
+  await page.context().setOffline(true);
+  await expect(
+    page.getByText('Offline. Mission controls pause until the ship link returns.')
+  ).toBeVisible();
+
+  const missionButtons = await getActionButtons(page);
+  await expect(missionButtons.nth(0)).toBeDisabled();
+  await expect(missionButtons.nth(1)).toBeDisabled();
+  await expect(missionButtons.nth(2)).toBeDisabled();
+
+  await page.context().setOffline(false);
+  await expect(
+    page.getByText('Offline. Mission controls pause until the ship link returns.')
+  ).toHaveCount(0);
+  await expect(missionButtons.nth(0)).toBeEnabled();
+});
+
 test('keeps room code controls inside join sheet with inline validation and retained server errors', async ({ page }) => {
   await page.goto('/?testMode=1');
 

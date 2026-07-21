@@ -2,19 +2,33 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Capacitor } from '@capacitor/core';
-import { App as CapacitorApp } from '@capacitor/app';
 import { FileText, Home as HomeIcon } from 'lucide-react';
-import { App as KonstaApp, Block, List, ListItem } from 'konsta/react';
+import { App as KonstaApp, Block } from 'konsta/react';
 import { ACTIVE_STATUSES, TERMINAL_STATUSES, Games } from '../api/games/collection';
 import { AppShell } from './components/AppShell';
 import { CrewSheet } from './components/CrewSheet';
 import { MissionStage } from './components/MissionStage';
 import { ResultSheet } from './components/ResultSheet';
+import {
+  NATIVE_BACK_ACTIONS,
+  exitNativeApp,
+  resolveNativeBackAction,
+  useNativeBackButton,
+} from './native/backButton';
+import {
+  HCP_PREVIEW_VERSION,
+  applyHcpUpdate,
+  checkForHcpUpdates,
+  listenForHcpUpdates,
+} from './native/hcp';
 import { signalActionResult } from './native/haptics';
+import { METEOR_ESCAPE_INFO, getApplicationInfo, getDdpEndpoint } from './native/appInfo';
+import { getNetworkStatus, listenNetworkStatus } from './native/network';
 import { shareResult } from './native/share';
 import { getClientIdentity } from './identity';
 import { PlayPage } from './pages/PlayPage';
 import { RecordsPage } from './pages/RecordsPage';
+import { SystemInfoPage } from './pages/SystemInfoPage';
 
 function pickTheme() {
   return Capacitor.getPlatform() === 'ios' ? 'ios' : 'material';
@@ -44,29 +58,46 @@ function buildFeedbackKey(game) {
   ].join(':');
 }
 
-function SystemPanel({ connection, identity, activeGame, recentGames }) {
+const browserAppInfo = {
+  ...METEOR_ESCAPE_INFO,
+  platform: 'web',
+  native: false,
+};
+
+function MissionExitDialog({ opened, onStay, onLeave }) {
+  if (!opened) {
+    return null;
+  }
+
   return (
-    <section className="system-page">
-      <div className="system-page__header">
-        <p className="eyebrow">Runtime snapshot</p>
-        <h1>System</h1>
-      </div>
+    <div className="dialog-backdrop" onClick={onStay}>
+      <section
+        className="dialog-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="meteor-mission-exit-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="dialog-sheet__header">
+          <p className="eyebrow">Mission in progress</p>
+          <h2 id="meteor-mission-exit-title">Leave the reactive mission view?</h2>
+        </div>
 
-      <List inset strong>
-        <ListItem title="Theme" after={pickTheme()} />
-        <ListItem title="Connection" after={connection.connected ? 'connected' : connection.status} />
-        <ListItem title="DDP URL" after={Meteor.absoluteUrl()} />
-        <ListItem title="Owner id" after={identity.ownerId.slice(0, 8)} />
-        <ListItem title="Player id" after={identity.playerId.slice(0, 8)} />
-        <ListItem title="Active mission" after={activeGame ? activeGame.status : 'none'} />
-        <ListItem title="Completed missions" after={String(recentGames.length)} />
-      </List>
+        <p className="dialog-sheet__detail">
+          The mission will keep running in the background. You can return from Play whenever you
+          need the live cockpit again.
+        </p>
 
-      <Block strong className="system-page__note">
-        Task 3 keeps diagnostics out of play flow while the native/system controls arrive in later
-        tasks.
-      </Block>
-    </section>
+        <div className="dialog-sheet__actions">
+          <button className="dialog-sheet__button dialog-sheet__button--secondary" type="button" onClick={onStay}>
+            Stay in Mission
+          </button>
+          <button className="dialog-sheet__button dialog-sheet__button--primary" type="button" onClick={onLeave}>
+            Return to Play
+          </button>
+        </div>
+      </section>
+    </div>
   );
 }
 
@@ -82,7 +113,16 @@ export function App() {
   const [crewError, setCrewError] = useState('');
   const [crewGameId, setCrewGameId] = useState(null);
   const [dark, setDark] = useState(false);
+  const [ddpEnabled, setDdpEnabled] = useState(true);
+  const [appInfo, setAppInfo] = useState(browserAppInfo);
+  const [networkStatus, setNetworkStatus] = useState({ connected: true, connectionType: 'wifi' });
+  const [checkingHcp, setCheckingHcp] = useState(false);
+  const [installingHcp, setInstallingHcp] = useState(false);
+  const [hcpMessage, setHcpMessage] = useState('Ready to check for app updates.');
+  const [hcpUpdateVersion, setHcpUpdateVersion] = useState(null);
   const [missionGameId, setMissionGameId] = useState(null);
+  const [missionVisible, setMissionVisible] = useState(false);
+  const [missionExitConfirmOpen, setMissionExitConfirmOpen] = useState(false);
   const [now, setNow] = useState(Date.now());
   const [resultSheetOpen, setResultSheetOpen] = useState(false);
   const seenResultRef = useRef(null);
@@ -144,8 +184,12 @@ export function App() {
     activeGame?.mode === 'crew' && activeGame?.status === 'waiting' ? activeGame : null;
   const liveMissionGame = activeGame?.status === 'playing' ? activeGame : null;
   const missionSnapshot = liveMissionGame ?? resultGame ?? null;
-  const showMission = Boolean(liveMissionGame) || Boolean(resultGame);
+  const hasMissionSnapshot = Boolean(liveMissionGame) || Boolean(resultGame);
+  const showMission = missionVisible && hasMissionSnapshot;
   const hasWaitingCrewRoom = Boolean(waitingCrewGame?._id || (crewGameId && crewRoomCode));
+  const hasBackgroundMission = hasMissionSnapshot && !missionVisible;
+  const linkReady = networkStatus.connected && ddpEnabled && connection.connected;
+  const homeControlsDisabled = !linkReady;
 
   const bestScore = recentGames.reduce(
     (highest, game) => Math.max(highest, Number(game.score) || 0),
@@ -153,6 +197,9 @@ export function App() {
   );
   const homeStatusMessage =
     statusMessage ||
+    (hasBackgroundMission
+      ? 'Active mission running in the background.'
+      : '') ||
     (hasWaitingCrewRoom && !crewSheetOpen
       ? 'Crew room remains open in the background.'
       : '');
@@ -163,8 +210,24 @@ export function App() {
     }
 
     setMissionGameId(activeGame._id);
+    setMissionVisible(true);
     setNow(Date.now());
   }, [activeGame?._id]);
+
+  useEffect(() => {
+    void getApplicationInfo().then(setAppInfo);
+    void getNetworkStatus().then(setNetworkStatus).catch(() => {});
+    return listenNetworkStatus(setNetworkStatus);
+  }, []);
+
+  useEffect(
+    () =>
+      listenForHcpUpdates((version) => {
+        setHcpUpdateVersion(version);
+        setHcpMessage(`Version ${version} downloaded and ready.`);
+      }),
+    []
+  );
 
   useEffect(() => {
     if (!waitingCrewGame?._id) {
@@ -217,6 +280,7 @@ export function App() {
     }
 
     seenResultRef.current = resultGame._id;
+    setMissionVisible(true);
     setResultSheetOpen(true);
   }, [resultGame]);
 
@@ -242,27 +306,41 @@ export function App() {
     void signalActionResult('damage');
   }, [missionSnapshot]);
 
-  useEffect(() => {
-    if (!resultSheetOpen || !resultGame || !Capacitor.isPluginAvailable('App')) {
-      return undefined;
-    }
-
-    let cancelled = false;
-    let listener;
-
-    void CapacitorApp.addListener('backButton', () => {
-      if (!cancelled) {
-        setResultSheetOpen(false);
-      }
-    }).then((handle) => {
-      listener = handle;
+  useNativeBackButton(() => {
+    const action = resolveNativeBackAction({
+      hcpDialogOpen: Boolean(hcpUpdateVersion),
+      crewSheetOpen,
+      resultSheetOpen,
+      missionExitConfirmOpen,
+      hasActiveMission: showMission,
+      view: showMission ? 'mission' : view,
     });
 
-    return () => {
-      cancelled = true;
-      listener?.remove();
-    };
-  }, [resultGame, resultSheetOpen]);
+    switch (action) {
+      case NATIVE_BACK_ACTIONS.DISMISS_HCP_DIALOG:
+        setHcpUpdateVersion(null);
+        return;
+      case NATIVE_BACK_ACTIONS.DISMISS_CREW_SHEET:
+        setCrewSheetOpen(false);
+        setCrewError('');
+        return;
+      case NATIVE_BACK_ACTIONS.DISMISS_RESULT_SHEET:
+        setResultSheetOpen(false);
+        return;
+      case NATIVE_BACK_ACTIONS.DISMISS_MISSION_CONFIRMATION:
+        setMissionExitConfirmOpen(false);
+        return;
+      case NATIVE_BACK_ACTIONS.CONFIRM_ACTIVE_MISSION:
+        setMissionExitConfirmOpen(true);
+        return;
+      case NATIVE_BACK_ACTIONS.GO_TO_PLAY:
+        setView('play');
+        return;
+      case NATIVE_BACK_ACTIONS.EXIT_APP:
+      default:
+        void exitNativeApp();
+    }
+  });
 
   const invokeGameMethod = useCallback(
     async (actionName, callback, { onSuccess, onError } = {}) => {
@@ -299,6 +377,7 @@ export function App() {
       {
         onSuccess: ({ gameId }) => {
           setMissionGameId(gameId);
+          setMissionVisible(true);
           setResultSheetOpen(false);
           setView('play');
         },
@@ -341,6 +420,7 @@ export function App() {
           setCrewRoomCode(roomCode);
           setCrewGameId(gameId);
           setMissionGameId(gameId);
+          setMissionVisible(false);
           setResultSheetOpen(false);
         },
         onError: (message) => {
@@ -373,6 +453,7 @@ export function App() {
             setMissionGameId(gameId);
             setCrewGameId(gameId);
             setCrewError('');
+            setMissionVisible(true);
             setResultSheetOpen(false);
           },
           onError: (message) => {
@@ -432,6 +513,7 @@ export function App() {
       {
         onSuccess: ({ gameId }) => {
           setMissionGameId(gameId);
+          setMissionVisible(true);
           setResultSheetOpen(false);
         },
       }
@@ -441,12 +523,89 @@ export function App() {
   const handleResultHome = useCallback(() => {
     setResultSheetOpen(false);
     setMissionGameId(null);
+    setMissionVisible(false);
     setView('play');
   }, []);
 
   const handleResultClose = useCallback(() => {
     setResultSheetOpen(false);
   }, []);
+
+  const handleResumeMission = useCallback(() => {
+    setMissionExitConfirmOpen(false);
+    setMissionVisible(true);
+    setView('play');
+  }, []);
+
+  const handleLeaveMissionToPlay = useCallback(() => {
+    setMissionExitConfirmOpen(false);
+    setMissionVisible(false);
+    setView('play');
+  }, []);
+
+  const handleCheckHcpUpdate = useCallback(async () => {
+    setCheckingHcp(true);
+    setHcpMessage('Checking for a newer app version...');
+
+    try {
+      const result = await checkForHcpUpdates();
+      setHcpMessage(
+        result.checked
+          ? 'You will be prompted here when a new version is ready.'
+          : 'Updates can be checked from mobile builds.'
+      );
+    } catch (error) {
+      console.warn('HCP check failed', error);
+      setHcpMessage('Unable to check for updates. Try again.');
+    } finally {
+      setCheckingHcp(false);
+    }
+  }, []);
+
+  const handleInstallHcpUpdate = useCallback(async () => {
+    setInstallingHcp(true);
+
+    try {
+      await applyHcpUpdate();
+    } catch (error) {
+      console.warn('HCP reload failed', error);
+      setInstallingHcp(false);
+      setHcpMessage('Install unavailable here.');
+    }
+  }, []);
+
+  const handleToggleDdp = useCallback((enabled) => {
+    setDdpEnabled(enabled);
+
+    if (enabled) {
+      Meteor.reconnect();
+      return;
+    }
+
+    Meteor.disconnect();
+  }, []);
+
+  const handleReconnect = useCallback(() => {
+    setDdpEnabled(true);
+    Meteor.reconnect();
+  }, []);
+
+  const hcp = useMemo(
+    () => ({
+      checking: checkingHcp,
+      installing: installingHcp,
+      message: hcpMessage,
+      updateVersion: hcpUpdateVersion,
+      onCheck: handleCheckHcpUpdate,
+      onPreview: () => {
+        setHcpUpdateVersion(HCP_PREVIEW_VERSION);
+        setHcpMessage('Previewing the update prompt.');
+      },
+      onInstall: handleInstallHcpUpdate,
+      onDismiss: () => setHcpUpdateVersion(null),
+    }),
+    [checkingHcp, handleCheckHcpUpdate, handleInstallHcpUpdate, hcpMessage, hcpUpdateVersion, installingHcp]
+  );
 
   const shellView = showMission ? 'mission' : view;
 
@@ -458,7 +617,15 @@ export function App() {
       iosHoverHighlight
       materialTouchRipple
     >
-      <AppShell view={shellView} onNavigate={setView} connection={connection}>
+      <AppShell
+        view={shellView}
+        onNavigate={setView}
+        connection={{
+          ...connection,
+          ddpEnabled,
+          networkStatus,
+        }}
+      >
         {!activeReady && view === 'play' && !activeGame ? (
           <Block strong className="records-empty">
             <h1>Preparing mission feed</h1>
@@ -472,7 +639,7 @@ export function App() {
               game={missionSnapshot}
               now={now}
               busy={busyAction === 'answer'}
-              connected={connection.connected}
+              connected={linkReady}
               onAction={handleAction}
             />
             {resultGame && !resultSheetOpen ? (
@@ -513,11 +680,15 @@ export function App() {
             <PlayPage
               bestScore={bestScore}
               onQuickMission={handleQuickMission}
+              onResumeMission={handleResumeMission}
               onCreateCrew={handleCreateCrew}
               onJoinCrew={handleOpenJoinCrew}
               createCrewLabel={hasWaitingCrewRoom ? 'Open Crew Room' : 'Create Crew Mission'}
+              primaryActionLabel={hasBackgroundMission ? 'Resume Mission' : 'Quick Mission'}
               busyAction={busyAction}
+              controlsDisabled={homeControlsDisabled}
               crewWaiting={hasWaitingCrewRoom}
+              hasBackgroundMission={hasBackgroundMission}
               statusMessage={homeStatusMessage}
             />
             <CrewSheet
@@ -525,6 +696,7 @@ export function App() {
               opened={crewSheetOpen}
               roomCode={crewRoomCode}
               busy={busyAction === 'crew' || busyAction === 'join'}
+              disabled={homeControlsDisabled}
               error={crewError}
               onCreate={handleCreateCrew}
               onJoin={handleJoinCrew}
@@ -533,19 +705,34 @@ export function App() {
           </>
         ) : null}
 
-        {view === 'records' && !activeGame ? (
-          <RecordsPage games={recentGames} ready={recentReady} onPlay={handleQuickMission} />
+        {view === 'records' && !showMission ? (
+          <RecordsPage
+            games={recentGames}
+            ready={recentReady}
+            onPlay={hasBackgroundMission ? handleResumeMission : handleQuickMission}
+            actionLabel={hasBackgroundMission ? 'Resume Mission' : 'Play'}
+            disabled={hasBackgroundMission ? false : homeControlsDisabled}
+          />
         ) : null}
 
-        {view === 'system' && !activeGame ? (
-          <SystemPanel
-            connection={connection}
-            identity={identity}
-            activeGame={activeGame}
-            recentGames={recentGames}
+        {view === 'system' && !showMission ? (
+          <SystemInfoPage
+            appInfo={appInfo}
+            ddpEnabled={ddpEnabled}
+            ddpEndpoint={getDdpEndpoint()}
+            ddpStatus={connection.status}
+            hcp={hcp}
+            onReconnect={handleReconnect}
+            onToggleDdp={handleToggleDdp}
           />
         ) : null}
       </AppShell>
+
+      <MissionExitDialog
+        opened={missionExitConfirmOpen}
+        onStay={() => setMissionExitConfirmOpen(false)}
+        onLeave={handleLeaveMissionToPlay}
+      />
     </KonstaApp>
   );
 }

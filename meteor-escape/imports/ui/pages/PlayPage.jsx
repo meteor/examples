@@ -6,11 +6,15 @@ import { FlightDeckArt } from '../art/FlightDeckArt';
 export function PlayPage({
   bestScore,
   onQuickMission,
+  onResumeMission,
   onCreateCrew,
   onJoinCrew,
   createCrewLabel,
+  primaryActionLabel,
   busyAction,
   crewWaiting,
+  controlsDisabled,
+  hasBackgroundMission,
   statusMessage,
 }) {
   return (
@@ -52,24 +56,24 @@ export function PlayPage({
           large
           tonal={false}
           className="primary-action"
-          onClick={onQuickMission}
-          disabled={busyAction !== null || crewWaiting}
+          onClick={hasBackgroundMission ? onResumeMission : onQuickMission}
+          disabled={hasBackgroundMission ? false : busyAction !== null || crewWaiting || controlsDisabled}
         >
-          Quick Mission
+          {primaryActionLabel}
         </Button>
 
         <div className="crew-actions">
           <Button
             className="secondary-action"
             onClick={onCreateCrew}
-            disabled={busyAction !== null}
+            disabled={busyAction !== null || controlsDisabled || hasBackgroundMission}
           >
             {createCrewLabel}
           </Button>
           <Button
             className="secondary-action"
             onClick={onJoinCrew}
-            disabled={busyAction !== null || crewWaiting}
+            disabled={busyAction !== null || crewWaiting || controlsDisabled || hasBackgroundMission}
           >
             Join Crew Mission
           </Button>
