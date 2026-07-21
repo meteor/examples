@@ -16,6 +16,8 @@
     "@capacitor/core": "^7.4.3",
     "@capacitor/ios": "^7.6.7",
     "@swc/helpers": "^0.5.19",
+    "konsta": "^5.2.0",
+    "lucide-react": "^1.25.0",
     "meteor-node-stubs": "^1.2.27",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -26,16 +28,20 @@
     "@meteorjs/capacitor": "file:../../meteor/npm-packages/meteor-capacitor",
     "@meteorjs/rspack": "^2.0.1",
     "@playwright/test": "^1.50.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "@rsdoctor/rspack-plugin": "^1.5.7",
     "@rspack/cli": "^1.7.9",
     "@rspack/core": "^1.7.9",
     "@rspack/plugin-react-refresh": "^1.6.1",
     "oxlint": "^1.56.0",
-    "react-refresh": "^0.18.0"
+    "postcss": "^8.5.20",
+    "postcss-loader": "^8.2.1",
+    "react-refresh": "^0.18.0",
+    "tailwindcss": "^4.3.3"
   },
   "meteor": {
     "mainModule": {
-      "client": "client/main.js",
+      "client": "client/main.jsx",
       "server": "server/main.js"
     },
     "testModule": "tests/main.js",

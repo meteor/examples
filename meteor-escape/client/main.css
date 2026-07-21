@@ -1,0 +1,487 @@
+@import 'tailwindcss';
+@import 'konsta/react/theme.css';
+
+:root {
+  --meteor-ink: #05121e;
+  --meteor-panel: #0d2132;
+  --meteor-line: #18384f;
+  --meteor-sky: #143a54;
+  --meteor-white: #f6f7eb;
+  --meteor-copy: #b7c6d2;
+  --meteor-cyan: #7ae7ff;
+  --meteor-coral: #ff8a5b;
+  --meteor-mint: #7be0b7;
+  --meteor-yellow: #ffd166;
+  --meteor-danger: #ff6b6b;
+  --meteor-safe-top: env(safe-area-inset-top, 0px);
+  --meteor-safe-right: env(safe-area-inset-right, 0px);
+  --meteor-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --meteor-safe-left: env(safe-area-inset-left, 0px);
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#react-target {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top, rgba(122, 231, 255, 0.12), transparent 30%),
+    var(--meteor-ink);
+  color: var(--meteor-white);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.k-page,
+.app-shell {
+  min-height: 100dvh;
+  background: transparent;
+}
+
+.app-shell {
+  color: var(--meteor-white);
+}
+
+.app-shell__navbar {
+  --k-navbar-bg-color: rgba(5, 18, 30, 0.94);
+  --k-navbar-border-color: rgba(122, 231, 255, 0.14);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-top: var(--meteor-safe-top);
+  backdrop-filter: blur(18px);
+}
+
+.connection-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem calc(1rem + var(--meteor-safe-right)) 0.75rem
+    calc(1rem + var(--meteor-safe-left));
+  background: rgba(255, 107, 107, 0.14);
+  color: var(--meteor-white);
+  border-bottom: 1px solid rgba(255, 107, 107, 0.25);
+}
+
+.connection-banner__dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: var(--meteor-danger);
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.16);
+  flex: none;
+}
+
+.app-shell__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: calc(100dvh - 64px - var(--meteor-safe-top));
+}
+
+.app-shell__rail {
+  display: none;
+}
+
+.app-shell__content {
+  min-width: 0;
+  padding: 1rem calc(1rem + var(--meteor-safe-right))
+    calc(6.25rem + var(--meteor-safe-bottom)) calc(1rem + var(--meteor-safe-left));
+}
+
+.app-shell__tabbar {
+  --k-tabbar-bg-color: rgba(8, 20, 31, 0.96);
+  --k-tabbar-border-color: rgba(122, 231, 255, 0.14);
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-bottom: var(--meteor-safe-bottom);
+  backdrop-filter: blur(18px);
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: var(--meteor-cyan);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.play-home,
+.records-page,
+.system-page,
+.mission-focus {
+  display: grid;
+  gap: 1rem;
+}
+
+.play-home__hero {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+.play-home__copy,
+.play-home__actions,
+.records-empty,
+.system-page__note,
+.mission-waiting {
+  background: rgba(13, 33, 50, 0.9);
+  border: 1px solid rgba(122, 231, 255, 0.14);
+  border-radius: 8px;
+}
+
+.play-home__copy {
+  padding: 1.1rem;
+}
+
+.play-home__copy h1,
+.records-page h1,
+.system-page h1,
+.mission-focus__title,
+.records-empty h1 {
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 2.6rem);
+  line-height: 1;
+}
+
+.play-home__tagline {
+  margin: 0.85rem 0 0;
+  color: var(--meteor-white);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.play-home__objective,
+.records-empty p,
+.system-page__note,
+.mission-waiting__copy {
+  margin: 0.85rem 0 0;
+  color: var(--meteor-copy);
+  line-height: 1.5;
+}
+
+.play-home__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.summary-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.3rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(122, 231, 255, 0.18);
+  border-radius: 999px;
+  color: var(--meteor-white);
+  background: rgba(5, 18, 30, 0.5);
+}
+
+.play-home__media {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.play-home__key-art,
+.flight-deck-art {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(122, 231, 255, 0.14);
+  background: rgba(13, 33, 50, 0.72);
+}
+
+.play-home__key-art {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.play-home__actions {
+  padding: 1rem;
+}
+
+.primary-action,
+.secondary-action,
+.join-crew-list .k-button {
+  min-height: 56px;
+}
+
+.primary-action {
+  width: 100%;
+  margin: 0 0 0.9rem;
+}
+
+.crew-actions {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.secondary-action {
+  width: 100%;
+}
+
+.join-crew-panel {
+  padding: 0.9rem;
+  background: rgba(5, 18, 30, 0.58);
+  border: 1px solid rgba(122, 231, 255, 0.14);
+  border-radius: 8px;
+}
+
+.join-crew-panel__label {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--meteor-copy);
+}
+
+.join-crew-panel__controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.join-crew-panel__input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(122, 231, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(13, 33, 50, 0.92);
+  color: var(--meteor-white);
+}
+
+.join-crew-panel__input::placeholder {
+  color: rgba(183, 198, 210, 0.65);
+}
+
+.join-crew-panel__button {
+  min-height: 56px;
+}
+
+.join-crew-panel__hint {
+  margin: 0.7rem 0 0;
+  color: var(--meteor-copy);
+}
+
+.play-home__status {
+  margin: 0.85rem 0 0;
+  color: var(--meteor-yellow);
+}
+
+.mission-focus__header,
+.records-page__header,
+.system-page__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.mission-focus__surface {
+  display: grid;
+  gap: 1rem;
+}
+
+.mission-focus__stats {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.mission-stat {
+  padding: 0.9rem 1rem;
+  background: rgba(13, 33, 50, 0.9);
+  border: 1px solid rgba(122, 231, 255, 0.14);
+  border-radius: 8px;
+}
+
+.mission-stat strong {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 1.3rem;
+}
+
+.mission-stat__label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--meteor-copy);
+}
+
+.mission-stat__detail {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--meteor-copy);
+}
+
+.mission-waiting,
+.records-empty,
+.system-page__note {
+  padding: 1rem;
+}
+
+.mission-waiting__title {
+  margin: 0;
+}
+
+.mission-feed,
+.records-list {
+  margin: 0;
+}
+
+.records-list__after {
+  display: grid;
+  justify-items: end;
+  gap: 0.35rem;
+}
+
+.app-shell__rail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--meteor-copy);
+}
+
+.app-shell__rail-link.is-selected {
+  color: var(--meteor-white);
+  background: rgba(122, 231, 255, 0.12);
+  border-color: rgba(122, 231, 255, 0.18);
+}
+
+.meteor-fragment,
+.engine-pulse {
+  transform-origin: center;
+}
+
+.meteor-fragment--one {
+  animation: meteor-drift 7s ease-in-out infinite;
+}
+
+.meteor-fragment--two {
+  animation: meteor-drift 5.4s ease-in-out infinite reverse;
+}
+
+.meteor-fragment--three {
+  animation: meteor-drift 6.2s ease-in-out infinite;
+}
+
+.engine-pulse {
+  animation: engine-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes meteor-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(0, 6px, 0) scale(1.08);
+  }
+}
+
+@keyframes engine-pulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meteor-fragment--one,
+  .meteor-fragment--two,
+  .meteor-fragment--three,
+  .engine-pulse {
+    animation: none;
+  }
+}
+
+@media (min-width: 720px) {
+  .app-shell__content {
+    padding-top: 1.25rem;
+  }
+
+  .play-home__hero,
+  .mission-focus__surface {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .play-home__copy {
+    padding: 1.4rem;
+  }
+
+  .crew-actions {
+    grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.45fr);
+    align-items: start;
+  }
+
+  .join-crew-panel__controls {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-shell__layout {
+    grid-template-columns: 12.5rem minmax(0, 1fr);
+  }
+
+  .app-shell__rail {
+    display: grid;
+    align-content: start;
+    gap: 0.65rem;
+    padding: 1.25rem 0 1.25rem calc(1rem + var(--meteor-safe-left));
+    border-right: 1px solid rgba(122, 231, 255, 0.1);
+  }
+
+  .app-shell__content {
+    max-width: 1180px;
+    padding: 1.5rem calc(1.5rem + var(--meteor-safe-right))
+      calc(2rem + var(--meteor-safe-bottom)) 1.5rem;
+  }
+
+  .app-shell__tabbar {
+    display: none;
+  }
+
+  .play-home__hero {
+    grid-template-columns: minmax(0, 1fr) minmax(21rem, 25rem);
+  }
+}
