@@ -77,7 +77,7 @@ export function CrewSheet({ mode, opened, roomCode, busy, error, onCreate, onJoi
             className="crew-sheet__icon-button"
             type="button"
             onClick={onClose}
-            aria-label={mode === 'create' ? 'Dismiss Create Crew Mission' : 'Dismiss Join Crew Mission'}
+            aria-label={mode === 'create' ? 'Hide Crew Room' : 'Dismiss Join Crew Mission'}
             disabled={busy || shareBusy}
           >
             <X aria-hidden="true" size={18} strokeWidth={2.4} />
@@ -155,7 +155,7 @@ export function CrewSheet({ mode, opened, roomCode, busy, error, onCreate, onJoi
                 onClick={onClose}
                 disabled={busy || shareBusy}
               >
-                Close Crew Mission
+                Keep Waiting in Background
               </Button>
             </div>
           </div>

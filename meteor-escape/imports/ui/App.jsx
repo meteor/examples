@@ -145,6 +145,7 @@ export function App() {
   const liveMissionGame = activeGame?.status === 'playing' ? activeGame : null;
   const missionSnapshot = liveMissionGame ?? resultGame ?? null;
   const showMission = Boolean(liveMissionGame) || Boolean(resultGame);
+  const hasWaitingCrewRoom = Boolean(waitingCrewGame?._id || (crewGameId && crewRoomCode));
 
   const bestScore = recentGames.reduce(
     (highest, game) => Math.max(highest, Number(game.score) || 0),
@@ -152,8 +153,8 @@ export function App() {
   );
   const homeStatusMessage =
     statusMessage ||
-    (waitingCrewGame && !crewSheetOpen
-      ? 'Crew room waiting in background. Reopen Create Crew Mission to share the code.'
+    (hasWaitingCrewRoom && !crewSheetOpen
+      ? 'Crew room remains open in the background.'
       : '');
 
   useEffect(() => {
@@ -183,8 +184,19 @@ export function App() {
     setCrewSheetMode(null);
     setCrewError('');
     setCrewRoomCode('');
+    setCrewGameId(null);
     setView('play');
   }, [activeGame?._id, activeGame?.status, crewGameId, crewSheetOpen]);
+
+  useEffect(() => {
+    if (resultGame?._id !== crewGameId) {
+      return;
+    }
+
+    setCrewRoomCode('');
+    setCrewGameId(null);
+    setCrewError('');
+  }, [crewGameId, resultGame?._id]);
 
   useEffect(() => {
     if (!showMission || !missionSnapshot) {
@@ -310,8 +322,12 @@ export function App() {
       });
     }
 
-    setCrewRoomCode('');
-    setCrewGameId(null);
+    if (crewGameId && crewRoomCode) {
+      return Promise.resolve({
+        gameId: crewGameId,
+        roomCode: crewRoomCode,
+      });
+    }
 
     return invokeGameMethod(
       'crew',
@@ -332,7 +348,15 @@ export function App() {
         },
       }
     );
-  }, [identity.ownerId, identity.playerId, invokeGameMethod, waitingCrewGame?._id, waitingCrewGame?.roomCode]);
+  }, [
+    crewGameId,
+    crewRoomCode,
+    identity.ownerId,
+    identity.playerId,
+    invokeGameMethod,
+    waitingCrewGame?._id,
+    waitingCrewGame?.roomCode,
+  ]);
 
   const handleJoinCrew = useCallback(
     (roomCode) => {
@@ -491,8 +515,9 @@ export function App() {
               onQuickMission={handleQuickMission}
               onCreateCrew={handleCreateCrew}
               onJoinCrew={handleOpenJoinCrew}
+              createCrewLabel={hasWaitingCrewRoom ? 'Open Crew Room' : 'Create Crew Mission'}
               busyAction={busyAction}
-              crewWaiting={Boolean(waitingCrewGame)}
+              crewWaiting={hasWaitingCrewRoom}
               statusMessage={homeStatusMessage}
             />
             <CrewSheet

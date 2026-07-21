@@ -176,6 +176,25 @@ Meteor.methods({
 
   async 'games.createCrew'(payload) {
     const { ownerId, playerId } = parseOrThrow(CreateCrewSchema, payload);
+    const existingWaitingGame = await Games.findOneAsync({
+      ownerId,
+      playerId,
+      mode: 'crew',
+      status: 'waiting',
+      players: {
+        $elemMatch: {
+          id: playerId,
+          ownerId,
+          role: 'player',
+          type: 'human',
+        },
+      },
+    });
+
+    if (existingWaitingGame) {
+      return { gameId: existingWaitingGame._id, roomCode: existingWaitingGame.roomCode };
+    }
+
     const now = Date.now();
     const roomCode = await generateRoomCode();
     const state = createInitialState({ mode: 'crew', ownerId, playerId, now, roomCode });

@@ -108,7 +108,8 @@ test('keeps create sheet open until a waiting crew mission becomes playing', asy
   const creatorSheet = creatorPage.getByRole('dialog', { name: 'Create Crew Mission' });
   await expect(creatorSheet).toBeVisible();
   await expect(creatorSheet.getByRole('button', { name: 'Share Crew Code' })).toBeVisible();
-  await expect(creatorSheet.getByRole('button', { name: 'Close Crew Mission' })).toBeVisible();
+  await expect(creatorSheet.getByRole('button', { name: 'Keep Waiting in Background' })).toBeVisible();
+  await expect(creatorSheet.getByRole('button', { name: 'Hide Crew Room' })).toBeVisible();
 
   const roomText = await creatorSheet.locator('.crew-sheet__code-block strong').textContent();
   const roomCode = extractRoomCode(roomText ?? '');
@@ -131,6 +132,30 @@ test('keeps create sheet open until a waiting crew mission becomes playing', asy
 
   await creatorContext.close();
   await joinerContext.close();
+});
+
+test('keeps waiting room in background and reopens same code without recreating', async ({ page }) => {
+  await page.goto('/?testMode=1');
+  await page.getByRole('button', { name: 'Create Crew Mission' }).click();
+
+  const createSheet = page.getByRole('dialog', { name: 'Create Crew Mission' });
+  await expect(createSheet).toBeVisible();
+  const firstRoomText = await createSheet.locator('.crew-sheet__code-block strong').textContent();
+  const firstRoomCode = extractRoomCode(firstRoomText ?? '');
+  expect(firstRoomCode).toBeTruthy();
+
+  await createSheet.getByRole('button', { name: 'Keep Waiting in Background' }).click();
+  await expect(createSheet).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Open Crew Room' })).toBeVisible();
+  await expect(page.getByText('Crew room remains open in the background.')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Open Crew Room' }).click();
+  await expect(createSheet).toBeVisible();
+  await expect(createSheet.getByText('Generating room code')).toHaveCount(0);
+
+  const reopenedRoomText = await createSheet.locator('.crew-sheet__code-block strong').textContent();
+  const reopenedRoomCode = extractRoomCode(reopenedRoomText ?? '');
+  expect(reopenedRoomCode).toBe(firstRoomCode);
 });
 
 test('keeps records actions at least 48 pixels tall', async ({ page }) => {

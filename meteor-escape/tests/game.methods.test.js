@@ -251,6 +251,32 @@ if (Meteor.isServer) {
       );
     });
 
+    it('returns existing waiting crew room for same captain', async function () {
+      const ownerId = Random.id();
+      const captainId = Random.id();
+
+      const first = await Meteor.callAsync('games.createCrew', {
+        ownerId,
+        playerId: captainId,
+      });
+      const second = await Meteor.callAsync('games.createCrew', {
+        ownerId,
+        playerId: captainId,
+      });
+
+      assert.strictEqual(second.gameId, first.gameId);
+      assert.strictEqual(second.roomCode, first.roomCode);
+
+      const waitingGames = await Games.find({
+        ownerId,
+        playerId: captainId,
+        mode: 'crew',
+        status: 'waiting',
+      }).fetchAsync();
+
+      assert.strictEqual(waitingGames.length, 1);
+    });
+
     it('allows joined copilot to answer with own owner id', async function () {
       const ownerId = Random.id();
       const joinedOwnerId = Random.id();

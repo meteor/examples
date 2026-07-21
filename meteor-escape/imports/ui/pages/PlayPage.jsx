@@ -8,6 +8,7 @@ export function PlayPage({
   onQuickMission,
   onCreateCrew,
   onJoinCrew,
+  createCrewLabel,
   busyAction,
   crewWaiting,
   statusMessage,
@@ -63,7 +64,7 @@ export function PlayPage({
             onClick={onCreateCrew}
             disabled={busyAction !== null}
           >
-            Create Crew Mission
+            {createCrewLabel}
           </Button>
           <Button
             className="secondary-action"
