@@ -7,6 +7,28 @@ Native haptics, sharing, runtime metadata, DDP controls, and Hot Code Push
 diagnostics stay on a dedicated System information screen so the mission view
 stays focused on play.
 
+## Gallery
+
+Deterministic Playwright gallery captures live in `docs/screenshots/` and are
+generated against the real Meteor app with the guarded E2E `testMode` path for
+repeatable mission and result states.
+
+### Phone 390x844
+
+![Meteor Escape play home](docs/screenshots/mobile-play.png)
+![Meteor Escape active mission](docs/screenshots/mobile-mission.png)
+![Meteor Escape mission result](docs/screenshots/mobile-result.png)
+![Meteor Escape records screen](docs/screenshots/mobile-records.png)
+![Meteor Escape system information](docs/screenshots/mobile-system.png)
+
+### Tablet 768x1024
+
+![Meteor Escape tablet mission](docs/screenshots/tablet-mission.png)
+
+### Desktop 1440x1000
+
+![Meteor Escape desktop play home](docs/screenshots/desktop-play.png)
+
 ## Rules
 
 Every turn presents one emergency:
@@ -93,10 +115,10 @@ Native integrations used by this example:
 ## Crew Room Behavior
 
 Crew rooms use a six-character code drawn from `A-H`, `J-N`, `P-Z`, and `2-9`.
-Creating a crew mission keeps that room active until another human joins or the
-captain starts over. The captain can hide the waiting sheet, reopen the same
-room from the home screen, and share the code through the native share sheet
-when available.
+Creating a crew mission keeps that room active until another human joins. The
+captain can hide the waiting sheet, reopen the same room from the home screen,
+and share the code through the native share sheet when available. Repeated
+create requests return the existing waiting room instead of minting extra codes.
 
 ## Hot Code Push
 
@@ -132,7 +154,7 @@ imports/
     methods.js       # Start, join, answer, and rematch methods
     publications.js  # Active and recent game subscriptions
     schema.js        # Zod validation
-    server/cpu.js    # CPU scheduling for solo missions
+    server/cpu.js    # Turn deadlines and CPU actions for solo missions
   ui/
     App.jsx          # Main state and native service orchestration
     pages/           # Home, records, and System information screens
@@ -184,8 +206,8 @@ back behavior.
   after `meteor npm install`.
 - If Playwright opens the wrong app on port 3000, stop any stale Meteor or native
   test process with `lsof -nP -iTCP:3000 -sTCP:LISTEN`.
-- If the crew room seems stale, tap `Create Crew Mission` again to start a fresh
-  waiting room with a new code.
+- If the crew room seems stale, tap `Create Crew Mission` to reopen the same
+  waiting room and share its code again.
 - If iOS launches the wrong simulator, set `METEOR_CAPACITOR_TARGET=<UDID>` before
   `meteor run ios`.
 
