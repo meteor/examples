@@ -19,7 +19,7 @@ function getResultCopy(game) {
   };
 }
 
-export function ResultSheet({ game, opened, onRematch, onHome, onShare }) {
+export function ResultSheet({ game, opened, onRematch, onHome, onClose, onShare }) {
   const [shareMessage, setShareMessage] = useState('');
   const [sharing, setSharing] = useState(false);
   const copy = getResultCopy(game);
@@ -37,12 +37,13 @@ export function ResultSheet({ game, opened, onRematch, onHome, onShare }) {
   }
 
   return (
-    <div className="result-sheet-backdrop">
+    <div className="result-sheet-backdrop" onClick={onClose}>
       <section
         className={`result-sheet result-sheet--${copy.tone}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="result-sheet-title"
+        onClick={(event) => event.stopPropagation()}
       >
         <div className="result-sheet__header">
           <div>

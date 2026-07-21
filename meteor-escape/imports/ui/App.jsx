@@ -134,7 +134,7 @@ export function App() {
   }, [missionGameId, recentGames]);
 
   const missionSnapshot = activeGame ?? resultGame ?? null;
-  const showMission = Boolean(activeGame) || Boolean(resultSheetOpen && resultGame);
+  const showMission = Boolean(activeGame) || Boolean(resultGame);
 
   const bestScore = recentGames.reduce(
     (highest, game) => Math.max(highest, Number(game.score) || 0),
@@ -342,6 +342,10 @@ export function App() {
     setView('play');
   }, []);
 
+  const handleResultClose = useCallback(() => {
+    setResultSheetOpen(false);
+  }, []);
+
   const shellView = showMission ? 'mission' : view;
 
   return (
@@ -375,6 +379,7 @@ export function App() {
                 opened={resultSheetOpen}
                 onRematch={handleRematch}
                 onHome={handleResultHome}
+                onClose={handleResultClose}
                 onShare={() => shareResult(resultGame)}
               />
             ) : null}

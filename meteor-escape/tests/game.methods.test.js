@@ -3,12 +3,22 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import { Games } from '../imports/api/games/collection';
 import '../imports/api/games/methods';
-import { runCpuTurn } from '../imports/api/games/server/cpu';
+import * as gameMethodsModule from '../imports/api/games/methods';
+import * as turnScheduler from '../imports/api/games/server/cpu';
 
 if (Meteor.isServer) {
   describe('game methods', function () {
+    const originalE2EEnv = process.env.METEOR_ESCAPE_E2E;
+
     beforeEach(async function () {
+      process.env.METEOR_ESCAPE_E2E = originalE2EEnv;
+      turnScheduler.resetScheduledTurnsForTests?.();
       await Games.removeAsync({});
+    });
+
+    afterEach(function () {
+      process.env.METEOR_ESCAPE_E2E = originalE2EEnv;
+      turnScheduler.resetScheduledTurnsForTests?.();
     });
 
     function buildTerminalEvent({ actorId, action = 'boost', emergency = 'path', outcome = 'correct' }) {
@@ -33,17 +43,93 @@ if (Meteor.isServer) {
       assert.strictEqual(game.players[1].type, 'cpu');
     });
 
+    it('ignores payload testMode without E2E guard and in production-like mode', async function () {
+      process.env.METEOR_ESCAPE_E2E = undefined;
+      assert.strictEqual(
+        gameMethodsModule.shouldHonorTestMode?.(true, { isDevelopment: false, e2eEnv: '1' }),
+        false
+      );
+
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', {
+        ownerId,
+        playerId,
+        testMode: true,
+      });
+      const game = await Games.findOneAsync(gameId);
+
+      assert.strictEqual(game.warp, 0);
+      assert.strictEqual(game.score, 0);
+    });
+
+    it('honors payload testMode only when E2E guard is enabled in development', async function () {
+      process.env.METEOR_ESCAPE_E2E = '1';
+      assert.strictEqual(
+        gameMethodsModule.shouldHonorTestMode?.(true, { isDevelopment: true, e2eEnv: '1' }),
+        true
+      );
+
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', {
+        ownerId,
+        playerId,
+        testMode: true,
+      });
+      const game = await Games.findOneAsync(gameId);
+
+      assert.strictEqual(game.warp, 60);
+      assert.strictEqual(game.score, 60);
+    });
+
     it('runs CPU through same transition', async function () {
       const ownerId = Random.id();
       const playerId = Random.id();
       const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
 
       await Games.updateAsync(gameId, { $set: { turn: 'copilot', emergency: 'overheat' } });
-      await runCpuTurn(gameId, Date.now());
+      await turnScheduler.runCpuTurn(gameId, Date.now());
 
       const game = await Games.findOneAsync(gameId);
       assert.strictEqual(game.events[0].action, 'cool');
       assert.strictEqual(game.turn, 'player');
+    });
+
+    it('settles an expired player turn with shield damage and turn advance', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const game = await Games.findOneAsync(gameId);
+
+      await turnScheduler.runScheduledTurn?.(
+        gameId,
+        { expectedTurn: 'player', expectedTurnEndsAt: game.turnEndsAt },
+        game.turnEndsAt + 1
+      );
+
+      const updated = await Games.findOneAsync(gameId);
+      assert.strictEqual(updated.shield, 75);
+      assert.strictEqual(updated.turn, 'copilot');
+      assert.strictEqual(updated.events.at(-1).outcome, 'late');
+    });
+
+    it('settles expired player turns into terminal loss when shield reaches zero', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const game = await Games.findOneAsync(gameId);
+
+      await Games.updateAsync(gameId, { $set: { shield: 25 } });
+      await turnScheduler.runScheduledTurn?.(
+        gameId,
+        { expectedTurn: 'player', expectedTurnEndsAt: game.turnEndsAt },
+        game.turnEndsAt + 1
+      );
+
+      const updated = await Games.findOneAsync(gameId);
+      assert.strictEqual(updated.status, 'lost');
+      assert.strictEqual(updated.shield, 0);
     });
 
     it('rejects wrong-owner answers', async function () {

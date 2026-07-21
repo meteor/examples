@@ -13,7 +13,7 @@ module.exports = defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command: `PATH=/Users/igcogi/meteor/meteor:$PATH meteor run --port ${port}`,
+    command: `METEOR_ESCAPE_E2E=1 PATH=/Users/igcogi/meteor/meteor:$PATH meteor run --port ${port}`,
     url: baseURL,
     timeout: 120_000,
     reuseExistingServer: !process.env.CI,

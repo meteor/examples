@@ -170,4 +170,18 @@ describe('game engine', function () {
       [2000, 2500, 3000, 3500, 4000]
     );
   });
+
+  it('supports accelerated mission state when authorized test mode is enabled', function () {
+    const game = createInitialState({
+      mode: 'solo',
+      ownerId: 'owner',
+      playerId: 'p1',
+      now: 1000,
+      testMode: true,
+    });
+
+    assert.strictEqual(game.warp, 60);
+    assert.strictEqual(game.score, 60);
+    assert.strictEqual(game.bestStreak, 3);
+  });
 });

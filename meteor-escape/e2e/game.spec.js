@@ -28,6 +28,10 @@ function getResultTitle(page) {
   return page.locator('.result-sheet h2');
 }
 
+function getLiveRegion(page) {
+  return page.locator('.mission-stage__live');
+}
+
 test('opens on understandable mobile game home', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Meteor Escape' })).toBeVisible();
@@ -86,6 +90,8 @@ test('plays quick mission with visible CPU turns and result', async ({ page }) =
   const actionName = emergencyLabelToAction(emergency?.trim() ?? '');
 
   await page.getByRole('button', { name: new RegExp(actionName, 'i') }).click();
+  await expect(getLiveRegion(page)).toContainText('Warp charged', { timeout: 500 });
+  await expect(getLiveRegion(page)).toContainText('Copilot turn', { timeout: 500 });
   await expect(getMissionStatus(page)).toHaveText('Copilot thinking');
   await expect(getTurnChip(page)).toHaveText('Copilot turn');
 
@@ -94,8 +100,8 @@ test('plays quick mission with visible CPU turns and result', async ({ page }) =
   await expect(page.getByRole('button', { name: 'Share Result' })).toBeVisible();
 });
 
-test('keeps mission actions 64 pixels tall without overlap on narrow phones', async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 700 });
+async function assertMissionActionLayout(page, viewport, requireViewportFit) {
+  await page.setViewportSize(viewport);
   await page.goto('/?testMode=1');
   await page.getByRole('button', { name: 'Quick Mission' }).click();
   await expect(getTurnChip(page)).toHaveText('Your turn');
@@ -115,12 +121,23 @@ test('keeps mission actions 64 pixels tall without overlap on narrow phones', as
     expect(box.height).toBeGreaterThanOrEqual(64);
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.y).toBeGreaterThanOrEqual(0);
-    expect(box.x + box.width).toBeLessThanOrEqual(320);
+    expect(box.x + box.width).toBeLessThanOrEqual(viewport.width);
+    if (requireViewportFit) {
+      expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
+    }
   }
 
   for (let index = 1; index < boxes.length; index += 1) {
     expect(boxes[index - 1].y + boxes[index - 1].height).toBeLessThanOrEqual(boxes[index].y);
   }
+}
+
+test('keeps mission actions 64 pixels tall without overlap on 320x700 phones', async ({ page }) => {
+  await assertMissionActionLayout(page, { width: 320, height: 700 }, false);
+});
+
+test('keeps mission actions in viewport without overlap on 390x844 phones', async ({ page }) => {
+  await assertMissionActionLayout(page, { width: 390, height: 844 }, true);
 });
 
 test('keeps mission result sheet inside viewport and honors reduced motion', async ({ page }) => {
@@ -156,4 +173,22 @@ test('keeps mission result sheet inside viewport and honors reduced motion', asy
   expect(motionStyles.animationDuration).toMatch(/0s|0\.01ms|1e-05s/);
   expect(motionStyles.transitionDuration).toMatch(/0s|0\.01ms|1e-05s/);
   expect(motionStyles.scrollBehavior).toBe('auto');
+});
+
+test('closing result sheet keeps terminal mission stage visible until home', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/?testMode=1');
+  await page.getByRole('button', { name: 'Quick Mission' }).click();
+  await expect(getTurnChip(page)).toHaveText('Your turn');
+
+  const emergency = await page.locator('.emergency-prompt__eyebrow').textContent();
+  const actionName = emergencyLabelToAction(emergency?.trim() ?? '');
+  await page.getByRole('button', { name: new RegExp(actionName, 'i') }).click();
+  await expect(page.locator('.result-sheet')).toBeVisible({ timeout: 30_000 });
+
+  await page.locator('.result-sheet-backdrop').click({ position: { x: 8, y: 8 } });
+
+  await expect(page.locator('.result-sheet')).toBeHidden();
+  await expect(page.locator('.mission-stage')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Quick Mission' })).toBeHidden();
 });

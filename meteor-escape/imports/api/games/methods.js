@@ -15,7 +15,7 @@ import {
   parseGameDocument,
   parseOrThrow,
 } from './schema';
-import { scheduleCpuTurn } from './server/cpu';
+import { scheduleGameTurn } from './server/cpu';
 
 const ROOM_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -30,6 +30,16 @@ function getTurnPlayer(game) {
 
 function shouldScheduleCpu(game) {
   return game.status === 'playing' && game.turn === 'copilot' && game.players[1]?.type === 'cpu';
+}
+
+export function shouldHonorTestMode(
+  requestedTestMode,
+  {
+    isDevelopment = Meteor.isDevelopment,
+    e2eEnv = process.env.METEOR_ESCAPE_E2E,
+  } = {}
+) {
+  return Boolean(requestedTestMode && isDevelopment && e2eEnv === '1');
 }
 
 async function persistGame(gameId, nextState, now) {
@@ -109,11 +119,14 @@ async function generateRoomCode() {
 
 Meteor.methods({
   async 'games.startSolo'(payload) {
-    const { ownerId, playerId, testMode } = parseOrThrow(StartSoloSchema, payload);
+    const { ownerId, playerId, testMode: requestedTestMode } = parseOrThrow(StartSoloSchema, payload);
+    const testMode = shouldHonorTestMode(requestedTestMode);
     const now = Date.now();
     const gameId = await Games.insertAsync(
       createSoloDocument({ ownerId, playerId, now, testMode })
     );
+    const game = await Games.findOneAsync(gameId);
+    scheduleGameTurn(game, now);
 
     return { gameId };
   },
@@ -124,6 +137,11 @@ Meteor.methods({
     const existing = await findOwnedGameOrThrow({ ownerId, playerId, gameId });
     const game = await maybeSettleTimeout(existing, now);
     const storedGame = sanitizeStoredGame(game);
+    if (game._id !== existing._id || game.updatedAt?.getTime?.() !== existing.updatedAt?.getTime?.()) {
+      if (storedGame.status === 'playing') {
+        scheduleGameTurn(game, now);
+      }
+    }
 
     if (storedGame.status !== 'playing') {
       throw new Meteor.Error('invalid-state', 'Game is not active');
@@ -149,8 +167,8 @@ Meteor.methods({
       now
     );
 
-    if (shouldScheduleCpu(nextGame)) {
-      scheduleCpuTurn(gameId);
+    if (nextGame.status === 'playing' || shouldScheduleCpu(nextGame)) {
+      scheduleGameTurn(nextGame, now);
     }
 
     return { gameId };
@@ -235,13 +253,17 @@ Meteor.methods({
       throw new Meteor.Error('not-found', 'Room code not found');
     }
 
+    const game = await Games.findOneAsync(waitingGame._id);
+    scheduleGameTurn(game, now);
+
     return { gameId: waitingGame._id };
   },
 
   async 'games.rematch'(payload) {
-    const { ownerId, playerId, gameId, testMode } = parseOrThrow(RematchSchema, payload);
+    const { ownerId, playerId, gameId, testMode: requestedTestMode } = parseOrThrow(RematchSchema, payload);
     const existing = await findOwnedGameOrThrow({ ownerId, playerId, gameId });
     const game = sanitizeStoredGame(existing);
+    const testMode = shouldHonorTestMode(requestedTestMode);
 
     if (!['won', 'lost'].includes(game.status)) {
       throw new Meteor.Error('invalid-state', 'Game is not finished');
@@ -279,6 +301,8 @@ Meteor.methods({
     }
 
     const nextGameId = await Games.insertAsync(nextDocument);
+    const nextGame = await Games.findOneAsync(nextGameId);
+    scheduleGameTurn(nextGame, now);
     return { gameId: nextGameId };
   },
 });

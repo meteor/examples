@@ -60,6 +60,8 @@ function getTurnStatus(game) {
 }
 
 function buildAnnouncement(game) {
+  const latestEvent = game.events.at(-1) ?? null;
+
   if (game.status === 'won') {
     return 'Warp charged. Mission complete.';
   }
@@ -72,11 +74,12 @@ function buildAnnouncement(game) {
     return `Crew lobby ready. Room code ${game.roomCode}.`;
   }
 
-  if (game.turn === 'copilot') {
-    return 'Copilot turn.';
+  const turnCopy = game.turn === 'copilot' ? 'Copilot turn.' : 'Your turn.';
+  if (latestEvent) {
+    return `${describeEvent(latestEvent)}. ${turnCopy}`;
   }
 
-  return 'Your turn.';
+  return turnCopy;
 }
 
 export function MissionStage({ game, now, busy, connected, onAction }) {
