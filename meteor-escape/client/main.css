@@ -2,22 +2,22 @@
 @import 'konsta/react/theme.css';
 
 :root {
-  --meteor-ink: #05121e;
-  --meteor-panel: #0d2132;
-  --meteor-line: #18384f;
-  --meteor-sky: #143a54;
-  --meteor-white: #f6f7eb;
-  --meteor-copy: #b7c6d2;
-  --meteor-cyan: #7ae7ff;
-  --meteor-coral: #ff8a5b;
-  --meteor-mint: #7be0b7;
-  --meteor-yellow: #ffd166;
-  --meteor-danger: #ff6b6b;
+  --meteor-ink: #1f2b31;
+  --meteor-shell: #faf5ee;
+  --meteor-surface: #fffdf8;
+  --meteor-surface-strong: #fff6eb;
+  --meteor-line: #e5d8ca;
+  --meteor-copy: #5f6a71;
+  --meteor-cyan: #46bfd6;
+  --meteor-coral: #eb8b6b;
+  --meteor-mint: #5cc4a1;
+  --meteor-yellow: #d9b24b;
+  --meteor-danger: #d96d65;
   --meteor-safe-top: env(safe-area-inset-top, 0px);
   --meteor-safe-right: env(safe-area-inset-right, 0px);
   --meteor-safe-bottom: env(safe-area-inset-bottom, 0px);
   --meteor-safe-left: env(safe-area-inset-left, 0px);
-  color-scheme: dark;
+  color-scheme: light;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 }
@@ -34,10 +34,8 @@ body,
 
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at top, rgba(122, 231, 255, 0.12), transparent 30%),
-    var(--meteor-ink);
-  color: var(--meteor-white);
+  background: var(--meteor-shell);
+  color: var(--meteor-ink);
 }
 
 button,
@@ -65,17 +63,16 @@ img {
 }
 
 .app-shell {
-  color: var(--meteor-white);
+  color: var(--meteor-ink);
 }
 
 .app-shell__navbar {
-  --k-navbar-bg-color: rgba(5, 18, 30, 0.94);
-  --k-navbar-border-color: rgba(122, 231, 255, 0.14);
+  --k-navbar-bg-color: rgba(255, 246, 235, 0.96);
+  --k-navbar-border-color: var(--meteor-line);
   position: sticky;
   top: 0;
   z-index: 20;
   padding-top: var(--meteor-safe-top);
-  backdrop-filter: blur(18px);
 }
 
 .connection-banner {
@@ -84,9 +81,9 @@ img {
   gap: 0.6rem;
   padding: 0.75rem calc(1rem + var(--meteor-safe-right)) 0.75rem
     calc(1rem + var(--meteor-safe-left));
-  background: rgba(255, 107, 107, 0.14);
-  color: var(--meteor-white);
-  border-bottom: 1px solid rgba(255, 107, 107, 0.25);
+  background: rgba(235, 139, 107, 0.16);
+  color: var(--meteor-ink);
+  border-bottom: 1px solid rgba(217, 109, 101, 0.28);
 }
 
 .connection-banner__dot {
@@ -115,14 +112,13 @@ img {
 }
 
 .app-shell__tabbar {
-  --k-tabbar-bg-color: rgba(8, 20, 31, 0.96);
-  --k-tabbar-border-color: rgba(122, 231, 255, 0.14);
+  --k-tabbar-bg-color: rgba(255, 246, 235, 0.98);
+  --k-tabbar-border-color: var(--meteor-line);
   position: fixed;
   right: 0;
   bottom: 0;
   left: 0;
   padding-bottom: var(--meteor-safe-bottom);
-  backdrop-filter: blur(18px);
 }
 
 .eyebrow {
@@ -153,8 +149,8 @@ img {
 .records-empty,
 .system-page__note,
 .mission-waiting {
-  background: rgba(13, 33, 50, 0.9);
-  border: 1px solid rgba(122, 231, 255, 0.14);
+  background: var(--meteor-surface);
+  border: 1px solid var(--meteor-line);
   border-radius: 8px;
 }
 
@@ -174,7 +170,7 @@ img {
 
 .play-home__tagline {
   margin: 0.85rem 0 0;
-  color: var(--meteor-white);
+  color: var(--meteor-ink);
   font-size: 1.05rem;
   font-weight: 700;
 }
@@ -201,10 +197,10 @@ img {
   gap: 0.45rem;
   min-height: 2.3rem;
   padding: 0.45rem 0.75rem;
-  border: 1px solid rgba(122, 231, 255, 0.18);
+  border: 1px solid var(--meteor-line);
   border-radius: 999px;
-  color: var(--meteor-white);
-  background: rgba(5, 18, 30, 0.5);
+  color: var(--meteor-ink);
+  background: var(--meteor-surface-strong);
 }
 
 .play-home__media {
@@ -216,13 +212,14 @@ img {
 .flight-deck-art {
   width: 100%;
   border-radius: 8px;
-  border: 1px solid rgba(122, 231, 255, 0.14);
-  background: rgba(13, 33, 50, 0.72);
+  border: 1px solid var(--meteor-line);
+  background: var(--meteor-surface-strong);
 }
 
 .play-home__key-art {
   aspect-ratio: 16 / 10;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 0.75rem;
 }
 
 .play-home__actions {
@@ -249,44 +246,37 @@ img {
   width: 100%;
 }
 
-.join-crew-panel {
-  padding: 0.9rem;
-  background: rgba(5, 18, 30, 0.58);
-  border: 1px solid rgba(122, 231, 255, 0.14);
-  border-radius: 8px;
-}
-
-.join-crew-panel__label {
+.join-crew-inline__label {
   display: block;
   margin-bottom: 0.55rem;
   color: var(--meteor-copy);
 }
 
-.join-crew-panel__controls {
+.join-crew-inline__controls {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
 }
 
-.join-crew-panel__input {
+.join-crew-inline__input {
   width: 100%;
   min-height: 56px;
   padding: 0.85rem 0.95rem;
-  border: 1px solid rgba(122, 231, 255, 0.2);
+  border: 1px solid var(--meteor-line);
   border-radius: 8px;
-  background: rgba(13, 33, 50, 0.92);
-  color: var(--meteor-white);
+  background: var(--meteor-surface-strong);
+  color: var(--meteor-ink);
 }
 
-.join-crew-panel__input::placeholder {
-  color: rgba(183, 198, 210, 0.65);
+.join-crew-inline__input::placeholder {
+  color: rgba(95, 106, 113, 0.7);
 }
 
-.join-crew-panel__button {
+.join-crew-inline__button {
   min-height: 56px;
 }
 
-.join-crew-panel__hint {
+.join-crew-inline__hint {
   margin: 0.7rem 0 0;
   color: var(--meteor-copy);
 }
@@ -317,8 +307,8 @@ img {
 
 .mission-stat {
   padding: 0.9rem 1rem;
-  background: rgba(13, 33, 50, 0.9);
-  border: 1px solid rgba(122, 231, 255, 0.14);
+  background: var(--meteor-surface);
+  border: 1px solid var(--meteor-line);
   border-radius: 8px;
 }
 
@@ -362,6 +352,10 @@ img {
   gap: 0.35rem;
 }
 
+.records-page__action {
+  min-height: 48px;
+}
+
 .app-shell__rail-link {
   display: inline-flex;
   align-items: center;
@@ -375,9 +369,9 @@ img {
 }
 
 .app-shell__rail-link.is-selected {
-  color: var(--meteor-white);
-  background: rgba(122, 231, 255, 0.12);
-  border-color: rgba(122, 231, 255, 0.18);
+  color: var(--meteor-ink);
+  background: rgba(92, 196, 161, 0.16);
+  border-color: rgba(70, 191, 214, 0.28);
 }
 
 .meteor-fragment,
@@ -453,7 +447,7 @@ img {
     align-items: start;
   }
 
-  .join-crew-panel__controls {
+  .join-crew-inline__controls {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 }
@@ -483,5 +477,26 @@ img {
 
   .play-home__hero {
     grid-template-columns: minmax(0, 1fr) minmax(21rem, 25rem);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --meteor-ink: #f7f2ea;
+    --meteor-shell: #222b31;
+    --meteor-surface: #2c353d;
+    --meteor-surface-strong: #353f47;
+    --meteor-line: #4a555e;
+    --meteor-copy: #d0c4b8;
+    --meteor-cyan: #6bd5ea;
+    --meteor-coral: #f0a184;
+    --meteor-mint: #78d2b3;
+    --meteor-yellow: #e7c96d;
+    --meteor-danger: #ef8d82;
+    color-scheme: dark;
+  }
+
+  .connection-banner {
+    background: rgba(239, 141, 130, 0.16);
   }
 }

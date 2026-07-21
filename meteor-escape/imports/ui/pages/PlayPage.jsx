@@ -190,14 +190,14 @@ export function PlayPage({
             Create Crew Mission
           </Button>
 
-          <div className="join-crew-panel">
-            <label className="join-crew-panel__label" htmlFor="room-code">
+          <div className="join-crew-inline">
+            <label className="join-crew-inline__label" htmlFor="room-code">
               Room code
             </label>
-            <div className="join-crew-panel__controls">
+            <div className="join-crew-inline__controls">
               <input
                 id="room-code"
-                className="join-crew-panel__input"
+                className="join-crew-inline__input"
                 type="text"
                 inputMode="text"
                 value={roomCode}
@@ -209,14 +209,14 @@ export function PlayPage({
                 }}
               />
               <Button
-                className="join-crew-panel__button"
+                className="join-crew-inline__button"
                 onClick={() => onJoinCrew(roomCode)}
                 disabled={busyAction !== null || roomCode.length !== 6}
               >
                 Join Crew
               </Button>
             </div>
-            <p className="join-crew-panel__hint">Replace the CPU with a second human.</p>
+            <p className="join-crew-inline__hint">Replace the CPU with a second human.</p>
           </div>
         </div>
 

@@ -35,7 +35,9 @@ export function RecordsPage({ games, ready, onPlay }) {
       <Block strong className="records-empty">
         <h1>Records</h1>
         <p>Your completed missions land here with score, streak, and outcome.</p>
-        <Button onClick={onPlay}>Start Quick Mission</Button>
+        <Button className="records-page__action" onClick={onPlay}>
+          Start Quick Mission
+        </Button>
       </Block>
     );
   }
@@ -47,7 +49,7 @@ export function RecordsPage({ games, ready, onPlay }) {
           <p className="eyebrow">Recent outcomes</p>
           <h1>Records</h1>
         </div>
-        <Button small onClick={onPlay}>
+        <Button className="records-page__action" onClick={onPlay}>
           Play
         </Button>
       </div>
