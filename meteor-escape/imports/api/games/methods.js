@@ -6,6 +6,8 @@ import {
   resolveTimeout,
 } from './engine';
 import {
+  ACTIVE_PARTICIPANT_INDEX_NAME,
+  ACTIVE_STATUSES,
   Games,
   ROOM_CODE_INDEX_NAME,
   WAITING_CREW_OWNERSHIP_INDEX_NAME,
@@ -20,6 +22,7 @@ import {
   parseOrThrow,
 } from './schema';
 import { scheduleGameTurn } from './server/cpu';
+import { persistGameTransition } from './server/persistence';
 
 const ROOM_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -44,16 +47,6 @@ export function shouldHonorTestMode(
   } = {}
 ) {
   return Boolean(requestedTestMode && isDevelopment && e2eEnv === '1');
-}
-
-async function persistGame(gameId, nextState, now) {
-  const stored = parseGameDocument({
-    ...nextState,
-    updatedAt: new Date(now),
-  });
-
-  await Games.updateAsync(gameId, { $set: stored });
-  return Games.findOneAsync(gameId);
 }
 
 async function findOwnedGameOrThrow({ ownerId, playerId, gameId }) {
@@ -85,7 +78,12 @@ async function maybeSettleTimeout(game, now) {
     return game;
   }
 
-  return persistGame(game._id, resolveTimeout(storedGame, { now }), now);
+  const transition = await persistGameTransition(
+    game,
+    resolveTimeout(storedGame, { now }),
+    now
+  );
+  return transition.game ?? game;
 }
 
 function createSoloDocument({ ownerId, playerId, now, testMode = false }) {
@@ -142,6 +140,23 @@ async function findExistingWaitingCrewGame(ownerId, playerId) {
   return Games.findOneAsync(buildWaitingCaptainQuery(ownerId, playerId));
 }
 
+async function findActiveGameForParticipant(ownerId, playerId) {
+  return Games.findOneAsync(
+    {
+      status: { $in: ACTIVE_STATUSES },
+      participantIds: playerId,
+      players: {
+        $elemMatch: {
+          id: playerId,
+          ownerId,
+          type: 'human',
+        },
+      },
+    },
+    { sort: { updatedAt: -1 } }
+  );
+}
+
 function isDuplicateKeyError(error) {
   return error?.code === 11000 || error?.codeName === 'DuplicateKey';
 }
@@ -181,14 +196,55 @@ function isRoomCodeDuplicate(error) {
   return error?.keyPattern?.roomCode === 1;
 }
 
+function isActiveParticipantDuplicate(error) {
+  if (!isDuplicateKeyError(error)) {
+    return false;
+  }
+
+  return (
+    errorMentionsIndex(error, ACTIVE_PARTICIPANT_INDEX_NAME) ||
+    error?.keyPattern?.participantIds === 1
+  );
+}
+
+function activeGameError() {
+  return new Meteor.Error('active-game', 'Finish or resume the active mission first');
+}
+
 Meteor.methods({
   async 'games.startSolo'(payload) {
     const { ownerId, playerId, testMode: requestedTestMode } = parseOrThrow(StartSoloSchema, payload);
+    const existingActiveGame = await findActiveGameForParticipant(ownerId, playerId);
+
+    if (existingActiveGame) {
+      if (existingActiveGame.mode === 'solo') {
+        return { gameId: existingActiveGame._id };
+      }
+
+      throw activeGameError();
+    }
+
     const testMode = shouldHonorTestMode(requestedTestMode);
     const now = Date.now();
-    const gameId = await Games.insertAsync(
-      createSoloDocument({ ownerId, playerId, now, testMode })
-    );
+    let gameId;
+
+    try {
+      gameId = await Games.insertAsync(
+        createSoloDocument({ ownerId, playerId, now, testMode })
+      );
+    } catch (error) {
+      if (!isActiveParticipantDuplicate(error)) {
+        throw error;
+      }
+
+      const concurrentGame = await findActiveGameForParticipant(ownerId, playerId);
+      if (concurrentGame?.mode === 'solo') {
+        return { gameId: concurrentGame._id };
+      }
+
+      throw activeGameError();
+    }
+
     const game = await Games.findOneAsync(gameId);
     scheduleGameTurn(game, now);
 
@@ -225,11 +281,17 @@ Meteor.methods({
       throw new Meteor.Error('stale-action', 'Turn already advanced');
     }
 
-    const nextGame = await persistGame(
-      gameId,
+    const transition = await persistGameTransition(
+      game,
       resolveAction(storedGame, { actorId: playerId, action, now }),
       now
     );
+
+    if (!transition.applied || !transition.game) {
+      throw new Meteor.Error('stale-action', 'Turn already advanced');
+    }
+
+    const nextGame = transition.game;
 
     if (nextGame.status === 'playing' || shouldScheduleCpu(nextGame)) {
       scheduleGameTurn(nextGame, now);
@@ -244,6 +306,10 @@ Meteor.methods({
 
     if (existingWaitingGame) {
       return { gameId: existingWaitingGame._id, roomCode: existingWaitingGame.roomCode };
+    }
+
+    if (await findActiveGameForParticipant(ownerId, playerId)) {
+      throw activeGameError();
     }
 
     for (let attempt = 0; attempt < 5; attempt += 1) {
@@ -281,6 +347,19 @@ Meteor.methods({
           }
         }
 
+        if (isActiveParticipantDuplicate(error)) {
+          const concurrentGame = await findActiveGameForParticipant(ownerId, playerId);
+
+          if (concurrentGame?.mode === 'crew' && concurrentGame.status === 'waiting') {
+            return {
+              gameId: concurrentGame._id,
+              roomCode: concurrentGame.roomCode,
+            };
+          }
+
+          throw activeGameError();
+        }
+
         if (isRoomCodeDuplicate(error)) {
           continue;
         }
@@ -312,6 +391,10 @@ Meteor.methods({
       throw new Meteor.Error('duplicate-join', 'Player already joined');
     }
 
+    if (await findActiveGameForParticipant(ownerId, playerId)) {
+      throw activeGameError();
+    }
+
     const now = Date.now();
     const state = createInitialState({
       mode: 'crew',
@@ -338,10 +421,20 @@ Meteor.methods({
       createdAt: waitingGame.createdAt,
       updatedAt: new Date(now),
     });
-    const updatedCount = await Games.updateAsync(
-      { _id: waitingGame._id, status: 'waiting' },
-      { $set: nextDocument }
-    );
+    let updatedCount;
+
+    try {
+      updatedCount = await Games.updateAsync(
+        { _id: waitingGame._id, status: 'waiting' },
+        { $set: nextDocument }
+      );
+    } catch (error) {
+      if (isActiveParticipantDuplicate(error)) {
+        throw activeGameError();
+      }
+
+      throw error;
+    }
 
     if (updatedCount === 0) {
       throw new Meteor.Error('not-found', 'Room code not found');
@@ -361,6 +454,11 @@ Meteor.methods({
 
     if (!['won', 'lost'].includes(game.status)) {
       throw new Meteor.Error('invalid-state', 'Game is not finished');
+    }
+
+    const existingActiveGame = await findActiveGameForParticipant(ownerId, playerId);
+    if (existingActiveGame) {
+      return { gameId: existingActiveGame._id };
     }
 
     const now = Date.now();
@@ -394,7 +492,22 @@ Meteor.methods({
       });
     }
 
-    const nextGameId = await Games.insertAsync(nextDocument);
+    let nextGameId;
+
+    try {
+      nextGameId = await Games.insertAsync(nextDocument);
+    } catch (error) {
+      if (!isActiveParticipantDuplicate(error)) {
+        throw error;
+      }
+
+      const concurrentGame = await findActiveGameForParticipant(ownerId, playerId);
+      if (concurrentGame) {
+        return { gameId: concurrentGame._id };
+      }
+
+      throw activeGameError();
+    }
     const nextGame = await Games.findOneAsync(nextGameId);
     scheduleGameTurn(nextGame, now);
     return { gameId: nextGameId };

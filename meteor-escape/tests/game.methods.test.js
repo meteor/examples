@@ -44,6 +44,61 @@ if (Meteor.isServer) {
       assert.strictEqual(game.players[1].type, 'cpu');
     });
 
+    it('returns the existing active solo game when start is repeated', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const first = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const second = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const activeGames = await Games.find({
+        status: 'playing',
+        participantIds: playerId,
+      }).fetchAsync();
+
+      assert.strictEqual(second.gameId, first.gameId);
+      assert.strictEqual(activeGames.length, 1);
+    });
+
+    it('coalesces concurrent solo starts for the same participant', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const originalInsertAsync = Games.insertAsync.bind(Games);
+      let insertCount = 0;
+      let releaseFirstInsert;
+      const firstInsertGate = new Promise((resolve) => {
+        releaseFirstInsert = resolve;
+      });
+
+      Games.insertAsync = async function patchedInsertAsync(document, ...rest) {
+        if (document?.mode === 'solo' && document?.status === 'playing') {
+          insertCount += 1;
+
+          if (insertCount === 1) {
+            await firstInsertGate;
+          } else if (insertCount === 2) {
+            releaseFirstInsert();
+          }
+        }
+
+        return originalInsertAsync(document, ...rest);
+      };
+
+      try {
+        const [first, second] = await Promise.all([
+          Meteor.callAsync('games.startSolo', { ownerId, playerId }),
+          Meteor.callAsync('games.startSolo', { ownerId, playerId }),
+        ]);
+        const activeGames = await Games.find({
+          status: 'playing',
+          participantIds: playerId,
+        }).fetchAsync();
+
+        assert.strictEqual(second.gameId, first.gameId);
+        assert.strictEqual(activeGames.length, 1);
+      } finally {
+        Games.insertAsync = originalInsertAsync;
+      }
+    });
+
     it('ignores payload testMode without E2E guard and in production-like mode', async function () {
       process.env.METEOR_ESCAPE_E2E = undefined;
       assert.strictEqual(
@@ -95,6 +150,19 @@ if (Meteor.isServer) {
       const game = await Games.findOneAsync(gameId);
       assert.strictEqual(game.events[0].action, 'cool');
       assert.strictEqual(game.turn, 'player');
+    });
+
+    it('recovers active turn timers after an in-memory scheduler reset', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+
+      turnScheduler.resetScheduledTurnsForTests();
+      assert.strictEqual(turnScheduler.hasScheduledTurnForTests(gameId), false);
+
+      await turnScheduler.recoverActiveGameTurns();
+
+      assert.strictEqual(turnScheduler.hasScheduledTurnForTests(gameId), true);
     });
 
     it('settles an expired player turn with shield damage and turn advance', async function () {
@@ -201,6 +269,61 @@ if (Meteor.isServer) {
           }),
         (err) => err.error === 'stale-action'
       );
+    });
+
+    it('commits only one answer when two requests race on the same turn', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const originalUpdateAsync = Games.updateAsync.bind(Games);
+      let transitionWrites = 0;
+      let releaseFirstWrite;
+      const firstWriteGate = new Promise((resolve) => {
+        releaseFirstWrite = resolve;
+      });
+
+      Games.updateAsync = async function patchedUpdateAsync(selector, modifier, ...rest) {
+        if (modifier?.$set?.events?.length === 1) {
+          transitionWrites += 1;
+
+          if (transitionWrites === 1) {
+            await firstWriteGate;
+          } else if (transitionWrites === 2) {
+            releaseFirstWrite();
+          }
+        }
+
+        return originalUpdateAsync(selector, modifier, ...rest);
+      };
+
+      try {
+        const results = await Promise.allSettled([
+          Meteor.callAsync('games.answer', {
+            ownerId,
+            playerId,
+            gameId,
+            action: 'shield',
+          }),
+          Meteor.callAsync('games.answer', {
+            ownerId,
+            playerId,
+            gameId,
+            action: 'shield',
+          }),
+        ]);
+        const fulfilled = results.filter((result) => result.status === 'fulfilled');
+        const rejected = results.filter((result) => result.status === 'rejected');
+        const game = await Games.findOneAsync(gameId);
+
+        assert.strictEqual(fulfilled.length, 1);
+        assert.strictEqual(rejected.length, 1);
+        assert.strictEqual(rejected[0].reason.error, 'stale-action');
+        assert.strictEqual(game.events.length, 1);
+        assert.strictEqual(game.warp, 20);
+        assert.strictEqual(game.turn, 'copilot');
+      } finally {
+        Games.updateAsync = originalUpdateAsync;
+      }
     });
 
     it('joins a crew game by room code across owners', async function () {
@@ -466,6 +589,15 @@ if (Meteor.isServer) {
       assert.strictEqual(game.shield, 100);
       assert.strictEqual(game.warp, 0);
       assert.deepStrictEqual(game.events, []);
+
+      const repeated = await Meteor.callAsync('games.rematch', { ownerId, playerId, gameId });
+      const activeGames = await Games.find({
+        status: 'playing',
+        participantIds: playerId,
+      }).fetchAsync();
+
+      assert.strictEqual(repeated.gameId, result.gameId);
+      assert.strictEqual(activeGames.length, 1);
     });
   });
 }

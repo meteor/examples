@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Home, RotateCcw, Share2, Trophy, TriangleAlert } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Home, RotateCcw, Share2, Trophy, TriangleAlert, X } from 'lucide-react';
 
 function getResultCopy(game) {
   if (game.status === 'won') {
@@ -19,9 +19,10 @@ function getResultCopy(game) {
   };
 }
 
-export function ResultSheet({ game, opened, onRematch, onHome, onClose, onShare }) {
+export function ResultSheet({ game, opened, onRematch, rematching, onHome, onClose, onShare }) {
   const [shareMessage, setShareMessage] = useState('');
   const [sharing, setSharing] = useState(false);
+  const dialogRef = useRef(null);
   const copy = getResultCopy(game);
   const { Icon } = copy;
 
@@ -31,6 +32,17 @@ export function ResultSheet({ game, opened, onRematch, onHome, onClose, onShare 
       setSharing(false);
     }
   }, [opened, game._id]);
+
+  useEffect(() => {
+    if (!opened) {
+      return undefined;
+    }
+
+    const previousFocus = document.activeElement;
+    dialogRef.current?.focus();
+
+    return () => previousFocus?.focus?.();
+  }, [opened]);
 
   if (!opened) {
     return null;
@@ -43,6 +55,13 @@ export function ResultSheet({ game, opened, onRematch, onHome, onClose, onShare 
         role="dialog"
         aria-modal="true"
         aria-labelledby="result-sheet-title"
+        ref={dialogRef}
+        tabIndex={-1}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            onClose();
+          }
+        }}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="result-sheet__header">
@@ -50,9 +69,19 @@ export function ResultSheet({ game, opened, onRematch, onHome, onClose, onShare 
             <p className="eyebrow">Mission report</p>
             <h2 id="result-sheet-title">{copy.title}</h2>
           </div>
-          <span className="result-sheet__icon" aria-hidden="true">
-            <Icon size={26} strokeWidth={2.3} />
-          </span>
+          <div className="result-sheet__header-actions">
+            <span className="result-sheet__icon" aria-hidden="true">
+              <Icon size={26} strokeWidth={2.3} />
+            </span>
+            <button
+              className="result-sheet__close"
+              type="button"
+              aria-label="Close mission report"
+              onClick={onClose}
+            >
+              <X aria-hidden="true" size={20} strokeWidth={2.3} />
+            </button>
+          </div>
         </div>
 
         <p className="result-sheet__detail">{copy.detail}</p>
@@ -77,9 +106,14 @@ export function ResultSheet({ game, opened, onRematch, onHome, onClose, onShare 
         </dl>
 
         <div className="result-sheet__actions">
-          <button className="result-sheet__button result-sheet__button--primary" type="button" onClick={onRematch}>
+          <button
+            className="result-sheet__button result-sheet__button--primary"
+            type="button"
+            onClick={onRematch}
+            disabled={rematching}
+          >
             <RotateCcw aria-hidden="true" size={18} strokeWidth={2.3} />
-            <span>Rematch</span>
+            <span>{rematching ? 'Starting' : 'Rematch'}</span>
           </button>
           <button
             className="result-sheet__button"

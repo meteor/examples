@@ -6,6 +6,7 @@ export const ACTIVE_STATUSES = ['waiting', 'playing'];
 export const TERMINAL_STATUSES = ['won', 'lost'];
 export const ROOM_CODE_INDEX_NAME = 'roomCode_unique_string';
 export const WAITING_CREW_OWNERSHIP_INDEX_NAME = 'waitingCrewOwnership_unique';
+export const ACTIVE_PARTICIPANT_INDEX_NAME = 'activeParticipant_unique';
 
 async function dropIndexIfPresent(rawCollection, name) {
   try {
@@ -29,6 +30,7 @@ async function dropIndexIfPresent(rawCollection, name) {
 export async function ensureGamesIndexes() {
   const rawCollection = Games.rawCollection();
   await dropIndexIfPresent(rawCollection, 'roomCode_1');
+  await dropIndexIfPresent(rawCollection, 'participantIds_1');
 
   await Promise.all([
     rawCollection.createIndex(
@@ -47,8 +49,15 @@ export async function ensureGamesIndexes() {
         partialFilterExpression: { mode: 'crew', status: 'waiting' },
       }
     ),
+    rawCollection.createIndex(
+      { participantIds: 1 },
+      {
+        name: ACTIVE_PARTICIPANT_INDEX_NAME,
+        unique: true,
+        partialFilterExpression: { status: { $in: ACTIVE_STATUSES } },
+      }
+    ),
     rawCollection.createIndex({ ownerId: 1, updatedAt: -1 }),
-    rawCollection.createIndex({ participantIds: 1 }),
     rawCollection.createIndex({ ownerIds: 1, updatedAt: -1 }),
   ]);
 }

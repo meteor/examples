@@ -21,7 +21,9 @@ export function SystemInfoPage({
   onReconnect,
   onToggleDdp,
 }) {
-  const ddpReadyLabel = ddpStatus === 'connected' ? 'DDP connected' : 'DDP connecting';
+  const normalizedDdpStatus = ddpEnabled ? ddpStatus : 'paused';
+  const ddpReadyLabel = `DDP ${normalizedDdpStatus}`;
+  const ddpStatusValue = normalizedDdpStatus.charAt(0).toUpperCase() + normalizedDdpStatus.slice(1);
   const capacitorLabel = appInfo.native ? 'Meteor.isCapacitor true' : 'Meteor.isCapacitor false';
 
   return (
@@ -50,10 +52,14 @@ export function SystemInfoPage({
         <section className="system-section">
           <h2>Runtime</h2>
           <div className="system-status" aria-label="Native status">
-            <StatusPill label="Native" value="Ready" ariaLabel="Native ready" />
+            <StatusPill
+              label="Native"
+              value={appInfo.native ? 'Ready' : 'Preview'}
+              ariaLabel={appInfo.native ? 'Native ready' : 'Native browser preview'}
+            />
             <StatusPill
               label="DDP"
-              value={ddpStatus === 'connected' ? 'Connected' : 'Connecting'}
+              value={ddpStatusValue}
               ariaLabel={ddpReadyLabel}
             />
             <StatusPill

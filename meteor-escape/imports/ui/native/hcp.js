@@ -1,20 +1,36 @@
 export const HCP_PREVIEW_VERSION = 'demo-preview';
 
-export function listenForHcpUpdates(onUpdateAvailable) {
-  const bridge = window.WebAppLocalServer;
+export function listenForHcpUpdates(
+  onUpdateAvailable,
+  bridge = globalThis.window?.WebAppLocalServer
+) {
   if (!bridge?.onNewVersionReady) {
     return () => {};
   }
 
+  let active = true;
+  let listenerHandle;
+
   try {
-    bridge.onNewVersionReady((version) => {
-      onUpdateAvailable(version || 'available');
+    listenerHandle = bridge.onNewVersionReady((version) => {
+      if (active) {
+        onUpdateAvailable(version || 'available');
+      }
     });
   } catch (error) {
     console.warn('HCP update listener unavailable', error);
   }
 
-  return () => {};
+  return () => {
+    active = false;
+
+    if (typeof listenerHandle === 'function') {
+      listenerHandle();
+      return;
+    }
+
+    void listenerHandle?.remove?.();
+  };
 }
 
 export async function checkForHcpUpdates() {

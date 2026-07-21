@@ -347,6 +347,12 @@ test('keeps mission result sheet inside viewport and honors reduced motion', asy
   expect(resultBox.x + resultBox.width).toBeLessThanOrEqual(390);
   expect(resultBox.y + resultBox.height).toBeLessThanOrEqual(844);
 
+  const closeButton = page.getByRole('button', { name: 'Close mission report' });
+  const closeBounds = await closeButton.boundingBox();
+  expect(closeBounds).not.toBeNull();
+  expect(closeBounds.width).toBeGreaterThanOrEqual(48);
+  expect(closeBounds.height).toBeGreaterThanOrEqual(48);
+
   const motionStyles = await page.locator('.mission-stage').evaluate((node) => {
     const styles = getComputedStyle(node);
     return {
@@ -359,6 +365,9 @@ test('keeps mission result sheet inside viewport and honors reduced motion', asy
   expect(motionStyles.animationDuration).toMatch(/0s|0\.01ms|1e-05s/);
   expect(motionStyles.transitionDuration).toMatch(/0s|0\.01ms|1e-05s/);
   expect(motionStyles.scrollBehavior).toBe('auto');
+
+  await page.keyboard.press('Escape');
+  await expect(resultSheet).toBeHidden();
 });
 
 test('closing result sheet keeps terminal mission stage visible until home', async ({ page }) => {
@@ -372,7 +381,7 @@ test('closing result sheet keeps terminal mission stage visible until home', asy
   await page.getByRole('button', { name: new RegExp(actionName, 'i') }).click();
   await expect(page.locator('.result-sheet')).toBeVisible({ timeout: 30_000 });
 
-  await page.locator('.result-sheet-backdrop').click({ position: { x: 8, y: 8 } });
+  await page.getByRole('button', { name: 'Close mission report' }).click();
 
   await expect(page.locator('.result-sheet')).toBeHidden();
   await expect(page.locator('.mission-stage')).toBeVisible();

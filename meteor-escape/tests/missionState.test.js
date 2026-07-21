@@ -1,5 +1,8 @@
 import assert from 'assert';
-import { shouldCloseMissionExitDialog } from '../imports/ui/missionState';
+import {
+  shouldCloseMissionExitDialog,
+  shouldRevealActiveGame,
+} from '../imports/ui/missionState';
 
 describe('mission state helpers', function () {
   it('closes mission exit dialog when a result sheet is about to take over', function () {
@@ -30,5 +33,11 @@ describe('mission state helpers', function () {
       }),
       false
     );
+  });
+
+  it('reveals a subscribed game only after a waiting crew room starts playing', function () {
+    assert.strictEqual(shouldRevealActiveGame('waiting'), false);
+    assert.strictEqual(shouldRevealActiveGame('playing'), true);
+    assert.strictEqual(shouldRevealActiveGame(undefined), false);
   });
 });

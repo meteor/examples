@@ -1083,6 +1083,25 @@ img {
   background: var(--meteor-surface-strong);
 }
 
+.result-sheet__header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.result-sheet__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+  background: var(--meteor-surface);
+  color: var(--meteor-ink);
+}
+
 .result-sheet__stats {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 1rem 0;

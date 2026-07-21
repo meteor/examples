@@ -6,6 +6,7 @@ import {
 } from '../engine';
 import { Games } from '../collection';
 import { parseGameDocument } from '../schema';
+import { persistGameTransition } from './persistence';
 
 const CPU_DELAY_MS = 600;
 const scheduledTurns = new Map();
@@ -13,16 +14,6 @@ const scheduledTurns = new Map();
 function sanitizeStoredGame(game) {
   const { _id, ...document } = game;
   return parseGameDocument(document);
-}
-
-async function persistGame(gameId, nextState, now) {
-  const stored = parseGameDocument({
-    ...nextState,
-    updatedAt: new Date(now),
-  });
-
-  await Games.updateAsync(gameId, { $set: stored });
-  return Games.findOneAsync(gameId);
 }
 
 export function scheduleCpuTurn(gameId) {
@@ -74,6 +65,20 @@ export function resetScheduledTurnsForTests() {
   for (const gameId of scheduledTurns.keys()) {
     clearScheduledTurn(gameId);
   }
+}
+
+export function hasScheduledTurnForTests(gameId) {
+  return scheduledTurns.has(gameId);
+}
+
+export async function recoverActiveGameTurns(now = Date.now()) {
+  const activeGames = await Games.find({ status: 'playing' }).fetchAsync();
+
+  for (const game of activeGames) {
+    scheduleGameTurn(game, now);
+  }
+
+  return activeGames.length;
 }
 
 export function scheduleGameTurn(game, now = Date.now()) {
@@ -155,7 +160,11 @@ export async function runScheduledTurn(
     (now > storedGame.endsAt || now > storedGame.turnEndsAt)
   ) {
     const timedOut = resolveTimeout(storedGame, { now });
-    const persisted = await persistGame(gameId, timedOut, now);
+    const transition = await persistGameTransition(game, timedOut, now);
+    const persisted = transition.game;
+    if (!persisted) {
+      return null;
+    }
     if (persisted.status === 'playing') {
       scheduleGameTurn(persisted, now);
     }
@@ -189,7 +198,11 @@ export async function runScheduledTurn(
           now: storedGame.turnEndsAt === null ? now : Math.max(now, storedGame.turnEndsAt + 1),
         });
 
-  const persisted = await persistGame(gameId, nextState, now);
+  const transition = await persistGameTransition(game, nextState, now);
+  const persisted = transition.game;
+  if (!persisted) {
+    return null;
+  }
   if (persisted.status === 'playing') {
     scheduleGameTurn(persisted, now);
   }

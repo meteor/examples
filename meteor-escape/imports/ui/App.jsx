@@ -26,7 +26,7 @@ import { METEOR_ESCAPE_INFO, getApplicationInfo, getDdpEndpoint } from './native
 import { getNetworkStatus, listenNetworkStatus } from './native/network';
 import { shareResult } from './native/share';
 import { getClientIdentity } from './identity';
-import { shouldCloseMissionExitDialog } from './missionState';
+import { shouldCloseMissionExitDialog, shouldRevealActiveGame } from './missionState';
 import { PlayPage } from './pages/PlayPage';
 import { RecordsPage } from './pages/RecordsPage';
 import { SystemInfoPage } from './pages/SystemInfoPage';
@@ -66,6 +66,19 @@ const browserAppInfo = {
 };
 
 function MissionExitDialog({ opened, onStay, onLeave }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    if (!opened) {
+      return undefined;
+    }
+
+    const previousFocus = document.activeElement;
+    dialogRef.current?.focus();
+
+    return () => previousFocus?.focus?.();
+  }, [opened]);
+
   if (!opened) {
     return null;
   }
@@ -77,6 +90,13 @@ function MissionExitDialog({ opened, onStay, onLeave }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="meteor-mission-exit-title"
+        ref={dialogRef}
+        tabIndex={-1}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            onStay();
+          }
+        }}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="dialog-sheet__header">
@@ -206,14 +226,14 @@ export function App() {
       : '');
 
   useEffect(() => {
-    if (!activeGame?._id) {
+    if (!shouldRevealActiveGame(activeGame?.status)) {
       return;
     }
 
     setMissionGameId(activeGame._id);
     setMissionVisible(true);
     setNow(Date.now());
-  }, [activeGame?._id]);
+  }, [activeGame?._id, activeGame?.status]);
 
   useEffect(() => {
     void getApplicationInfo().then(setAppInfo);
@@ -683,6 +703,7 @@ export function App() {
                 game={resultGame}
                 opened={resultSheetOpen}
                 onRematch={handleRematch}
+                rematching={busyAction === 'rematch'}
                 onHome={handleResultHome}
                 onClose={handleResultClose}
                 onShare={() => shareResult(resultGame)}
