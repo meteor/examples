@@ -161,7 +161,7 @@ img {
 .play-home__copy h1,
 .records-page h1,
 .system-page h1,
-.mission-focus__title,
+.mission-stage__hero h1,
 .records-empty h1 {
   margin: 0;
   font-size: clamp(2rem, 7vw, 2.6rem);
@@ -341,6 +341,467 @@ img {
   margin: 0;
 }
 
+.mission-stage {
+  display: grid;
+  gap: 1rem;
+  animation: none;
+  transition: none;
+}
+
+.mission-stage__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+.mission-stage__hero,
+.player-strip,
+.mission-stage__feed,
+.mission-stage__waiting,
+.emergency-prompt {
+  background: var(--meteor-surface);
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+}
+
+.mission-stage__hero,
+.mission-stage__feed,
+.mission-stage__waiting,
+.emergency-prompt {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.mission-stage__headline {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.mission-stage__turn,
+.mission-stage__signal,
+.emergency-prompt__status,
+.result-sheet__message {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--meteor-line);
+  background: var(--meteor-surface-strong);
+  color: var(--meteor-ink);
+}
+
+.mission-stage__turn--player {
+  color: #0d6b80;
+}
+
+.mission-stage__turn--copilot {
+  color: #9f6c0b;
+}
+
+.mission-stage__signal {
+  margin-bottom: 1rem;
+}
+
+.mission-stage__signal-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--meteor-danger);
+  flex: none;
+}
+
+.mission-stage__signal-dot.is-online {
+  background: var(--meteor-mint);
+}
+
+.player-strip {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem;
+}
+
+.player-strip__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 56px;
+  padding: 0.8rem 0.9rem;
+  border-radius: 8px;
+  background: var(--meteor-surface-strong);
+}
+
+.player-strip__item.is-active {
+  outline: 2px solid rgba(70, 191, 214, 0.35);
+}
+
+.player-strip__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background: rgba(70, 191, 214, 0.16);
+  color: var(--meteor-cyan);
+  flex: none;
+}
+
+.player-strip__copy {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.player-strip__copy strong {
+  font-size: 0.98rem;
+}
+
+.player-strip__copy span {
+  color: var(--meteor-copy);
+}
+
+.ship-art {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--meteor-line);
+  background: var(--meteor-surface-strong);
+}
+
+.mission-stage__meters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.system-meter {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.95rem;
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+  background: var(--meteor-surface);
+}
+
+.system-meter__header,
+.system-meter__label {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.system-meter__header {
+  justify-content: space-between;
+}
+
+.system-meter__label {
+  color: var(--meteor-copy);
+}
+
+.system-meter__track {
+  height: 0.65rem;
+  border-radius: 999px;
+  background: rgba(95, 106, 113, 0.16);
+  overflow: hidden;
+}
+
+.system-meter__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: currentColor;
+}
+
+.system-meter--cyan {
+  color: var(--meteor-cyan);
+}
+
+.system-meter--mint {
+  color: var(--meteor-mint);
+}
+
+.system-meter--yellow {
+  color: var(--meteor-yellow);
+}
+
+.system-meter--coral {
+  color: var(--meteor-coral);
+}
+
+.system-meter__helper {
+  margin: 0;
+  color: var(--meteor-copy);
+  line-height: 1.4;
+}
+
+.emergency-prompt {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.emergency-prompt__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.emergency-prompt__eyebrow {
+  margin: 0 0 0.4rem;
+  color: var(--meteor-copy);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.emergency-prompt h2,
+.mission-stage__feed h2,
+.mission-stage__waiting h2,
+.result-sheet h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.emergency-prompt__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 8px;
+  background: rgba(95, 106, 113, 0.08);
+}
+
+.emergency-prompt__detail,
+.mission-stage__waiting p,
+.result-sheet__detail {
+  margin: 0;
+  color: var(--meteor-copy);
+  line-height: 1.5;
+}
+
+.emergency-prompt--coral .emergency-prompt__icon {
+  color: var(--meteor-coral);
+}
+
+.emergency-prompt--yellow .emergency-prompt__icon {
+  color: var(--meteor-yellow);
+}
+
+.emergency-prompt--mint .emergency-prompt__icon {
+  color: var(--meteor-mint);
+}
+
+.mission-actions {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.mission-action {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  min-height: 64px;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+  background: var(--meteor-surface);
+  color: var(--meteor-ink);
+  text-align: left;
+}
+
+.mission-action:disabled {
+  opacity: 0.6;
+}
+
+.mission-action.is-recommended {
+  border-color: currentColor;
+}
+
+.mission-action__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  background: rgba(95, 106, 113, 0.1);
+  flex: none;
+}
+
+.mission-action__body {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.mission-action__label {
+  font-weight: 700;
+}
+
+.mission-action__detail {
+  color: var(--meteor-copy);
+  line-height: 1.3;
+}
+
+.mission-action--cyan {
+  color: #0d6b80;
+}
+
+.mission-action--yellow {
+  color: #9f6c0b;
+}
+
+.mission-action--mint {
+  color: #227c5a;
+}
+
+.mission-stage__feed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.mission-stage__feed-header span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--meteor-copy);
+}
+
+.mission-stage__events {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mission-stage__events li {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.8rem 0.85rem;
+  border-radius: 8px;
+  background: var(--meteor-surface-strong);
+}
+
+.mission-stage__events strong {
+  font-size: 0.96rem;
+}
+
+.mission-stage__events span {
+  color: var(--meteor-copy);
+  line-height: 1.4;
+}
+
+.result-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  padding: 1rem calc(1rem + var(--meteor-safe-right))
+    calc(1rem + var(--meteor-safe-bottom)) calc(1rem + var(--meteor-safe-left));
+  background: rgba(31, 43, 49, 0.18);
+}
+
+.result-sheet {
+  width: min(100%, 32rem);
+  max-height: calc(100dvh - 2rem - var(--meteor-safe-bottom));
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+  background: var(--meteor-surface);
+}
+
+.result-sheet__header,
+.result-sheet__stats,
+.result-sheet__actions {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.result-sheet__header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.result-sheet__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+  background: var(--meteor-surface-strong);
+}
+
+.result-sheet__stats {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1rem 0;
+}
+
+.result-sheet__stats div {
+  padding: 0.8rem 0.85rem;
+  border-radius: 8px;
+  background: var(--meteor-surface-strong);
+}
+
+.result-sheet__stats dt {
+  color: var(--meteor-copy);
+}
+
+.result-sheet__stats dd {
+  margin: 0.35rem 0 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.result-sheet__actions {
+  margin-top: 0.5rem;
+}
+
+.result-sheet__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+  background: var(--meteor-surface);
+  color: var(--meteor-ink);
+}
+
+.result-sheet__button--primary {
+  background: var(--meteor-surface-strong);
+}
+
+.result-sheet--mint .result-sheet__icon {
+  color: var(--meteor-mint);
+}
+
+.result-sheet--coral .result-sheet__icon {
+  color: var(--meteor-coral);
+}
+
 .mission-feed,
 .records-list {
   margin: 0;
@@ -420,11 +881,21 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .meteor-fragment--one,
   .meteor-fragment--two,
   .meteor-fragment--three,
-  .engine-pulse {
+  .engine-pulse,
+  .ship-art__trail {
     animation: none;
+  }
+
+  .mission-stage,
+  .mission-stage * {
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -434,7 +905,7 @@ img {
   }
 
   .play-home__hero,
-  .mission-focus__surface {
+  .mission-stage__hero {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   }
 
@@ -449,6 +920,18 @@ img {
 
   .join-crew-inline__controls {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .player-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mission-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .result-sheet__actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

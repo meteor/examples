@@ -1,16 +1,45 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
 import { App as KonstaApp, Block, List, ListItem } from 'konsta/react';
 import { ACTIVE_STATUSES, TERMINAL_STATUSES, Games } from '../api/games/collection';
 import { AppShell } from './components/AppShell';
+import { MissionStage } from './components/MissionStage';
+import { ResultSheet } from './components/ResultSheet';
+import { signalActionResult } from './native/haptics';
+import { shareResult } from './native/share';
 import { getClientIdentity } from './identity';
 import { PlayPage } from './pages/PlayPage';
 import { RecordsPage } from './pages/RecordsPage';
 
 function pickTheme() {
   return Capacitor.getPlatform() === 'ios' ? 'ios' : 'material';
+}
+
+function getTestMode() {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  return new URLSearchParams(window.location.search).get('testMode') === '1';
+}
+
+function buildFeedbackKey(game) {
+  const latestEvent = game?.events?.at(-1);
+  if (!game || !latestEvent) {
+    return null;
+  }
+
+  return [
+    game._id,
+    game.status,
+    latestEvent.now,
+    latestEvent.actorId ?? 'system',
+    latestEvent.action ?? 'timeout',
+    latestEvent.outcome,
+  ].join(':');
 }
 
 function SystemPanel({ connection, identity, activeGame, recentGames }) {
@@ -41,10 +70,16 @@ function SystemPanel({ connection, identity, activeGame, recentGames }) {
 
 export function App() {
   const identity = useMemo(() => getClientIdentity(), []);
+  const testMode = useMemo(() => getTestMode(), []);
   const [view, setView] = useState('play');
   const [busyAction, setBusyAction] = useState(null);
   const [statusMessage, setStatusMessage] = useState('');
   const [dark, setDark] = useState(false);
+  const [missionGameId, setMissionGameId] = useState(null);
+  const [now, setNow] = useState(Date.now());
+  const [resultSheetOpen, setResultSheetOpen] = useState(false);
+  const seenResultRef = useRef(null);
+  const feedbackKeyRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -69,31 +104,130 @@ export function App() {
       activeReady: activeHandle.ready(),
       recentReady: recentHandle.ready(),
       activeGame: Games.findOne(
-        { status: { $in: ACTIVE_STATUSES } },
+        {
+          players: {
+            $elemMatch: {
+              id: identity.playerId,
+              ownerId: identity.ownerId,
+            },
+          },
+          status: { $in: ACTIVE_STATUSES },
+        },
         { sort: { updatedAt: -1 } }
       ),
       recentGames: Games.find(
-        { status: { $in: TERMINAL_STATUSES } },
+        {
+          ownerIds: identity.ownerId,
+          status: { $in: TERMINAL_STATUSES },
+        },
         { sort: { updatedAt: -1 } }
       ).fetch(),
     };
   }, [identity.ownerId, identity.playerId]);
+
+  const resultGame = useMemo(() => {
+    if (!missionGameId) {
+      return null;
+    }
+
+    return recentGames.find((game) => game._id === missionGameId) ?? null;
+  }, [missionGameId, recentGames]);
+
+  const missionSnapshot = activeGame ?? resultGame ?? null;
+  const showMission = Boolean(activeGame) || Boolean(resultSheetOpen && resultGame);
 
   const bestScore = recentGames.reduce(
     (highest, game) => Math.max(highest, Number(game.score) || 0),
     0
   );
 
+  useEffect(() => {
+    if (!activeGame?._id) {
+      return;
+    }
+
+    setMissionGameId(activeGame._id);
+    setNow(Date.now());
+  }, [activeGame?._id]);
+
+  useEffect(() => {
+    if (!showMission || !missionSnapshot) {
+      return undefined;
+    }
+
+    const handle = window.setInterval(() => setNow(Date.now()), 250);
+    return () => window.clearInterval(handle);
+  }, [missionSnapshot, showMission]);
+
+  useEffect(() => {
+    if (!resultGame?._id) {
+      return;
+    }
+
+    if (seenResultRef.current === resultGame._id) {
+      return;
+    }
+
+    seenResultRef.current = resultGame._id;
+    setResultSheetOpen(true);
+  }, [resultGame]);
+
+  useEffect(() => {
+    const key = buildFeedbackKey(missionSnapshot);
+    if (!key || feedbackKeyRef.current === key) {
+      return;
+    }
+
+    feedbackKeyRef.current = key;
+    const latestEvent = missionSnapshot.events.at(-1);
+
+    if (missionSnapshot.status === 'won') {
+      void signalActionResult('win');
+      return;
+    }
+
+    if (latestEvent?.outcome === 'correct') {
+      void signalActionResult('correct');
+      return;
+    }
+
+    void signalActionResult('damage');
+  }, [missionSnapshot]);
+
+  useEffect(() => {
+    if (!resultSheetOpen || !resultGame || !Capacitor.isPluginAvailable('App')) {
+      return undefined;
+    }
+
+    let cancelled = false;
+    let listener;
+
+    void CapacitorApp.addListener('backButton', () => {
+      if (!cancelled) {
+        setResultSheetOpen(false);
+      }
+    }).then((handle) => {
+      listener = handle;
+    });
+
+    return () => {
+      cancelled = true;
+      listener?.remove();
+    };
+  }, [resultGame, resultSheetOpen]);
+
   const invokeGameMethod = useCallback(
-    async (actionName, callback) => {
+    async (actionName, callback, { onSuccess } = {}) => {
       setBusyAction(actionName);
       setStatusMessage('');
 
       try {
-        await callback();
-        setView('play');
+        const result = await callback();
+        onSuccess?.(result);
+        return result;
       } catch (error) {
         setStatusMessage(error.reason || error.message || 'Mission command failed.');
+        return null;
       } finally {
         setBusyAction(null);
       }
@@ -102,13 +236,23 @@ export function App() {
   );
 
   const handleQuickMission = useCallback(() => {
-    return invokeGameMethod('quick', () =>
-      Meteor.callAsync('games.startSolo', {
-        ownerId: identity.ownerId,
-        playerId: identity.playerId,
-      })
+    return invokeGameMethod(
+      'quick',
+      () =>
+        Meteor.callAsync('games.startSolo', {
+          ownerId: identity.ownerId,
+          playerId: identity.playerId,
+          testMode,
+        }),
+      {
+        onSuccess: ({ gameId }) => {
+          setMissionGameId(gameId);
+          setResultSheetOpen(false);
+          setView('play');
+        },
+      }
     );
-  }, [identity.ownerId, identity.playerId, invokeGameMethod]);
+  }, [identity.ownerId, identity.playerId, invokeGameMethod, testMode]);
 
   const handleCreateCrew = useCallback(() => {
     return invokeGameMethod('crew', async () => {
@@ -117,6 +261,9 @@ export function App() {
         playerId: identity.playerId,
       });
       setStatusMessage(`Crew room ${result.roomCode} ready for a copilot.`);
+      setMissionGameId(result.gameId);
+      setResultSheetOpen(false);
+      return result;
     });
   }, [identity.ownerId, identity.playerId, invokeGameMethod]);
 
@@ -129,18 +276,73 @@ export function App() {
         return Promise.resolve();
       }
 
-      return invokeGameMethod('join', () =>
-        Meteor.callAsync('games.joinCrew', {
-          ownerId: identity.ownerId,
-          playerId: identity.playerId,
-          roomCode: normalizedRoomCode,
-        })
+      return invokeGameMethod(
+        'join',
+        () =>
+          Meteor.callAsync('games.joinCrew', {
+            ownerId: identity.ownerId,
+            playerId: identity.playerId,
+            roomCode: normalizedRoomCode,
+          }),
+        {
+          onSuccess: ({ gameId }) => {
+            setMissionGameId(gameId);
+            setResultSheetOpen(false);
+          },
+        }
       );
     },
     [identity.ownerId, identity.playerId, invokeGameMethod]
   );
 
-  const shellView = activeGame ? 'mission' : view;
+  const handleAction = useCallback(
+    (action) => {
+      if (!activeGame?._id) {
+        return Promise.resolve(null);
+      }
+
+      return invokeGameMethod('answer', () =>
+        Meteor.callAsync('games.answer', {
+          ownerId: identity.ownerId,
+          playerId: identity.playerId,
+          gameId: activeGame._id,
+          action,
+        })
+      );
+    },
+    [activeGame?._id, identity.ownerId, identity.playerId, invokeGameMethod]
+  );
+
+  const handleRematch = useCallback(() => {
+    if (!resultGame?._id) {
+      return Promise.resolve(null);
+    }
+
+    return invokeGameMethod(
+      'rematch',
+      () =>
+        Meteor.callAsync('games.rematch', {
+          ownerId: identity.ownerId,
+          playerId: identity.playerId,
+          gameId: resultGame._id,
+          testMode,
+        }),
+      {
+        onSuccess: ({ gameId }) => {
+          setMissionGameId(gameId);
+          setResultSheetOpen(false);
+        },
+      }
+    );
+  }, [identity.ownerId, identity.playerId, invokeGameMethod, resultGame?._id, testMode]);
+
+  const handleResultHome = useCallback(() => {
+    setResultSheetOpen(false);
+    setMissionGameId(null);
+    setView('play');
+  }, []);
+
+  const shellView = showMission ? 'mission' : view;
 
   return (
     <KonstaApp
@@ -158,10 +360,30 @@ export function App() {
           </Block>
         ) : null}
 
-        {shellView === 'mission' || view === 'play' ? (
+        {showMission && missionSnapshot ? (
+          <>
+            <MissionStage
+              game={missionSnapshot}
+              now={now}
+              busy={busyAction === 'answer'}
+              connected={connection.connected}
+              onAction={handleAction}
+            />
+            {resultGame ? (
+              <ResultSheet
+                game={resultGame}
+                opened={resultSheetOpen}
+                onRematch={handleRematch}
+                onHome={handleResultHome}
+                onShare={() => shareResult(resultGame)}
+              />
+            ) : null}
+          </>
+        ) : null}
+
+        {!showMission && view === 'play' ? (
           <PlayPage
             bestScore={bestScore}
-            activeGame={activeGame}
             onQuickMission={handleQuickMission}
             onCreateCrew={handleCreateCrew}
             onJoinCrew={handleJoinCrew}

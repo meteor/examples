@@ -89,7 +89,7 @@ export function getRequiredAction(emergency) {
   return REQUIRED_ACTIONS[emergency];
 }
 
-export function createInitialState({ mode, ownerId, playerId, now, roomCode }) {
+export function createInitialState({ mode, ownerId, playerId, now, roomCode, testMode = false }) {
   return {
     mode,
     ownerId,
@@ -100,10 +100,10 @@ export function createInitialState({ mode, ownerId, playerId, now, roomCode }) {
     emergency: EMERGENCIES[0],
     turn: 'player',
     shield: 100,
-    warp: 0,
-    score: 0,
+    warp: testMode ? 60 : 0,
+    score: testMode ? 60 : 0,
     streak: 0,
-    bestStreak: 0,
+    bestStreak: testMode ? 3 : 0,
     endsAt: now + MISSION_DURATION_MS,
     turnEndsAt: now + TURN_DURATION_MS,
     events: [],

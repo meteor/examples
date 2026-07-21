@@ -74,8 +74,8 @@ async function maybeSettleTimeout(game, now) {
   return persistGame(game._id, resolveTimeout(storedGame, { now }), now);
 }
 
-function createSoloDocument({ ownerId, playerId, now }) {
-  const state = createInitialState({ mode: 'solo', ownerId, playerId, now });
+function createSoloDocument({ ownerId, playerId, now, testMode = false }) {
+  const state = createInitialState({ mode: 'solo', ownerId, playerId, now, testMode });
 
   return parseGameDocument({
     ...state,
@@ -109,9 +109,11 @@ async function generateRoomCode() {
 
 Meteor.methods({
   async 'games.startSolo'(payload) {
-    const { ownerId, playerId } = parseOrThrow(StartSoloSchema, payload);
+    const { ownerId, playerId, testMode } = parseOrThrow(StartSoloSchema, payload);
     const now = Date.now();
-    const gameId = await Games.insertAsync(createSoloDocument({ ownerId, playerId, now }));
+    const gameId = await Games.insertAsync(
+      createSoloDocument({ ownerId, playerId, now, testMode })
+    );
 
     return { gameId };
   },
@@ -237,7 +239,7 @@ Meteor.methods({
   },
 
   async 'games.rematch'(payload) {
-    const { ownerId, playerId, gameId } = parseOrThrow(RematchSchema, payload);
+    const { ownerId, playerId, gameId, testMode } = parseOrThrow(RematchSchema, payload);
     const existing = await findOwnedGameOrThrow({ ownerId, playerId, gameId });
     const game = sanitizeStoredGame(existing);
 
@@ -253,6 +255,7 @@ Meteor.methods({
         ownerId: game.ownerId,
         playerId: game.playerId,
         now,
+        testMode,
       });
     } else {
       const roomCode = await generateRoomCode();

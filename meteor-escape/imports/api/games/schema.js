@@ -53,6 +53,7 @@ export const StartSoloSchema = z
   .object({
     ownerId: IdSchema,
     playerId: IdSchema,
+    testMode: z.boolean().optional().default(false),
   })
   .strict();
 
@@ -80,6 +81,7 @@ export const RematchSchema = z
     ownerId: IdSchema,
     playerId: IdSchema,
     gameId: GameIdSchema,
+    testMode: z.boolean().optional().default(false),
   })
   .strict();
 

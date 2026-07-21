@@ -1,5 +1,33 @@
 const { test, expect } = require('@playwright/test');
 
+const ACTION_BY_EMERGENCY = {
+  Meteor: 'Shield',
+  Overheat: 'Cool',
+  Path: 'Boost',
+};
+
+function emergencyLabelToAction(label) {
+  return ACTION_BY_EMERGENCY[label] ?? 'Shield';
+}
+
+async function getActionButtons(page) {
+  return page
+    .getByRole('button')
+    .filter({ has: page.locator('.mission-action__label') });
+}
+
+function getTurnChip(page) {
+  return page.locator('.mission-stage__turn');
+}
+
+function getMissionStatus(page) {
+  return page.locator('.emergency-prompt__status');
+}
+
+function getResultTitle(page) {
+  return page.locator('.result-sheet h2');
+}
+
 test('opens on understandable mobile game home', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Meteor Escape' })).toBeVisible();
@@ -47,4 +75,85 @@ test('keeps records actions at least 48 pixels tall', async ({ page }) => {
 
   expect(bounds).not.toBeNull();
   expect(bounds.height).toBeGreaterThanOrEqual(48);
+});
+
+test('plays quick mission with visible CPU turns and result', async ({ page }) => {
+  await page.goto('/?testMode=1');
+  await page.getByRole('button', { name: 'Quick Mission' }).click();
+
+  await expect(getTurnChip(page)).toHaveText('Your turn');
+  const emergency = await page.locator('.emergency-prompt__eyebrow').textContent();
+  const actionName = emergencyLabelToAction(emergency?.trim() ?? '');
+
+  await page.getByRole('button', { name: new RegExp(actionName, 'i') }).click();
+  await expect(getMissionStatus(page)).toHaveText('Copilot thinking');
+  await expect(getTurnChip(page)).toHaveText('Copilot turn');
+
+  await expect(getResultTitle(page)).toHaveText(/Warp charged|Shields collapsed/);
+  await expect(page.getByRole('button', { name: 'Rematch' })).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole('button', { name: 'Share Result' })).toBeVisible();
+});
+
+test('keeps mission actions 64 pixels tall without overlap on narrow phones', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto('/?testMode=1');
+  await page.getByRole('button', { name: 'Quick Mission' }).click();
+  await expect(getTurnChip(page)).toHaveText('Your turn');
+
+  const buttons = await getActionButtons(page);
+  await expect(buttons).toHaveCount(3);
+  await buttons.nth(2).scrollIntoViewIfNeeded();
+
+  const boxes = await Promise.all([
+    buttons.nth(0).boundingBox(),
+    buttons.nth(1).boundingBox(),
+    buttons.nth(2).boundingBox(),
+  ]);
+
+  for (const box of boxes) {
+    expect(box).not.toBeNull();
+    expect(box.height).toBeGreaterThanOrEqual(64);
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.y).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(320);
+  }
+
+  for (let index = 1; index < boxes.length; index += 1) {
+    expect(boxes[index - 1].y + boxes[index - 1].height).toBeLessThanOrEqual(boxes[index].y);
+  }
+});
+
+test('keeps mission result sheet inside viewport and honors reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/?testMode=1');
+  await page.getByRole('button', { name: 'Quick Mission' }).click();
+  await expect(getTurnChip(page)).toHaveText('Your turn');
+
+  const emergency = await page.locator('.emergency-prompt__eyebrow').textContent();
+  const actionName = emergencyLabelToAction(emergency?.trim() ?? '');
+  await page.getByRole('button', { name: new RegExp(actionName, 'i') }).click();
+
+  const resultSheet = page.locator('.result-sheet');
+  await expect(resultSheet).toBeVisible({ timeout: 30_000 });
+
+  const resultBox = await resultSheet.boundingBox();
+  expect(resultBox).not.toBeNull();
+  expect(resultBox.x).toBeGreaterThanOrEqual(0);
+  expect(resultBox.y).toBeGreaterThanOrEqual(0);
+  expect(resultBox.x + resultBox.width).toBeLessThanOrEqual(390);
+  expect(resultBox.y + resultBox.height).toBeLessThanOrEqual(844);
+
+  const motionStyles = await page.locator('.mission-stage').evaluate((node) => {
+    const styles = getComputedStyle(node);
+    return {
+      animationDuration: styles.animationDuration,
+      transitionDuration: styles.transitionDuration,
+      scrollBehavior: getComputedStyle(document.documentElement).scrollBehavior,
+    };
+  });
+
+  expect(motionStyles.animationDuration).toMatch(/0s|0\.01ms|1e-05s/);
+  expect(motionStyles.transitionDuration).toMatch(/0s|0\.01ms|1e-05s/);
+  expect(motionStyles.scrollBehavior).toBe('auto');
 });
