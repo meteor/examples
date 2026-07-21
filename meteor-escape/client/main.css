@@ -707,6 +707,32 @@ img {
   line-height: 1.4;
 }
 
+.mission-terminal-actions {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+  background: var(--meteor-surface);
+}
+
+.mission-terminal-actions__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid var(--meteor-line);
+  border-radius: 8px;
+  background: var(--meteor-surface);
+  color: var(--meteor-ink);
+}
+
+.mission-terminal-actions__button--primary {
+  background: var(--meteor-surface-strong);
+}
+
 .result-sheet-backdrop {
   position: fixed;
   inset: 0;
@@ -928,6 +954,10 @@ img {
 
   .mission-actions {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mission-terminal-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .result-sheet__actions {

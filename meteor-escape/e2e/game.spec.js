@@ -190,5 +190,17 @@ test('closing result sheet keeps terminal mission stage visible until home', asy
 
   await expect(page.locator('.result-sheet')).toBeHidden();
   await expect(page.locator('.mission-stage')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Quick Mission' })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'View report' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Home' })).toBeVisible();
+
+  const viewReportBounds = await page.getByRole('button', { name: 'View report' }).boundingBox();
+  const homeBounds = await page.getByRole('button', { name: 'Home' }).boundingBox();
+  expect(viewReportBounds).not.toBeNull();
+  expect(homeBounds).not.toBeNull();
+  expect(viewReportBounds.height).toBeGreaterThanOrEqual(48);
+  expect(homeBounds.height).toBeGreaterThanOrEqual(48);
+
+  await page.getByRole('button', { name: 'Home' }).click();
+  await expect(page.getByRole('heading', { name: 'Meteor Escape' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Quick Mission' })).toBeVisible();
 });

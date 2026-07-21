@@ -132,6 +132,23 @@ if (Meteor.isServer) {
       assert.strictEqual(updated.shield, 0);
     });
 
+    it('leaves game unchanged when scheduled turn expectation mismatches current turn or deadline', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const game = await Games.findOneAsync(gameId);
+      const before = JSON.parse(JSON.stringify(game));
+
+      await turnScheduler.runScheduledTurn(
+        gameId,
+        { expectedTurn: 'copilot', expectedTurnEndsAt: game.turnEndsAt + 1 },
+        game.turnEndsAt + 1
+      );
+
+      const updated = await Games.findOneAsync(gameId);
+      assert.deepStrictEqual(JSON.parse(JSON.stringify(updated)), before);
+    });
+
     it('rejects wrong-owner answers', async function () {
       const ownerId = Random.id();
       const playerId = Random.id();

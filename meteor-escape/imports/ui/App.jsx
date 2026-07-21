@@ -373,6 +373,24 @@ export function App() {
               connected={connection.connected}
               onAction={handleAction}
             />
+            {resultGame && !resultSheetOpen ? (
+              <section className="mission-terminal-actions" aria-label="Terminal mission actions">
+                <button
+                  className="mission-terminal-actions__button mission-terminal-actions__button--primary"
+                  type="button"
+                  onClick={() => setResultSheetOpen(true)}
+                >
+                  View report
+                </button>
+                <button
+                  className="mission-terminal-actions__button"
+                  type="button"
+                  onClick={handleResultHome}
+                >
+                  Home
+                </button>
+              </section>
+            ) : null}
             {resultGame ? (
               <ResultSheet
                 game={resultGame}
