@@ -720,8 +720,9 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.55rem;
   width: 100%;
-  min-height: 48px;
+  min-height: 64px;
   padding: 0.8rem 0.95rem;
   border: 1px solid var(--meteor-line);
   border-radius: 8px;

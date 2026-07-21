@@ -197,8 +197,8 @@ test('closing result sheet keeps terminal mission stage visible until home', asy
   const homeBounds = await page.getByRole('button', { name: 'Home' }).boundingBox();
   expect(viewReportBounds).not.toBeNull();
   expect(homeBounds).not.toBeNull();
-  expect(viewReportBounds.height).toBeGreaterThanOrEqual(48);
-  expect(homeBounds.height).toBeGreaterThanOrEqual(48);
+  expect(viewReportBounds.height).toBeGreaterThanOrEqual(64);
+  expect(homeBounds.height).toBeGreaterThanOrEqual(64);
 
   await page.getByRole('button', { name: 'Home' }).click();
   await expect(page.getByRole('heading', { name: 'Meteor Escape' })).toBeVisible();

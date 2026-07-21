@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 import { Capacitor } from '@capacitor/core';
 import { App as CapacitorApp } from '@capacitor/app';
+import { FileText, Home as HomeIcon } from 'lucide-react';
 import { App as KonstaApp, Block, List, ListItem } from 'konsta/react';
 import { ACTIVE_STATUSES, TERMINAL_STATUSES, Games } from '../api/games/collection';
 import { AppShell } from './components/AppShell';
@@ -380,14 +381,16 @@ export function App() {
                   type="button"
                   onClick={() => setResultSheetOpen(true)}
                 >
-                  View report
+                  <FileText aria-hidden="true" size={18} strokeWidth={2.3} />
+                  <span>View report</span>
                 </button>
                 <button
                   className="mission-terminal-actions__button"
                   type="button"
                   onClick={handleResultHome}
                 >
-                  Home
+                  <HomeIcon aria-hidden="true" size={18} strokeWidth={2.3} />
+                  <span>Home</span>
                 </button>
               </section>
             ) : null}
