@@ -5,7 +5,11 @@ import {
   resolveAction,
   resolveTimeout,
 } from './engine';
-import { Games } from './collection';
+import {
+  Games,
+  ROOM_CODE_INDEX_NAME,
+  WAITING_CREW_OWNERSHIP_INDEX_NAME,
+} from './collection';
 import {
   AnswerSchema,
   CreateCrewSchema,
@@ -117,6 +121,66 @@ async function generateRoomCode() {
   throw new Meteor.Error('room-code-unavailable', 'Unable to allocate room code');
 }
 
+function buildWaitingCaptainQuery(ownerId, playerId) {
+  return {
+    ownerId,
+    playerId,
+    mode: 'crew',
+    status: 'waiting',
+    players: {
+      $elemMatch: {
+        id: playerId,
+        ownerId,
+        role: 'player',
+        type: 'human',
+      },
+    },
+  };
+}
+
+async function findExistingWaitingCrewGame(ownerId, playerId) {
+  return Games.findOneAsync(buildWaitingCaptainQuery(ownerId, playerId));
+}
+
+function isDuplicateKeyError(error) {
+  return error?.code === 11000 || error?.codeName === 'DuplicateKey';
+}
+
+function errorMentionsIndex(error, indexName) {
+  const message = error?.message ?? error?.errmsg ?? '';
+  return message.includes(indexName);
+}
+
+function isWaitingCrewOwnershipDuplicate(error) {
+  if (!isDuplicateKeyError(error)) {
+    return false;
+  }
+
+  if (errorMentionsIndex(error, WAITING_CREW_OWNERSHIP_INDEX_NAME)) {
+    return true;
+  }
+
+  const keyPattern = error?.keyPattern;
+  return Boolean(
+    keyPattern?.mode === 1 &&
+      keyPattern?.status === 1 &&
+      keyPattern?.ownerId === 1 &&
+      keyPattern?.playerId === 1
+  );
+}
+
+function isRoomCodeDuplicate(error) {
+  if (!isDuplicateKeyError(error)) {
+    return false;
+  }
+
+  if (errorMentionsIndex(error, ROOM_CODE_INDEX_NAME)) {
+    return true;
+  }
+
+  return error?.keyPattern?.roomCode === 1;
+}
+
 Meteor.methods({
   async 'games.startSolo'(payload) {
     const { ownerId, playerId, testMode: requestedTestMode } = parseOrThrow(StartSoloSchema, payload);
@@ -176,45 +240,56 @@ Meteor.methods({
 
   async 'games.createCrew'(payload) {
     const { ownerId, playerId } = parseOrThrow(CreateCrewSchema, payload);
-    const existingWaitingGame = await Games.findOneAsync({
-      ownerId,
-      playerId,
-      mode: 'crew',
-      status: 'waiting',
-      players: {
-        $elemMatch: {
-          id: playerId,
-          ownerId,
-          role: 'player',
-          type: 'human',
-        },
-      },
-    });
+    const existingWaitingGame = await findExistingWaitingCrewGame(ownerId, playerId);
 
     if (existingWaitingGame) {
       return { gameId: existingWaitingGame._id, roomCode: existingWaitingGame.roomCode };
     }
 
-    const now = Date.now();
-    const roomCode = await generateRoomCode();
-    const state = createInitialState({ mode: 'crew', ownerId, playerId, now, roomCode });
-    const gameId = await Games.insertAsync(
-      parseGameDocument({
-        ...state,
-        ownerIds: [ownerId],
-        copilotId: null,
-        participantIds: [playerId],
-        players: [{ id: playerId, ownerId, role: 'player', type: 'human' }],
-        roomCode,
-        status: 'waiting',
-        endsAt: null,
-        turnEndsAt: null,
-        createdAt: new Date(now),
-        updatedAt: new Date(now),
-      })
-    );
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const now = Date.now();
+      const roomCode = await generateRoomCode();
+      const state = createInitialState({ mode: 'crew', ownerId, playerId, now, roomCode });
 
-    return { gameId, roomCode };
+      try {
+        const gameId = await Games.insertAsync(
+          parseGameDocument({
+            ...state,
+            ownerIds: [ownerId],
+            copilotId: null,
+            participantIds: [playerId],
+            players: [{ id: playerId, ownerId, role: 'player', type: 'human' }],
+            roomCode,
+            status: 'waiting',
+            endsAt: null,
+            turnEndsAt: null,
+            createdAt: new Date(now),
+            updatedAt: new Date(now),
+          })
+        );
+
+        return { gameId, roomCode };
+      } catch (error) {
+        if (isWaitingCrewOwnershipDuplicate(error)) {
+          const concurrentWaitingGame = await findExistingWaitingCrewGame(ownerId, playerId);
+
+          if (concurrentWaitingGame) {
+            return {
+              gameId: concurrentWaitingGame._id,
+              roomCode: concurrentWaitingGame.roomCode,
+            };
+          }
+        }
+
+        if (isRoomCodeDuplicate(error)) {
+          continue;
+        }
+
+        throw error;
+      }
+    }
+
+    throw new Meteor.Error('room-code-unavailable', 'Unable to allocate room code');
   },
 
   async 'games.joinCrew'(payload) {

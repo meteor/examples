@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { Games } from '../imports/api/games/collection';
+import { ensureGamesIndexes, Games } from '../imports/api/games/collection';
 import '../imports/api/games/methods';
 import * as gameMethodsModule from '../imports/api/games/methods';
 import * as turnScheduler from '../imports/api/games/server/cpu';
@@ -13,6 +13,7 @@ if (Meteor.isServer) {
     beforeEach(async function () {
       process.env.METEOR_ESCAPE_E2E = originalE2EEnv;
       turnScheduler.resetScheduledTurnsForTests?.();
+      await ensureGamesIndexes();
       await Games.removeAsync({});
     });
 
@@ -275,6 +276,60 @@ if (Meteor.isServer) {
       }).fetchAsync();
 
       assert.strictEqual(waitingGames.length, 1);
+    });
+
+    it('coalesces concurrent crew room creation for same captain', async function () {
+      const ownerId = Random.id();
+      const captainId = Random.id();
+      const originalInsertAsync = Games.insertAsync.bind(Games);
+      let insertCount = 0;
+      let releaseFirstInsert;
+      const firstInsertGate = new Promise((resolve) => {
+        releaseFirstInsert = resolve;
+      });
+
+      Games.insertAsync = async function patchedInsertAsync(document, ...rest) {
+        if (document?.mode === 'crew' && document?.status === 'waiting') {
+          insertCount += 1;
+
+          if (insertCount === 1) {
+            await firstInsertGate;
+          }
+
+          if (insertCount === 2) {
+            releaseFirstInsert();
+          }
+        }
+
+        return originalInsertAsync(document, ...rest);
+      };
+
+      try {
+        const [first, second] = await Promise.all([
+          Meteor.callAsync('games.createCrew', {
+            ownerId,
+            playerId: captainId,
+          }),
+          Meteor.callAsync('games.createCrew', {
+            ownerId,
+            playerId: captainId,
+          }),
+        ]);
+
+        assert.strictEqual(second.gameId, first.gameId);
+        assert.strictEqual(second.roomCode, first.roomCode);
+
+        const waitingGames = await Games.find({
+          ownerId,
+          playerId: captainId,
+          mode: 'crew',
+          status: 'waiting',
+        }).fetchAsync();
+
+        assert.strictEqual(waitingGames.length, 1);
+      } finally {
+        Games.insertAsync = originalInsertAsync;
+      }
     });
 
     it('allows joined copilot to answer with own owner id', async function () {
