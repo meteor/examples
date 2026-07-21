@@ -113,7 +113,7 @@ export function MissionStage({ game, now, busy, connected, onAction }) {
   }, [game, latestEvent]);
 
   return (
-    <div className="mission-stage">
+    <div className={`mission-stage mission-stage--${game.status}`}>
       <p className="mission-stage__live" role="status" aria-live="polite">
         {liveMessage}
       </p>

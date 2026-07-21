@@ -39,51 +39,50 @@ export function PlayPage({
               Solo now, crew optional
             </span>
           </div>
+
+          <section className="play-home__actions" aria-label="Start a mission">
+            <Button
+              large
+              tonal={false}
+              className="primary-action"
+              onClick={hasBackgroundMission ? onResumeMission : onQuickMission}
+              disabled={hasBackgroundMission ? false : busyAction !== null || crewWaiting || controlsDisabled}
+            >
+              {primaryActionLabel}
+            </Button>
+
+            <div className="crew-actions">
+              <Button
+                className="secondary-action"
+                onClick={onCreateCrew}
+                disabled={busyAction !== null || controlsDisabled || hasBackgroundMission}
+              >
+                {createCrewLabel}
+              </Button>
+              <Button
+                className="secondary-action"
+                onClick={onJoinCrew}
+                disabled={busyAction !== null || crewWaiting || controlsDisabled || hasBackgroundMission}
+              >
+                Join Crew Mission
+              </Button>
+            </div>
+
+            {statusMessage ? (
+              <p className="play-home__status" role="status" aria-live="polite">
+                {statusMessage}
+              </p>
+            ) : null}
+          </section>
         </div>
 
-        <div className="play-home__media">
-          <img
-            className="play-home__key-art"
-            src="/images/meteor-escape-key-art.webp"
-            alt="Meteor Escape key art"
-          />
-          <FlightDeckArt />
-        </div>
-      </section>
+        <img
+          className="play-home__key-art"
+          src="/images/meteor-escape-key-art.webp"
+          alt="Meteor Escape key art"
+        />
 
-      <section className="play-home__actions" aria-label="Start a mission">
-        <Button
-          large
-          tonal={false}
-          className="primary-action"
-          onClick={hasBackgroundMission ? onResumeMission : onQuickMission}
-          disabled={hasBackgroundMission ? false : busyAction !== null || crewWaiting || controlsDisabled}
-        >
-          {primaryActionLabel}
-        </Button>
-
-        <div className="crew-actions">
-          <Button
-            className="secondary-action"
-            onClick={onCreateCrew}
-            disabled={busyAction !== null || controlsDisabled || hasBackgroundMission}
-          >
-            {createCrewLabel}
-          </Button>
-          <Button
-            className="secondary-action"
-            onClick={onJoinCrew}
-            disabled={busyAction !== null || crewWaiting || controlsDisabled || hasBackgroundMission}
-          >
-            Join Crew Mission
-          </Button>
-        </div>
-
-        {statusMessage ? (
-          <p className="play-home__status" role="status" aria-live="polite">
-            {statusMessage}
-          </p>
-        ) : null}
+        <FlightDeckArt />
       </section>
     </div>
   );

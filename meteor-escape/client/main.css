@@ -202,12 +202,19 @@ img {
 
 .play-home__hero {
   display: grid;
+  grid-template-areas:
+    'copy'
+    'art'
+    'deck';
   gap: 1rem;
   align-items: start;
 }
 
+.play-home__copy {
+  grid-area: copy;
+}
+
 .play-home__copy,
-.play-home__actions,
 .records-empty,
 .system-page__note,
 .mission-waiting {
@@ -388,11 +395,6 @@ img {
   background: var(--meteor-surface-strong);
 }
 
-.play-home__media {
-  display: grid;
-  gap: 0.85rem;
-}
-
 .play-home__key-art,
 .flight-deck-art {
   width: 100%;
@@ -402,13 +404,20 @@ img {
 }
 
 .play-home__key-art {
+  grid-area: art;
   aspect-ratio: 16 / 10;
   object-fit: contain;
   padding: 0.75rem;
 }
 
+.flight-deck-art {
+  grid-area: deck;
+}
+
 .play-home__actions {
-  padding: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--meteor-line);
 }
 
 .primary-action,
@@ -891,6 +900,40 @@ img {
   gap: 0.8rem;
 }
 
+@media (max-width: 1023px) {
+  .mission-stage--playing .mission-actions {
+    position: fixed;
+    z-index: 25;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    padding: 0.65rem calc(0.75rem + var(--meteor-safe-right))
+      calc(0.65rem + var(--meteor-safe-bottom)) calc(0.75rem + var(--meteor-safe-left));
+    border-top: 1px solid var(--meteor-line);
+    background: rgba(255, 246, 235, 0.98);
+    box-shadow: 0 -10px 24px rgba(31, 43, 49, 0.08);
+  }
+
+  .mission-stage--playing .mission-action {
+    min-height: 72px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  .mission-stage--playing .mission-action__body {
+    display: block;
+  }
+
+  .mission-stage--playing .mission-action__detail {
+    display: none;
+  }
+}
+
 .mission-action {
   display: flex;
   align-items: center;
@@ -1196,6 +1239,12 @@ img {
   .play-home__hero,
   .mission-stage__hero {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .play-home__hero {
+    grid-template-areas:
+      'copy art'
+      'copy deck';
   }
 
   .play-home__copy {

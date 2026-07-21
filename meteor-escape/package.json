@@ -6,6 +6,7 @@
     "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
     "test:headless": "meteor test --once --driver-package meteortesting:mocha",
     "lint": "npx oxlint --react-plugin --import-plugin .",
+    "lint:fix": "npx oxlint --react-plugin --import-plugin --fix .",
     "e2e": "npx playwright test --ui",
     "e2e:headless": "npx playwright test"
   },
@@ -38,6 +39,7 @@
     "@tailwindcss/postcss": "^4.3.3",
     "oxlint": "^1.56.0",
     "postcss": "^8.5.20",
+    "postcss-load-config": "^6.0.1",
     "postcss-loader": "^8.2.1",
     "react-refresh": "^0.18.0",
     "tailwindcss": "^4.3.3"

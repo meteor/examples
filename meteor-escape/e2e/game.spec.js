@@ -38,11 +38,53 @@ function extractRoomCode(text) {
 }
 
 test('opens on understandable mobile game home', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Meteor Escape' })).toBeVisible();
   await expect(page.getByText('Charge warp before shields fail')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Quick Mission' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Create Crew Mission' })).toBeVisible();
+
+  const tabbar = page.locator('.app-shell__tabbar');
+  const tabbarBounds = await tabbar.boundingBox();
+  const primaryActionBounds = await page.getByRole('button', { name: 'Quick Mission' }).boundingBox();
+  const tabBounds = await Promise.all(
+    ['Play', 'Records', 'System'].map((label) =>
+      page.locator(`.app-shell__tabbar [aria-label="${label}"]`).boundingBox()
+    )
+  );
+
+  expect(tabbarBounds).not.toBeNull();
+  expect(primaryActionBounds).not.toBeNull();
+  expect(tabbarBounds.y + tabbarBounds.height).toBeGreaterThanOrEqual(842);
+  expect(tabbarBounds.height).toBeGreaterThanOrEqual(48);
+  expect(primaryActionBounds.y + primaryActionBounds.height).toBeLessThanOrEqual(tabbarBounds.y);
+  expect(tabBounds.every(Boolean)).toBe(true);
+  expect(tabBounds.every((bounds) => bounds.width >= 48 && bounds.height >= 48)).toBe(true);
+  expect(tabBounds[0].x).toBeLessThan(tabBounds[1].x);
+  expect(tabBounds[1].x).toBeLessThan(tabBounds[2].x);
+  expect(tabBounds[2].x + tabBounds[2].width).toBeGreaterThan(300);
+});
+
+test('keeps all mission actions within thumb reach on a narrow phone', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/?testMode=1');
+  await page.getByRole('button', { name: 'Quick Mission' }).click();
+  await expect(getTurnChip(page)).toHaveText('Your turn');
+
+  const actionButtons = await getActionButtons(page);
+  const bounds = await actionButtons.evaluateAll((buttons) =>
+    buttons.map((button) => {
+      const rect = button.getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+    })
+  );
+
+  expect(bounds).toHaveLength(3);
+  expect(bounds.every((box) => box.width >= 48 && box.height >= 48)).toBe(true);
+  expect(bounds.every((box) => box.y >= 0 && box.y + box.height <= 844)).toBe(true);
+  expect(bounds[0].x).toBeLessThan(bounds[1].x);
+  expect(bounds[1].x).toBeLessThan(bounds[2].x);
 });
 
 test('keeps technical controls on System Information', async ({ page }) => {
@@ -235,7 +277,7 @@ test('plays quick mission with visible CPU turns and result', async ({ page }) =
   await expect(page.getByRole('button', { name: 'Share Result' })).toBeVisible();
 });
 
-async function assertMissionActionLayout(page, viewport, requireViewportFit) {
+async function assertMissionActionLayout(page, viewport) {
   await page.setViewportSize(viewport);
   await page.goto('/?testMode=1');
   await page.getByRole('button', { name: 'Quick Mission' }).click();
@@ -257,22 +299,31 @@ async function assertMissionActionLayout(page, viewport, requireViewportFit) {
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.y).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(viewport.width);
-    if (requireViewportFit) {
-      expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
-    }
+    expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
   }
 
-  for (let index = 1; index < boxes.length; index += 1) {
-    expect(boxes[index - 1].y + boxes[index - 1].height).toBeLessThanOrEqual(boxes[index].y);
+  for (let first = 0; first < boxes.length; first += 1) {
+    for (let second = first + 1; second < boxes.length; second += 1) {
+      const overlap =
+        boxes[first].x < boxes[second].x + boxes[second].width &&
+        boxes[first].x + boxes[first].width > boxes[second].x &&
+        boxes[first].y < boxes[second].y + boxes[second].height &&
+        boxes[first].y + boxes[first].height > boxes[second].y;
+      expect(overlap).toBe(false);
+    }
   }
 }
 
 test('keeps mission actions 64 pixels tall without overlap on 320x700 phones', async ({ page }) => {
-  await assertMissionActionLayout(page, { width: 320, height: 700 }, false);
+  await assertMissionActionLayout(page, { width: 320, height: 700 });
 });
 
 test('keeps mission actions in viewport without overlap on 390x844 phones', async ({ page }) => {
-  await assertMissionActionLayout(page, { width: 390, height: 844 }, true);
+  await assertMissionActionLayout(page, { width: 390, height: 844 });
+});
+
+test('keeps mission actions in viewport without overlap on 768x1024 tablets', async ({ page }) => {
+  await assertMissionActionLayout(page, { width: 768, height: 1024 });
 });
 
 test('keeps mission result sheet inside viewport and honors reduced motion', async ({ page }) => {
