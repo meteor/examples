@@ -32,12 +32,42 @@ function getLiveRegion(page) {
   return page.locator('.mission-stage__live');
 }
 
+function extractRoomCode(text) {
+  const match = text.match(/\b([A-HJ-NP-Z2-9]{6})\b/);
+  return match ? match[1] : null;
+}
+
 test('opens on understandable mobile game home', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Meteor Escape' })).toBeVisible();
   await expect(page.getByText('Charge warp before shields fail')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Quick Mission' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Create Crew Mission' })).toBeVisible();
+});
+
+test('keeps room code controls inside join sheet with inline validation and retained server errors', async ({ page }) => {
+  await page.goto('/?testMode=1');
+
+  await expect(page.getByLabel('Room code')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Join Crew Mission' }).click();
+
+  const sheet = page.getByRole('dialog', { name: 'Join Crew Mission' });
+  await expect(sheet).toBeVisible();
+
+  const roomCodeInput = sheet.getByLabel('Room code');
+  await roomCodeInput.fill('BAD');
+  await roomCodeInput.blur();
+  await expect(sheet.getByText('Enter a six-character room code.')).toBeVisible();
+
+  await roomCodeInput.fill('OOO111');
+  await roomCodeInput.blur();
+  await expect(sheet.getByText('Use only letters A-H, J-N, P-Z, and digits 2-9.')).toBeVisible();
+
+  await roomCodeInput.fill('ABC234');
+  await sheet.getByRole('button', { name: 'Join Mission' }).click();
+  await expect(sheet.getByText('Room code not found')).toBeVisible();
+  await expect(roomCodeInput).toHaveValue('ABC234');
+  await expect(sheet).toBeVisible();
 });
 
 test('keeps mobile controls inside narrow viewport', async ({ page }) => {
@@ -52,21 +82,55 @@ test('uses flat home surfaces without gradients or nested join panel chrome', as
 
   const styles = await page.evaluate(() => {
     const bodyStyles = getComputedStyle(document.body);
-    const joinStyles = getComputedStyle(document.querySelector('.join-crew-inline'));
     const keyArtStyles = getComputedStyle(document.querySelector('.play-home__key-art'));
 
     return {
       bodyBackgroundImage: bodyStyles.backgroundImage,
-      joinBackgroundColor: joinStyles.backgroundColor,
-      joinBorderTopWidth: joinStyles.borderTopWidth,
+      hasInlineRoomCode: Boolean(document.querySelector('.join-crew-inline')),
       keyArtObjectFit: keyArtStyles.objectFit,
     };
   });
 
   expect(styles.bodyBackgroundImage).toBe('none');
-  expect(styles.joinBackgroundColor).toBe('rgba(0, 0, 0, 0)');
-  expect(styles.joinBorderTopWidth).toBe('0px');
+  expect(styles.hasInlineRoomCode).toBe(false);
   expect(styles.keyArtObjectFit).toBe('contain');
+});
+
+test('keeps create sheet open until a waiting crew mission becomes playing', async ({ browser }) => {
+  const creatorContext = await browser.newContext();
+  const joinerContext = await browser.newContext();
+  const creatorPage = await creatorContext.newPage();
+  const joinerPage = await joinerContext.newPage();
+
+  await creatorPage.goto('/?testMode=1');
+  await creatorPage.getByRole('button', { name: 'Create Crew Mission' }).click();
+
+  const creatorSheet = creatorPage.getByRole('dialog', { name: 'Create Crew Mission' });
+  await expect(creatorSheet).toBeVisible();
+  await expect(creatorSheet.getByRole('button', { name: 'Share Crew Code' })).toBeVisible();
+  await expect(creatorSheet.getByRole('button', { name: 'Close Crew Mission' })).toBeVisible();
+
+  const roomText = await creatorSheet.locator('.crew-sheet__code-block strong').textContent();
+  const roomCode = extractRoomCode(roomText ?? '');
+  expect(roomCode).toBeTruthy();
+
+  await expect(creatorSheet).toBeVisible();
+
+  await joinerPage.goto('/?testMode=1');
+  await joinerPage.getByRole('button', { name: 'Join Crew Mission' }).click();
+
+  const joinerSheet = joinerPage.getByRole('dialog', { name: 'Join Crew Mission' });
+  await expect(joinerSheet).toBeVisible();
+  await joinerSheet.getByLabel('Room code').fill(roomCode);
+  await joinerSheet.getByRole('button', { name: 'Join Mission' }).click();
+
+  await expect(creatorSheet).toBeHidden();
+  await expect(joinerSheet).toBeHidden();
+  await expect(creatorPage.getByRole('heading', { name: 'Mission control' })).toBeVisible();
+  await expect(joinerPage.getByRole('heading', { name: 'Mission control' })).toBeVisible();
+
+  await creatorContext.close();
+  await joinerContext.close();
 });
 
 test('keeps records actions at least 48 pixels tall', async ({ page }) => {

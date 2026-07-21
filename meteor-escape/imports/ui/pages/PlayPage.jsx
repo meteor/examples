@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'konsta/react';
 import { Users, Zap } from 'lucide-react';
 import { FlightDeckArt } from '../art/FlightDeckArt';
@@ -9,10 +9,9 @@ export function PlayPage({
   onCreateCrew,
   onJoinCrew,
   busyAction,
+  crewWaiting,
   statusMessage,
 }) {
-  const [roomCode, setRoomCode] = useState('');
-
   return (
     <div className="play-home">
       <section className="play-home__hero" aria-labelledby="meteor-escape-home-title">
@@ -53,7 +52,7 @@ export function PlayPage({
           tonal={false}
           className="primary-action"
           onClick={onQuickMission}
-          disabled={busyAction !== null}
+          disabled={busyAction !== null || crewWaiting}
         >
           Quick Mission
         </Button>
@@ -66,35 +65,13 @@ export function PlayPage({
           >
             Create Crew Mission
           </Button>
-
-          <div className="join-crew-inline">
-            <label className="join-crew-inline__label" htmlFor="room-code">
-              Room code
-            </label>
-            <div className="join-crew-inline__controls">
-              <input
-                id="room-code"
-                className="join-crew-inline__input"
-                type="text"
-                inputMode="text"
-                value={roomCode}
-                placeholder="ABC123"
-                autoCapitalize="characters"
-                onInput={(event) => {
-                  const nextValue = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-                  setRoomCode(nextValue.slice(0, 6));
-                }}
-              />
-              <Button
-                className="join-crew-inline__button"
-                onClick={() => onJoinCrew(roomCode)}
-                disabled={busyAction !== null || roomCode.length !== 6}
-              >
-                Join Crew
-              </Button>
-            </div>
-            <p className="join-crew-inline__hint">Replace the CPU with a second human.</p>
-          </div>
+          <Button
+            className="secondary-action"
+            onClick={onJoinCrew}
+            disabled={busyAction !== null || crewWaiting}
+          >
+            Join Crew Mission
+          </Button>
         </div>
 
         {statusMessage ? (

@@ -6,6 +6,10 @@ function buildSummary(game) {
   return `Meteor Escape: ${result} with score ${game.score}, warp ${game.warp}%, shield ${game.shield}%, best streak ${game.bestStreak}.`;
 }
 
+function buildCrewInvite(roomCode) {
+  return `Join my Meteor Escape crew mission with room code ${roomCode}.`;
+}
+
 async function copyToClipboard(text) {
   if (typeof navigator?.clipboard?.writeText === 'function') {
     await navigator.clipboard.writeText(text);
@@ -30,7 +34,14 @@ async function copyToClipboard(text) {
 
 export async function shareResult(game) {
   const text = buildSummary(game);
+  return shareText({
+    title: 'Meteor Escape',
+    text,
+    dialogTitle: 'Share mission result',
+  });
+}
 
+async function shareText(payload) {
   if (Capacitor.isPluginAvailable('Share')) {
     try {
       if (typeof Share.canShare === 'function') {
@@ -40,19 +51,23 @@ export async function shareResult(game) {
         }
       }
 
-      await Share.share({
-        title: 'Meteor Escape',
-        text,
-        dialogTitle: 'Share mission result',
-      });
+      await Share.share(payload);
 
       return { shared: true, copied: false };
     } catch {
-      const copied = await copyToClipboard(text);
+      const copied = await copyToClipboard(payload.text);
       return { shared: false, copied };
     }
   }
 
-  const copied = await copyToClipboard(text);
+  const copied = await copyToClipboard(payload.text);
   return { shared: false, copied };
+}
+
+export async function shareCrewRoom(roomCode) {
+  return shareText({
+    title: 'Meteor Escape Crew Mission',
+    text: buildCrewInvite(roomCode),
+    dialogTitle: 'Share crew room',
+  });
 }

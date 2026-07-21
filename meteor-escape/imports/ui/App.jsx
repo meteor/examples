@@ -7,6 +7,7 @@ import { FileText, Home as HomeIcon } from 'lucide-react';
 import { App as KonstaApp, Block, List, ListItem } from 'konsta/react';
 import { ACTIVE_STATUSES, TERMINAL_STATUSES, Games } from '../api/games/collection';
 import { AppShell } from './components/AppShell';
+import { CrewSheet } from './components/CrewSheet';
 import { MissionStage } from './components/MissionStage';
 import { ResultSheet } from './components/ResultSheet';
 import { signalActionResult } from './native/haptics';
@@ -75,6 +76,11 @@ export function App() {
   const [view, setView] = useState('play');
   const [busyAction, setBusyAction] = useState(null);
   const [statusMessage, setStatusMessage] = useState('');
+  const [crewSheetMode, setCrewSheetMode] = useState(null);
+  const [crewSheetOpen, setCrewSheetOpen] = useState(false);
+  const [crewRoomCode, setCrewRoomCode] = useState('');
+  const [crewError, setCrewError] = useState('');
+  const [crewGameId, setCrewGameId] = useState(null);
   const [dark, setDark] = useState(false);
   const [missionGameId, setMissionGameId] = useState(null);
   const [now, setNow] = useState(Date.now());
@@ -134,13 +140,21 @@ export function App() {
     return recentGames.find((game) => game._id === missionGameId) ?? null;
   }, [missionGameId, recentGames]);
 
-  const missionSnapshot = activeGame ?? resultGame ?? null;
-  const showMission = Boolean(activeGame) || Boolean(resultGame);
+  const waitingCrewGame =
+    activeGame?.mode === 'crew' && activeGame?.status === 'waiting' ? activeGame : null;
+  const liveMissionGame = activeGame?.status === 'playing' ? activeGame : null;
+  const missionSnapshot = liveMissionGame ?? resultGame ?? null;
+  const showMission = Boolean(liveMissionGame) || Boolean(resultGame);
 
   const bestScore = recentGames.reduce(
     (highest, game) => Math.max(highest, Number(game.score) || 0),
     0
   );
+  const homeStatusMessage =
+    statusMessage ||
+    (waitingCrewGame && !crewSheetOpen
+      ? 'Crew room waiting in background. Reopen Create Crew Mission to share the code.'
+      : '');
 
   useEffect(() => {
     if (!activeGame?._id) {
@@ -150,6 +164,27 @@ export function App() {
     setMissionGameId(activeGame._id);
     setNow(Date.now());
   }, [activeGame?._id]);
+
+  useEffect(() => {
+    if (!waitingCrewGame?._id) {
+      return;
+    }
+
+    setCrewRoomCode(waitingCrewGame.roomCode ?? '');
+    setCrewGameId(waitingCrewGame._id);
+  }, [waitingCrewGame?._id, waitingCrewGame?.roomCode]);
+
+  useEffect(() => {
+    if (!crewSheetOpen || activeGame?._id !== crewGameId || activeGame?.status !== 'playing') {
+      return;
+    }
+
+    setCrewSheetOpen(false);
+    setCrewSheetMode(null);
+    setCrewError('');
+    setCrewRoomCode('');
+    setView('play');
+  }, [activeGame?._id, activeGame?.status, crewGameId, crewSheetOpen]);
 
   useEffect(() => {
     if (!showMission || !missionSnapshot) {
@@ -218,7 +253,7 @@ export function App() {
   }, [resultGame, resultSheetOpen]);
 
   const invokeGameMethod = useCallback(
-    async (actionName, callback, { onSuccess } = {}) => {
+    async (actionName, callback, { onSuccess, onError } = {}) => {
       setBusyAction(actionName);
       setStatusMessage('');
 
@@ -227,7 +262,11 @@ export function App() {
         onSuccess?.(result);
         return result;
       } catch (error) {
-        setStatusMessage(error.reason || error.message || 'Mission command failed.');
+        const message = error.reason || error.message || 'Mission command failed.';
+        onError?.(message, error);
+        if (!onError) {
+          setStatusMessage(message);
+        }
         return null;
       } finally {
         setBusyAction(null);
@@ -256,45 +295,83 @@ export function App() {
   }, [identity.ownerId, identity.playerId, invokeGameMethod, testMode]);
 
   const handleCreateCrew = useCallback(() => {
-    return invokeGameMethod('crew', async () => {
-      const result = await Meteor.callAsync('games.createCrew', {
-        ownerId: identity.ownerId,
-        playerId: identity.playerId,
+    setCrewSheetMode('create');
+    setCrewSheetOpen(true);
+    setCrewError('');
+    setStatusMessage('');
+    setView('play');
+
+    if (waitingCrewGame?._id) {
+      setCrewRoomCode(waitingCrewGame.roomCode ?? '');
+      setCrewGameId(waitingCrewGame._id);
+      return Promise.resolve({
+        gameId: waitingCrewGame._id,
+        roomCode: waitingCrewGame.roomCode,
       });
-      setStatusMessage(`Crew room ${result.roomCode} ready for a copilot.`);
-      setMissionGameId(result.gameId);
-      setResultSheetOpen(false);
-      return result;
-    });
-  }, [identity.ownerId, identity.playerId, invokeGameMethod]);
+    }
+
+    setCrewRoomCode('');
+    setCrewGameId(null);
+
+    return invokeGameMethod(
+      'crew',
+      () =>
+        Meteor.callAsync('games.createCrew', {
+          ownerId: identity.ownerId,
+          playerId: identity.playerId,
+        }),
+      {
+        onSuccess: ({ gameId, roomCode }) => {
+          setCrewRoomCode(roomCode);
+          setCrewGameId(gameId);
+          setMissionGameId(gameId);
+          setResultSheetOpen(false);
+        },
+        onError: (message) => {
+          setCrewError(message);
+        },
+      }
+    );
+  }, [identity.ownerId, identity.playerId, invokeGameMethod, waitingCrewGame?._id, waitingCrewGame?.roomCode]);
 
   const handleJoinCrew = useCallback(
     (roomCode) => {
-      const normalizedRoomCode = roomCode.trim().toUpperCase();
-
-      if (normalizedRoomCode.length !== 6) {
-        setStatusMessage('Enter a six-character room code.');
-        return Promise.resolve();
-      }
-
       return invokeGameMethod(
         'join',
         () =>
           Meteor.callAsync('games.joinCrew', {
             ownerId: identity.ownerId,
             playerId: identity.playerId,
-            roomCode: normalizedRoomCode,
+            roomCode,
           }),
         {
           onSuccess: ({ gameId }) => {
             setMissionGameId(gameId);
+            setCrewGameId(gameId);
+            setCrewError('');
             setResultSheetOpen(false);
+          },
+          onError: (message) => {
+            setCrewError(message);
           },
         }
       );
     },
     [identity.ownerId, identity.playerId, invokeGameMethod]
   );
+
+  const handleOpenJoinCrew = useCallback(() => {
+    setCrewSheetMode('join');
+    setCrewSheetOpen(true);
+    setCrewError('');
+    setStatusMessage('');
+    setView('play');
+  }, []);
+
+  const handleCloseCrewSheet = useCallback(() => {
+    setCrewSheetOpen(false);
+    setCrewError('');
+  }, []);
 
   const handleAction = useCallback(
     (action) => {
@@ -408,14 +485,27 @@ export function App() {
         ) : null}
 
         {!showMission && view === 'play' ? (
-          <PlayPage
-            bestScore={bestScore}
-            onQuickMission={handleQuickMission}
-            onCreateCrew={handleCreateCrew}
-            onJoinCrew={handleJoinCrew}
-            busyAction={busyAction}
-            statusMessage={statusMessage}
-          />
+          <>
+            <PlayPage
+              bestScore={bestScore}
+              onQuickMission={handleQuickMission}
+              onCreateCrew={handleCreateCrew}
+              onJoinCrew={handleOpenJoinCrew}
+              busyAction={busyAction}
+              crewWaiting={Boolean(waitingCrewGame)}
+              statusMessage={homeStatusMessage}
+            />
+            <CrewSheet
+              mode={crewSheetMode}
+              opened={crewSheetOpen}
+              roomCode={crewRoomCode}
+              busy={busyAction === 'crew' || busyAction === 'join'}
+              error={crewError}
+              onCreate={handleCreateCrew}
+              onJoin={handleJoinCrew}
+              onClose={handleCloseCrewSheet}
+            />
+          </>
         ) : null}
 
         {view === 'records' && !activeGame ? (
