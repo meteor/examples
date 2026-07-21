@@ -2,6 +2,10 @@ export function shouldCloseMissionExitDialog({ liveMissionGameId, resultGameId }
   return !liveMissionGameId || Boolean(resultGameId);
 }
 
-export function shouldRevealActiveGame(status) {
-  return status === 'playing';
+export function shouldRevealActiveGame({ activeGameId, activeGameStatus, revealedGameId }) {
+  return (
+    activeGameStatus === 'playing' &&
+    Boolean(activeGameId) &&
+    activeGameId !== revealedGameId
+  );
 }

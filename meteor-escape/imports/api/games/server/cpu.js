@@ -71,6 +71,23 @@ export function hasScheduledTurnForTests(gameId) {
   return scheduledTurns.has(gameId);
 }
 
+export function getScheduledTurnForTests(gameId) {
+  return scheduledTurns.get(gameId);
+}
+
+function deleteScheduledTurnIfCurrent(gameId, scheduledTurn) {
+  if (scheduledTurns.get(gameId) !== scheduledTurn) {
+    return false;
+  }
+
+  scheduledTurns.delete(gameId);
+  return true;
+}
+
+export function deleteScheduledTurnIfCurrentForTests(gameId, scheduledTurn) {
+  return deleteScheduledTurnIfCurrent(gameId, scheduledTurn);
+}
+
 export async function recoverActiveGameTurns(now = Date.now()) {
   const activeGames = await Games.find({ status: 'playing' }).fetchAsync();
 
@@ -96,8 +113,15 @@ export function scheduleGameTurn(game, now = Date.now()) {
 
   const expectedTurn = storedGame.turn;
   const expectedTurnEndsAt = storedGame.turnEndsAt;
-  const handle = Meteor.setTimeout(async () => {
-    scheduledTurns.delete(game._id);
+  const scheduledTurn = {
+    handle: null,
+    expectedTurn,
+    expectedTurnEndsAt,
+  };
+  scheduledTurn.handle = Meteor.setTimeout(async () => {
+    if (!deleteScheduledTurnIfCurrent(game._id, scheduledTurn)) {
+      return;
+    }
 
     try {
       await runScheduledTurn(
@@ -110,11 +134,7 @@ export function scheduleGameTurn(game, now = Date.now()) {
     }
   }, delay);
 
-  scheduledTurns.set(game._id, {
-    handle,
-    expectedTurn,
-    expectedTurnEndsAt,
-  });
+  scheduledTurns.set(game._id, scheduledTurn);
 }
 
 export async function runCpuTurn(gameId, now = Date.now()) {

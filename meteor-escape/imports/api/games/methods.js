@@ -8,6 +8,7 @@ import {
 import {
   ACTIVE_PARTICIPANT_INDEX_NAME,
   ACTIVE_STATUSES,
+  gamesStorageReady,
   Games,
   ROOM_CODE_INDEX_NAME,
   WAITING_CREW_OWNERSHIP_INDEX_NAME,
@@ -213,6 +214,7 @@ function activeGameError() {
 
 Meteor.methods({
   async 'games.startSolo'(payload) {
+    await gamesStorageReady;
     const { ownerId, playerId, testMode: requestedTestMode } = parseOrThrow(StartSoloSchema, payload);
     const existingActiveGame = await findActiveGameForParticipant(ownerId, playerId);
 
@@ -252,6 +254,7 @@ Meteor.methods({
   },
 
   async 'games.answer'(payload) {
+    await gamesStorageReady;
     const { ownerId, playerId, gameId, action } = parseOrThrow(AnswerSchema, payload);
     const now = Date.now();
     const existing = await findOwnedGameOrThrow({ ownerId, playerId, gameId });
@@ -301,6 +304,7 @@ Meteor.methods({
   },
 
   async 'games.createCrew'(payload) {
+    await gamesStorageReady;
     const { ownerId, playerId } = parseOrThrow(CreateCrewSchema, payload);
     const existingWaitingGame = await findExistingWaitingCrewGame(ownerId, playerId);
 
@@ -372,6 +376,7 @@ Meteor.methods({
   },
 
   async 'games.joinCrew'(payload) {
+    await gamesStorageReady;
     const { ownerId, playerId, roomCode } = parseOrThrow(JoinCrewSchema, payload);
     const waitingGame = await Games.findOneAsync({
       roomCode,
@@ -447,6 +452,7 @@ Meteor.methods({
   },
 
   async 'games.rematch'(payload) {
+    await gamesStorageReady;
     const { ownerId, playerId, gameId, testMode: requestedTestMode } = parseOrThrow(RematchSchema, payload);
     const existing = await findOwnedGameOrThrow({ ownerId, playerId, gameId });
     const game = sanitizeStoredGame(existing);

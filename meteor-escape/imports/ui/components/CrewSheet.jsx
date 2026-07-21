@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { LoaderCircle, Share2, Users, X } from 'lucide-react';
 import { Button, Sheet } from 'konsta/react';
 import { shareCrewRoom } from '../native/share';
+import { useDialogFocusTrap } from '../useDialogFocusTrap';
 
 const ROOM_CODE_PATTERN = /^[A-HJ-NP-Z2-9]{6}$/;
 
@@ -40,6 +41,11 @@ export function CrewSheet({
   const [joinTouched, setJoinTouched] = useState(false);
   const [shareBusy, setShareBusy] = useState(false);
   const [shareMessage, setShareMessage] = useState('');
+  const { dialogRef, onDialogKeyDown } = useDialogFocusTrap({
+    opened: opened && Boolean(mode),
+    onDismiss: onClose,
+    dismissDisabled: busy || shareBusy,
+  });
 
   useEffect(() => {
     if (!opened) {
@@ -77,6 +83,9 @@ export function CrewSheet({
         aria-modal="true"
         aria-labelledby="crew-sheet-title"
         aria-describedby={describedBy}
+        ref={dialogRef}
+        tabIndex={-1}
+        onKeyDown={onDialogKeyDown}
       >
         <div className="crew-sheet__header">
           <div>

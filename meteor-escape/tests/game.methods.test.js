@@ -1,7 +1,11 @@
 import assert from 'assert';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { ensureGamesIndexes, Games } from '../imports/api/games/collection';
+import {
+  ACTIVE_PARTICIPANT_INDEX_NAME,
+  ensureGamesIndexes,
+  Games,
+} from '../imports/api/games/collection';
 import '../imports/api/games/methods';
 import * as gameMethodsModule from '../imports/api/games/methods';
 import * as turnScheduler from '../imports/api/games/server/cpu';
@@ -99,6 +103,33 @@ if (Meteor.isServer) {
       }
     });
 
+    it('repairs duplicate active participants before restoring the unique index', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const original = await Games.findOneAsync(gameId);
+      const duplicate = { ...original };
+      delete duplicate._id;
+      duplicate.updatedAt = new Date(original.updatedAt.getTime() + 1);
+
+      await Games.rawCollection().dropIndex(ACTIVE_PARTICIPANT_INDEX_NAME);
+      const duplicateId = await Games.insertAsync(duplicate);
+
+      await ensureGamesIndexes();
+
+      const activeGames = await Games.find({
+        status: { $in: ['waiting', 'playing'] },
+        participantIds: playerId,
+      }).fetchAsync();
+      const retired = await Games.findOneAsync(gameId);
+      const indexes = await Games.rawCollection().indexes();
+
+      assert.deepStrictEqual(activeGames.map((game) => game._id), [duplicateId]);
+      assert.strictEqual(retired.status, 'lost');
+      assert.strictEqual(retired.turnEndsAt, null);
+      assert.ok(indexes.some((index) => index.name === ACTIVE_PARTICIPANT_INDEX_NAME));
+    });
+
     it('ignores payload testMode without E2E guard and in production-like mode', async function () {
       process.env.METEOR_ESCAPE_E2E = undefined;
       assert.strictEqual(
@@ -163,6 +194,24 @@ if (Meteor.isServer) {
       await turnScheduler.recoverActiveGameTurns();
 
       assert.strictEqual(turnScheduler.hasScheduledTurnForTests(gameId), true);
+    });
+
+    it('does not let a stale timer callback remove its replacement', async function () {
+      const ownerId = Random.id();
+      const playerId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.startSolo', { ownerId, playerId });
+      const game = await Games.findOneAsync(gameId);
+      const staleTurn = turnScheduler.getScheduledTurnForTests(gameId);
+
+      turnScheduler.scheduleGameTurn(game);
+      const replacementTurn = turnScheduler.getScheduledTurnForTests(gameId);
+
+      assert.notStrictEqual(replacementTurn, staleTurn);
+      assert.strictEqual(
+        turnScheduler.deleteScheduledTurnIfCurrentForTests(gameId, staleTurn),
+        false
+      );
+      assert.strictEqual(turnScheduler.getScheduledTurnForTests(gameId), replacementTurn);
     });
 
     it('settles an expired player turn with shield damage and turn advance', async function () {

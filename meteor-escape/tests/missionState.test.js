@@ -36,8 +36,40 @@ describe('mission state helpers', function () {
   });
 
   it('reveals a subscribed game only after a waiting crew room starts playing', function () {
-    assert.strictEqual(shouldRevealActiveGame('waiting'), false);
-    assert.strictEqual(shouldRevealActiveGame('playing'), true);
-    assert.strictEqual(shouldRevealActiveGame(undefined), false);
+    assert.strictEqual(
+      shouldRevealActiveGame({
+        activeGameId: 'mission-1',
+        activeGameStatus: 'waiting',
+        revealedGameId: null,
+      }),
+      false
+    );
+    assert.strictEqual(
+      shouldRevealActiveGame({
+        activeGameId: 'mission-1',
+        activeGameStatus: 'playing',
+        revealedGameId: null,
+      }),
+      true
+    );
+  });
+
+  it('does not resurface a background mission after subscription churn', function () {
+    assert.strictEqual(
+      shouldRevealActiveGame({
+        activeGameId: 'mission-1',
+        activeGameStatus: 'playing',
+        revealedGameId: 'mission-1',
+      }),
+      false
+    );
+    assert.strictEqual(
+      shouldRevealActiveGame({
+        activeGameId: undefined,
+        activeGameStatus: undefined,
+        revealedGameId: 'mission-1',
+      }),
+      false
+    );
   });
 });

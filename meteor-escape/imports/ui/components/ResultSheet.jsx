@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Home, RotateCcw, Share2, Trophy, TriangleAlert, X } from 'lucide-react';
+import { useDialogFocusTrap } from '../useDialogFocusTrap';
 
 function getResultCopy(game) {
   if (game.status === 'won') {
@@ -22,7 +23,10 @@ function getResultCopy(game) {
 export function ResultSheet({ game, opened, onRematch, rematching, onHome, onClose, onShare }) {
   const [shareMessage, setShareMessage] = useState('');
   const [sharing, setSharing] = useState(false);
-  const dialogRef = useRef(null);
+  const { dialogRef, onDialogKeyDown } = useDialogFocusTrap({
+    opened,
+    onDismiss: onClose,
+  });
   const copy = getResultCopy(game);
   const { Icon } = copy;
 
@@ -32,17 +36,6 @@ export function ResultSheet({ game, opened, onRematch, rematching, onHome, onClo
       setSharing(false);
     }
   }, [opened, game._id]);
-
-  useEffect(() => {
-    if (!opened) {
-      return undefined;
-    }
-
-    const previousFocus = document.activeElement;
-    dialogRef.current?.focus();
-
-    return () => previousFocus?.focus?.();
-  }, [opened]);
 
   if (!opened) {
     return null;
@@ -57,11 +50,7 @@ export function ResultSheet({ game, opened, onRematch, rematching, onHome, onClo
         aria-labelledby="result-sheet-title"
         ref={dialogRef}
         tabIndex={-1}
-        onKeyDown={(event) => {
-          if (event.key === 'Escape') {
-            onClose();
-          }
-        }}
+        onKeyDown={onDialogKeyDown}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="result-sheet__header">

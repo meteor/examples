@@ -107,8 +107,25 @@ test('keeps technical controls on System Information', async ({ page }) => {
   expect(switchBounds.height).toBeGreaterThanOrEqual(48);
   expect(switchBounds.width).toBeGreaterThanOrEqual(48);
 
-  await page.getByRole('button', { name: 'Preview HCP update' }).click();
-  await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
+  const ddpSwitch = page.getByRole('switch', { name: 'Live DDP connection' });
+  await ddpSwitch.click();
+  await expect(page.getByText('DDP status: Paused')).toBeVisible();
+  await page.getByRole('button', { name: 'Reconnect now' }).click();
+
+  const previewUpdate = page.getByRole('button', { name: 'Preview HCP update' });
+  await previewUpdate.click();
+  const updateDialog = page.getByRole('dialog', { name: 'New app update available' });
+  await expect(updateDialog).toBeVisible();
+  await expect(updateDialog).toBeFocused();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByRole('button', { name: 'Install update' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Not now' })).toBeFocused();
+
+  await page.keyboard.press('Escape');
+  await expect(updateDialog).toBeHidden();
+  await expect(previewUpdate).toBeFocused();
 });
 
 test('shows a global offline banner and disables mission controls until the link returns', async ({ page }) => {
@@ -339,6 +356,12 @@ test('keeps mission result sheet inside viewport and honors reduced motion', asy
 
   const resultSheet = page.locator('.result-sheet');
   await expect(resultSheet).toBeVisible({ timeout: 30_000 });
+  await expect(resultSheet).toBeFocused();
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByRole('button', { name: 'Home' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Close mission report' })).toBeFocused();
 
   const resultBox = await resultSheet.boundingBox();
   expect(resultBox).not.toBeNull();

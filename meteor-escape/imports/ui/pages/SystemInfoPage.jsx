@@ -77,7 +77,7 @@ export function SystemInfoPage({
 
         <section className="system-section">
           <h2>Live data connection</h2>
-          <p className="system-section__copy">DDP status: {ddpStatus}</p>
+          <p className="system-section__copy">DDP status: {ddpStatusValue}</p>
           <List inset strong>
             <ListItem
               title="DDP endpoint"

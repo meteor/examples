@@ -27,6 +27,7 @@ import { getNetworkStatus, listenNetworkStatus } from './native/network';
 import { shareResult } from './native/share';
 import { getClientIdentity } from './identity';
 import { shouldCloseMissionExitDialog, shouldRevealActiveGame } from './missionState';
+import { useDialogFocusTrap } from './useDialogFocusTrap';
 import { PlayPage } from './pages/PlayPage';
 import { RecordsPage } from './pages/RecordsPage';
 import { SystemInfoPage } from './pages/SystemInfoPage';
@@ -66,18 +67,10 @@ const browserAppInfo = {
 };
 
 function MissionExitDialog({ opened, onStay, onLeave }) {
-  const dialogRef = useRef(null);
-
-  useEffect(() => {
-    if (!opened) {
-      return undefined;
-    }
-
-    const previousFocus = document.activeElement;
-    dialogRef.current?.focus();
-
-    return () => previousFocus?.focus?.();
-  }, [opened]);
+  const { dialogRef, onDialogKeyDown } = useDialogFocusTrap({
+    opened,
+    onDismiss: onStay,
+  });
 
   if (!opened) {
     return null;
@@ -92,11 +85,7 @@ function MissionExitDialog({ opened, onStay, onLeave }) {
         aria-labelledby="meteor-mission-exit-title"
         ref={dialogRef}
         tabIndex={-1}
-        onKeyDown={(event) => {
-          if (event.key === 'Escape') {
-            onStay();
-          }
-        }}
+        onKeyDown={onDialogKeyDown}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="dialog-sheet__header">
@@ -148,6 +137,7 @@ export function App() {
   const [resultSheetOpen, setResultSheetOpen] = useState(false);
   const seenResultRef = useRef(null);
   const feedbackKeyRef = useRef(null);
+  const revealedActiveGameIdRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -226,10 +216,17 @@ export function App() {
       : '');
 
   useEffect(() => {
-    if (!shouldRevealActiveGame(activeGame?.status)) {
+    if (
+      !shouldRevealActiveGame({
+        activeGameId: activeGame?._id,
+        activeGameStatus: activeGame?.status,
+        revealedGameId: revealedActiveGameIdRef.current,
+      })
+    ) {
       return;
     }
 
+    revealedActiveGameIdRef.current = activeGame._id;
     setMissionGameId(activeGame._id);
     setMissionVisible(true);
     setNow(Date.now());

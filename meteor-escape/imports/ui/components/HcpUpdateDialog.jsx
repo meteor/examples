@@ -1,7 +1,14 @@
 import React from 'react';
 import { Button } from 'konsta/react';
+import { useDialogFocusTrap } from '../useDialogFocusTrap';
 
 export function HcpUpdateDialog({ installing, updateVersion, onDismiss, onInstall }) {
+  const { dialogRef, onDialogKeyDown } = useDialogFocusTrap({
+    opened: Boolean(updateVersion),
+    onDismiss,
+    dismissDisabled: installing,
+  });
+
   if (!updateVersion) {
     return null;
   }
@@ -13,6 +20,9 @@ export function HcpUpdateDialog({ installing, updateVersion, onDismiss, onInstal
         role="dialog"
         aria-modal="true"
         aria-labelledby="meteor-hcp-dialog-title"
+        ref={dialogRef}
+        tabIndex={-1}
+        onKeyDown={onDialogKeyDown}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="dialog-sheet__header">
