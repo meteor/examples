@@ -11,6 +11,17 @@ if (Meteor.isServer) {
       await Games.removeAsync({});
     });
 
+    function buildTerminalEvent({ actorId, action = 'boost', emergency = 'path', outcome = 'correct' }) {
+      return {
+        type: 'action',
+        actorId,
+        action,
+        now: Date.now(),
+        emergency,
+        outcome,
+      };
+    }
+
     it('starts a solo game with CPU copilot', async function () {
       const ownerId = Random.id();
       const playerId = Random.id();
@@ -71,8 +82,9 @@ if (Meteor.isServer) {
       );
     });
 
-    it('joins a crew game by room code', async function () {
+    it('joins a crew game by room code across owners', async function () {
       const ownerId = Random.id();
+      const joinedOwnerId = Random.id();
       const captainId = Random.id();
       const copilotId = Random.id();
       const { gameId } = await Meteor.callAsync('games.createCrew', {
@@ -81,8 +93,10 @@ if (Meteor.isServer) {
       });
       const created = await Games.findOneAsync(gameId);
 
+      assert.match(created.roomCode, /^[A-HJ-NP-Z2-9]{6}$/);
+
       const joined = await Meteor.callAsync('games.joinCrew', {
-        ownerId,
+        ownerId: joinedOwnerId,
         playerId: copilotId,
         roomCode: created.roomCode,
       });
@@ -90,12 +104,36 @@ if (Meteor.isServer) {
 
       assert.strictEqual(game.status, 'playing');
       assert.strictEqual(game.players.length, 2);
+      assert.strictEqual(game.players[0].ownerId, ownerId);
       assert.strictEqual(game.players[1].id, copilotId);
+      assert.strictEqual(game.players[1].ownerId, joinedOwnerId);
       assert.strictEqual(game.players[1].type, 'human');
+      assert.deepStrictEqual(game.ownerIds, [ownerId, joinedOwnerId]);
     });
 
-    it('rejects duplicate crew joins', async function () {
+    it('rejects duplicate captain join while waiting', async function () {
       const ownerId = Random.id();
+      const captainId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.createCrew', {
+        ownerId,
+        playerId: captainId,
+      });
+      const created = await Games.findOneAsync(gameId);
+
+      await assert.rejects(
+        () =>
+          Meteor.callAsync('games.joinCrew', {
+            ownerId,
+            playerId: captainId,
+            roomCode: created.roomCode,
+          }),
+        (err) => err.error === 'duplicate-join'
+      );
+    });
+
+    it('allows joined copilot to answer with own owner id', async function () {
+      const ownerId = Random.id();
+      const joinedOwnerId = Random.id();
       const captainId = Random.id();
       const copilotId = Random.id();
       const { gameId } = await Meteor.callAsync('games.createCrew', {
@@ -105,7 +143,88 @@ if (Meteor.isServer) {
       const created = await Games.findOneAsync(gameId);
 
       await Meteor.callAsync('games.joinCrew', {
+        ownerId: joinedOwnerId,
+        playerId: copilotId,
+        roomCode: created.roomCode,
+      });
+      await Games.updateAsync(gameId, {
+        $set: {
+          turn: 'copilot',
+          emergency: 'overheat',
+          turnEndsAt: Date.now() + 10_000,
+        },
+      });
+
+      await Meteor.callAsync('games.answer', {
+        ownerId: joinedOwnerId,
+        playerId: copilotId,
+        gameId,
+        action: 'cool',
+      });
+
+      const game = await Games.findOneAsync(gameId);
+      assert.strictEqual(game.events.at(-1).actorId, copilotId);
+      assert.strictEqual(game.events.at(-1).action, 'cool');
+      assert.strictEqual(game.turn, 'player');
+    });
+
+    it('allows crew rematch from joined owner', async function () {
+      const ownerId = Random.id();
+      const joinedOwnerId = Random.id();
+      const captainId = Random.id();
+      const copilotId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.createCrew', {
         ownerId,
+        playerId: captainId,
+      });
+      const created = await Games.findOneAsync(gameId);
+
+      await Meteor.callAsync('games.joinCrew', {
+        ownerId: joinedOwnerId,
+        playerId: copilotId,
+        roomCode: created.roomCode,
+      });
+      await Games.updateAsync(gameId, {
+        $set: {
+          status: 'lost',
+          shield: 0,
+          warp: 80,
+          score: 80,
+          streak: 0,
+          bestStreak: 3,
+          events: [buildTerminalEvent({ actorId: captainId, action: 'shield', emergency: 'meteor', outcome: 'wrong' })],
+        },
+      });
+
+      const result = await Meteor.callAsync('games.rematch', {
+        ownerId: joinedOwnerId,
+        playerId: copilotId,
+        gameId,
+      });
+      const game = await Games.findOneAsync(result.gameId);
+
+      assert.notStrictEqual(result.gameId, gameId);
+      assert.strictEqual(game.mode, 'crew');
+      assert.strictEqual(game.ownerId, ownerId);
+      assert.deepStrictEqual(game.ownerIds, [ownerId, joinedOwnerId]);
+      assert.strictEqual(game.players[1].ownerId, joinedOwnerId);
+      assert.strictEqual(game.status, 'playing');
+      assert.deepStrictEqual(game.events, []);
+    });
+
+    it('rejects full crew joins after another owner joins', async function () {
+      const ownerId = Random.id();
+      const joinedOwnerId = Random.id();
+      const captainId = Random.id();
+      const copilotId = Random.id();
+      const { gameId } = await Meteor.callAsync('games.createCrew', {
+        ownerId,
+        playerId: captainId,
+      });
+      const created = await Games.findOneAsync(gameId);
+
+      await Meteor.callAsync('games.joinCrew', {
+        ownerId: joinedOwnerId,
         playerId: copilotId,
         roomCode: created.roomCode,
       });
@@ -113,7 +232,7 @@ if (Meteor.isServer) {
       await assert.rejects(
         () =>
           Meteor.callAsync('games.joinCrew', {
-            ownerId,
+            ownerId: Random.id(),
             playerId: Random.id(),
             roomCode: created.roomCode,
           }),
@@ -134,16 +253,7 @@ if (Meteor.isServer) {
           score: 100,
           streak: 5,
           bestStreak: 5,
-          events: [
-            {
-              type: 'action',
-              actorId: playerId,
-              action: 'boost',
-              now: Date.now(),
-              emergency: 'path',
-              outcome: 'correct',
-            },
-          ],
+          events: [buildTerminalEvent({ actorId: playerId })],
         },
       });
 

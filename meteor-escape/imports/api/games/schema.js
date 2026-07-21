@@ -12,15 +12,31 @@ const RoomCodeSchema = z
   .string()
   .trim()
   .toUpperCase()
-  .regex(/^[A-Z0-9]{6}$/, 'Enter a six-character room code');
+  .regex(/^[A-HJ-NP-Z2-9]{6}$/, 'Enter a six-character room code');
 
 const PlayerSchema = z
   .object({
     id: IdSchema,
+    ownerId: IdSchema.nullable(),
     role: TurnSchema,
     type: z.enum(['human', 'cpu']),
   })
-  .strict();
+  .strict()
+  .superRefine((player, context) => {
+    if (player.type === 'human' && player.ownerId === null) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Human players require ownerId',
+      });
+    }
+
+    if (player.type === 'cpu' && player.ownerId !== null) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'CPU players cannot carry ownerId',
+      });
+    }
+  });
 
 const EventSchema = z
   .object({
@@ -71,6 +87,7 @@ export const GameDocumentSchema = z
   .object({
     mode: ModeSchema,
     ownerId: IdSchema,
+    ownerIds: z.array(IdSchema).min(1).max(2),
     playerId: IdSchema,
     copilotId: IdSchema.nullable(),
     participantIds: z.array(IdSchema).max(2),

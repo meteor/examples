@@ -24,8 +24,8 @@ function sanitizeStoredGame(game) {
   return parseGameDocument(document);
 }
 
-function getTurnActorId(game) {
-  return game.turn === 'player' ? game.playerId : game.copilotId;
+function getTurnPlayer(game) {
+  return game.players.find((player) => player.role === game.turn) ?? null;
 }
 
 function shouldScheduleCpu(game) {
@@ -45,8 +45,12 @@ async function persistGame(gameId, nextState, now) {
 async function findOwnedGameOrThrow({ ownerId, playerId, gameId }) {
   const game = await Games.findOneAsync({
     _id: gameId,
-    ownerId,
-    participantIds: playerId,
+    players: {
+      $elemMatch: {
+        id: playerId,
+        ownerId,
+      },
+    },
   });
 
   if (!game) {
@@ -75,11 +79,12 @@ function createSoloDocument({ ownerId, playerId, now }) {
 
   return parseGameDocument({
     ...state,
+    ownerIds: [ownerId],
     copilotId: state.copilotId,
     participantIds: [playerId],
     players: [
-      { id: playerId, role: 'player', type: 'human' },
-      { id: state.copilotId, role: 'copilot', type: 'cpu' },
+      { id: playerId, ownerId, role: 'player', type: 'human' },
+      { id: state.copilotId, ownerId: null, role: 'copilot', type: 'cpu' },
     ],
     createdAt: new Date(now),
     updatedAt: new Date(now),
@@ -126,7 +131,13 @@ Meteor.methods({
       throw new Meteor.Error('stale-action', 'Turn already expired');
     }
 
-    if (getTurnActorId(storedGame) !== playerId) {
+    const turnPlayer = getTurnPlayer(storedGame);
+    if (
+      turnPlayer === null ||
+      turnPlayer.type !== 'human' ||
+      turnPlayer.id !== playerId ||
+      turnPlayer.ownerId !== ownerId
+    ) {
       throw new Meteor.Error('stale-action', 'Turn already advanced');
     }
 
@@ -151,9 +162,10 @@ Meteor.methods({
     const gameId = await Games.insertAsync(
       parseGameDocument({
         ...state,
+        ownerIds: [ownerId],
         copilotId: null,
         participantIds: [playerId],
-        players: [{ id: playerId, role: 'player', type: 'human' }],
+        players: [{ id: playerId, ownerId, role: 'player', type: 'human' }],
         roomCode,
         status: 'waiting',
         endsAt: null,
@@ -169,7 +181,6 @@ Meteor.methods({
   async 'games.joinCrew'(payload) {
     const { ownerId, playerId, roomCode } = parseOrThrow(JoinCrewSchema, payload);
     const waitingGame = await Games.findOneAsync({
-      ownerId,
       roomCode,
       mode: 'crew',
       status: 'waiting',
@@ -179,7 +190,11 @@ Meteor.methods({
       throw new Meteor.Error('not-found', 'Room code not found');
     }
 
-    if (waitingGame.participantIds.includes(playerId)) {
+    if (
+      waitingGame.players.some(
+        (player) => player.id === playerId || player.ownerId === ownerId
+      )
+    ) {
       throw new Meteor.Error('duplicate-join', 'Player already joined');
     }
 
@@ -193,11 +208,17 @@ Meteor.methods({
     });
     const nextDocument = parseGameDocument({
       ...state,
+      ownerIds: [...waitingGame.ownerIds, ownerId],
       copilotId: playerId,
       participantIds: [waitingGame.playerId, playerId],
       players: [
-        { id: waitingGame.playerId, role: 'player', type: 'human' },
-        { id: playerId, role: 'copilot', type: 'human' },
+        {
+          id: waitingGame.playerId,
+          ownerId: waitingGame.players[0].ownerId,
+          role: 'player',
+          type: 'human',
+        },
+        { id: playerId, ownerId, role: 'copilot', type: 'human' },
       ],
       roomCode,
       createdAt: waitingGame.createdAt,
@@ -244,6 +265,7 @@ Meteor.methods({
       });
       nextDocument = parseGameDocument({
         ...state,
+        ownerIds: [...game.ownerIds],
         copilotId: game.copilotId,
         participantIds: [...game.participantIds],
         players: game.players,

@@ -13,8 +13,12 @@ Meteor.publish('games.active', function (ownerId, playerId) {
 
   return Games.find(
     {
-      ownerId,
-      participantIds: playerId,
+      players: {
+        $elemMatch: {
+          id: playerId,
+          ownerId,
+        },
+      },
       status: { $in: ACTIVE_STATUSES },
     },
     {
@@ -30,7 +34,7 @@ Meteor.publish('games.recent', function (ownerId) {
 
   return Games.find(
     {
-      ownerId,
+      ownerIds: ownerId,
       status: { $in: TERMINAL_STATUSES },
     },
     {

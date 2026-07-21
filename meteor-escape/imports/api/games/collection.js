@@ -12,5 +12,6 @@ export async function ensureGamesIndexes() {
     rawCollection.createIndex({ roomCode: 1 }, { unique: true, sparse: true }),
     rawCollection.createIndex({ ownerId: 1, updatedAt: -1 }),
     rawCollection.createIndex({ participantIds: 1 }),
+    rawCollection.createIndex({ ownerIds: 1, updatedAt: -1 }),
   ]);
 }
