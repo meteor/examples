@@ -1,0 +1,47 @@
+{
+  "name": "meteor-escape",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
+    "test:headless": "meteor test --once --driver-package meteortesting:mocha",
+    "lint": "npx oxlint --react-plugin --import-plugin .",
+    "e2e": "npx playwright test --ui",
+    "e2e:headless": "npx playwright test"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.29.2",
+    "@capacitor/android": "^7.6.7",
+    "@capacitor/app": "^7.1.2",
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.6.7",
+    "@swc/helpers": "^0.5.19",
+    "meteor-node-stubs": "^1.2.27",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.6.7",
+    "@meteorjs/capacitor": "file:../../meteor/npm-packages/meteor-capacitor",
+    "@meteorjs/rspack": "^2.0.1",
+    "@playwright/test": "^1.50.0",
+    "@rsdoctor/rspack-plugin": "^1.5.7",
+    "@rspack/cli": "^1.7.9",
+    "@rspack/core": "^1.7.9",
+    "@rspack/plugin-react-refresh": "^1.6.1",
+    "oxlint": "^1.56.0",
+    "react-refresh": "^0.18.0"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.js",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js",
+    "capacitor": {
+      "hcp": "webapp"
+    },
+    "modern": true
+  }
+}
