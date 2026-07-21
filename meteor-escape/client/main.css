@@ -319,28 +319,40 @@ img {
 
 .system-toggle {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.18rem;
   width: 3.5rem;
   min-width: 3.5rem;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+}
+
+.system-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 50% 0 auto;
   height: 2rem;
+  transform: translateY(-50%);
   border: 1px solid var(--meteor-line);
   border-radius: 999px;
   background: rgba(95, 106, 113, 0.16);
 }
 
-.system-toggle.is-enabled {
+.system-toggle.is-enabled::before {
   background: rgba(92, 196, 161, 0.24);
   border-color: rgba(92, 196, 161, 0.4);
 }
 
 .system-toggle__thumb {
-  position: absolute;
-  top: 0.18rem;
-  left: 0.18rem;
+  position: relative;
   width: 1.45rem;
   height: 1.45rem;
   border-radius: 999px;
   background: var(--meteor-surface);
   transition: transform 0.16s ease;
+  z-index: 1;
 }
 
 .system-toggle.is-enabled .system-toggle__thumb {

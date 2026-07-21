@@ -60,6 +60,11 @@ test('keeps technical controls on System Information', async ({ page }) => {
   await expect(page.getByLabel(/DDP connected|DDP connecting/)).toBeVisible();
   await expect(page.getByLabel(/Meteor.isCapacitor false/)).toBeVisible();
 
+  const switchBounds = await page.getByRole('switch', { name: 'Live DDP connection' }).boundingBox();
+  expect(switchBounds).not.toBeNull();
+  expect(switchBounds.height).toBeGreaterThanOrEqual(48);
+  expect(switchBounds.width).toBeGreaterThanOrEqual(48);
+
   await page.getByRole('button', { name: 'Preview HCP update' }).click();
   await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
 });

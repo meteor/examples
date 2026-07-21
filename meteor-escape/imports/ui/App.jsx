@@ -26,6 +26,7 @@ import { METEOR_ESCAPE_INFO, getApplicationInfo, getDdpEndpoint } from './native
 import { getNetworkStatus, listenNetworkStatus } from './native/network';
 import { shareResult } from './native/share';
 import { getClientIdentity } from './identity';
+import { shouldCloseMissionExitDialog } from './missionState';
 import { PlayPage } from './pages/PlayPage';
 import { RecordsPage } from './pages/RecordsPage';
 import { SystemInfoPage } from './pages/SystemInfoPage';
@@ -271,6 +272,20 @@ export function App() {
   }, [missionSnapshot, showMission]);
 
   useEffect(() => {
+    if (
+      !missionExitConfirmOpen ||
+      !shouldCloseMissionExitDialog({
+        liveMissionGameId: liveMissionGame?._id ?? null,
+        resultGameId: resultGame?._id ?? null,
+      })
+    ) {
+      return;
+    }
+
+    setMissionExitConfirmOpen(false);
+  }, [liveMissionGame?._id, missionExitConfirmOpen, resultGame?._id]);
+
+  useEffect(() => {
     if (!resultGame?._id) {
       return;
     }
@@ -280,6 +295,7 @@ export function App() {
     }
 
     seenResultRef.current = resultGame._id;
+    setMissionExitConfirmOpen(false);
     setMissionVisible(true);
     setResultSheetOpen(true);
   }, [resultGame]);

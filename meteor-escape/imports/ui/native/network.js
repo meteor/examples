@@ -9,29 +9,86 @@ export function readBrowserNetworkStatus(navigatorLike = globalThis.navigator) {
   };
 }
 
-export async function getNetworkStatus() {
-  if (Capacitor.isNativePlatform()) {
-    return Network.getStatus();
-  }
-
-  return readBrowserNetworkStatus();
-}
-
-export function listenNetworkStatus(callback) {
-  if (Capacitor.isNativePlatform()) {
-    let handle;
-    Network.addListener('networkStatusChange', callback).then((listener) => {
-      handle = listener;
-    });
-    return () => handle?.remove?.();
-  }
-
-  const update = () => callback(readBrowserNetworkStatus());
-  window.addEventListener('online', update);
-  window.addEventListener('offline', update);
+function installBrowserNetworkListeners(callback, windowLike, navigatorLike) {
+  const update = () => callback(readBrowserNetworkStatus(navigatorLike));
+  windowLike.addEventListener('online', update);
+  windowLike.addEventListener('offline', update);
 
   return () => {
-    window.removeEventListener('online', update);
-    window.removeEventListener('offline', update);
+    windowLike.removeEventListener('online', update);
+    windowLike.removeEventListener('offline', update);
+  };
+}
+
+export async function getNetworkStatus({
+  capacitor = Capacitor,
+  network = Network,
+  navigatorLike = globalThis.navigator,
+} = {}) {
+  if (capacitor.isNativePlatform()) {
+    try {
+      return await network.getStatus();
+    } catch (error) {
+      console.warn('Unable to read native network status', error);
+      return readBrowserNetworkStatus(navigatorLike);
+    }
+  }
+
+  return readBrowserNetworkStatus(navigatorLike);
+}
+
+export function listenNetworkStatus(
+  callback,
+  {
+    capacitor = Capacitor,
+    network = Network,
+    navigatorLike = globalThis.navigator,
+    windowLike = globalThis.window,
+  } = {}
+) {
+  let disposed = false;
+  let nativeHandle;
+  let browserCleanup;
+
+  const installFallback = () => {
+    if (browserCleanup) {
+      return;
+    }
+
+    browserCleanup = installBrowserNetworkListeners(callback, windowLike, navigatorLike);
+  };
+
+  if (capacitor.isNativePlatform()) {
+    network
+      .addListener('networkStatusChange', callback)
+      .then((listener) => {
+        if (disposed) {
+          void listener.remove?.();
+          return;
+        }
+
+        nativeHandle = listener;
+      })
+      .catch((error) => {
+        console.warn('Unable to subscribe to native network status', error);
+        if (!disposed) {
+          installFallback();
+        }
+      });
+
+    return () => {
+      disposed = true;
+      browserCleanup?.();
+      if (nativeHandle) {
+        void nativeHandle.remove?.();
+      }
+    };
+  }
+
+  installFallback();
+
+  return () => {
+    disposed = true;
+    browserCleanup?.();
   };
 }
