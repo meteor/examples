@@ -1,0 +1,6 @@
+_build/native-dev/
+_build/native-prod/
+android/
+ios/
+test-results/
+playwright-report/

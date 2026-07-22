@@ -1,0 +1,21 @@
+<head>
+  <title>Stock Scanner</title>
+  <script>
+    document
+      .querySelectorAll('link[rel="stylesheet"][href^="/app/build-chunks/"]')
+      .forEach((stylesheet) => {
+        stylesheet.href = stylesheet.getAttribute('href').replace(
+          '/app/build-chunks/',
+          '/build-chunks/'
+        );
+      });
+  </script>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+</head>
+
+<body>
+  <div id="react-target"></div>
+</body>
