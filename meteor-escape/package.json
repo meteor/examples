@@ -8,7 +8,9 @@
     "lint": "npx oxlint --react-plugin --import-plugin .",
     "lint:fix": "npx oxlint --react-plugin --import-plugin --fix .",
     "e2e": "npx playwright test --ui",
-    "e2e:headless": "npx playwright test"
+    "e2e:headless": "npx playwright test",
+    "e2e:gallery": "METEOR_ESCAPE_GALLERY=1 npx playwright test e2e/gallery.spec.js",
+    "test:gallery-output": "node --test e2e/gallery-output.test.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.29.2",

@@ -1,8 +1,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { test, expect } = require('@playwright/test');
+const { resolveScreenshotDir } = require('./gallery-output');
 
-const SCREENSHOT_DIR = path.resolve(__dirname, '..', 'docs', 'screenshots');
+const SCREENSHOT_DIR = resolveScreenshotDir();
 
 const ACTION_BY_EMERGENCY = {
   Meteor: 'Shield',

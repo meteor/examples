@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
-import { Capacitor } from '@capacitor/core';
 import { FileText, Home as HomeIcon } from 'lucide-react';
 import { App as KonstaApp, Block } from 'konsta/react';
 import { ACTIVE_STATUSES, TERMINAL_STATUSES, Games } from '../api/games/collection';
@@ -15,26 +14,15 @@ import {
   resolveNativeBackAction,
   useNativeBackButton,
 } from './native/backButton';
-import {
-  HCP_PREVIEW_VERSION,
-  applyHcpUpdate,
-  checkForHcpUpdates,
-  listenForHcpUpdates,
-} from './native/hcp';
 import { signalActionResult } from './native/haptics';
-import { METEOR_ESCAPE_INFO, getApplicationInfo, getDdpEndpoint } from './native/appInfo';
-import { getNetworkStatus, listenNetworkStatus } from './native/network';
 import { shareResult } from './native/share';
 import { getClientIdentity } from './identity';
 import { shouldCloseMissionExitDialog, shouldRevealActiveGame } from './missionState';
 import { useDialogFocusTrap } from './useDialogFocusTrap';
+import { useNativeDiagnostics } from './useNativeDiagnostics';
 import { PlayPage } from './pages/PlayPage';
 import { RecordsPage } from './pages/RecordsPage';
 import { SystemInfoPage } from './pages/SystemInfoPage';
-
-function pickTheme() {
-  return Capacitor.getPlatform() === 'ios' ? 'ios' : 'material';
-}
 
 function getTestMode() {
   if (typeof window === 'undefined') {
@@ -59,12 +47,6 @@ function buildFeedbackKey(game) {
     latestEvent.outcome,
   ].join(':');
 }
-
-const browserAppInfo = {
-  ...METEOR_ESCAPE_INFO,
-  platform: 'web',
-  native: false,
-};
 
 function MissionExitDialog({ opened, onStay, onLeave }) {
   const { dialogRef, onDialogKeyDown } = useDialogFocusTrap({
@@ -122,14 +104,18 @@ export function App() {
   const [crewRoomCode, setCrewRoomCode] = useState('');
   const [crewError, setCrewError] = useState('');
   const [crewGameId, setCrewGameId] = useState(null);
-  const [dark, setDark] = useState(false);
-  const [ddpEnabled, setDdpEnabled] = useState(true);
-  const [appInfo, setAppInfo] = useState(browserAppInfo);
-  const [networkStatus, setNetworkStatus] = useState({ connected: true, connectionType: 'wifi' });
-  const [checkingHcp, setCheckingHcp] = useState(false);
-  const [installingHcp, setInstallingHcp] = useState(false);
-  const [hcpMessage, setHcpMessage] = useState('Ready to check for app updates.');
-  const [hcpUpdateVersion, setHcpUpdateVersion] = useState(null);
+  const {
+    appInfo,
+    dark,
+    ddpEnabled,
+    ddpEndpoint,
+    hcp,
+    hcpUpdateVersion,
+    networkStatus,
+    onReconnect,
+    onToggleDdp,
+    theme,
+  } = useNativeDiagnostics();
   const [missionGameId, setMissionGameId] = useState(null);
   const [missionVisible, setMissionVisible] = useState(false);
   const [missionExitConfirmOpen, setMissionExitConfirmOpen] = useState(false);
@@ -138,20 +124,6 @@ export function App() {
   const seenResultRef = useRef(null);
   const feedbackKeyRef = useRef(null);
   const revealedActiveGameIdRef = useRef(null);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-      return undefined;
-    }
-
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const applyTheme = () => setDark(mediaQuery.matches);
-
-    applyTheme();
-    mediaQuery.addEventListener('change', applyTheme);
-
-    return () => mediaQuery.removeEventListener('change', applyTheme);
-  }, []);
 
   const { connection, activeReady, recentReady, activeGame, recentGames } = useTracker(() => {
     const activeHandle = Meteor.subscribe('games.active', identity.ownerId, identity.playerId);
@@ -231,21 +203,6 @@ export function App() {
     setMissionVisible(true);
     setNow(Date.now());
   }, [activeGame?._id, activeGame?.status]);
-
-  useEffect(() => {
-    void getApplicationInfo().then(setAppInfo);
-    void getNetworkStatus().then(setNetworkStatus).catch(() => {});
-    return listenNetworkStatus(setNetworkStatus);
-  }, []);
-
-  useEffect(
-    () =>
-      listenForHcpUpdates((version) => {
-        setHcpUpdateVersion(version);
-        setHcpMessage(`Version ${version} downloaded and ready.`);
-      }),
-    []
-  );
 
   useEffect(() => {
     if (!waitingCrewGame?._id) {
@@ -351,7 +308,7 @@ export function App() {
 
     switch (action) {
       case NATIVE_BACK_ACTIONS.DISMISS_HCP_DIALOG:
-        setHcpUpdateVersion(null);
+        hcp.onDismiss();
         return;
       case NATIVE_BACK_ACTIONS.DISMISS_CREW_SHEET:
         setCrewSheetOpen(false);
@@ -576,75 +533,11 @@ export function App() {
     setView('play');
   }, []);
 
-  const handleCheckHcpUpdate = useCallback(async () => {
-    setCheckingHcp(true);
-    setHcpMessage('Checking for a newer app version...');
-
-    try {
-      const result = await checkForHcpUpdates();
-      setHcpMessage(
-        result.checked
-          ? 'You will be prompted here when a new version is ready.'
-          : 'Updates can be checked from mobile builds.'
-      );
-    } catch (error) {
-      console.warn('HCP check failed', error);
-      setHcpMessage('Unable to check for updates. Try again.');
-    } finally {
-      setCheckingHcp(false);
-    }
-  }, []);
-
-  const handleInstallHcpUpdate = useCallback(async () => {
-    setInstallingHcp(true);
-
-    try {
-      await applyHcpUpdate();
-    } catch (error) {
-      console.warn('HCP reload failed', error);
-      setInstallingHcp(false);
-      setHcpMessage('Install unavailable here.');
-    }
-  }, []);
-
-  const handleToggleDdp = useCallback((enabled) => {
-    setDdpEnabled(enabled);
-
-    if (enabled) {
-      Meteor.reconnect();
-      return;
-    }
-
-    Meteor.disconnect();
-  }, []);
-
-  const handleReconnect = useCallback(() => {
-    setDdpEnabled(true);
-    Meteor.reconnect();
-  }, []);
-
-  const hcp = useMemo(
-    () => ({
-      checking: checkingHcp,
-      installing: installingHcp,
-      message: hcpMessage,
-      updateVersion: hcpUpdateVersion,
-      onCheck: handleCheckHcpUpdate,
-      onPreview: () => {
-        setHcpUpdateVersion(HCP_PREVIEW_VERSION);
-        setHcpMessage('Previewing the update prompt.');
-      },
-      onInstall: handleInstallHcpUpdate,
-      onDismiss: () => setHcpUpdateVersion(null),
-    }),
-    [checkingHcp, handleCheckHcpUpdate, handleInstallHcpUpdate, hcpMessage, hcpUpdateVersion, installingHcp]
-  );
-
   const shellView = showMission ? 'mission' : view;
 
   return (
     <KonstaApp
-      theme={pickTheme()}
+      theme={theme}
       dark={dark}
       safeAreas
       iosHoverHighlight
@@ -753,11 +646,11 @@ export function App() {
           <SystemInfoPage
             appInfo={appInfo}
             ddpEnabled={ddpEnabled}
-            ddpEndpoint={getDdpEndpoint()}
+            ddpEndpoint={ddpEndpoint}
             ddpStatus={connection.status}
             hcp={hcp}
-            onReconnect={handleReconnect}
-            onToggleDdp={handleToggleDdp}
+            onReconnect={onReconnect}
+            onToggleDdp={onToggleDdp}
           />
         ) : null}
       </AppShell>

@@ -138,6 +138,8 @@ export function MissionStage({ game, now, busy, connected, onAction }) {
           <span>{connected ? 'Reactive feed connected' : 'Mission controls paused'}</span>
         </div>
 
+        <EmergencyPrompt emergency={game.emergency} statusText={statusText} />
+
         <ShipArt emergency={game.emergency} turn={game.turn} status={game.status} />
       </section>
 
@@ -175,8 +177,6 @@ export function MissionStage({ game, now, busy, connected, onAction }) {
           icon={Users}
         />
       </section>
-
-      <EmergencyPrompt emergency={game.emergency} statusText={statusText} />
 
       {game.status === 'waiting' ? (
         <section className="mission-stage__waiting">

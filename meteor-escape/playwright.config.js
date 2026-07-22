@@ -2,9 +2,13 @@ const { defineConfig } = require('@playwright/test');
 
 const port = process.env.PORT || '3100';
 const baseURL = `http://127.0.0.1:${port}`;
+const galleryCapture = process.env.METEOR_ESCAPE_GALLERY === '1';
 
 module.exports = defineConfig({
   testDir: './e2e',
+  testIgnore: galleryCapture
+    ? '**/gallery-output.test.js'
+    : ['**/gallery.spec.js', '**/gallery-output.test.js'],
   timeout: 30_000,
   retries: 0,
   use: {

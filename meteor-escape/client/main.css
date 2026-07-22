@@ -32,6 +32,12 @@ body,
   min-height: 100%;
 }
 
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   background: var(--meteor-shell);
@@ -672,12 +678,21 @@ img {
   padding: 1rem;
 }
 
+.mission-stage__hero {
+  grid-template-areas:
+    'headline'
+    'signal'
+    'prompt'
+    'art';
+  align-items: start;
+}
+
 .mission-stage__headline {
+  grid-area: headline;
   display: flex;
   align-items: start;
   justify-content: space-between;
   gap: 0.9rem;
-  margin-bottom: 0.9rem;
 }
 
 .mission-stage__turn,
@@ -704,7 +719,14 @@ img {
 }
 
 .mission-stage__signal {
-  margin-bottom: 1rem;
+  grid-area: signal;
+  justify-self: start;
+}
+
+.mission-stage__hero > .emergency-prompt {
+  grid-area: prompt;
+  border: 0;
+  background: var(--meteor-surface-strong);
 }
 
 .mission-stage__signal-dot {
@@ -765,6 +787,7 @@ img {
 }
 
 .ship-art {
+  grid-area: art;
   width: 100%;
   border-radius: 8px;
   border: 1px solid var(--meteor-line);
@@ -1258,6 +1281,13 @@ img {
   .play-home__hero,
   .mission-stage__hero {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .mission-stage__hero {
+    grid-template-areas:
+      'headline art'
+      'signal art'
+      'prompt art';
   }
 
   .play-home__hero {

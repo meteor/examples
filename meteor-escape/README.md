@@ -9,25 +9,17 @@ stays focused on play.
 
 ## Gallery
 
-Deterministic Playwright gallery captures live in `docs/screenshots/` and are
-generated against the real Meteor app with the guarded E2E `testMode` path for
-repeatable mission and result states.
+Deterministic Playwright captures cover 390x844 phones, 768x1024 tablets, and a
+1440x1000 desktop preview. Gallery output is kept outside the checkout alongside
+the native Maestro videos so it can be reused in posts and pull requests.
 
-### Phone 390x844
+```bash
+export NATIVE_SHOWCASE_OUTPUT_DIR=/absolute/path/to/native-app-showcase
+PATH=/Users/igcogi/meteor/meteor:$PATH npm run e2e:gallery
+```
 
-![Meteor Escape play home](docs/screenshots/mobile-play.png)
-![Meteor Escape active mission](docs/screenshots/mobile-mission.png)
-![Meteor Escape mission result](docs/screenshots/mobile-result.png)
-![Meteor Escape records screen](docs/screenshots/mobile-records.png)
-![Meteor Escape system information](docs/screenshots/mobile-system.png)
-
-### Tablet 768x1024
-
-![Meteor Escape tablet mission](docs/screenshots/tablet-mission.png)
-
-### Desktop 1440x1000
-
-![Meteor Escape desktop play home](docs/screenshots/desktop-play.png)
+Captures are written to
+`$NATIVE_SHOWCASE_OUTPUT_DIR/meteor-escape/screenshots/gallery/`.
 
 ## Rules
 
@@ -61,16 +53,29 @@ the room code.
 ## Running It
 
 The Meteor release that contains the `capacitor` package is not published yet.
-Until it is, run the app with the local Meteor checkout and link the local npm
-packages that live next to that checkout.
+Until it is, launch the native app from the examples repository root. The shared
+runner verifies the local `capacitor-integration` checkout, installs dependencies,
+links local Meteor npm packages, ensures the platform exists, and starts the full
+native target.
 
 ```bash
-PATH=/Users/igcogi/meteor/meteor:$PATH meteor npm install
-npm link --no-save ../../meteor/npm-packages/meteor-capacitor ../../meteor/npm-packages/meteor-rspack
-PATH=/Users/igcogi/meteor/meteor:$PATH npm start
+npm run run:native:meteor-escape -- ios
+npm run run:native:meteor-escape -- android
 ```
 
-Visit `http://localhost:3000/`.
+Meteor options go after a second separator. Native environment variables pass
+through unchanged:
+
+```bash
+npm run run:native:meteor-escape -- ios -- --port 3100
+METEOR_CAPACITOR_MODE=livereload npm run run:native:meteor-escape -- android -- --mobile-server 10.0.2.2:3000
+METEOR_CAPACITOR_TARGET="DEVICE_ID" npm run run:native:meteor-escape -- ios
+```
+
+Run `npm run run:native -- --help` for checkout overrides, setup skip options,
+and dry-run mode. For a browser preview, run
+`PATH=/Users/igcogi/meteor/meteor:$PATH npm start` in this directory, then visit
+`http://localhost:3000/`.
 
 After the package is published, the checkout prefix and local npm links can be
 removed. At that point the app should use the published Meteor release and the
@@ -79,6 +84,7 @@ package.
 
 | Command | What it does |
 |---|---|
+| `npm run run:native:meteor-escape -- <ios\|android>` (repository root) | Prepare and launch the full native target |
 | `npm start` | Start the Meteor app |
 | `npm test` | Run Mocha integration tests in watch mode |
 | `npm run test:headless` | Run Mocha integration tests once for CI |
@@ -86,6 +92,7 @@ package.
 | `npm run lint:fix` | Run oxlint with autofix |
 | `npm run e2e` | Run Playwright with the interactive UI |
 | `npm run e2e:headless` | Run Playwright headlessly |
+| `npm run e2e:gallery` | Capture the external promotion gallery |
 
 Before running Playwright locally for the first time, install the browser
 binaries with `npx playwright install`.
@@ -190,13 +197,16 @@ npm run test:native:unit
 node scripts/test-mobile-examples.mjs
 npm run test:native:meteor-escape:android
 npm run test:native:meteor-escape:ios
+npm run record:native:meteor-escape:android
+npm run record:native:meteor-escape:ios
 ```
 
 Native smoke flows live in `../native-tests`. Start the native app first, then
 run the matching Maestro command from the repository root. The flow plays the
 production quick mission order `Shield -> CPU -> Boost -> CPU -> Cool`, then
 checks System information runtime, DDP, native mode, HCP preview, and native
-back behavior.
+back behavior. Showcase recording uses a separate product-only journey and
+requires `NATIVE_SHOWCASE_OUTPUT_DIR` outside this checkout.
 
 ## Troubleshooting
 
