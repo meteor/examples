@@ -10,6 +10,10 @@ Each example doubles as a reference for [community packages](https://docs.meteor
   - [Simple Tasks](#simple-tasks)
   - [Task Manager](#task-manager)
   - [Notes Offline](#notes-offline)
+  - [Native applications](#native-applications)
+    - [Stock Scanner](#stock-scanner)
+    - [Civic Snap](#civic-snap)
+    - [Meteor Escape](#meteor-escape)
   - [Simple Blog](#simple-blog)
   - [Tic-Tac-Toe](#tic-tac-toe)
   - [Parties](#parties)
@@ -50,6 +54,32 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)
 - Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, LinguiJS, Mocha, ESLint, Prettier, Playwright
 - Last Updated At: Apr/21/2026
+- Meteor Version: 3.4.1
+
+### Native applications
+
+Official Meteor applications built with Capacitor, native plugins, HCP, and Maestro-tested mobile flows. Examples progress from a focused native utility to a complete field workflow and a live-data game.
+
+#### Stock Scanner
+- Repository: [meteor/examples/stock-scanner](./stock-scanner)
+- Why: Promotion-ready mobile inventory audit with an illustrated shift brief, camera-first scanning, category-aware stock states, adaptive MUI navigation, native haptics/sharing, and separate runtime/DDP/HCP diagnostics
+- Stack: Meteor, Rspack, React, MUI (Material UI), Capacitor, App, Barcode Scanner, Haptics, Share, Meteor Capacitor HCP, MongoDB, Mocha, oxlint, Playwright, Maestro
+- Last Updated At: Jul/21/2026
+- Meteor Version: 3.4.1
+
+#### Civic Snap
+- Repository: [meteor/examples/city-issue-reporter](./city-issue-reporter)
+- Why: Promotion-ready neighborhood reporting app with a field brief, evidence capture, visible issue lifecycle, Framework7 navigation, offline submission, native plugins, and separate runtime/DDP/HCP diagnostics
+- Stack: Meteor, Rspack, React, Framework7 React, Capacitor, App, Camera, Geolocation, Network, Local Notifications, Share, Meteor Capacitor HCP, jam:offline, jam:method, jam:pub-sub, MongoDB, Mocha, oxlint, Playwright, Maestro
+- Last Updated At: Jul/21/2026
+- Meteor Version: 3.4.1
+
+#### Meteor Escape
+- Repository: [meteor/examples/meteor-escape](./meteor-escape)
+- Why: Promotion-ready co-op microgame with Konsta mobile navigation, live DDP mission sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics
+- Gallery: Generated outside the checkout through the documented Playwright and Maestro showcase flows
+- Stack: Meteor, Rspack, React, Konsta UI, Capacitor, App, Haptics, Network, Share, Meteor Capacitor HCP, MongoDB, Mocha, oxlint, Playwright, Maestro
+- Last Updated At: Jul/21/2026
 - Meteor Version: 3.4.1
 
 ### Simple Blog
