@@ -1,0 +1,64 @@
+appId: com.meteor.examples.civicsnap
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Civic Snap"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "New report"
+    timeout: 60000
+- startRecording:
+    path: ${SHOWCASE_VIDEO_PATH}
+    label: "Civic Snap showcase"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3000
+- tapOn: "New report"
+- extendedWaitUntil:
+    visible: "Issue title"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3000
+- tapOn: "Submit current report"
+- extendedWaitUntil:
+    visible: "Report detail"
+    timeout: 15000
+- assertVisible: "Pothole report"
+- assertVisible: "Submitted"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 4000
+- takeScreenshot: ${SHOWCASE_POSTER_PATH}
+- tapOn: "Share report"
+- extendedWaitUntil:
+    visible: "Copy"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3500
+- tapOn:
+    point: "50%,20%"
+- assertNotVisible: "Copy"
+- tapOn: "Back to reports"
+- extendedWaitUntil:
+    visible: "Pothole report"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3000
+- tapOn: "Open report: Pothole report"
+- extendedWaitUntil:
+    visible: "Report detail"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 4000
+- stopRecording

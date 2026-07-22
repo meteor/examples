@@ -1,0 +1,64 @@
+appId: com.meteor.examples.meteorescape
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Meteor Escape"
+    timeout: 60000
+- tapOn: "Quick Mission"
+- extendedWaitUntil:
+    visible: "Mission control"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- assertVisible: "Meteor"
+- tapOn: "Shield"
+- extendedWaitUntil:
+    visible: "Copilot turn"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- assertVisible: "Path"
+- tapOn: "Boost"
+- extendedWaitUntil:
+    visible: "Copilot turn"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- assertVisible: "Overheat"
+- tapOn: "Cool"
+- extendedWaitUntil:
+    visible: "Warp charged"
+    timeout: 30000
+- assertVisible: "Rematch"
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible: "Quick Mission"
+    timeout: 10000
+- tapOn: "System"
+- extendedWaitUntil:
+    visible: "System information"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "Native ready"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "DDP connected"
+    timeout: 60000
+- assertVisible: "Meteor.isCapacitor true"
+- scrollUntilVisible:
+    element:
+      text: "Preview HCP update"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Preview HCP update"
+- assertVisible: "New app update available"
+- assertVisible: "Install update"
+- tapOn: "Not now"
+- tapOn: "Play"
+- extendedWaitUntil:
+    visible: "Quick Mission"
+    timeout: 10000

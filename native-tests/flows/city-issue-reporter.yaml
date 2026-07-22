@@ -1,0 +1,40 @@
+appId: com.meteor.examples.civicsnap
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Civic Snap"
+    timeout: 60000
+- tapOn: "Open navigation"
+- tapOn: "System information"
+- extendedWaitUntil:
+    visible: "Native ready"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "DDP connected"
+    timeout: 60000
+- assertVisible: "Meteor.isCapacitor true"
+- scrollUntilVisible:
+    element:
+      text: "Preview HCP update"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Preview HCP update"
+- assertVisible: "New app update available"
+- assertVisible: "Install update"
+- tapOn: "Not now"
+- scrollUntilVisible:
+    element:
+      text: "Open navigation"
+    direction: UP
+    timeout: 10000
+- tapOn: "Open navigation"
+- tapOn: "New report"
+- assertVisible: "Broken light by station"
+- tapOn: "Submit current report"
+- extendedWaitUntil:
+    visible: "Report detail"
+    timeout: 60000
+- assertVisible: "Pothole report"
+- assertVisible: "Submitted"
+- tapOn: "Back to reports"
