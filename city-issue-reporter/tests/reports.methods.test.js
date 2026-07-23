@@ -1,10 +1,37 @@
 import assert from 'assert';
 import { Meteor } from 'meteor/meteor';
+import { Offline } from 'meteor/jam:offline';
 import { Random } from 'meteor/random';
+import { makeOfflineHydrationIdempotent } from '../imports/api/reports/offlineHydration';
 import { IssueReports } from '../imports/api/reports/collection';
 import '../imports/api/reports/methods';
 
 if (Meteor.isServer) {
+  describe('offline report storage', function () {
+    it('keeps internal Meteor collections out of the offline cache', function () {
+      assert.strictEqual(Offline.config.keepAll, false);
+    });
+
+    it('ignores only duplicate records already hydrated by DDP', function () {
+      const duplicateError = new Error("Duplicate _id 'report-1'");
+      duplicateError.name = 'MinimongoError';
+      const localCollection = {
+        findOne: (id) => (id === 'report-1' ? { _id: id } : undefined),
+        insert() {
+          throw duplicateError;
+        },
+      };
+
+      makeOfflineHydrationIdempotent(localCollection);
+
+      assert.strictEqual(localCollection.insert({ _id: 'report-1' }), 'report-1');
+      assert.throws(
+        () => localCollection.insert({ _id: 'report-2' }),
+        (error) => error === duplicateError
+      );
+    });
+  });
+
   describe('report methods', function () {
     beforeEach(async function () {
       await IssueReports.removeAsync({});

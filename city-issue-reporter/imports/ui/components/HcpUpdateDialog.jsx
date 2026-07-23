@@ -5,15 +5,16 @@ import useModalFocus from '../useModalFocus';
 
 export default function HcpUpdateDialog({
   installing,
+  opened,
   updateVersion,
   onDismiss,
   onInstall,
 }) {
-  useModalFocus(Boolean(updateVersion), '.hcp-sheet');
+  useModalFocus(opened, '.hcp-sheet');
 
   return (
     <Sheet
-      opened={Boolean(updateVersion)}
+      opened={Boolean(updateVersion) && opened}
       backdrop
       closeByBackdropClick
       closeOnEscape
@@ -23,7 +24,7 @@ export default function HcpUpdateDialog({
       aria-modal="true"
       aria-labelledby="civic-hcp-dialog-title"
       onSheetClosed={() => {
-        if (updateVersion) onDismiss();
+        if (opened) onDismiss();
       }}
     >
       <div className="sheet-swipe-handle" aria-hidden="true" />

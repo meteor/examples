@@ -60,8 +60,14 @@ export default function useModalFocus(active, containerSelector) {
       cancelAnimationFrame(focusFrame);
       container.removeEventListener('keydown', trapFocus);
       if (mainView && !mainWasInert) mainView.removeAttribute('inert');
-      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+      if (
+        previousFocus instanceof HTMLElement
+        && previousFocus !== document.body
+        && previousFocus.isConnected
+      ) {
         previousFocus.focus();
+      } else if (mainView) {
+        getFocusableElements(mainView)[0]?.focus();
       }
     };
   }, [active, containerSelector]);

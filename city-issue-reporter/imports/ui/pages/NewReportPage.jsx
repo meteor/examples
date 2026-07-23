@@ -1,6 +1,7 @@
 import React from 'react';
-import { Block, List, ListInput, Page } from 'framework7-react';
+import { Block, List, Page } from 'framework7-react';
 import { REPORT_CATEGORIES } from '../../api/reports/schema';
+import AccessibleListInput from '../components/AccessibleListInput';
 import AppNavbar from '../components/AppNavbar';
 import TouchButton from '../components/TouchButton';
 
@@ -46,23 +47,23 @@ export default function NewReportPage({
               <div><strong>Issue details</strong><small>What happened and what is affected</small></div>
             </div>
             <List strongIos outlineIos dividersIos className="intake-list">
-              <ListInput
+              <AccessibleListInput
+                accessibleLabel="Issue title"
                 inputId="issue-title"
                 label="Issue title"
                 type="text"
                 placeholder="Broken light by station"
                 clearButton
                 value={form.title}
-                inputProps={{ 'aria-label': 'Issue title' }}
                 onInput={(event) => onChange({ title: event.target.value })}
                 onChange={(event) => onChange({ title: event.target.value })}
               />
-              <ListInput
+              <AccessibleListInput
+                accessibleLabel="Category"
                 inputId="issue-category"
                 label="Category"
                 type="select"
                 value={form.category}
-                inputProps={{ 'aria-label': 'Category' }}
                 onChange={(event) => onChange({ category: event.target.value })}
               >
                 {REPORT_CATEGORIES.map((category) => (
@@ -70,15 +71,15 @@ export default function NewReportPage({
                     {category}
                   </option>
                 ))}
-              </ListInput>
-              <ListInput
+              </AccessibleListInput>
+              <AccessibleListInput
+                accessibleLabel="Description"
                 inputId="issue-description"
                 label="Description"
                 type="textarea"
                 placeholder="Add landmarks, direction, or impact"
                 resizable
                 value={form.description}
-                inputProps={{ 'aria-label': 'Description' }}
                 onInput={(event) => onChange({ description: event.target.value })}
                 onChange={(event) => onChange({ description: event.target.value })}
               />

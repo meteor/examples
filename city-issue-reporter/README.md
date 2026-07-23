@@ -66,9 +66,13 @@ through unchanged:
 
 ```bash
 npm run run:native:civic-snap -- ios -- --port 3100
-METEOR_CAPACITOR_MODE=livereload npm run run:native:civic-snap -- android -- --mobile-server 10.0.2.2:3000
+METEOR_CAPACITOR_MODE=livereload npm run run:native:civic-snap -- android --development -- --mobile-server 10.0.2.2:3000
 METEOR_CAPACITOR_TARGET="DEVICE_ID" npm run run:native:civic-snap -- ios
 ```
+
+Bundled runs use production bundling by default so Rspack emits complete HCP
+assets. `--development` is intended for livereload sessions attached to the
+development server.
 
 Run `npm run run:native -- --help` for checkout overrides, setup skip options,
 and dry-run mode. For a browser preview, run
@@ -162,13 +166,18 @@ System information uses `imports/ui/native/hcp.js` as a small bridge around the 
 `window.WebAppLocalServer` API. `listenForHcpUpdates` subscribes to
 `onNewVersionReady`, `checkForHcpUpdates` calls `checkForUpdates`, and
 `applyHcpUpdate` calls `switchToPendingVersion`. When a native update is ready,
-`App.jsx` opens an app-themed Framework7 sheet that explains the update and offers
-"Install update" or "Not now".
+`App.jsx` opens an app-level Framework7 sheet over the current screen. Choosing
+"Not now" keeps a persistent "Update ready" reminder visible across report
+navigation, while manual checks and diagnostics remain on System information.
+
+The client installs a Meteor reload migration gate before the application
+mounts. Downloading a bundle does not switch versions or refresh the WebView;
+the current bundle keeps running until the user chooses "Install update".
 
 The "Preview dialog" button is a deterministic demo and test path. It opens the
-same dialog without requiring a second server deployment or native HCP download.
-Playwright and Maestro use that preview path to cover the user-facing update
-experience while the real listener remains wired for native builds.
+same global sheet and reminder flow without requiring a second server deployment
+or native HCP download. Playwright and Maestro use that preview path while the
+real listener remains wired for native builds.
 
 ## How It Is Structured
 

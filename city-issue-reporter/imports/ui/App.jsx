@@ -6,6 +6,7 @@ import { IssueReports } from '../api/reports/collection';
 import { createDraft, submit, updateDraft } from '../api/reports/methods';
 import AppMenu from './components/AppMenu';
 import HcpUpdateDialog from './components/HcpUpdateDialog';
+import HcpUpdateReminder from './components/HcpUpdateReminder';
 import { getOwnerId } from './owner';
 import HomePage from './pages/HomePage';
 import NewReportPage from './pages/NewReportPage';
@@ -80,6 +81,7 @@ export default function App() {
   const [checkingHcp, setCheckingHcp] = useState(false);
   const [installingHcp, setInstallingHcp] = useState(false);
   const [hcpUpdateVersion, setHcpUpdateVersion] = useState(null);
+  const [hcpPromptOpen, setHcpPromptOpen] = useState(false);
   const [networkStatus, setNetworkStatus] = useState({
     connected: true,
     connectionType: 'unknown',
@@ -88,8 +90,8 @@ export default function App() {
   useNativeBackButton(() => {
     if (submitting) return;
 
-    if (hcpUpdateVersion) {
-      setHcpUpdateVersion(null);
+    if (hcpPromptOpen) {
+      setHcpPromptOpen(false);
     } else if (menuOpen) {
       setMenuOpen(false);
     } else if (view !== 'home') {
@@ -122,6 +124,7 @@ export default function App() {
   useEffect(() => (
     listenForHcpUpdates((version) => {
       setHcpUpdateVersion(version);
+      setHcpPromptOpen(true);
       setHcpMessage(`Version ${version} downloaded and ready.`);
     })
   ), []);
@@ -258,6 +261,7 @@ export default function App() {
 
   function previewHcpUpdate() {
     setHcpUpdateVersion(HCP_PREVIEW_VERSION);
+    setHcpPromptOpen(true);
     setHcpMessage('Previewing the update prompt.');
   }
 
@@ -344,10 +348,15 @@ export default function App() {
           />
         )}
       </View>
+      <HcpUpdateReminder
+        visible={Boolean(hcpUpdateVersion) && !hcpPromptOpen}
+        onReview={() => setHcpPromptOpen(true)}
+      />
       <HcpUpdateDialog
         installing={installingHcp}
+        opened={hcpPromptOpen}
         updateVersion={hcpUpdateVersion}
-        onDismiss={() => setHcpUpdateVersion(null)}
+        onDismiss={() => setHcpPromptOpen(false)}
         onInstall={handleInstallHcpUpdate}
       />
     </F7App>

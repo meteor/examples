@@ -22,6 +22,26 @@ test.describe('Civic Snap', () => {
     const ownerId = testInfo.title.includes('neighborhood field brief')
       ? 'demo-civic-owner'
       : `e2e-civic-${Date.now()}-${testInfo.workerIndex}-${testInfo.retry}`;
+    if (testInfo.title.includes('HCP update actions')) {
+      await page.addInitScript(() => {
+        let updateListener;
+        let switchCalls = 0;
+        window.WebAppLocalServer = {
+          onNewVersionReady(listener) {
+            updateListener = listener;
+            return () => {
+              updateListener = undefined;
+            };
+          },
+          switchToPendingVersion(resolve) {
+            switchCalls += 1;
+            resolve?.();
+          },
+        };
+        window.__emitNativeUpdate = (version) => updateListener?.(version);
+        window.__getNativeSwitchCalls = () => switchCalls;
+      });
+    }
     await page.addInitScript((value) => {
       localStorage.setItem('city-issue-reporter-owner-id', value);
     }, ownerId);
@@ -34,7 +54,7 @@ test.describe('Civic Snap', () => {
     await expect(page.getByText('Centro · Field brief')).toBeVisible();
     await expect(page.getByText('Pothole near transit stop')).toBeVisible();
     await expect(page.getByText('Graffiti on library shutters')).toBeVisible();
-    await expect(page.getByLabel('Pothole category')).toBeVisible();
+    await expect(page.getByLabel('Pothole category').first()).toBeVisible();
     await expect(page.getByText('In review', { exact: true })).toBeVisible();
     await expect(page.getByRole('button', { name: 'New report' })).toBeVisible();
 
@@ -209,12 +229,26 @@ test.describe('Civic Snap', () => {
     await expect(page.getByText(/Report summary copied|Share sheet opened|Sharing unavailable/)).toBeVisible();
   });
 
-  test('shows HCP update dialog from update preview flow', async ({ page }) => {
-    await openSystemInformation(page);
-    await page.getByRole('button', { name: 'Preview HCP update' }).click();
+  test('shows and preserves HCP update actions across app screens', async ({ page }) => {
+    await expect(page.getByText('Report nearby issue')).toBeVisible();
+    await page.evaluate(() => window.__emitNativeUpdate('2026.07.23'));
+
     await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
-    await expect(page.getByText('Version demo-preview is ready to install.')).toBeVisible();
+    await expect(page.getByText('Version 2026.07.23 is ready to install.')).toBeVisible();
+    await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(0);
     await page.getByRole('button', { name: 'Not now' }).click();
     await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeHidden();
+    await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(0);
+    await expect(page.getByRole('link', { name: 'Open navigation' })).toBeFocused();
+
+    const reviewUpdate = page.getByRole('button', { name: 'Review update' });
+    await expect(reviewUpdate).toBeVisible();
+
+    await page.getByRole('button', { name: 'New report' }).click();
+    await expect(reviewUpdate).toBeVisible();
+    await reviewUpdate.click();
+    await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
+    await page.getByRole('button', { name: 'Install update' }).click();
+    await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(1);
   });
 });

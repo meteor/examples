@@ -1212,6 +1212,56 @@ button.button.button-quiet {
   line-height: 1.55;
 }
 
+.hcp-update-reminder {
+  position: fixed;
+  right: 14px;
+  bottom: max(14px, env(safe-area-inset-bottom, 0px));
+  left: 14px;
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-sizing: border-box;
+  width: min(calc(100% - 28px), 460px);
+  min-height: 64px;
+  margin-left: auto;
+  padding: 10px 10px 10px 16px;
+  border: 1px solid rgba(49, 95, 136, 0.22);
+  border-radius: 8px;
+  background: #173f5f;
+  box-shadow: 0 10px 28px rgba(20, 54, 79, 0.24);
+  color: #ffffff;
+}
+
+.hcp-update-reminder div,
+.hcp-update-reminder strong,
+.hcp-update-reminder span {
+  display: block;
+  min-width: 0;
+}
+
+.hcp-update-reminder strong {
+  font-size: 15px;
+}
+
+.hcp-update-reminder span {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 12px;
+}
+
+.hcp-update-reminder-action {
+  min-width: 84px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #173f5f;
+  font-weight: 800;
+}
+
 .dialog-actions {
   margin-top: 18px;
 }
