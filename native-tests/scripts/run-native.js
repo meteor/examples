@@ -353,7 +353,7 @@ function usage() {
   npm run run:native -- <app> <platform> [runner options] -- [meteor run options]
   npm run run:native:<app> -- <platform> [runner options] -- [meteor run options]
 
-Apps: stock-scanner, civic-snap, meteor-escape
+Apps: stock-scanner, civic-snap, meteor-drop
 Platforms: android, ios
 
 Runner options:

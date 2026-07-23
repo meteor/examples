@@ -4,7 +4,7 @@ const path = require('node:path');
 const { getAppConfig, listAppNames } = require('./app-config');
 
 test('lists native example apps', () => {
-  assert.deepEqual(listAppNames(), ['stock-scanner', 'city-issue-reporter', 'meteor-escape']);
+  assert.deepEqual(listAppNames(), ['stock-scanner', 'city-issue-reporter', 'meteor-drop']);
 });
 
 test('configures stock scanner native flow', () => {
@@ -47,16 +47,16 @@ test('accepts civic snap product name as an app alias', () => {
   assert.equal(app.appName, 'Civic Snap');
 });
 
-test('configures meteor escape native flow', () => {
-  const app = getAppConfig('meteor-escape');
+test('configures Meteor Drop native flow', () => {
+  const app = getAppConfig('meteor-drop');
   assert.deepEqual(app, {
-    name: 'meteor-escape',
-    appId: 'com.meteor.examples.meteorescape',
-    appName: 'Meteor Escape',
-    sourceDir: path.join(__dirname, '..', '..', 'meteor-escape'),
-    flowPath: path.join(__dirname, '..', 'flows', 'meteor-escape.yaml'),
-    showcaseFlowPath: path.join(__dirname, '..', 'flows', 'showcase', 'meteor-escape.yaml'),
-    mediaSlug: 'meteor-escape',
+    name: 'meteor-drop',
+    appId: 'com.meteor.examples.meteordrop',
+    appName: 'Meteor Drop',
+    sourceDir: path.join(__dirname, '..', '..', 'meteor-drop'),
+    flowPath: path.join(__dirname, '..', 'flows', 'meteor-drop.yaml'),
+    showcaseFlowPath: path.join(__dirname, '..', 'flows', 'showcase', 'meteor-drop.yaml'),
+    mediaSlug: 'meteor-drop',
   });
 });
 

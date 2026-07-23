@@ -2,7 +2,7 @@
 
 Maestro flows for Capacitor example apps in this repository. Smoke flows assert
 native runtime behavior. Separate showcase flows record concise, user-facing
-journeys without exposing diagnostics in promotional media.
+journeys, including selected native sharing and HCP interactions.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ checkout and its local Capacitor packages:
 ```sh
 npm run run:native -- stock-scanner ios
 npm run run:native -- civic-snap android
-npm run run:native -- meteor-escape ios
+npm run run:native -- meteor-drop ios
 ```
 
 App-specific shortcuts accept the platform as their first argument:
@@ -43,7 +43,7 @@ App-specific shortcuts accept the platform as their first argument:
 ```sh
 npm run run:native:stock-scanner -- android
 npm run run:native:civic-snap -- ios
-npm run run:native:meteor-escape -- android
+npm run run:native:meteor-drop -- android
 ```
 
 The launcher verifies that the checkout is on `capacitor-integration`, runs
@@ -66,7 +66,7 @@ and platform, including options left after npm consumes `--`, pass unchanged to
 
 ```sh
 npm run run:native:stock-scanner -- ios -- --port 3100
-METEOR_CAPACITOR_MODE=livereload npm run run:native -- meteor-escape android --development -- --mobile-server 10.0.2.2:3000
+METEOR_CAPACITOR_MODE=livereload npm run run:native -- meteor-drop android --development -- --mobile-server 10.0.2.2:3000
 METEOR_CAPACITOR_TARGET="DEVICE_ID" npm run run:native -- stock-scanner ios
 npm run run:native -- civic-snap ios --skip-install --skip-link --dry-run
 ```
@@ -96,18 +96,18 @@ In another terminal from repository root:
 ```sh
 npm run test:native:stock-scanner:android
 npm run test:native:civic-snap:android
-npm run test:native:meteor-escape:android
+npm run test:native:meteor-drop:android
 npm run test:native:stock-scanner:ios
 npm run test:native:civic-snap:ios
-npm run test:native:meteor-escape:ios
+npm run test:native:meteor-drop:ios
 ```
 
 Flows avoid camera, barcode, geolocation, notification, and share prompts. They
 open each app's **System information** screen to assert version/runtime markers,
 DDP connection, and the deterministic Hot Code Push preview. They then return to
 the primary workflow for a short touch interaction inside the web view. Meteor
-Escape runs the production quick-mission turn order before opening System
-information, then uses native back to return to Play.
+Drop plays a deterministic four-move win against the CPU, verifies Records,
+toggles DDP, previews HCP, and creates a live room.
 
 ## Record Showcase Media
 
@@ -119,7 +119,7 @@ export NATIVE_SHOWCASE_OUTPUT_DIR=/absolute/path/to/native-app-showcase
 
 npm run record:native:stock-scanner:ios
 npm run record:native:civic-snap:ios
-npm run record:native:meteor-escape:ios
+npm run record:native:meteor-drop:ios
 ```
 
 Android variants use the same command names with `:android`. The native app must

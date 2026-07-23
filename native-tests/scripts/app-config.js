@@ -36,14 +36,14 @@ const APPS = {
       NSLocationWhenInUseUsageDescription: 'Attach the issue location to a report.',
     },
   },
-  'meteor-escape': {
-    name: 'meteor-escape',
-    appId: 'com.meteor.examples.meteorescape',
-    appName: 'Meteor Escape',
-    sourceDir: path.join(EXAMPLES_ROOT, 'meteor-escape'),
-    flowPath: path.join(ROOT, 'flows', 'meteor-escape.yaml'),
-    showcaseFlowPath: path.join(ROOT, 'flows', 'showcase', 'meteor-escape.yaml'),
-    mediaSlug: 'meteor-escape',
+  'meteor-drop': {
+    name: 'meteor-drop',
+    appId: 'com.meteor.examples.meteordrop',
+    appName: 'Meteor Drop',
+    sourceDir: path.join(EXAMPLES_ROOT, 'meteor-drop'),
+    flowPath: path.join(ROOT, 'flows', 'meteor-drop.yaml'),
+    showcaseFlowPath: path.join(ROOT, 'flows', 'showcase', 'meteor-drop.yaml'),
+    mediaSlug: 'meteor-drop',
   },
 };
 

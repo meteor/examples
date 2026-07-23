@@ -9,7 +9,7 @@ function readFlow(name) {
   return fs.readFileSync(path.join(FLOW_ROOT, `${name}.yaml`), 'utf8');
 }
 
-for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-escape']) {
+for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-drop']) {
   test(`${appName} records a user-facing showcase journey`, () => {
     const flow = readFlow(appName);
     assert.match(flow, /startRecording:/);
@@ -18,7 +18,7 @@ for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-escape'])
     assert.match(flow, /\$\{SHOWCASE_POSTER_PATH\}/);
     assert.match(flow, /- stopRecording/);
     assert.doesNotMatch(flow, /Meteor\.isCapacitor|DDP/);
-    if (appName !== 'stock-scanner') {
+    if (appName === 'city-issue-reporter') {
       assert.doesNotMatch(flow, /System information|HCP/);
     }
   });
@@ -30,7 +30,8 @@ for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-escape'])
 
     assert.ok(pauses.length >= 5, 'expected holds across major screens');
     assert.ok(totalPauseMs >= 12000, 'expected at least 12 seconds of reading time');
-    assert.ok(totalPauseMs <= 25000, 'expected showcase to remain concise');
+    const maxPauseMs = appName === 'meteor-drop' ? 45000 : 25000;
+    assert.ok(totalPauseMs <= maxPauseMs, 'expected showcase to remain concise');
   });
 }
 
@@ -79,11 +80,32 @@ test('stock scanner closes with an HCP update dialog after inventory review', ()
   assert.match(flow, /assertVisible: "Install update"/);
 });
 
-test('meteor escape showcases a complete solo CPU mission and records', () => {
-  const flow = readFlow('meteor-escape');
-  assert.match(flow, /Quick Mission/);
-  assert.match(flow, /Copilot turn/);
-  assert.match(flow, /Warp charged/);
-  assert.match(flow, /Records/);
-  assert.match(flow, /Solo mission/);
+test('Meteor Drop showcases CPU play, sharing, records, HCP, and a live room', () => {
+  const flow = readFlow('meteor-drop');
+  assert.match(
+    flow,
+    /visible: "New app update available"[\s\S]*tapOn: "Not now"[\s\S]*startRecording:/,
+    'expected a pending HCP prompt to be dismissed before recording begins'
+  );
+  assert.match(flow, /tapOn: "Play vs CPU"/);
+  assert.match(flow, /visible: "CPU thinking"/);
+  assert.deepStrictEqual(
+    [...flow.matchAll(/- tapOn: "Drop meteor in column (\d)"/g)].map(
+      (match) => Number(match[1])
+    ),
+    [4, 2, 3, 1],
+    'expected the showcase to demonstrate a short winning line'
+  );
+  assert.match(
+    flow,
+    /visible: "Four connected!"[\s\S]*assertVisible: "You win"[\s\S]*takeScreenshot: \$\{SHOWCASE_POSTER_PATH\}/
+  );
+  assert.match(flow, /tapOn: "Share Result"[\s\S]*visible: "Copy"/);
+  assert.match(flow, /assertNotVisible: "Copy"[\s\S]*tapOn: "Home"/);
+  assert.match(flow, /tapOn: "Records"[\s\S]*visible: "Solo vs CPU"/);
+  assert.match(flow, /tapOn: "System"[\s\S]*tapOn: "Preview HCP update"/);
+  assert.match(flow, /visible: "New app update available"/);
+  assert.match(flow, /tapOn: "Create Live Match"/);
+  assert.match(flow, /visible: "Waiting for rival"/);
+  assert.match(flow, /assertVisible: "Share Room Code"/);
 });

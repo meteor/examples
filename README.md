@@ -13,7 +13,7 @@ Each example doubles as a reference for [community packages](https://docs.meteor
   - [Native applications](#native-applications)
     - [Stock Scanner](#stock-scanner)
     - [Civic Snap](#civic-snap)
-    - [Meteor Escape](#meteor-escape)
+    - [Meteor Drop](#meteor-drop)
   - [Simple Blog](#simple-blog)
   - [Tic-Tac-Toe](#tic-tac-toe)
   - [Parties](#parties)
@@ -74,12 +74,12 @@ Official Meteor applications built with Capacitor, native plugins, HCP, and Maes
 - Last Updated At: Jul/21/2026
 - Meteor Version: 3.4.1
 
-#### Meteor Escape
-- Repository: [meteor/examples/meteor-escape](./meteor-escape)
-- Why: Promotion-ready co-op microgame with Konsta mobile navigation, live DDP mission sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics
+#### Meteor Drop
+- Repository: [meteor/examples/meteor-drop](./meteor-drop)
+- Why: Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics
 - Gallery: Generated outside the checkout through the documented Playwright and Maestro showcase flows
 - Stack: Meteor, Rspack, React, Konsta UI, Capacitor, App, Haptics, Network, Share, Meteor Capacitor HCP, MongoDB, Mocha, oxlint, Playwright, Maestro
-- Last Updated At: Jul/21/2026
+- Last Updated At: Jul/23/2026
 - Meteor Version: 3.4.1
 
 ### Simple Blog

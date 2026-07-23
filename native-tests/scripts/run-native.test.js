@@ -40,7 +40,7 @@ function createCheckout() {
 
 test('parses app, platform, runner options, and Meteor passthrough', () => {
   assert.deepEqual(parseArgs([
-    'meteor-escape',
+    'meteor-drop',
     'ios',
     '--skip-install',
     '--',
@@ -48,7 +48,7 @@ test('parses app, platform, runner options, and Meteor passthrough', () => {
     '3100',
     '--production',
   ]), {
-    appName: 'meteor-escape',
+    appName: 'meteor-drop',
     platform: 'ios',
     meteorCheckout: null,
     expectedBranch: null,
@@ -77,7 +77,7 @@ test('parses app-specific command arguments', () => {
 
 test('forwards Meteor options when npm consumes the passthrough separator', () => {
   const args = parseArgs([
-    'meteor-escape',
+    'meteor-drop',
     'android',
     '--mobile-server',
     'http://10.0.2.2:3000',
@@ -173,7 +173,7 @@ test('derives checkout from METEOR_BIN when no checkout override exists', () => 
 
 test('resolves adjacent checkout defaults', () => {
   const examplesRoot = path.join(path.sep, 'repo', 'examples');
-  const runtime = resolveRuntime(parseArgs(['meteor-escape', 'ios']), {
+  const runtime = resolveRuntime(parseArgs(['meteor-drop', 'ios']), {
     cwd: examplesRoot,
     examplesRoot,
     env: {},
@@ -194,12 +194,12 @@ test('detects configured Meteor platforms', () => {
 });
 
 test('builds setup and native run commands with passthrough', () => {
-  const args = parseArgs(['meteor-escape', 'android', '--', '--port', '3199']);
+  const args = parseArgs(['meteor-drop', 'android', '--', '--port', '3199']);
   const runtime = {
     meteorBin: '/repo/meteor/meteor',
     localPackageDirs: ['/repo/meteor/capacitor', '/repo/meteor/rspack'],
   };
-  const app = { sourceDir: '/repo/examples/meteor-escape' };
+  const app = { sourceDir: '/repo/examples/meteor-drop' };
 
   assert.deepEqual(buildCommandPlan(args, runtime, app, {
     platformPresent: false,
@@ -238,7 +238,7 @@ test('builds setup and native run commands with passthrough', () => {
       app,
       platform: 'android',
       cwd: app.sourceDir,
-      display: 'prepare native settings for meteor-escape android',
+      display: 'prepare native settings for meteor-drop android',
     },
     {
       label: 'run',
@@ -254,10 +254,10 @@ test('keeps explicit production flags singular and supports development mode', (
     meteorBin: '/repo/meteor/meteor',
     localPackageDirs: [],
   };
-  const app = { sourceDir: '/repo/examples/meteor-escape' };
+  const app = { sourceDir: '/repo/examples/meteor-drop' };
   const buildRun = (tokens) => {
     const plan = buildCommandPlan(
-      parseArgs(['meteor-escape', 'android', '--skip-install', '--skip-link', ...tokens]),
+      parseArgs(['meteor-drop', 'android', '--skip-install', '--skip-link', ...tokens]),
       runtime,
       app,
       { platformPresent: true, nativeProjectPresent: true }
@@ -485,7 +485,7 @@ test('dry-run prints plan without starting processes', async () => {
 test('prints complete launcher usage', () => {
   const output = usage();
   assert.match(output, /run:native -- <app> <platform>/);
-  assert.match(output, /stock-scanner.*civic-snap.*meteor-escape/s);
+  assert.match(output, /stock-scanner.*civic-snap.*meteor-drop/s);
   assert.match(output, /--meteor-checkout/);
   assert.match(output, /--development/);
   assert.match(output, /METEOR_CAPACITOR_MODE/);
@@ -497,7 +497,7 @@ test('runs resolved app plan in dry-run mode', async () => {
   const logs = [];
   const errors = [];
   const result = await run([
-    'meteor-escape',
+    'meteor-drop',
     'ios',
     '--meteor-checkout',
     runtime.checkoutDir,
@@ -541,7 +541,7 @@ test('exposes generic and app-specific npm launcher commands', () => {
     'node native-tests/scripts/run-native.js civic-snap',
   );
   assert.equal(
-    scripts['run:native:meteor-escape'],
-    'node native-tests/scripts/run-native.js meteor-escape',
+    scripts['run:native:meteor-drop'],
+    'node native-tests/scripts/run-native.js meteor-drop',
   );
 });

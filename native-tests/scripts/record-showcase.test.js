@@ -30,11 +30,11 @@ test('parses app, platform, and explicit output directory', () => {
 
 test('uses the external showcase environment variable', () => {
   assert.deepEqual(
-    parseArgs(['--app', 'meteor-escape', '--platform', 'android'], {
+    parseArgs(['--app', 'meteor-drop', '--platform', 'android'], {
       NATIVE_SHOWCASE_OUTPUT_DIR: '/tmp/showcase-library',
     }),
     {
-      appName: 'meteor-escape',
+      appName: 'meteor-drop',
       platform: 'android',
       outputDir: '/tmp/showcase-library',
     }
@@ -43,7 +43,7 @@ test('uses the external showcase environment variable', () => {
 
 test('requires an output directory', () => {
   assert.throws(
-    () => parseArgs(['--app=meteor-escape', '--platform=ios'], {}),
+    () => parseArgs(['--app=meteor-drop', '--platform=ios'], {}),
     /--output-dir or NATIVE_SHOWCASE_OUTPUT_DIR is required/
   );
 });
@@ -62,25 +62,25 @@ test('rejects output paths inside the examples checkout', () => {
 test('creates stable and timestamped media paths', () => {
   const layout = createOutputLayout({
     outputRoot: '/media/native-app-showcase',
-    mediaSlug: 'meteor-escape',
+    mediaSlug: 'meteor-drop',
     platform: 'ios',
     now: new Date('2026-07-22T15:04:05.006Z'),
   });
 
   assert.equal(
     layout.runDir,
-    '/media/native-app-showcase/meteor-escape/runs/2026-07-22T15-04-05-006Z-ios'
+    '/media/native-app-showcase/meteor-drop/runs/2026-07-22T15-04-05-006Z-ios'
   );
-  assert.equal(layout.runVideoPath, `${layout.runDir}/meteor-escape-ios.mp4`);
-  assert.equal(layout.runPosterPath, `${layout.runDir}/meteor-escape-ios-poster.png`);
+  assert.equal(layout.runVideoPath, `${layout.runDir}/meteor-drop-ios.mp4`);
+  assert.equal(layout.runPosterPath, `${layout.runDir}/meteor-drop-ios-poster.png`);
   assert.equal(layout.showcaseRunId, 'MRW7QIDQ');
   assert.equal(
     layout.videoPath,
-    '/media/native-app-showcase/meteor-escape/videos/meteor-escape-ios.mp4'
+    '/media/native-app-showcase/meteor-drop/videos/meteor-drop-ios.mp4'
   );
   assert.equal(
     layout.posterPath,
-    '/media/native-app-showcase/meteor-escape/screenshots/meteor-escape-ios-poster.png'
+    '/media/native-app-showcase/meteor-drop/screenshots/meteor-drop-ios-poster.png'
   );
 });
 
@@ -88,11 +88,11 @@ test('builds a targeted Maestro command with external recording variables', () =
   const args = buildMaestroArgs({
     platform: 'ios',
     deviceId: 'SIMULATOR-ID',
-    flowPath: '/repo/native-tests/flows/showcase/meteor-escape.yaml',
-    runDir: '/media/meteor-escape/runs/run-id',
+    flowPath: '/repo/native-tests/flows/showcase/meteor-drop.yaml',
+    runDir: '/media/meteor-drop/runs/run-id',
     showcaseRunId: 'ABC123',
-    videoBasePath: '/media/meteor-escape/runs/run-id/meteor-escape-ios',
-    posterBasePath: '/media/meteor-escape/runs/run-id/meteor-escape-ios-poster',
+    videoBasePath: '/media/meteor-drop/runs/run-id/meteor-drop-ios',
+    posterBasePath: '/media/meteor-drop/runs/run-id/meteor-drop-ios-poster',
   });
 
   assert.deepEqual(args, [
@@ -104,18 +104,18 @@ test('builds a targeted Maestro command with external recording variables', () =
     '--format',
     'junit',
     '--output',
-    '/media/meteor-escape/runs/run-id/maestro-report.xml',
+    '/media/meteor-drop/runs/run-id/maestro-report.xml',
     '--debug-output',
-    '/media/meteor-escape/runs/run-id/debug',
+    '/media/meteor-drop/runs/run-id/debug',
     '--test-output-dir',
-    '/media/meteor-escape/runs/run-id/test-output',
+    '/media/meteor-drop/runs/run-id/test-output',
     '-e',
-    'SHOWCASE_VIDEO_PATH=/media/meteor-escape/runs/run-id/meteor-escape-ios',
+    'SHOWCASE_VIDEO_PATH=/media/meteor-drop/runs/run-id/meteor-drop-ios',
     '-e',
-    'SHOWCASE_POSTER_PATH=/media/meteor-escape/runs/run-id/meteor-escape-ios-poster',
+    'SHOWCASE_POSTER_PATH=/media/meteor-drop/runs/run-id/meteor-drop-ios-poster',
     '-e',
     'SHOWCASE_RUN_ID=ABC123',
-    '/repo/native-tests/flows/showcase/meteor-escape.yaml',
+    '/repo/native-tests/flows/showcase/meteor-drop.yaml',
   ]);
 });
 
@@ -123,7 +123,7 @@ test('promotes a successful run and updates the external manifest', () => {
   const outputRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'native-showcase-'));
   const layout = createOutputLayout({
     outputRoot,
-    mediaSlug: 'meteor-escape',
+    mediaSlug: 'meteor-drop',
     platform: 'ios',
     now: new Date('2026-07-22T15:04:05.006Z'),
   });
@@ -133,7 +133,7 @@ test('promotes a successful run and updates the external manifest', () => {
 
   promoteSuccessfulRun({
     layout,
-    app: { name: 'meteor-escape', appName: 'Meteor Escape', mediaSlug: 'meteor-escape' },
+    app: { name: 'meteor-drop', appName: 'Meteor Drop', mediaSlug: 'meteor-drop' },
     platform: 'ios',
     deviceId: 'SIMULATOR-ID',
     completedAt: new Date('2026-07-22T15:05:00.000Z'),
@@ -143,11 +143,11 @@ test('promotes a successful run and updates the external manifest', () => {
   assert.equal(fs.readFileSync(layout.posterPath, 'utf8'), 'poster');
 
   const manifest = JSON.parse(fs.readFileSync(path.join(outputRoot, 'manifest.json'), 'utf8'));
-  assert.equal(manifest.apps['meteor-escape'].platforms.ios.deviceId, 'SIMULATOR-ID');
-  assert.equal(manifest.apps['meteor-escape'].platforms.ios.video, 'meteor-escape/videos/meteor-escape-ios.mp4');
+  assert.equal(manifest.apps['meteor-drop'].platforms.ios.deviceId, 'SIMULATOR-ID');
+  assert.equal(manifest.apps['meteor-drop'].platforms.ios.video, 'meteor-drop/videos/meteor-drop-ios.mp4');
   assert.equal(
-    manifest.apps['meteor-escape'].platforms.ios.poster,
-    'meteor-escape/screenshots/meteor-escape-ios-poster.png'
+    manifest.apps['meteor-drop'].platforms.ios.poster,
+    'meteor-drop/screenshots/meteor-drop-ios-poster.png'
   );
 });
 
@@ -158,13 +158,13 @@ test('does not replace stable media or create a manifest after a failed run', ()
   fs.writeFileSync(showcaseFlowPath, 'appId: example\n---\n- launchApp\n');
 
   const exitCode = run(
-    ['--app=meteor-escape', '--platform=ios', `--output-dir=${outputRoot}`],
+    ['--app=meteor-drop', '--platform=ios', `--output-dir=${outputRoot}`],
     {
       examplesRoot: '/work/meteor/examples',
       getAppConfig: () => ({
-        name: 'meteor-escape',
-        appName: 'Meteor Escape',
-        mediaSlug: 'meteor-escape',
+        name: 'meteor-drop',
+        appName: 'Meteor Drop',
+        mediaSlug: 'meteor-drop',
         showcaseFlowPath,
       }),
       getDeviceId: () => 'SIMULATOR-ID',
@@ -176,13 +176,13 @@ test('does not replace stable media or create a manifest after a failed run', ()
   assert.equal(exitCode, 1);
   assert.equal(fs.existsSync(path.join(outputRoot, 'manifest.json')), false);
   assert.equal(
-    fs.existsSync(path.join(outputRoot, 'meteor-escape', 'videos', 'meteor-escape-ios.mp4')),
+    fs.existsSync(path.join(outputRoot, 'meteor-drop', 'videos', 'meteor-drop-ios.mp4')),
     false
   );
 
   const runResultPath = path.join(
     outputRoot,
-    'meteor-escape',
+    'meteor-drop',
     'runs',
     '2026-07-22T15-04-05-006Z-ios',
     'run.json'

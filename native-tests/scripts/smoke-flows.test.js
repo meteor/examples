@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const FLOW_ROOT = path.join(__dirname, '..', 'flows');
 
-for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-escape']) {
+for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-drop']) {
   test(`${appName} scrolls technical controls into reach on phones`, () => {
     const flow = fs.readFileSync(path.join(FLOW_ROOT, `${appName}.yaml`), 'utf8');
     assert.match(
@@ -19,8 +19,8 @@ for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-escape'])
     const flow = fs.readFileSync(path.join(FLOW_ROOT, `${appName}.yaml`), 'utf8');
     assert.match(
       flow,
-      /retry:\n\s+maxRetries: 3\n\s+commands:\n\s+- runFlow:\n\s+when:\n\s+visible: "New app update available"\n\s+commands:\n\s+- tapOn: "Not now"\n\s+- waitForAnimationToEnd:\n\s+timeout: 5000/,
-      'expected startup navigation to dismiss an HCP prompt without installing it'
+      /visible: "New app update available"[\s\S]*tapOn: "Not now"/,
+      'expected startup to dismiss an HCP prompt without installing it'
     );
   });
 
@@ -53,16 +53,27 @@ test('civic snap restores its app bar after diagnostics on phones', () => {
   assert.match(flow, /visible: "Report detail"/, 'expected a completed submission');
 });
 
-test('meteor escape returns from diagnostics through its visible tab navigation', () => {
+test('Meteor Drop covers CPU gameplay, records, diagnostics, and a live room', () => {
   const flow = fs.readFileSync(
-    path.join(FLOW_ROOT, 'meteor-escape.yaml'),
+    path.join(FLOW_ROOT, 'meteor-drop.yaml'),
     'utf8'
   );
-  assert.match(
-    flow,
-    /visible: "Mission control"[\s\S]*assertVisible: "Meteor"\n- tapOn: "Shield"\n- extendedWaitUntil:\n\s+visible: "Warp charged"/,
-    'expected the timed test mission to act before checking transient turn states'
+
+  assert.match(flow, /tapOn: "Play vs CPU"/);
+  assert.match(flow, /visible: "CPU thinking"/);
+  assert.deepStrictEqual(
+    [...flow.matchAll(/- tapOn: "Drop meteor in column (\d)"/g)].map(
+      (match) => Number(match[1])
+    ),
+    [4, 2, 3, 1],
+    'expected the deterministic four-move CPU win'
   );
-  assert.match(flow, /tapOn: "Not now"\n- tapOn: "Play"/);
-  assert.doesNotMatch(flow, /tapOn: "Not now"\n- back/);
+  assert.match(flow, /visible: "Four connected!"[\s\S]*assertVisible: "You win"/);
+  assert.match(flow, /tapOn: "Home"[\s\S]*tapOn: "Records"/);
+  assert.match(flow, /assertVisible: "Solo vs CPU"[\s\S]*assertVisible: "Win"/);
+  assert.match(flow, /tapOn: "Live DDP connection"[\s\S]*visible: "DDP paused"/);
+  assert.match(flow, /visible: "DDP paused"[\s\S]*visible: "DDP connected"/);
+  assert.match(flow, /visible: "New app update available"[\s\S]*assertVisible: "Install update"/);
+  assert.match(flow, /tapOn: "Create Live Match"[\s\S]*visible: "Waiting for rival"/);
+  assert.match(flow, /assertVisible: "Share Room Code"/);
 });

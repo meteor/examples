@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const defaultMeteorCheckout = path.resolve(repoRoot, '..', 'meteor');
 const meteorBin = process.env.METEOR_BIN || path.join(defaultMeteorCheckout, 'meteor');
-const appNames = ['stock-scanner', 'city-issue-reporter', 'meteor-escape'];
+const appNames = ['stock-scanner', 'city-issue-reporter', 'meteor-drop'];
 const localPackageDirs = [
   path.join(defaultMeteorCheckout, 'npm-packages', 'meteor-capacitor'),
   path.join(defaultMeteorCheckout, 'npm-packages', 'meteor-rspack'),

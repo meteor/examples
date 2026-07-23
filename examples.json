@@ -142,15 +142,15 @@
     "meteorVersion": "3.4.1"
   },
   {
-    "title": "Meteor Escape",
-    "slug": "meteor-escape",
+    "title": "Meteor Drop",
+    "slug": "meteor-drop",
     "demo": null,
     "tutorial": null,
     "repository": "meteor/examples",
-    "repositoryUrl": "https://github.com/meteor/examples/tree/main/meteor-escape",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/meteor-drop",
     "isInternal": true,
-    "internalPath": "meteor-escape",
-    "why": "Promotion-ready co-op microgame with Konsta mobile navigation, live DDP mission sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics",
+    "internalPath": "meteor-drop",
+    "why": "Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics",
     "stack": [
       "Meteor",
       "Rspack",
@@ -168,7 +168,7 @@
       "Playwright",
       "Maestro"
     ],
-    "lastUpdatedAt": "Jul/21/2026",
+    "lastUpdatedAt": "Jul/23/2026",
     "meteorVersion": "3.4.1"
   },
   {

@@ -69,11 +69,11 @@ test('Civic Snap exposes launcher icon assets for web and native packaging', () 
   });
 });
 
-test('Meteor Escape exposes launcher icon assets for web and native packaging', () => {
+test('Meteor Drop exposes launcher icon assets for web and native packaging', () => {
   assertAssetContract({
-    appDir: 'meteor-escape',
-    appName: 'Meteor Escape',
-    themeColor: '#eb8b6b',
-    motifs: ['spacecraft', 'meteor', 'escape-star'],
+    appDir: 'meteor-drop',
+    appName: 'Meteor Drop',
+    themeColor: '#2563eb',
+    motifs: ['four-meteor-diagonal'],
   });
 });

@@ -29,24 +29,24 @@ test('Civic Snap keeps form state and touch events inside React', () => {
   assert.match(touchButton, /onClick=\{onPress\}/);
 });
 
-test('Meteor Escape delegates native diagnostics and removes stale entry modules', () => {
-  const app = read('meteor-escape/imports/ui/App.jsx');
+test('Meteor Drop delegates native diagnostics and removes stale entry modules', () => {
+  const app = read('meteor-drop/imports/ui/App.jsx');
 
   assert.match(app, /useNativeDiagnostics/);
   assert.doesNotMatch(app, /getApplicationInfo|listenNetworkStatus|listenForHcpUpdates/);
-  assert.equal(fs.existsSync(path.join(ROOT, 'meteor-escape/client/main.js')), false);
+  assert.equal(fs.existsSync(path.join(ROOT, 'meteor-drop/client/main.js')), false);
   assert.equal(fs.existsSync(path.join(ROOT, 'city-issue-reporter/imports/ui/routes.js')), false);
 });
 
-test('Meteor Escape delegates game access and duplicate-index interpretation', () => {
-  const methods = read('meteor-escape/imports/api/games/methods.js');
+test('Meteor Drop delegates game access and duplicate-index interpretation', () => {
+  const methods = read('meteor-drop/imports/api/games/methods.js');
 
   assert.match(methods, /from '.\/server\/gameAccess'/);
   assert.doesNotMatch(methods, /function findOwnedGameOrThrow|function isDuplicateKeyError/);
 });
 
 test('native examples install HCP consent gates before mounting React', () => {
-  for (const app of ['stock-scanner', 'city-issue-reporter', 'meteor-escape']) {
+  for (const app of ['stock-scanner', 'city-issue-reporter', 'meteor-drop']) {
     const client = read(`${app}/client/main.jsx`);
     const gate = read(`${app}/imports/ui/native/hcpReloadGate.client.js`);
 
