@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Button, List, ListItem } from 'konsta/react';
-import { HcpUpdateDialog } from '../components/HcpUpdateDialog';
 
 function StatusPill({ label, value, ariaLabel }) {
   return (
@@ -27,8 +26,7 @@ export function SystemInfoPage({
   const capacitorLabel = appInfo.native ? 'Meteor.isCapacitor true' : 'Meteor.isCapacitor false';
 
   return (
-    <>
-      <section className="system-page" aria-labelledby="system-information-title">
+    <section className="system-page" aria-labelledby="system-information-title">
         <div className="system-page__header">
           <div>
             <p className="eyebrow">Developer tools</p>
@@ -134,14 +132,6 @@ export function SystemInfoPage({
             </Button>
           </div>
         </section>
-      </section>
-
-      <HcpUpdateDialog
-        installing={hcp.installing}
-        updateVersion={hcp.updateVersion}
-        onDismiss={hcp.onDismiss}
-        onInstall={hcp.onInstall}
-      />
-    </>
+    </section>
   );
 }

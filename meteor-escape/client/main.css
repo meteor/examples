@@ -101,6 +101,57 @@ img {
   flex: none;
 }
 
+.hcp-update-reminder {
+  position: fixed;
+  right: calc(1rem + var(--meteor-safe-right));
+  bottom: calc(4.75rem + var(--meteor-safe-bottom));
+  left: calc(1rem + var(--meteor-safe-left));
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  box-sizing: border-box;
+  width: min(calc(100% - 2rem - var(--meteor-safe-left) - var(--meteor-safe-right)), 30rem);
+  min-height: 64px;
+  margin-left: auto;
+  padding: 0.55rem 0.55rem 0.55rem 0.85rem;
+  border: 1px solid rgba(122, 231, 255, 0.34);
+  border-radius: 8px;
+  background: var(--meteor-ink);
+  box-shadow: 0 12px 30px rgba(31, 43, 49, 0.24);
+  color: var(--meteor-surface);
+}
+
+.hcp-update-reminder__copy,
+.hcp-update-reminder__copy strong,
+.hcp-update-reminder__copy span {
+  display: block;
+  min-width: 0;
+}
+
+.hcp-update-reminder__copy strong {
+  font-size: 0.92rem;
+}
+
+.hcp-update-reminder__copy span {
+  margin-top: 0.1rem;
+  color: var(--meteor-surface);
+  font-size: 0.75rem;
+  opacity: 0.76;
+}
+
+.hcp-update-reminder__action {
+  min-width: 84px;
+  min-height: 48px;
+  padding: 0 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: var(--meteor-cyan);
+  color: #1f2b31;
+  font-weight: 800;
+}
+
 .app-shell__layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1329,6 +1380,10 @@ img {
 }
 
 @media (min-width: 1024px) {
+  .hcp-update-reminder {
+    bottom: calc(1.5rem + var(--meteor-safe-bottom));
+  }
+
   .app-shell__layout {
     grid-template-columns: 12.5rem minmax(0, 1fr);
   }

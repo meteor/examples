@@ -6,6 +6,7 @@ import { App as KonstaApp, Block } from 'konsta/react';
 import { ACTIVE_STATUSES, TERMINAL_STATUSES, Games } from '../api/games/collection';
 import { AppShell } from './components/AppShell';
 import { CrewSheet } from './components/CrewSheet';
+import { HcpUpdateDialog, HcpUpdateReminder } from './components/HcpUpdateDialog';
 import { MissionStage } from './components/MissionStage';
 import { ResultSheet } from './components/ResultSheet';
 import {
@@ -110,7 +111,6 @@ export function App() {
     ddpEnabled,
     ddpEndpoint,
     hcp,
-    hcpUpdateVersion,
     networkStatus,
     onReconnect,
     onToggleDdp,
@@ -298,7 +298,7 @@ export function App() {
 
   useNativeBackButton(() => {
     const action = resolveNativeBackAction({
-      hcpDialogOpen: Boolean(hcpUpdateVersion),
+      hcpDialogOpen: hcp.opened,
       crewSheetOpen,
       resultSheetOpen,
       missionExitConfirmOpen,
@@ -655,6 +655,17 @@ export function App() {
         ) : null}
       </AppShell>
 
+      <HcpUpdateReminder
+        visible={Boolean(hcp.updateVersion) && !hcp.opened}
+        onReview={hcp.onReview}
+      />
+      <HcpUpdateDialog
+        installing={hcp.installing}
+        opened={hcp.opened}
+        updateVersion={hcp.updateVersion}
+        onDismiss={hcp.onDismiss}
+        onInstall={hcp.onInstall}
+      />
       <MissionExitDialog
         opened={missionExitConfirmOpen}
         onStay={() => setMissionExitConfirmOpen(false)}

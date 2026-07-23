@@ -28,6 +28,7 @@ export function useNativeDiagnostics() {
   const [installingHcp, setInstallingHcp] = useState(false);
   const [hcpMessage, setHcpMessage] = useState('Ready to check for app updates.');
   const [hcpUpdateVersion, setHcpUpdateVersion] = useState(null);
+  const [hcpPromptOpen, setHcpPromptOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
@@ -52,6 +53,7 @@ export function useNativeDiagnostics() {
     () =>
       listenForHcpUpdates((version) => {
         setHcpUpdateVersion(version);
+        setHcpPromptOpen(true);
         setHcpMessage(`Version ${version} downloaded and ready.`);
       }),
     []
@@ -107,20 +109,24 @@ export function useNativeDiagnostics() {
       checking: checkingHcp,
       installing: installingHcp,
       message: hcpMessage,
+      opened: hcpPromptOpen,
       updateVersion: hcpUpdateVersion,
       onCheck: handleCheckHcpUpdate,
       onPreview: () => {
         setHcpUpdateVersion(HCP_PREVIEW_VERSION);
+        setHcpPromptOpen(true);
         setHcpMessage('Previewing the update prompt.');
       },
       onInstall: handleInstallHcpUpdate,
-      onDismiss: () => setHcpUpdateVersion(null),
+      onDismiss: () => setHcpPromptOpen(false),
+      onReview: () => setHcpPromptOpen(true),
     }),
     [
       checkingHcp,
       handleCheckHcpUpdate,
       handleInstallHcpUpdate,
       hcpMessage,
+      hcpPromptOpen,
       hcpUpdateVersion,
       installingHcp,
     ]
@@ -139,4 +145,3 @@ export function useNativeDiagnostics() {
     theme: Capacitor.getPlatform() === 'ios' ? 'ios' : 'material',
   };
 }
-

@@ -128,6 +128,47 @@ test('keeps technical controls on System Information', async ({ page }) => {
   await expect(previewUpdate).toBeFocused();
 });
 
+test('shows and preserves HCP update actions across app screens', async ({ page }) => {
+  await page.addInitScript(() => {
+    let updateListener;
+    let switchCalls = 0;
+    window.WebAppLocalServer = {
+      onNewVersionReady(listener) {
+        updateListener = listener;
+        return () => {
+          updateListener = undefined;
+        };
+      },
+      switchToPendingVersion(resolve) {
+        switchCalls += 1;
+        resolve?.();
+      },
+    };
+    window.__emitNativeUpdate = (version) => updateListener?.(version);
+    window.__getNativeSwitchCalls = () => switchCalls;
+  });
+  await page.goto('/');
+
+  await expect(page.getByRole('heading', { name: 'Meteor Escape' })).toBeVisible();
+  await page.evaluate(() => window.__emitNativeUpdate('2026.07.23'));
+  await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
+  await expect(page.getByText('Version 2026.07.23 is ready to install.')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(0);
+  await page.getByRole('button', { name: 'Not now' }).click();
+  await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeHidden();
+  await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(0);
+
+  const reviewUpdate = page.getByRole('button', { name: 'Review update' });
+  await expect(reviewUpdate).toBeVisible();
+
+  await page.getByRole('button', { name: 'Records' }).click();
+  await expect(reviewUpdate).toBeVisible();
+  await reviewUpdate.click();
+  await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
+  await page.getByRole('button', { name: 'Install update' }).click();
+  await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(1);
+});
+
 test('shows a global offline banner and disables mission controls until the link returns', async ({ page }) => {
   await page.goto('/?testMode=1');
   await page.getByRole('button', { name: 'Quick Mission' }).click();

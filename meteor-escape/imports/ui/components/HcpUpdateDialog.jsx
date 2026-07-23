@@ -1,15 +1,40 @@
 import React from 'react';
 import { Button } from 'konsta/react';
+import { RefreshCw } from 'lucide-react';
 import { useDialogFocusTrap } from '../useDialogFocusTrap';
 
-export function HcpUpdateDialog({ installing, updateVersion, onDismiss, onInstall }) {
+export function HcpUpdateReminder({ visible, onReview }) {
+  if (!visible) {
+    return null;
+  }
+
+  return (
+    <aside className="hcp-update-reminder" role="status" aria-live="polite">
+      <RefreshCw size={20} aria-hidden="true" />
+      <div className="hcp-update-reminder__copy">
+        <strong>Update ready</strong>
+        <span>Fresh mission build downloaded</span>
+      </div>
+      <button
+        className="hcp-update-reminder__action"
+        type="button"
+        aria-label="Review update"
+        onClick={onReview}
+      >
+        Review
+      </button>
+    </aside>
+  );
+}
+
+export function HcpUpdateDialog({ installing, opened, updateVersion, onDismiss, onInstall }) {
   const { dialogRef, onDialogKeyDown } = useDialogFocusTrap({
-    opened: Boolean(updateVersion),
+    opened,
     onDismiss,
     dismissDisabled: installing,
   });
 
-  if (!updateVersion) {
+  if (!updateVersion || !opened) {
     return null;
   }
 

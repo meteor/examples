@@ -68,9 +68,13 @@ through unchanged:
 
 ```bash
 npm run run:native:meteor-escape -- ios -- --port 3100
-METEOR_CAPACITOR_MODE=livereload npm run run:native:meteor-escape -- android -- --mobile-server 10.0.2.2:3000
+METEOR_CAPACITOR_MODE=livereload npm run run:native:meteor-escape -- android --development -- --mobile-server 10.0.2.2:3000
 METEOR_CAPACITOR_TARGET="DEVICE_ID" npm run run:native:meteor-escape -- ios
 ```
+
+Bundled runs use production bundling by default so Rspack emits complete HCP
+assets. `--development` is intended for livereload sessions attached to the
+development server.
 
 Run `npm run run:native -- --help` for checkout overrides, setup skip options,
 and dry-run mode. For a browser preview, run
@@ -142,14 +146,20 @@ create requests return the existing waiting room instead of minting extra codes.
 The UI uses `imports/ui/native/hcp.js` as a small bridge around the native
 `window.WebAppLocalServer` API. `listenForHcpUpdates` subscribes to
 `onNewVersionReady`, `checkForHcpUpdates` calls `checkForUpdates`, and
-`applyHcpUpdate` calls `switchToPendingVersion`. System information shows update
-state and controls; its dialog appears when the native bridge reports a ready
-web bundle.
+`applyHcpUpdate` calls `switchToPendingVersion`. System information keeps manual
+checks and update diagnostics. When the native bridge reports a ready web bundle,
+an app-level Konsta-styled sheet opens over Play, Records, System, or an active
+mission. Choosing "Not now" leaves a persistent "Update ready" reminder above
+the tab bar.
+
+The client installs a Meteor reload migration gate before the application
+mounts. Downloading a bundle does not switch versions or refresh the WebView;
+the current mission build keeps running until the user chooses "Install update".
 
 The "Preview HCP update" action is a deterministic demo and test path. It does
-not pretend that a server update was downloaded; it simply opens the same dialog
-that native HCP opens so Playwright and Maestro can assert the user-facing
-update experience without requiring a second deployment.
+not pretend that a server update was downloaded; it opens the same global sheet
+and reminder flow that native HCP uses so Playwright and Maestro can assert the
+user-facing update experience without requiring a second deployment.
 
 ## How It Is Structured
 
