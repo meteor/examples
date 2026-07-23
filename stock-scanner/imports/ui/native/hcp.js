@@ -2,15 +2,61 @@ export const HCP_PREVIEW_VERSION = 'demo-preview';
 
 const listenerRegistries = new WeakMap();
 
-function createListenerRegistry(bridge) {
+export function createHcpReloadConsent() {
+  let installed = false;
+  let updateReady = false;
+  let retryReload;
+
+  return {
+    install(reload) {
+      if (installed || typeof reload?._onMigrate !== 'function') {
+        return false;
+      }
+
+      reload._onMigrate('native-hcp-consent', (retry) => {
+        if (!updateReady) {
+          return [true];
+        }
+
+        retryReload = retry;
+        return false;
+      });
+      installed = true;
+      return true;
+    },
+    markUpdateReady() {
+      updateReady = true;
+    },
+    release() {
+      if (!installed || !updateReady) {
+        return false;
+      }
+
+      updateReady = false;
+      const retry = retryReload;
+      retryReload = undefined;
+      retry?.();
+      return true;
+    },
+  };
+}
+
+export const hcpReloadConsent = createHcpReloadConsent();
+
+function createListenerRegistry(bridge, consent) {
   const registry = {
     listeners: new Set(),
     nativeHandle: undefined,
+    latestVersion: undefined,
   };
 
   registry.nativeHandle = bridge.onNewVersionReady((version) => {
+    const readyVersion = version || 'available';
+    registry.latestVersion = readyVersion;
+    consent.markUpdateReady();
+
     for (const listener of registry.listeners) {
-      listener(version || 'available');
+      listener(readyVersion);
     }
   });
   listenerRegistries.set(bridge, registry);
@@ -33,7 +79,8 @@ function removeNativeListener(registry) {
 
 export function listenForHcpUpdates(
   onUpdateAvailable,
-  bridge = globalThis.window?.WebAppLocalServer
+  bridge = globalThis.window?.WebAppLocalServer,
+  consent = hcpReloadConsent
 ) {
   if (!bridge?.onNewVersionReady) {
     return () => {};
@@ -42,8 +89,11 @@ export function listenForHcpUpdates(
   let registry;
 
   try {
-    registry = listenerRegistries.get(bridge) ?? createListenerRegistry(bridge);
+    registry = listenerRegistries.get(bridge) ?? createListenerRegistry(bridge, consent);
     registry.listeners.add(onUpdateAvailable);
+    if (registry.latestVersion) {
+      onUpdateAvailable(registry.latestVersion);
+    }
   } catch (error) {
     console.warn('HCP update listener unavailable', error);
     return () => {};
@@ -75,10 +125,17 @@ export async function checkForHcpUpdates() {
   }
 }
 
-export async function applyHcpUpdate() {
-  const bridge = window.WebAppLocalServer;
+export async function applyHcpUpdate(
+  bridge = globalThis.window?.WebAppLocalServer,
+  reloadPage = () => globalThis.window?.location.reload(),
+  consent = hcpReloadConsent
+) {
+  if (consent.release()) {
+    return;
+  }
+
   if (!bridge?.switchToPendingVersion) {
-    window.location.reload();
+    reloadPage();
     return;
   }
 

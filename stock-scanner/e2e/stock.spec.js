@@ -18,6 +18,26 @@ test.describe('Stock Scanner', () => {
     const ownerId = testInfo.title.includes('showcase shift')
       ? 'demo-stock-owner'
       : `e2e-stock-${Date.now()}-${testInfo.workerIndex}-${testInfo.retry}`;
+    if (testInfo.title.includes('HCP update actions')) {
+      await page.addInitScript(() => {
+        let updateListener;
+        let switchCalls = 0;
+        window.WebAppLocalServer = {
+          onNewVersionReady(listener) {
+            updateListener = listener;
+            return () => {
+              updateListener = undefined;
+            };
+          },
+          switchToPendingVersion(resolve) {
+            switchCalls += 1;
+            resolve?.();
+          },
+        };
+        window.__emitNativeUpdate = (version) => updateListener?.(version);
+        window.__getNativeSwitchCalls = () => switchCalls;
+      });
+    }
     await page.addInitScript((value) => {
       localStorage.setItem('stock-scanner-owner-id', value);
     }, ownerId);
@@ -139,12 +159,25 @@ test.describe('Stock Scanner', () => {
     await expect(page.getByText(/Audit summary copied|Share sheet opened|Sharing unavailable/)).toBeVisible();
   });
 
-  test('shows HCP update dialog from update preview flow', async ({ page }) => {
-    await openSystemInformation(page);
-    await page.getByRole('button', { name: 'Preview HCP update' }).click();
+  test('shows and preserves HCP update actions across app screens', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: 'Today’s floor count' })).toBeVisible();
+    await page.evaluate(() => window.__emitNativeUpdate('2026.07.23'));
+
     await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
-    await expect(page.getByText('Version demo-preview is ready to install.')).toBeVisible();
+    await expect(page.getByText('Version 2026.07.23 is ready to install.')).toBeVisible();
+    await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(0);
     await page.getByRole('button', { name: 'Not now' }).click();
     await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeHidden();
+    await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(0);
+
+    const reviewUpdate = page.getByRole('button', { name: 'Review update' });
+    await expect(reviewUpdate).toBeVisible();
+
+    await openSystemInformation(page);
+    await expect(reviewUpdate).toBeVisible();
+    await reviewUpdate.click();
+    await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();
+    await page.getByRole('button', { name: 'Install update' }).click();
+    await expect.poll(() => page.evaluate(() => window.__getNativeSwitchCalls())).toBe(1);
   });
 });

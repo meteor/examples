@@ -4,6 +4,7 @@ import { useTracker } from 'meteor/react-meteor-data';
 import Snackbar from '@mui/material/Snackbar';
 import { InventoryItems } from '../api/inventory/collection';
 import AppShell from './components/AppShell';
+import HcpUpdatePrompt from './components/HcpUpdatePrompt';
 import ProductSheet from './components/ProductSheet';
 import InventoryPage from './pages/InventoryPage';
 import SystemInfoPage from './pages/SystemInfoPage';
@@ -45,10 +46,11 @@ export default function App() {
   const [checkingHcp, setCheckingHcp] = useState(false);
   const [installingHcp, setInstallingHcp] = useState(false);
   const [hcpUpdateVersion, setHcpUpdateVersion] = useState(null);
+  const [hcpPromptOpen, setHcpPromptOpen] = useState(false);
 
   useNativeBackButton(() => {
-    if (hcpUpdateVersion) {
-      setHcpUpdateVersion(null);
+    if (hcpPromptOpen) {
+      setHcpPromptOpen(false);
     } else if (selectedItemId) {
       setSelectedItemId(null);
     } else if (mobileNavigationOpen) {
@@ -67,6 +69,7 @@ export default function App() {
   useEffect(() => (
     listenForHcpUpdates((version) => {
       setHcpUpdateVersion(version);
+      setHcpPromptOpen(true);
       setHcpMessage(`Version ${version} downloaded and ready.`);
     })
   ), []);
@@ -205,16 +208,13 @@ export default function App() {
 
   const hcp = {
     checking: checkingHcp,
-    installing: installingHcp,
     message: hcpMessage,
-    updateVersion: hcpUpdateVersion,
     onCheck: handleCheckHcpUpdate,
     onPreview: () => {
       setHcpUpdateVersion(HCP_PREVIEW_VERSION);
+      setHcpPromptOpen(true);
       setHcpMessage('Previewing the update prompt.');
     },
-    onInstall: handleInstallHcpUpdate,
-    onDismiss: () => setHcpUpdateVersion(null),
   };
 
   return (
@@ -258,6 +258,15 @@ export default function App() {
         onClose={() => setSelectedItemId(null)}
         onSave={handleSaveProduct}
         onAdjust={handleAdjust}
+      />
+
+      <HcpUpdatePrompt
+        installing={installingHcp}
+        opened={hcpPromptOpen}
+        updateVersion={hcpUpdateVersion}
+        onDismiss={() => setHcpPromptOpen(false)}
+        onInstall={handleInstallHcpUpdate}
+        onReview={() => setHcpPromptOpen(true)}
       />
 
       <Snackbar

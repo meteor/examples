@@ -536,6 +536,20 @@ textarea {
   background: #fff7eb;
 }
 
+.hcp-update-reminder {
+  bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px)) !important;
+  width: min(calc(100% - 24px), 440px);
+}
+
+.hcp-update-reminder .MuiAlert-root {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 64px;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(22, 43, 35, 0.22);
+}
+
 .product-sheet {
   box-sizing: border-box;
   max-height: 92dvh;
