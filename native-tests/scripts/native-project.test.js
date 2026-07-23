@@ -6,8 +6,10 @@ const path = require('node:path');
 const {
   addAndroidPermissions,
   ensureCapacitorWebDir,
+  generateNativeIconAssets,
   mergeIosUsageDescriptions,
   prepareNativeProject,
+  verifyNativeIconAssets,
 } = require('./native-project');
 
 test('adds missing Android permissions without duplicating existing entries', () => {
@@ -71,12 +73,69 @@ test('resolves relative Capacitor web and build context paths from app root', ()
   );
 });
 
-test('native patch parsers are direct dependencies of affected apps', () => {
+test('native setup tools are direct dependencies of affected apps', () => {
   for (const appName of ['stock-scanner', 'city-issue-reporter']) {
     const pkg = require(path.join('..', '..', appName, 'package.json'));
     assert.match(pkg.devDependencies['@xmldom/xmldom'], /^\^0\.9\./);
     assert.match(pkg.devDependencies.plist, /^\^3\.1\./);
   }
+
+  for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-drop']) {
+    const pkg = require(path.join('..', '..', appName, 'package.json'));
+    assert.match(pkg.devDependencies['@capacitor/assets'], /^\^3\.0\./);
+  }
+});
+
+test('generates a platform launcher icon from each app SVG source', () => {
+  const appDir = fs.mkdtempSync(path.join(os.tmpdir(), 'native-run-icon-'));
+  const iconDir = path.join(appDir, 'public', 'icons');
+  fs.mkdirSync(iconDir, { recursive: true });
+  fs.writeFileSync(path.join(iconDir, 'app-icon.svg'), '<svg />');
+
+  const calls = [];
+  generateNativeIconAssets({
+    sourceDir: appDir,
+    nativeIconBackgroundColor: '#126b5c',
+  }, 'ios', {
+    spawnSyncImpl(command, args, options) {
+      calls.push({ command, args, options });
+      const assetPath = path.join(appDir, 'assets');
+      assert.ok(fs.existsSync(path.join(assetPath, 'logo.svg')));
+      const output = path.join(
+        appDir,
+        'ios',
+        'App',
+        'App',
+        'Assets.xcassets',
+        'AppIcon.appiconset',
+        'Contents.json',
+      );
+      fs.mkdirSync(path.dirname(output), { recursive: true });
+      fs.writeFileSync(output, '{}');
+      return { status: 0 };
+    },
+  });
+
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].command, path.join(appDir, 'node_modules', '.bin', 'capacitor-assets'));
+  assert.deepEqual(calls[0].args.slice(0, 2), ['generate', '--ios']);
+  assert.equal(calls[0].args.includes('--asset-path'), false);
+  assert.ok(calls[0].args.includes('--iconBackgroundColor'));
+  assert.ok(calls[0].args.includes('#126b5c'));
+  assert.equal(calls[0].options.cwd, appDir);
+});
+
+test('verifies generated platform launcher assets', () => {
+  const appDir = fs.mkdtempSync(path.join(os.tmpdir(), 'native-run-icon-output-'));
+  const iosIconSet = path.join(appDir, 'ios', 'App', 'App', 'Assets.xcassets', 'AppIcon.appiconset');
+  const androidIcon = path.join(appDir, 'android', 'app', 'src', 'main', 'res', 'mipmap-hdpi', 'ic_launcher.png');
+  fs.mkdirSync(iosIconSet, { recursive: true });
+  fs.mkdirSync(path.dirname(androidIcon), { recursive: true });
+  fs.writeFileSync(path.join(iosIconSet, 'Contents.json'), '{}');
+  fs.writeFileSync(androidIcon, 'png');
+
+  assert.equal(verifyNativeIconAssets({ sourceDir: appDir }, 'ios'), true);
+  assert.equal(verifyNativeIconAssets({ sourceDir: appDir }, 'android'), true);
 });
 
 test('applies app-specific Android native settings', async () => {
@@ -90,11 +149,13 @@ test('applies app-specific Android native settings', async () => {
   await prepareNativeProject(app, 'android', {
     patchAndroidMinSdk: async (...args) => calls.push(['min-sdk', ...args]),
     patchAndroidManifest: async (...args) => calls.push(['manifest', ...args]),
+    generateNativeIconAssets: async (...args) => calls.push(['icons', ...args]),
   });
 
   assert.deepEqual(calls, [
     ['min-sdk', app.sourceDir, 26],
     ['manifest', app.sourceDir, app.androidPermissions],
+    ['icons', app, 'android'],
   ]);
 });
 
@@ -107,7 +168,11 @@ test('applies app-specific iOS usage descriptions', async () => {
 
   await prepareNativeProject(app, 'ios', {
     patchIosInfoPlist: async (...args) => calls.push(args),
+    generateNativeIconAssets: async (...args) => calls.push(['icons', ...args]),
   });
 
-  assert.deepEqual(calls, [[app.sourceDir, app.iosUsageDescriptions]]);
+  assert.deepEqual(calls, [
+    [app.sourceDir, app.iosUsageDescriptions],
+    ['icons', app, 'ios'],
+  ]);
 });

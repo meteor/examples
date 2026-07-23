@@ -30,6 +30,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^7.6.7",
     "@meteorjs/capacitor": "file:../../meteor/npm-packages/meteor-capacitor",
     "@meteorjs/rspack": "^2.0.1",

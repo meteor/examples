@@ -20,6 +20,7 @@ test('configures stock scanner native flow', () => {
   assert.match(app.flowPath, /native-tests\/flows\/stock-scanner\.yaml$/);
   assert.match(app.showcaseFlowPath, /native-tests\/flows\/showcase\/stock-scanner\.yaml$/);
   assert.equal(app.mediaSlug, 'stock-scanner');
+  assert.equal(app.nativeIconBackgroundColor, '#126b5c');
 });
 
 test('configures civic snap native flow', () => {
@@ -30,6 +31,7 @@ test('configures civic snap native flow', () => {
   assert.match(app.flowPath, /native-tests\/flows\/city-issue-reporter\.yaml$/);
   assert.match(app.showcaseFlowPath, /native-tests\/flows\/showcase\/city-issue-reporter\.yaml$/);
   assert.equal(app.mediaSlug, 'city-issue-reporter');
+  assert.equal(app.nativeIconBackgroundColor, '#0f756b');
   assert.deepEqual(app.androidPermissions, [
     'android.permission.ACCESS_COARSE_LOCATION',
     'android.permission.ACCESS_FINE_LOCATION',
@@ -57,6 +59,7 @@ test('configures Meteor Drop native flow', () => {
     flowPath: path.join(__dirname, '..', 'flows', 'meteor-drop.yaml'),
     showcaseFlowPath: path.join(__dirname, '..', 'flows', 'showcase', 'meteor-drop.yaml'),
     mediaSlug: 'meteor-drop',
+    nativeIconBackgroundColor: '#2563eb',
   });
 });
 

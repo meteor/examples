@@ -12,6 +12,7 @@ const APPS = {
     flowPath: path.join(ROOT, 'flows', 'stock-scanner.yaml'),
     showcaseFlowPath: path.join(ROOT, 'flows', 'showcase', 'stock-scanner.yaml'),
     mediaSlug: 'stock-scanner',
+    nativeIconBackgroundColor: '#126b5c',
     androidMinSdkVersion: 26,
     androidPermissions: ['android.permission.CAMERA'],
     iosUsageDescriptions: {
@@ -26,6 +27,7 @@ const APPS = {
     flowPath: path.join(ROOT, 'flows', 'city-issue-reporter.yaml'),
     showcaseFlowPath: path.join(ROOT, 'flows', 'showcase', 'city-issue-reporter.yaml'),
     mediaSlug: 'city-issue-reporter',
+    nativeIconBackgroundColor: '#0f756b',
     androidPermissions: [
       'android.permission.ACCESS_COARSE_LOCATION',
       'android.permission.ACCESS_FINE_LOCATION',
@@ -44,6 +46,7 @@ const APPS = {
     flowPath: path.join(ROOT, 'flows', 'meteor-drop.yaml'),
     showcaseFlowPath: path.join(ROOT, 'flows', 'showcase', 'meteor-drop.yaml'),
     mediaSlug: 'meteor-drop',
+    nativeIconBackgroundColor: '#2563eb',
   },
 };
 

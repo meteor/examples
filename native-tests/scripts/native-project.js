@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 const { createRequire } = require('node:module');
 const { patchAndroidMinSdk } = require('./local-packages');
 
@@ -88,10 +89,71 @@ async function patchIosInfoPlist(appDir, descriptions, {
   return changed;
 }
 
+function nativeIconOutputPath(appDir, platform) {
+  if (platform === 'ios') {
+    return path.join(appDir, 'ios', 'App', 'App', 'Assets.xcassets', 'AppIcon.appiconset', 'Contents.json');
+  }
+  return path.join(appDir, 'android', 'app', 'src', 'main', 'res', 'mipmap-hdpi', 'ic_launcher.png');
+}
+
+function verifyNativeIconAssets(app, platform) {
+  const outputPath = nativeIconOutputPath(app.sourceDir, platform);
+  if (!fs.existsSync(outputPath)) {
+    throw new Error(`Native ${platform} launcher icon was not generated: ${outputPath}`);
+  }
+  return true;
+}
+
+function generateNativeIconAssets(app, platform, {
+  spawnSyncImpl = spawnSync,
+} = {}) {
+  const sourceIconPath = path.join(app.sourceDir, 'public', 'icons', 'app-icon.svg');
+  if (!fs.existsSync(sourceIconPath)) {
+    throw new Error(`Native icon source not found: ${sourceIconPath}`);
+  }
+
+  const assetPath = path.join(app.sourceDir, 'assets');
+  if (fs.existsSync(assetPath)) {
+    throw new Error(`Cannot stage native icon assets because this directory already exists: ${assetPath}`);
+  }
+
+  try {
+    fs.mkdirSync(assetPath);
+    fs.copyFileSync(sourceIconPath, path.join(assetPath, 'logo.svg'));
+    const command = path.join(
+      app.sourceDir,
+      'node_modules',
+      '.bin',
+      process.platform === 'win32' ? 'capacitor-assets.cmd' : 'capacitor-assets',
+    );
+    const result = spawnSyncImpl(command, [
+      'generate',
+      `--${platform}`,
+      '--iconBackgroundColor', app.nativeIconBackgroundColor || '#ffffff',
+      '--splashBackgroundColor', app.nativeIconBackgroundColor || '#ffffff',
+    ], {
+      cwd: app.sourceDir,
+      stdio: 'inherit',
+    });
+
+    if (result.error) {
+      throw new Error(`Unable to generate native ${platform} icon: ${result.error.message}`);
+    }
+    if (result.status !== 0) {
+      throw new Error(`Native ${platform} icon generator exited with code ${result.status}`);
+    }
+  } finally {
+    fs.rmSync(assetPath, { recursive: true, force: true });
+  }
+
+  return verifyNativeIconAssets(app, platform);
+}
+
 async function prepareNativeProject(app, platform, {
   patchAndroidMinSdk: patchMinSdk = patchAndroidMinSdk,
   patchAndroidManifest: patchManifest = patchAndroidManifest,
   patchIosInfoPlist: patchInfoPlist = patchIosInfoPlist,
+  generateNativeIconAssets: generateIcons = generateNativeIconAssets,
 } = {}) {
   if (platform === 'android') {
     if (app.androidMinSdkVersion) {
@@ -103,13 +165,16 @@ async function prepareNativeProject(app, platform, {
   } else if (platform === 'ios' && app.iosUsageDescriptions) {
     await patchInfoPlist(app.sourceDir, app.iosUsageDescriptions);
   }
+  await generateIcons(app, platform);
 }
 
 module.exports = {
   addAndroidPermissions,
   ensureCapacitorWebDir,
+  generateNativeIconAssets,
   mergeIosUsageDescriptions,
   patchAndroidManifest,
   patchIosInfoPlist,
   prepareNativeProject,
+  verifyNativeIconAssets,
 };
