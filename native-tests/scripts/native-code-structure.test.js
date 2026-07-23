@@ -44,3 +44,16 @@ test('Meteor Escape delegates game access and duplicate-index interpretation', (
   assert.match(methods, /from '.\/server\/gameAccess'/);
   assert.doesNotMatch(methods, /function findOwnedGameOrThrow|function isDuplicateKeyError/);
 });
+
+test('native examples install HCP consent gates before mounting React', () => {
+  for (const app of ['stock-scanner', 'city-issue-reporter', 'meteor-escape']) {
+    const client = read(`${app}/client/main.jsx`);
+    const gate = read(`${app}/imports/ui/native/hcpReloadGate.client.js`);
+
+    assert.match(client, /import '\.\.\/imports\/ui\/native\/hcpReloadGate\.client'/);
+    assert.match(gate, /import \{ Reload \} from 'meteor\/reload'/);
+    assert.match(gate, /if \(Meteor\.isCapacitor\)/);
+    assert.match(gate, /hcpReloadConsent\.install\(Reload\)/);
+    assert.match(gate, /listenForHcpUpdates\(\(\) => \{\}\)/);
+  }
+});

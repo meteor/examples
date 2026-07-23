@@ -51,12 +51,22 @@ The launcher verifies that the checkout is on `capacitor-integration`, runs
 packages, adds a missing platform, then starts `meteor run <platform>`. It never
 switches branches or removes generated native projects.
 
-Runner options must appear before a second `--`. Arguments after that separator
-pass unchanged to `meteor run`:
+Bundled native runs default to Meteor's `--production` bundling mode so Rspack
+emits a complete client bundle that the native HCP runtime can download and
+launch. Use the runner's `--development` option only for livereload work where
+the app remains attached to the development server.
+
+Each official native example registers a Meteor reload migration gate before
+mounting its UI. HCP downloads remain pending until the user confirms the global
+update dialog; dismissing the dialog never refreshes the active WebView.
+
+Runner options must appear before Meteor options. Unknown options after the app
+and platform, including options left after npm consumes `--`, pass unchanged to
+`meteor run`. A second separator remains supported:
 
 ```sh
 npm run run:native:stock-scanner -- ios -- --port 3100
-METEOR_CAPACITOR_MODE=livereload npm run run:native -- meteor-escape android -- --mobile-server 10.0.2.2:3000
+METEOR_CAPACITOR_MODE=livereload npm run run:native -- meteor-escape android --development -- --mobile-server 10.0.2.2:3000
 METEOR_CAPACITOR_TARGET="DEVICE_ID" npm run run:native -- stock-scanner ios
 npm run run:native -- civic-snap ios --skip-install --skip-link --dry-run
 ```

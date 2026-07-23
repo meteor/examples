@@ -34,15 +34,19 @@ function parseArgs(argv) {
     skipBranchCheck: false,
     skipInstall: false,
     skipLink: false,
+    development: false,
     dryRun: false,
     help: false,
     meteorArgs,
   };
   const positionals = [];
+  let forwardingMeteorArgs = false;
 
   for (let index = 0; index < launcherTokens.length; index += 1) {
     const token = launcherTokens[index];
-    if (token === '--meteor-checkout') {
+    if (forwardingMeteorArgs) {
+      options.meteorArgs.push(token);
+    } else if (token === '--meteor-checkout') {
       options.meteorCheckout = optionValue(launcherTokens, index, token);
       index += 1;
     } else if (token.startsWith('--meteor-checkout=')) {
@@ -58,12 +62,18 @@ function parseArgs(argv) {
       options.skipInstall = true;
     } else if (token === '--skip-link') {
       options.skipLink = true;
+    } else if (token === '--development') {
+      options.development = true;
     } else if (token === '--dry-run') {
       options.dryRun = true;
     } else if (token === '--help' || token === '-h') {
       options.help = true;
     } else if (token.startsWith('-')) {
-      throw new Error(`Meteor options must follow --: ${token}`);
+      if (positionals.length < 2) {
+        throw new Error(`Meteor options must follow app and platform: ${token}`);
+      }
+      forwardingMeteorArgs = true;
+      options.meteorArgs.push(token);
     } else {
       positionals.push(token);
     }
@@ -201,7 +211,14 @@ function buildCommandPlan(args, runtime, app, {
   plan.push({
     label: 'run',
     command: runtime.meteorBin,
-    args: ['run', args.platform, ...args.meteorArgs],
+    args: [
+      'run',
+      args.platform,
+      ...(!args.development && !args.meteorArgs.includes('--production')
+        ? ['--production']
+        : []),
+      ...args.meteorArgs,
+    ],
     cwd: app.sourceDir,
   });
   return plan;
@@ -345,6 +362,7 @@ Runner options:
   --skip-branch-check       Allow an alternate or detached checkout
   --skip-install            Skip meteor npm install
   --skip-link               Skip local npm package linking
+  --development             Disable production bundling for livereload work
   --dry-run                 Print commands without running them
   --help, -h                Show this help
 
@@ -352,7 +370,8 @@ Environment:
   METEOR_CHECKOUT, METEOR_BIN, METEOR_CAPACITOR_BRANCH
   METEOR_CAPACITOR_MODE, METEOR_CAPACITOR_TARGET
 
-Arguments after -- pass unchanged to meteor run.`;
+Bundled mode defaults to --production so Rspack emits complete HCP assets.
+Unknown options after app and platform, or arguments after --, pass to meteor run.`;
 }
 
 function buildRunEnvironment(runtime, env) {

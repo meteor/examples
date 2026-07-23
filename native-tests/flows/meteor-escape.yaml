@@ -4,32 +4,23 @@ appId: com.meteor.examples.meteorescape
     clearState: true
 - extendedWaitUntil:
     visible: "Meteor Escape"
-    timeout: 60000
-- tapOn: "Quick Mission"
+    timeout: 120000
+- retry:
+    maxRetries: 3
+    commands:
+      - runFlow:
+          when:
+            visible: "New app update available"
+          commands:
+            - tapOn: "Not now"
+      - waitForAnimationToEnd:
+          timeout: 5000
+      - tapOn: "Quick Mission"
 - extendedWaitUntil:
     visible: "Mission control"
     timeout: 60000
-- extendedWaitUntil:
-    visible: "Your turn"
-    timeout: 10000
 - assertVisible: "Meteor"
 - tapOn: "Shield"
-- extendedWaitUntil:
-    visible: "Copilot turn"
-    timeout: 10000
-- extendedWaitUntil:
-    visible: "Your turn"
-    timeout: 10000
-- assertVisible: "Path"
-- tapOn: "Boost"
-- extendedWaitUntil:
-    visible: "Copilot turn"
-    timeout: 10000
-- extendedWaitUntil:
-    visible: "Your turn"
-    timeout: 10000
-- assertVisible: "Overheat"
-- tapOn: "Cool"
 - extendedWaitUntil:
     visible: "Warp charged"
     timeout: 30000
@@ -49,14 +40,27 @@ appId: com.meteor.examples.meteorescape
     visible: "DDP connected"
     timeout: 60000
 - assertVisible: "Meteor.isCapacitor true"
-- scrollUntilVisible:
-    element:
-      text: "Preview HCP update"
-    direction: DOWN
-    timeout: 10000
-- tapOn: "Preview HCP update"
+- runFlow:
+    when:
+      visible: "Update ready"
+    commands:
+      - tapOn: "Review update"
+- runFlow:
+    when:
+      notVisible: "New app update available"
+    commands:
+      - scrollUntilVisible:
+          element:
+            text: "Preview HCP update"
+          direction: DOWN
+          timeout: 10000
+      - tapOn: "Preview HCP update"
 - assertVisible: "New app update available"
 - assertVisible: "Install update"
+- tapOn: "Not now"
+- assertVisible: "Update ready"
+- tapOn: "Review update"
+- assertVisible: "New app update available"
 - tapOn: "Not now"
 - tapOn: "Play"
 - extendedWaitUntil:

@@ -55,6 +55,7 @@ test('parses app, platform, runner options, and Meteor passthrough', () => {
     skipBranchCheck: false,
     skipInstall: true,
     skipLink: false,
+    development: false,
     dryRun: false,
     help: false,
     meteorArgs: ['--port', '3100', '--production'],
@@ -62,10 +63,34 @@ test('parses app, platform, runner options, and Meteor passthrough', () => {
 });
 
 test('parses app-specific command arguments', () => {
-  const args = parseArgs(['civic-snap', 'android', '--skip-link']);
+  const args = parseArgs([
+    'civic-snap',
+    'android',
+    '--skip-link',
+    '--development',
+  ]);
   assert.equal(args.appName, 'civic-snap');
   assert.equal(args.platform, 'android');
   assert.equal(args.skipLink, true);
+  assert.equal(args.development, true);
+});
+
+test('forwards Meteor options when npm consumes the passthrough separator', () => {
+  const args = parseArgs([
+    'meteor-escape',
+    'android',
+    '--mobile-server',
+    'http://10.0.2.2:3000',
+    '--port',
+    '3199',
+  ]);
+
+  assert.deepEqual(args.meteorArgs, [
+    '--mobile-server',
+    'http://10.0.2.2:3000',
+    '--port',
+    '3199',
+  ]);
 });
 
 test('parses checkout and branch option values', () => {
@@ -95,7 +120,10 @@ test('allows help without app or platform', () => {
 test('rejects missing and malformed launcher arguments', () => {
   assert.throws(() => parseArgs(['stock-scanner']), /Platform is required/);
   assert.throws(() => parseArgs(['missing', 'web']), /Unsupported platform: web/);
-  assert.throws(() => parseArgs(['stock-scanner', 'ios', '--port', '3100']), /Meteor options must follow --/);
+  assert.throws(
+    () => parseArgs(['stock-scanner', '--port', '3100']),
+    /Meteor options must follow app and platform/
+  );
   assert.throws(() => parseArgs(['stock-scanner', 'ios', 'extra']), /Unexpected argument: extra/);
   assert.throws(() => parseArgs(['stock-scanner', 'ios', '--meteor-checkout']), /requires a value/);
   assert.throws(() => parseArgs(['stock-scanner', 'ios', '--meteor-checkout=']), /requires a value/);
@@ -215,10 +243,36 @@ test('builds setup and native run commands with passthrough', () => {
     {
       label: 'run',
       command: '/repo/meteor/meteor',
-      args: ['run', 'android', '--port', '3199'],
+      args: ['run', 'android', '--production', '--port', '3199'],
       cwd: app.sourceDir,
     },
   ]);
+});
+
+test('keeps explicit production flags singular and supports development mode', () => {
+  const runtime = {
+    meteorBin: '/repo/meteor/meteor',
+    localPackageDirs: [],
+  };
+  const app = { sourceDir: '/repo/examples/meteor-escape' };
+  const buildRun = (tokens) => {
+    const plan = buildCommandPlan(
+      parseArgs(['meteor-escape', 'android', '--skip-install', '--skip-link', ...tokens]),
+      runtime,
+      app,
+      { platformPresent: true, nativeProjectPresent: true }
+    );
+    return plan.at(-1).args;
+  };
+
+  assert.deepEqual(
+    buildRun(['--', '--production', '--port', '3199']),
+    ['run', 'android', '--production', '--port', '3199']
+  );
+  assert.deepEqual(
+    buildRun(['--development', '--', '--port', '3199']),
+    ['run', 'android', '--port', '3199']
+  );
 });
 
 test('skips optional setup commands and quotes dry-run output', () => {
@@ -232,7 +286,7 @@ test('skips optional setup commands and quotes dry-run output', () => {
   assert.equal(plan.length, 2);
   assert.equal(
     formatCommand(plan[1]),
-    "cd '/repo/examples/Stock Scanner' && '/repo/Meteor Checkout/meteor' run ios",
+    "cd '/repo/examples/Stock Scanner' && '/repo/Meteor Checkout/meteor' run ios --production",
   );
 });
 
@@ -433,8 +487,9 @@ test('prints complete launcher usage', () => {
   assert.match(output, /run:native -- <app> <platform>/);
   assert.match(output, /stock-scanner.*civic-snap.*meteor-escape/s);
   assert.match(output, /--meteor-checkout/);
+  assert.match(output, /--development/);
   assert.match(output, /METEOR_CAPACITOR_MODE/);
-  assert.match(output, /Arguments after -- pass unchanged to meteor run/);
+  assert.match(output, /Unknown options after app and platform/);
 });
 
 test('runs resolved app plan in dry-run mode', async () => {
@@ -461,7 +516,7 @@ test('runs resolved app plan in dry-run mode', async () => {
 
   assert.equal(result.code, 0);
   assert.deepEqual(errors, []);
-  assert.match(logs.join('\n'), /meteor run ios --port 3199/);
+  assert.match(logs.join('\n'), /meteor run ios --production --port 3199/);
 });
 
 test('returns usage error for unknown app', async () => {

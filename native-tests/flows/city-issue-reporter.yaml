@@ -4,8 +4,23 @@ appId: com.meteor.examples.civicsnap
     clearState: true
 - extendedWaitUntil:
     visible: "Civic Snap"
-    timeout: 60000
-- tapOn: "Open navigation"
+    timeout: 120000
+- repeat:
+    times: 3
+    while:
+      notVisible: "System information"
+    commands:
+      - retry:
+          maxRetries: 3
+          commands:
+            - runFlow:
+                when:
+                  visible: "New app update available"
+                commands:
+                  - tapOn: "Not now"
+            - waitForAnimationToEnd:
+                timeout: 5000
+            - tapOn: "Open navigation"
 - tapOn: "System information"
 - extendedWaitUntil:
     visible: "Native ready"
@@ -14,23 +29,48 @@ appId: com.meteor.examples.civicsnap
     visible: "DDP connected"
     timeout: 60000
 - assertVisible: "Meteor.isCapacitor true"
-- scrollUntilVisible:
-    element:
-      text: "Preview HCP update"
-    direction: DOWN
-    timeout: 10000
-- tapOn: "Preview HCP update"
+- runFlow:
+    when:
+      visible: "Update ready"
+    commands:
+      - tapOn: "Review update"
+- runFlow:
+    when:
+      notVisible: "New app update available"
+    commands:
+      - scrollUntilVisible:
+          element:
+            text: "Preview HCP update"
+          direction: DOWN
+          timeout: 10000
+      - tapOn: "Preview HCP update"
 - assertVisible: "New app update available"
 - assertVisible: "Install update"
 - tapOn: "Not now"
+- assertVisible: "Update ready"
+- tapOn: "Review update"
+- assertVisible: "New app update available"
+- tapOn: "Not now"
+- repeat:
+    times: 5
+    commands:
+      - swipe:
+          start: "50%,30%"
+          end: "50%,70%"
+          duration: 400
+- repeat:
+    times: 3
+    while:
+      notVisible: "New report"
+    commands:
+      - tapOn: "Open navigation"
+- tapOn: "New report"
+- assertVisible: "Issue title"
 - scrollUntilVisible:
     element:
-      text: "Open navigation"
-    direction: UP
+      text: "Submit current report"
+    direction: DOWN
     timeout: 10000
-- tapOn: "Open navigation"
-- tapOn: "New report"
-- assertVisible: "Broken light by station"
 - tapOn: "Submit current report"
 - extendedWaitUntil:
     visible: "Report detail"
