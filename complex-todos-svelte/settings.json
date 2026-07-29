@@ -8,5 +8,10 @@
       "TRACE",
       "DEBUG"
     ]
+  },
+  "packages": {
+    "ddp-server": {
+      "transport": "uws"
+    }
   }
 }
