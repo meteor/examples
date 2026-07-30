@@ -114,3 +114,21 @@ test('Meteor Drop showcases CPU play, sharing, records, HCP, and a live room', (
   assert.match(flow, /visible: "Waiting for rival"/);
   assert.match(flow, /assertVisible: "Share Room Code"/);
 });
+
+test('Meteor Drop real HCP capture attaches without relaunching the app', () => {
+  const baselineFlow = readFlow('meteor-drop-real-hcp-baseline');
+  const prepareFlow = readFlow('meteor-drop-real-hcp-prepare');
+  const captureFlow = readFlow('meteor-drop-real-hcp-capture');
+
+  assert.match(baselineFlow, /launchApp/);
+  assert.match(baselineFlow, /visible: "Play vs CPU"/);
+  assert.doesNotMatch(prepareFlow, /launchApp/);
+  assert.match(prepareFlow, /visible: "New app update available"/);
+  assert.doesNotMatch(prepareFlow, /startRecording:/);
+  assert.doesNotMatch(captureFlow, /launchApp/);
+  assert.match(captureFlow, /startRecording:/);
+  assert.match(captureFlow, /visible: "New app update available"/);
+  assert.match(captureFlow, /tapOn: "Install update"/);
+  assert.match(captureFlow, /visible: "Meteor Drop updated live!"/);
+  assert.match(captureFlow, /- stopRecording/);
+});

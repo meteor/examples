@@ -139,3 +139,49 @@ Each successful run creates:
 The timestamped run contains the original capture, poster, JUnit report, Maestro
 debug output, and logs. A failed run stays in `runs/` and never replaces the
 latest stable video or poster.
+
+Add `--keep-run` to retain a successful recording only in its timestamped run.
+This leaves stable media and `manifest.json` unchanged:
+
+```sh
+node native-tests/scripts/record-showcase.js --app=meteor-drop --platform=ios --keep-run
+```
+
+Use `--flow=/absolute/path/to/flow.yaml` to record an alternate approved
+showcase journey without changing the app's default showcase flow.
+
+### Record a real Meteor Drop HCP install
+
+Keep `meteor run ios` active for this whole sequence. First deploy the baseline
+bundle and position the installed app on its Play screen:
+
+```sh
+maestro test --platform ios --device "$MAESTRO_IOS_DEVICE" \
+  native-tests/flows/showcase/meteor-drop-real-hcp-baseline.yaml
+```
+
+Change the Play page tagline in
+`meteor-drop/imports/ui/pages/PlayPage.jsx` to `Meteor Drop updated live!`.
+Wait for Meteor to rebuild, then verify the native update dialog without
+relaunching the app:
+
+```sh
+maestro test --platform ios --device "$MAESTRO_IOS_DEVICE" \
+  native-tests/flows/showcase/meteor-drop-real-hcp-prepare.yaml
+```
+
+Record the open dialog, install action, native refresh, and changed tagline:
+
+```sh
+node native-tests/scripts/record-showcase.js \
+  --app=meteor-drop \
+  --platform=ios \
+  --device="$MAESTRO_IOS_DEVICE" \
+  --flow="$PWD/native-tests/flows/showcase/meteor-drop-real-hcp-capture.yaml" \
+  --keep-run \
+  --output-dir="$NATIVE_SHOWCASE_OUTPUT_DIR"
+```
+
+Restore the regular tagline after recording. Do not relaunch between the client
+change and the capture: launch consumes the pending bundle before the Install
+action can be shown.

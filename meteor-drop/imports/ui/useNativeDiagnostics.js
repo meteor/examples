@@ -65,6 +65,12 @@ export function useNativeDiagnostics() {
 
     try {
       const result = await checkForHcpUpdates();
+      if (result.updateReady) {
+        setHcpUpdateVersion('downloaded');
+        setHcpPromptOpen(true);
+        setHcpMessage('Update downloaded and ready.');
+        return;
+      }
       setHcpMessage(
         result.checked
           ? 'You will be prompted here when a new version is ready.'

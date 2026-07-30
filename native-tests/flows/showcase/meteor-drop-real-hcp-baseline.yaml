@@ -1,0 +1,10 @@
+appId: com.meteor.examples.meteordrop
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Play vs CPU"
+    timeout: 60000
+- tapOn: "Play"
+- extendedWaitUntil:
+    visible: "Play vs CPU"
+    timeout: 10000

@@ -1,0 +1,5 @@
+appId: com.meteor.examples.meteordrop
+---
+- extendedWaitUntil:
+    visible: "New app update available"
+    timeout: 60000

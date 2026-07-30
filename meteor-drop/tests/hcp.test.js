@@ -90,8 +90,8 @@ describe('HCP bridge', function () {
       consent
     );
 
-    assert.strictEqual(retryCalls, 1);
-    assert.strictEqual(switchCalls, 0);
+    assert.strictEqual(retryCalls, 0);
+    assert.strictEqual(switchCalls, 1);
     assert.strictEqual(browserReloadCalls, 0);
     assert.deepStrictEqual(migrate(() => {}), [true]);
   });
@@ -110,5 +110,29 @@ describe('HCP bridge', function () {
     listenForHcpUpdates((version) => versions.push(version), bridge);
 
     assert.deepStrictEqual(versions, ['1.3.0']);
+  });
+
+  it('detects a downloaded native update when the bridge event is missed', async function () {
+    let checks = 0;
+    const bridge = {
+      checkForUpdates(resolve) {
+        resolve();
+      },
+    };
+    const plugin = {
+      async isUpdateAvailable() {
+        checks += 1;
+        return { available: checks >= 2 };
+      },
+    };
+
+    const result = await hcpModule.checkForHcpUpdates(
+      bridge,
+      plugin,
+      () => Promise.resolve()
+    );
+
+    assert.deepStrictEqual(result, { checked: true, updateReady: true });
+    assert.strictEqual(checks, 2);
   });
 });
