@@ -5,6 +5,11 @@ appId: com.meteor.examples.stockscanner
 - extendedWaitUntil:
     visible: "Stock Scanner"
     timeout: 60000
+- runFlow:
+    when:
+      visible: "New app update available"
+    commands:
+      - tapOn: "Not now"
 - extendedWaitUntil:
     visible: "Manual SKU"
     timeout: 60000

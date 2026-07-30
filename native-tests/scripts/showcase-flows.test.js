@@ -19,7 +19,12 @@ for (const appName of ['stock-scanner', 'city-issue-reporter', 'meteor-drop']) {
     assert.match(flow, /- stopRecording/);
     assert.doesNotMatch(flow, /Meteor\.isCapacitor|DDP/);
     if (appName === 'city-issue-reporter') {
-      assert.doesNotMatch(flow, /System information|HCP/);
+      assert.doesNotMatch(flow, /System information|Preview HCP update/);
+      assert.match(
+        flow,
+        /visible: "New app update available"[\s\S]*tapOn: "Not now"/,
+        'expected an automatic HCP prompt to be dismissed during recording'
+      );
     }
   });
 

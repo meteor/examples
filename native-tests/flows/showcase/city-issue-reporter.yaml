@@ -5,6 +5,11 @@ appId: com.meteor.examples.civicsnap
 - extendedWaitUntil:
     visible: "Civic Snap"
     timeout: 60000
+- runFlow:
+    when:
+      visible: "New app update available"
+    commands:
+      - tapOn: "Not now"
 - extendedWaitUntil:
     visible: "New report"
     timeout: 60000
@@ -16,6 +21,11 @@ appId: com.meteor.examples.civicsnap
     env:
       PAUSE_MS: 3000
 - tapOn: "New report"
+- runFlow:
+    when:
+      visible: "New app update available"
+    commands:
+      - tapOn: "Not now"
 - extendedWaitUntil:
     visible: "Issue title"
     timeout: 10000
@@ -23,6 +33,11 @@ appId: com.meteor.examples.civicsnap
     file: presentation-pause.js
     env:
       PAUSE_MS: 3000
+- runFlow:
+    when:
+      visible: "New app update available"
+    commands:
+      - tapOn: "Not now"
 - tapOn: "Submit current report"
 - extendedWaitUntil:
     visible: "Report detail"
