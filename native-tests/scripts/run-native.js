@@ -363,7 +363,7 @@ Environment:
   METEOR_CHECKOUT, METEOR_BIN, METEOR_CAPACITOR_BRANCH
   METEOR_CAPACITOR_MODE, METEOR_CAPACITOR_TARGET
 
-Native runs use bundled development builds by default. Pass -- --production for a production build.
+Launcher does not force a build mode. Meteor defaults to development; pass -- --production for a production build.
 Unknown options after app and platform, or arguments after --, pass to meteor run.`;
 }
 

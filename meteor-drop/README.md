@@ -65,7 +65,7 @@ The runner accepts native options before the separator:
 
 ```sh
 METEOR_CAPACITOR_MODE=livereload \
-  npm run run:native:meteor-drop -- android --development -- \
+  npm run run:native:meteor-drop -- android -- \
   --mobile-server http://10.0.2.2:3000
 ```
 

@@ -63,13 +63,13 @@ through unchanged:
 
 ```bash
 npm run run:native:stock-scanner -- ios -- --port 3100
-METEOR_CAPACITOR_MODE=livereload npm run run:native:stock-scanner -- android --development -- --mobile-server 10.0.2.2:3000
+METEOR_CAPACITOR_MODE=livereload npm run run:native:stock-scanner -- android -- --mobile-server http://10.0.2.2:3000
 METEOR_CAPACITOR_TARGET="DEVICE_ID" npm run run:native:stock-scanner -- ios
 ```
 
-Bundled runs use production bundling by default so Rspack emits complete HCP
-assets. `--development` is intended for livereload sessions attached to the
-development server.
+The launcher does not force a build mode. Meteor defaults to development; pass
+`-- --production` when validating a production bundle. Native mode remains
+bundled unless `METEOR_CAPACITOR_MODE=livereload` is set.
 
 Run `npm run run:native -- --help` for checkout overrides, setup skip options,
 and dry-run mode. For a browser preview, run
