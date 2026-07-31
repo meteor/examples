@@ -13,6 +13,8 @@ function parseArgs(argv, env = process.env) {
     appName: null,
     platform: null,
     outputDir: env.NATIVE_SHOWCASE_OUTPUT_DIR || null,
+    keepRun: false,
+    flowPath: null,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -29,6 +31,12 @@ function parseArgs(argv, env = process.env) {
       out.outputDir = argv[++index];
     } else if (token.startsWith('--output-dir=')) {
       out.outputDir = token.slice('--output-dir='.length);
+    } else if (token === '--keep-run') {
+      out.keepRun = true;
+    } else if (token === '--flow') {
+      out.flowPath = argv[++index];
+    } else if (token.startsWith('--flow=')) {
+      out.flowPath = token.slice('--flow='.length);
     }
   }
 
@@ -170,6 +178,21 @@ function promoteSuccessfulRun({ layout, app, platform, deviceId, completedAt = n
   });
 }
 
+function keepSuccessfulRun({ layout, app, platform, deviceId, completedAt = new Date() }) {
+  if (!fs.existsSync(layout.runVideoPath) || !fs.existsSync(layout.runPosterPath)) {
+    throw new Error('Maestro completed without producing both showcase media files');
+  }
+
+  writeJson(path.join(layout.runDir, 'run.json'), {
+    status: 'passed',
+    app: app.name,
+    platform,
+    deviceId: deviceId || null,
+    completedAt: completedAt.toISOString(),
+    retained: true,
+  });
+}
+
 function writeFailedRun({ layout, app, platform, deviceId, exitCode, error, completedAt }) {
   writeJson(path.join(layout.runDir, 'run.json'), {
     status: 'failed',
@@ -201,8 +224,9 @@ function run(argv = process.argv.slice(2), dependencies = {}) {
     return 2;
   }
 
-  if (!fs.existsSync(app.showcaseFlowPath)) {
-    console.error(`Missing Maestro showcase flow: ${app.showcaseFlowPath}`);
+  const flowPath = args.flowPath || app.showcaseFlowPath;
+  if (!fs.existsSync(flowPath)) {
+    console.error(`Missing Maestro showcase flow: ${flowPath}`);
     return 2;
   }
 
@@ -219,7 +243,7 @@ function run(argv = process.argv.slice(2), dependencies = {}) {
   const maestroArgs = buildMaestroArgs({
     platform: args.platform,
     deviceId,
-    flowPath: app.showcaseFlowPath,
+    flowPath,
     runDir: layout.runDir,
     showcaseRunId: layout.showcaseRunId,
     videoBasePath: layout.runVideoBasePath,
@@ -254,7 +278,8 @@ function run(argv = process.argv.slice(2), dependencies = {}) {
   }
 
   try {
-    promoteSuccessfulRun({
+    const completeRun = args.keepRun ? keepSuccessfulRun : promoteSuccessfulRun;
+    completeRun({
       layout,
       app,
       platform: args.platform,
@@ -275,7 +300,7 @@ function run(argv = process.argv.slice(2), dependencies = {}) {
     return 1;
   }
 
-  console.log(`Showcase media: ${layout.appRoot}`);
+  console.log(`Showcase media: ${args.keepRun ? layout.runDir : layout.appRoot}`);
   return 0;
 }
 
@@ -287,6 +312,7 @@ module.exports = {
   assertExternalOutputRoot,
   buildMaestroArgs,
   createOutputLayout,
+  keepSuccessfulRun,
   parseArgs,
   promoteSuccessfulRun,
   run,

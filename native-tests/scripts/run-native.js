@@ -34,7 +34,6 @@ function parseArgs(argv) {
     skipBranchCheck: false,
     skipInstall: false,
     skipLink: false,
-    development: false,
     dryRun: false,
     help: false,
     meteorArgs,
@@ -62,8 +61,6 @@ function parseArgs(argv) {
       options.skipInstall = true;
     } else if (token === '--skip-link') {
       options.skipLink = true;
-    } else if (token === '--development') {
-      options.development = true;
     } else if (token === '--dry-run') {
       options.dryRun = true;
     } else if (token === '--help' || token === '-h') {
@@ -214,9 +211,6 @@ function buildCommandPlan(args, runtime, app, {
     args: [
       'run',
       args.platform,
-      ...(!args.development && !args.meteorArgs.includes('--production')
-        ? ['--production']
-        : []),
       ...args.meteorArgs,
     ],
     cwd: app.sourceDir,
@@ -362,7 +356,6 @@ Runner options:
   --skip-branch-check       Allow an alternate or detached checkout
   --skip-install            Skip meteor npm install
   --skip-link               Skip local npm package linking
-  --development             Disable production bundling for livereload work
   --dry-run                 Print commands without running them
   --help, -h                Show this help
 
@@ -370,7 +363,7 @@ Environment:
   METEOR_CHECKOUT, METEOR_BIN, METEOR_CAPACITOR_BRANCH
   METEOR_CAPACITOR_MODE, METEOR_CAPACITOR_TARGET
 
-Bundled mode defaults to --production so Rspack emits complete HCP assets.
+Native runs use bundled development builds by default. Pass -- --production for a production build.
 Unknown options after app and platform, or arguments after --, pass to meteor run.`;
 }
 

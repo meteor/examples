@@ -148,9 +148,13 @@ select {
 }
 
 .play-home,
-.records-page,
-.system-page {
+.records-page {
   width: min(100%, 70rem);
+  margin: 0 auto;
+}
+
+.system-page {
+  width: min(100%, 35rem);
   margin: 0 auto;
 }
 
@@ -949,6 +953,16 @@ select {
   white-space: nowrap;
 }
 
+.system-page__identifier {
+  display: inline-block;
+  max-width: min(11rem, 45vw);
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: end;
+  white-space: normal;
+}
+
 .system-toggle-row {
   display: flex;
   align-items: center;
@@ -1040,6 +1054,10 @@ select {
   .app-shell__content {
     padding-right: calc(4px + var(--meteor-safe-right));
     padding-left: calc(4px + var(--meteor-safe-left));
+  }
+
+  .system-page {
+    padding-inline: 0.75rem;
   }
 
   .play-home__copy {

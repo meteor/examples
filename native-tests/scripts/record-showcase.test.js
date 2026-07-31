@@ -8,6 +8,7 @@ const {
   assertExternalOutputRoot,
   buildMaestroArgs,
   createOutputLayout,
+  keepSuccessfulRun,
   parseArgs,
   promoteSuccessfulRun,
   run,
@@ -24,6 +25,8 @@ test('parses app, platform, and explicit output directory', () => {
       appName: 'stock-scanner',
       platform: 'ios',
       outputDir: '/tmp/native-showcase',
+      keepRun: false,
+      flowPath: null,
     }
   );
 });
@@ -37,7 +40,33 @@ test('uses the external showcase environment variable', () => {
       appName: 'meteor-drop',
       platform: 'android',
       outputDir: '/tmp/showcase-library',
+      keepRun: false,
+      flowPath: null,
     }
+  );
+});
+
+test('parses --keep-run for an add-only capture', () => {
+  assert.equal(
+    parseArgs([
+      '--app=meteor-drop',
+      '--platform=ios',
+      '--output-dir=/tmp/native-showcase',
+      '--keep-run',
+    ]).keepRun,
+    true
+  );
+});
+
+test('parses a replacement showcase flow', () => {
+  assert.equal(
+    parseArgs([
+      '--app=meteor-drop',
+      '--platform=ios',
+      '--output-dir=/tmp/native-showcase',
+      '--flow=/tmp/meteor-drop-clean.yaml',
+    ]).flowPath,
+    '/tmp/meteor-drop-clean.yaml'
   );
 });
 
@@ -189,4 +218,58 @@ test('does not replace stable media or create a manifest after a failed run', ()
   );
   const runResult = JSON.parse(fs.readFileSync(runResultPath, 'utf8'));
   assert.equal(runResult.status, 'failed');
+});
+
+test('keeps a successful capture in its timestamped run without changing stable media', () => {
+  const outputRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'native-showcase-kept-'));
+  const sourceDir = fs.mkdtempSync(path.join(os.tmpdir(), 'native-showcase-app-'));
+  const showcaseFlowPath = path.join(sourceDir, 'showcase.yaml');
+  fs.writeFileSync(showcaseFlowPath, 'appId: example\n---\n- launchApp\n');
+  const appRoot = path.join(outputRoot, 'meteor-drop');
+  const stableVideo = path.join(appRoot, 'videos', 'meteor-drop-ios.mp4');
+  const stablePoster = path.join(appRoot, 'screenshots', 'meteor-drop-ios-poster.png');
+  fs.mkdirSync(path.dirname(stableVideo), { recursive: true });
+  fs.mkdirSync(path.dirname(stablePoster), { recursive: true });
+  fs.writeFileSync(stableVideo, 'existing video');
+  fs.writeFileSync(stablePoster, 'existing poster');
+  const manifestPath = path.join(outputRoot, 'manifest.json');
+  fs.writeFileSync(manifestPath, '{"existing":true}\n');
+
+  const exitCode = run(
+    ['--app=meteor-drop', '--platform=ios', `--output-dir=${outputRoot}`, '--keep-run'],
+    {
+      examplesRoot: '/work/meteor/examples',
+      getAppConfig: () => ({
+        name: 'meteor-drop',
+        appName: 'Meteor Drop',
+        mediaSlug: 'meteor-drop',
+        showcaseFlowPath,
+      }),
+      getDeviceId: () => 'IPHONE-15-PRO',
+      now: () => new Date('2026-07-30T15:04:05.006Z'),
+      spawnSync: (_command, args) => {
+        const videoArg = args.find(value => value.startsWith('SHOWCASE_VIDEO_PATH='));
+        const posterArg = args.find(value => value.startsWith('SHOWCASE_POSTER_PATH='));
+        fs.writeFileSync(`${videoArg.slice('SHOWCASE_VIDEO_PATH='.length)}.mp4`, 'new video');
+        fs.writeFileSync(`${posterArg.slice('SHOWCASE_POSTER_PATH='.length)}.png`, 'new poster');
+        return { status: 0 };
+      },
+    }
+  );
+
+  assert.equal(exitCode, 0);
+  assert.equal(fs.readFileSync(stableVideo, 'utf8'), 'existing video');
+  assert.equal(fs.readFileSync(stablePoster, 'utf8'), 'existing poster');
+  assert.equal(fs.readFileSync(manifestPath, 'utf8'), '{"existing":true}\n');
+  const runDir = path.join(appRoot, 'runs', '2026-07-30T15-04-05-006Z-ios');
+  assert.equal(fs.readFileSync(path.join(runDir, 'meteor-drop-ios.mp4'), 'utf8'), 'new video');
+  assert.equal(fs.readFileSync(path.join(runDir, 'meteor-drop-ios-poster.png'), 'utf8'), 'new poster');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(runDir, 'run.json'), 'utf8')), {
+    status: 'passed',
+    app: 'meteor-drop',
+    platform: 'ios',
+    deviceId: 'IPHONE-15-PRO',
+    completedAt: '2026-07-30T15:04:05.006Z',
+    retained: true,
+  });
 });

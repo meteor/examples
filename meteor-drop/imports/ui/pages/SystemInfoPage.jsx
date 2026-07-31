@@ -41,7 +41,10 @@ export function SystemInfoPage({
           <h2>Application</h2>
           <List inset strong>
             <ListItem title="Application name" after={appInfo.name} />
-            <ListItem title="Application ID" after={appInfo.appId} />
+            <ListItem
+              title="Application ID"
+              after={<code className="system-page__identifier">{appInfo.appId}</code>}
+            />
             <ListItem title="Application version" after={appInfo.version} />
             <ListItem title="Build number" after={appInfo.build} />
           </List>

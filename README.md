@@ -11,9 +11,9 @@ Each example doubles as a reference for [community packages](https://docs.meteor
   - [Task Manager](#task-manager)
   - [Notes Offline](#notes-offline)
   - [Native applications](#native-applications)
+    - [Meteor Drop](#meteor-drop)
     - [Stock Scanner](#stock-scanner)
     - [Civic Snap](#civic-snap)
-    - [Meteor Drop](#meteor-drop)
   - [Simple Blog](#simple-blog)
   - [Tic-Tac-Toe](#tic-tac-toe)
   - [Parties](#parties)
@@ -58,7 +58,15 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 
 ### Native applications
 
-Official Meteor applications built with Capacitor, native plugins, HCP, and Maestro-tested mobile flows. Examples progress from a focused native utility to a complete field workflow and a live-data game.
+Official Meteor applications built with Capacitor, native plugins, HCP, and Maestro-tested mobile flows.
+
+#### Meteor Drop
+- Repository: [meteor/examples/meteor-drop](./meteor-drop)
+- Why: Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics
+- Gallery: Generated outside the checkout through the documented Playwright and Maestro showcase flows
+- Stack: Meteor, Rspack, React, Konsta UI, Capacitor, App, Haptics, Network, Share, Meteor Capacitor HCP, MongoDB, Mocha, oxlint, Playwright, Maestro
+- Last Updated At: Jul/23/2026
+- Meteor Version: 3.4.1
 
 #### Stock Scanner
 - Repository: [meteor/examples/stock-scanner](./stock-scanner)
@@ -72,14 +80,6 @@ Official Meteor applications built with Capacitor, native plugins, HCP, and Maes
 - Why: Promotion-ready neighborhood reporting app with a field brief, evidence capture, visible issue lifecycle, Framework7 navigation, offline submission, native plugins, and separate runtime/DDP/HCP diagnostics
 - Stack: Meteor, Rspack, React, Framework7 React, Capacitor, App, Camera, Geolocation, Network, Local Notifications, Share, Meteor Capacitor HCP, jam:offline, jam:method, jam:pub-sub, MongoDB, Mocha, oxlint, Playwright, Maestro
 - Last Updated At: Jul/21/2026
-- Meteor Version: 3.4.1
-
-#### Meteor Drop
-- Repository: [meteor/examples/meteor-drop](./meteor-drop)
-- Why: Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics
-- Gallery: Generated outside the checkout through the documented Playwright and Maestro showcase flows
-- Stack: Meteor, Rspack, React, Konsta UI, Capacitor, App, Haptics, Network, Share, Meteor Capacitor HCP, MongoDB, Mocha, oxlint, Playwright, Maestro
-- Last Updated At: Jul/23/2026
 - Meteor Version: 3.4.1
 
 ### Simple Blog

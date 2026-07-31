@@ -33,3 +33,13 @@ test('Meteor Drop makes the full DDP setting row a native-sized switch target', 
     /<button[\s\S]*className="system-toggle-row"[\s\S]*role="switch"[\s\S]*aria-label="Live DDP connection"/
   );
 });
+
+test('Meteor Drop keeps System information within a phone-sized reading column', () => {
+  assert.match(css, /\.system-page\s*\{[^}]*width:\s*min\(100%,\s*35rem\)/);
+  assert.match(systemInfo, /className="system-page__identifier"/);
+  assert.match(css, /\.system-page__identifier\s*\{[\s\S]*overflow-wrap:\s*anywhere/);
+  assert.match(
+    css,
+    /@media\s*\(max-width:\s*480px\)\s*\{[\s\S]*?\.system-page\s*\{[\s\S]*?padding-inline:\s*0\.75rem/
+  );
+});
