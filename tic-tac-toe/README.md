@@ -8,7 +8,7 @@ Demo: https://tic-tac-toe.sandbox.galaxycloud.app/
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5 |
+| Runtime | Meteor 3.5.2-beta.0 |
 | Frontend | React 19 (`react-meteor-data` for `useTracker` / `useFind`) |
 | UI | MUI v7 (Material UI) |
 | Routing | React Router v7 |
