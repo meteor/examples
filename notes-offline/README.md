@@ -10,7 +10,7 @@ Demo: https://notes-offline.sandbox.galaxycloud.app/
 
 |              |                                                                   |
 | ------------ | ----------------------------------------------------------------- |
-| Runtime      | Meteor 3.5.2-beta.0                                             |
+| Runtime      | Meteor 3.5.2-beta.0                                               |
 | Frontend     | React 19                                                          |
 | UI           | Mantine UI                                                        |
 | Offline      | jam:offline (IndexedDB, auto-sync, cross-tab)                     |
