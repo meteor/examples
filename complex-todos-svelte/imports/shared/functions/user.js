@@ -1,6 +1,13 @@
 import {Meteor} from 'meteor/meteor';
 import {UNIT_TEST} from '../../../tests/enums/users.js';
 
+let getUserDetails = userId => Meteor.users.findOneAsync(userId);
+
+export function setUserDetailsFetcher(fetcher)
+{
+  getUserDetails = fetcher;
+}
+
 /**
  * @type {{readonly _id: *, details: *, getDetailsAsync: function}}
  */
@@ -53,7 +60,6 @@ export const User = {
       return Meteor.users.findOne(this._id);
     }
 
-    const {userCache} = require('../../modules/users/user.cache.js');
-    return userCache.get(this._id);
+    return getUserDetails(this._id);
   }
 };

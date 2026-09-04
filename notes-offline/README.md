@@ -2,7 +2,7 @@
 
 _Your notes, always available._
 
-An offline-first notes app built with Meteor 3.5.2-beta.0. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
+An offline-first notes app built with Meteor 3.5.2. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
 
 Demo: https://notes-offline.sandbox.galaxycloud.app/
 
@@ -10,7 +10,7 @@ Demo: https://notes-offline.sandbox.galaxycloud.app/
 
 |              |                                                                   |
 | ------------ | ----------------------------------------------------------------- |
-| Runtime      | Meteor 3.5.2-beta.0                                               |
+| Runtime      | Meteor 3.5.2                                                      |
 | Frontend     | React 19                                                          |
 | UI           | Mantine UI                                                        |
 | Offline      | jam:offline (IndexedDB, auto-sync, cross-tab)                     |
