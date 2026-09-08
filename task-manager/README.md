@@ -8,7 +8,7 @@ Demo: https://task-manager.sandbox.galaxycloud.app/
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5 |
+| Runtime | Meteor 3.5.2 |
 | Frontend | React 19 |
 | UI | shadcn/ui (Radix + Tailwind) |
 | Styling | Tailwind CSS 3 |

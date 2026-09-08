@@ -84,3 +84,7 @@ playwright-report/
 
 # SWC plugin cache (created when loading @lingui/swc-plugin)
 .swc/
+
+# Meteor Modern-Tools build context directories
+*/build-assets*
+*/build-chunks*

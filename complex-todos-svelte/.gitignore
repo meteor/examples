@@ -8,3 +8,7 @@ _build
 */build-assets
 */build-chunks
 .rsdoctor
+
+# Meteor Modern-Tools build context directories
+*/build-assets*
+*/build-chunks*
