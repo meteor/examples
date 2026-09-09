@@ -1,0 +1,71 @@
+appId: com.meteor.examples.stockscanner
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Stock Scanner"
+    timeout: 120000
+- repeat:
+    times: 3
+    while:
+      notVisible: "System information"
+    commands:
+      - retry:
+          maxRetries: 3
+          commands:
+            - runFlow:
+                when:
+                  visible: "New app update available"
+                commands:
+                  - tapOn: "Not now"
+            - waitForAnimationToEnd:
+                timeout: 5000
+            - tapOn: "Open navigation"
+- tapOn: "System information"
+- extendedWaitUntil:
+    visible: "Native ready"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "DDP connected"
+    timeout: 60000
+- assertVisible: "Meteor.isCapacitor true"
+- runFlow:
+    when:
+      visible: "Update ready"
+    commands:
+      - tapOn: "Review update"
+- runFlow:
+    when:
+      notVisible: "New app update available"
+    commands:
+      - scrollUntilVisible:
+          element:
+            text: "Preview HCP update"
+          direction: DOWN
+          timeout: 10000
+      - tapOn: "Preview HCP update"
+- assertVisible: "New app update available"
+- assertVisible: "Install update"
+- tapOn: "Not now"
+- assertVisible: "Update ready"
+- tapOn: "Review update"
+- assertVisible: "New app update available"
+- tapOn: "Not now"
+- repeat:
+    times: 3
+    while:
+      notVisible: "Inventory"
+    commands:
+      - tapOn: "Open navigation"
+- tapOn: "Inventory"
+- tapOn: "Manual SKU"
+- inputText: "SKU-NATIVE-1"
+- hideKeyboard
+- tapOn: "Add manual SKU"
+- extendedWaitUntil:
+    visible: "Open SKU-NATIVE-1"
+    timeout: 10000
+- tapOn: "Show low stock"
+- extendedWaitUntil:
+    visible: "Open SKU-NATIVE-1"
+    timeout: 10000

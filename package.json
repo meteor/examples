@@ -11,6 +11,24 @@
   "license": "MIT",
   "scripts": {
     "update:examples": "node scripts/update-examples-json.mjs",
-    "check:examples": "node scripts/update-examples-json.mjs --check"
+    "check:examples": "node scripts/update-examples-json.mjs --check",
+    "test:mobile-examples": "node scripts/test-mobile-examples.mjs",
+    "run:native": "node native-tests/scripts/run-native.js",
+    "run:native:stock-scanner": "node native-tests/scripts/run-native.js stock-scanner",
+    "run:native:civic-snap": "node native-tests/scripts/run-native.js civic-snap",
+    "run:native:meteor-drop": "node native-tests/scripts/run-native.js meteor-drop",
+    "test:native:unit": "node --test native-tests/scripts/*.test.js",
+    "test:native:stock-scanner:android": "node native-tests/scripts/run-flow.js --app=stock-scanner --platform=android",
+    "test:native:stock-scanner:ios": "node native-tests/scripts/run-flow.js --app=stock-scanner --platform=ios",
+    "test:native:civic-snap:android": "node native-tests/scripts/run-flow.js --app=city-issue-reporter --platform=android",
+    "test:native:civic-snap:ios": "node native-tests/scripts/run-flow.js --app=city-issue-reporter --platform=ios",
+    "test:native:meteor-drop:android": "node native-tests/scripts/run-flow.js --app=meteor-drop --platform=android",
+    "test:native:meteor-drop:ios": "node native-tests/scripts/run-flow.js --app=meteor-drop --platform=ios",
+    "record:native:stock-scanner:android": "node native-tests/scripts/record-showcase.js --app=stock-scanner --platform=android",
+    "record:native:stock-scanner:ios": "node native-tests/scripts/record-showcase.js --app=stock-scanner --platform=ios",
+    "record:native:civic-snap:android": "node native-tests/scripts/record-showcase.js --app=city-issue-reporter --platform=android",
+    "record:native:civic-snap:ios": "node native-tests/scripts/record-showcase.js --app=city-issue-reporter --platform=ios",
+    "record:native:meteor-drop:android": "node native-tests/scripts/record-showcase.js --app=meteor-drop --platform=android",
+    "record:native:meteor-drop:ios": "node native-tests/scripts/record-showcase.js --app=meteor-drop --platform=ios"
   }
 }

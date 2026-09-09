@@ -1,0 +1,27 @@
+
+node_modules/
+.idea/
+android/
+ios/
+
+# Meteor Modern-Tools build context directories
+_build
+*/build-assets
+*/build-chunks
+.rsdoctor
+
+# Source maps
+*.map
+
+# Playwright
+test-results/
+playwright-report/
+
+# Meteor Capacitor synced native assets
+ios/App/App/public
+ios/App/App/capacitor.*.json
+ios/App/App/config.xml
+
+# Meteor Capacitor synced native assets
+android/app/src/main/assets/public
+android/app/src/main/assets/capacitor.*.json

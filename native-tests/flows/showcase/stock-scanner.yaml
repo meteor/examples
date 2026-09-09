@@ -1,0 +1,96 @@
+appId: com.meteor.examples.stockscanner
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Stock Scanner"
+    timeout: 60000
+- runFlow:
+    when:
+      visible: "New app update available"
+    commands:
+      - tapOn: "Not now"
+- extendedWaitUntil:
+    visible: "Manual SKU"
+    timeout: 60000
+- startRecording:
+    path: ${SHOWCASE_VIDEO_PATH}
+    label: "Stock Scanner showcase"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3000
+- tapOn: "Manual SKU"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2500
+- inputText: "SKU-SHOWCASE-${SHOWCASE_RUN_ID}"
+- hideKeyboard
+- tapOn: "Add manual SKU"
+- extendedWaitUntil:
+    visible: "Open SKU-SHOWCASE-${SHOWCASE_RUN_ID}"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2000
+- tapOn: "Open SKU-SHOWCASE-${SHOWCASE_RUN_ID}"
+- extendedWaitUntil:
+    visible: "Count adjustment"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2500
+- tapOn: ".*Count up"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 1500
+- tapOn: "Minimum stock"
+- eraseText
+- inputText: "12"
+- hideKeyboard
+- tapOn: "Save product"
+- extendedWaitUntil:
+    visible: "Show low stock"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2000
+- tapOn: "Show low stock"
+- extendedWaitUntil:
+    visible: "Open SKU-SHOWCASE-${SHOWCASE_RUN_ID}"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3000
+- takeScreenshot: ${SHOWCASE_POSTER_PATH}
+- tapOn: "Open navigation"
+- tapOn: "System information"
+- extendedWaitUntil:
+    visible: "Native ready"
+    timeout: 60000
+- scrollUntilVisible:
+    element:
+      text: "Preview HCP update"
+    direction: DOWN
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2500
+- tapOn: "Preview HCP update"
+- extendedWaitUntil:
+    visible: "New app update available"
+    timeout: 10000
+- assertVisible: "Install update"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 4000
+- tapOn: "Not now"
+- stopRecording
