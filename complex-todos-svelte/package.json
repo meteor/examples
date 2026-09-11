@@ -13,30 +13,33 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.6",
-    "@swc/helpers": "^0.5.19",
+    "@swc/helpers": "^0.5.23",
     "bcrypt": "^6.0.0",
     "meteor-node-stubs": "^1.2.27",
     "node-cache": "^5.1.2",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^2.2.0",
-    "@rsdoctor/rspack-plugin": "^1.5.7",
-    "@rspack/cli": "^1.7.8",
-    "@rspack/core": "^1.7.8",
+    "@meteorjs/rspack": "^3.0.0-beta.1",
+    "@rsdoctor/rspack-plugin": "^1.5.9",
+    "@rspack/cli": "^2.2.0",
+    "@rspack/core": "^2.2.0",
+    "@rspack/dev-server": "^2.2.0",
     "@skeletonlabs/skeleton": "^4.13.0",
     "@skeletonlabs/skeleton-svelte": "^4.13.0",
+    "@swc/core": "^1.15.32",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/postcss": "^4.2.2",
     "chai": "^5.2.0",
     "oxlint": "^1.56.0",
     "postcss": "^8.5.8",
     "postcss-load-config": "^6.0.1",
-    "svelte": "^5.53.10",
+    "svelte": "^5.57.0",
     "svelte-check": "^4.4.5",
     "svelte-loader": "^3.2.4",
     "svelte-preprocess": "^6.0.3",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3"
   },
   "meteor": {
     "mainModule": {

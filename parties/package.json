@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.24.0",
-    "@swc/helpers": "^0.5.17",
+    "@swc/helpers": "^0.5.23",
     "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
@@ -30,11 +30,13 @@
     "modern": true
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^2.2.0",
+    "@meteorjs/rspack": "^3.0.0-beta.1",
     "@playwright/test": "^1.50.0",
-    "@rsdoctor/rspack-plugin": "^1.5.7",
+    "@rsdoctor/rspack-plugin": "^1.5.9",
     "@rslint/core": "^0.3.0",
-    "@rspack/cli": "^1.7.1",
-    "@rspack/core": "^1.7.1"
+    "@rspack/cli": "^2.2.0",
+    "@rspack/core": "^2.2.0",
+    "@rspack/dev-server": "^2.2.0",
+    "@swc/core": "^1.15.32"
   }
 }
