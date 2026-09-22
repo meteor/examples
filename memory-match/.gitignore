@@ -1,0 +1,19 @@
+node_modules/
+meteor-checkout
+meteor-checkout.tmp-*
+coverage/
+reports/
+test-results/
+playwright-report/
+*.log
+.DS_Store
+
+# Meteor and Rspack generated output
+_build
+*/build-assets
+*/build-chunks
+.rsdoctor
+.swc/
+_build-*/
+**/build-assets-*/
+**/build-chunks-*/

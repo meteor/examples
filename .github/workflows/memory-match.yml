@@ -1,0 +1,81 @@
+name: Memory Match (Rstest checkout)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "memory-match/**"
+      - ".github/workflows/memory-match.yml"
+  push:
+    branches: [main]
+    paths:
+      - "memory-match/**"
+      - ".github/workflows/memory-match.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  showcase:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    env:
+      METEOR_CHECKOUT: ${{ github.workspace }}/meteor
+      DO_NOT_TRACK: "1"
+    defaults:
+      run:
+        working-directory: examples/memory-match
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: examples
+      - uses: actions/checkout@v4
+        with:
+          repository: meteor/meteor
+          ref: rspack-rstest-integration
+          path: meteor
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Prepare checkout packages and generated types
+        run: npm run setup
+      - name: Install Chromium and system dependencies
+        run: ./meteor-checkout npx playwright install --with-deps chromium
+      - run: npm run test:tooling
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: npm run test:component
+      - run: npm run test:browser
+      - run: npm run test:integration
+      - run: npm run test:package
+      - run: npm run test:e2e
+      - run: npm run test:parallel:native
+      - run: npm run test:parallel:meteor
+      - run: npm run test:coverage
+      - name: Verify normal development startup
+        run: |
+          mkdir -p reports
+          ./meteor-checkout run --port 4100 > reports/development.log 2>&1 &
+          meteor_pid=$!
+          trap 'kill "$meteor_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 120); do
+            if curl --fail --silent http://localhost:4100/health | grep -q '"mongo":"ready"'; then
+              exit 0
+            fi
+            if ! kill -0 "$meteor_pid" 2>/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          cat reports/development.log
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: memory-match-reports
+          path: |
+            examples/memory-match/coverage/
+            examples/memory-match/reports/
+            examples/memory-match/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
