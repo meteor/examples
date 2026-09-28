@@ -9,7 +9,9 @@
     "e2e:headless": "npx cypress run",
     "visualize": "meteor -s settings.json --production --extra-packages bundle-visualizer",
     "lint": "npx oxlint --import-plugin .",
-    "lint:fix": "npx oxlint --import-plugin . --fix"
+    "lint:fix": "npx oxlint --import-plugin . --fix",
+    "types": "meteor types",
+    "typecheck": "meteor types && svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.6",
@@ -20,7 +22,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^3.0.0-beta.1",
+    "@meteorjs/rspack": "^3.0.0-beta.2",
     "@rsdoctor/rspack-plugin": "^1.5.9",
     "@rspack/cli": "^2.2.0",
     "@rspack/core": "^2.2.0",
@@ -30,7 +32,9 @@
     "@swc/core": "^1.15.32",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^26.6.3",
     "chai": "^5.2.0",
+    "cypress": "^16.1.0",
     "oxlint": "^1.56.0",
     "postcss": "^8.5.8",
     "postcss-load-config": "^6.0.1",

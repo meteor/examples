@@ -14,7 +14,7 @@
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.6.0",
-    "@swc/helpers": "^0.5.17",
+    "@swc/helpers": "^0.5.23",
     "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
     "chai": "^4.3.6",
@@ -43,12 +43,14 @@
     "modern": true
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^2.2.0",
-    "@rsdoctor/rspack-plugin": "^1.5.7",
-    "@rspack/cli": "^1.7.1",
-    "@rspack/core": "^1.7.1",
-    "@rspack/plugin-react-refresh": "^1.4.3",
+    "@meteorjs/rspack": "^3.0.0-beta.2",
+    "@rsdoctor/rspack-plugin": "^1.5.9",
+    "@rspack/cli": "^2.2.0",
+    "@rspack/core": "^2.2.0",
+    "@rspack/plugin-react-refresh": "^2.0.0",
     "postcss-loader": "^8.2.1",
-    "react-refresh": "^0.17.0"
+    "react-refresh": "^0.18.0",
+    "@rspack/dev-server": "^2.2.0",
+    "@swc/core": "^1.15.32"
   }
 }

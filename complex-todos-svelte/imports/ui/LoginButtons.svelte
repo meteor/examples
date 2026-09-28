@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
   import {Meteor} from 'meteor/meteor';
   import {Accounts} from 'meteor/accounts-base';
-  import {useTracker} from './lib/useTracker.js';
+  import {useTracker} from './lib/useTracker';
   import {Dialog} from '@skeletonlabs/skeleton-svelte';
 
   let username = $state('');
@@ -9,16 +9,19 @@
   let error = $state('');
   let isRegistering = $state(false);
 
-  const currentUser = useTracker(() => Meteor.user());
+  const currentUser = useTracker(() => {
+    const userId = Meteor.userId();
+    return userId ? Meteor.users.findOne(userId) : undefined;
+  });
 
-  function handleSubmit(event) {
+  function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     error = '';
 
     if (isRegistering) {
       Accounts.createUser({username, password}, (err) => {
         if (err) {
-          error = err.reason || err.message;
+          error = err instanceof Meteor.Error ? err.reason || err.message : err.message;
         } else {
           resetForm();
         }
@@ -26,7 +29,7 @@
     } else {
       Meteor.loginWithPassword(username, password, (err) => {
         if (err) {
-          error = err.reason || err.message;
+          error = err instanceof Meteor.Error ? err.reason || err.message : err.message;
         } else {
           resetForm();
         }

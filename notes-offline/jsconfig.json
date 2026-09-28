@@ -3,19 +3,11 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
-    "strict": true,
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false,
     "noEmit": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "types": [
-      "node",
-      "svelte"
-    ],
     "paths": {
       "meteor/*": [
         "./.meteor/types/packages/*"
@@ -23,10 +15,7 @@
       "/imports/*": [
         "./imports/*"
       ]
-    },
-    "allowJs": true,
-    "checkJs": false,
-    "verbatimModuleSyntax": true
+    }
   },
   "files": [
     "./.meteor/types/packages.d.ts"
@@ -35,10 +24,5 @@
     "client/**/*",
     "server/**/*",
     "imports/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    ".meteor",
-    "imports/**/*.test.js"
   ]
 }
