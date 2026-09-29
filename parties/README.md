@@ -1,6 +1,6 @@
 # Parties
 
-A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.6-beta.1 with Blaze 3 and async database operations.
+A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.6-beta.3 with Blaze 3 and async database operations.
 
 Demo: https://parties.sandbox.galaxycloud.app/
 
@@ -8,7 +8,7 @@ Demo: https://parties.sandbox.galaxycloud.app/
 
 | | |
 |---|---|
-| Runtime | Meteor 3.6-beta.1 |
+| Runtime | Meteor 3.6-beta.3 |
 | Frontend | Blaze 3 |
 | UI | Bootstrap 5 |
 | Visualization | D3.js v7 (interactive map) |

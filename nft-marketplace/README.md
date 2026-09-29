@@ -1,12 +1,12 @@
 # NFT Marketplace
 
-An NFT marketplace built with Meteor and Ethereum. Based on [Nader's tutorial](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb), adapted to run on Meteor 3.6-beta.1 with Rspack. Users can mint, list, and buy NFTs using MetaMask and IPFS for storage.
+An NFT marketplace built with Meteor and Ethereum. Based on [Nader's tutorial](https://dev.to/edge-and-node/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb), adapted to run on Meteor 3.6-beta.3 with Rspack. Users can mint, list, and buy NFTs using MetaMask and IPFS for storage.
 
 ## Stack
 
 | | |
 |---|---|
-| Runtime | Meteor 3.6-beta.1 |
+| Runtime | Meteor 3.6-beta.3 |
 | Frontend | React 18 |
 | Styling | Tailwind CSS 3, Headless UI, Heroicons |
 | Smart Contracts | Solidity, Hardhat, OpenZeppelin |
