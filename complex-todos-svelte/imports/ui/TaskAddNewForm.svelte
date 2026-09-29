@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
   import {tasksInsert} from '../modules/tasks/tasks.methods.js';
 
   let newTask = $state('');
 
-  function handleSubmit(event) {
+  function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     if (!newTask.trim()) return;
     tasksInsert({text: newTask});

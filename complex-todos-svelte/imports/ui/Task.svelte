@@ -1,11 +1,16 @@
-<script>
+<script lang="ts">
   import {Meteor} from 'meteor/meteor';
-  import {useTracker} from './lib/useTracker.js';
+  import {useTracker} from './lib/useTracker';
   import {tasksRemove, tasksUpdateAsChecked, tasksUpdateAsPrivate} from '../modules/tasks/tasks.methods.js';
 
-  let {task} = $props();
+  import type {Task} from '../modules/tasks/database/tasks';
 
-  const currentUser = useTracker(() => Meteor.user());
+  let {task}: {task: Task} = $props();
+
+  const currentUser = useTracker(() => {
+    const userId = Meteor.userId();
+    return userId ? Meteor.users.findOne(userId) : undefined;
+  });
 
   let showButton = $derived($currentUser ? task.owner === $currentUser._id : false);
 

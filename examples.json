@@ -33,6 +33,7 @@
     "stack": [
       "Meteor",
       "Rspack",
+      "TypeScript",
       "React",
       "Meteor-RPC",
       "shadcn/ui",
@@ -43,8 +44,8 @@
       "Biome",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Sep/29/2026",
+    "meteorVersion": "3.6-beta.3"
   },
   {
     "title": "Notes Offline",
@@ -73,8 +74,8 @@
       "Prettier",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Sep/29/2026",
+    "meteorVersion": "3.6-beta.3"
   },
   {
     "title": "Simple Blog",
@@ -110,14 +111,15 @@
     "stack": [
       "Meteor",
       "Rspack",
+      "TypeScript",
       "React",
       "MUI (Material UI)",
       "Mocha",
       "oxlint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Sep/29/2026",
+    "meteorVersion": "3.6-beta.3"
   },
   {
     "title": "Parties",
@@ -138,8 +140,8 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Sep/29/2026",
+    "meteorVersion": "3.6-beta.3"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -154,6 +156,7 @@
     "stack": [
       "Meteor",
       "Rspack",
+      "TypeScript",
       "Svelte 5",
       "Skeleton UI",
       "Tailwind CSS v4",
@@ -164,8 +167,8 @@
       "Mocha",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Sep/29/2026",
+    "meteorVersion": "3.6-beta.3"
   },
   {
     "title": "Welcome Meteor Cordova",

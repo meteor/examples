@@ -16,6 +16,16 @@ defaults:
     working-directory: complex-todos-svelte
 
 jobs:
+  typecheck:
+    if: false # temporarily disabled; validate locally like the other checks
+    name: TypeScript (native Meteor declarations)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: meteorengineer/setup-meteor@v2
+      - run: meteor npm ci --include=dev
+      - run: meteor npm run typecheck
+
   lint:
     if: false # temporarily disabled
     name: Lint (oxlint)

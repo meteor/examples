@@ -1,6 +1,7 @@
 import { ArrowRightLeft, MoreHorizontal, Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { api } from "../api/client";
+import type { Task } from "../api/taskSchema";
 import { Badge } from "./components/ui/badge";
 import { Button } from "./components/ui/button";
 import {
@@ -31,23 +32,23 @@ const STATUS_CONFIG = {
   todo: { label: "To Do", variant: "outline" },
   "in-progress": { label: "In Progress", variant: "secondary" },
   done: { label: "Done", variant: "default" },
-};
+} as const;
 
 const PRIORITY_CONFIG = {
   low: { label: "Low", variant: "outline" },
   medium: { label: "Medium", variant: "secondary" },
   high: { label: "High", variant: "destructive" },
-};
+} as const;
 
 const NEXT_STATUS = {
   todo: "in-progress",
   "in-progress": "done",
   done: "todo",
-};
+} as const;
 
 export const TaskList = () => {
   const [formOpen, setFormOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState(null);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
@@ -61,7 +62,7 @@ export const TaskList = () => {
     return true;
   });
 
-  const handleEdit = (task) => {
+  const handleEdit = (task: Task) => {
     setEditingTask(task);
     setFormOpen(true);
   };
@@ -71,15 +72,15 @@ export const TaskList = () => {
     setFormOpen(true);
   };
 
-  const handleToggleStatus = (task) => {
+  const handleToggleStatus = (task: Task) => {
     updateMutation.mutate({ _id: task._id, status: NEXT_STATUS[task.status] });
   };
 
-  const handleDelete = (task) => {
+  const handleDelete = (task: Task) => {
     removeMutation.mutate({ _id: task._id });
   };
 
-  const formatDate = (date) => {
+  const formatDate = (date: Date) => {
     if (!date) return "-";
     return new Date(date).toLocaleDateString("en-US", {
       month: "short",

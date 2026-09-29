@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import {AppBar} from '@skeletonlabs/skeleton-svelte';
   import LoginButtons from './LoginButtons.svelte';
   import Tasks from './Tasks.svelte';
@@ -6,7 +6,7 @@
 
   let currentPage = $state('tasks');
 
-  function navigate(page) {
+  function navigate(page: string) {
     currentPage = page;
     window.history.pushState({page}, '', `/${page}`);
   }

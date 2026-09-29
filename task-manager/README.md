@@ -8,10 +8,10 @@ Demo: https://task-manager.sandbox.galaxycloud.app/
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5.2 |
-| Frontend | React 19 |
+| Runtime | Meteor 3.6-beta.3 |
+| Frontend | React 19 + TypeScript |
 | UI | shadcn/ui (Radix + Tailwind) |
-| Styling | Tailwind CSS 3 |
+| Styling | Tailwind CSS 4 |
 | Data | Meteor-RPC + React Query |
 | Validation | Zod |
 | Tests | Mocha |
@@ -53,21 +53,22 @@ Before running E2E tests for the first time, install Playwright's browsers with 
 ```
 imports/
   api/
-    tasks.js        # Collection, Zod schemas, Meteor-RPC module (exports `_server`)
-    client.js       # Client API (createClient)
+    tasks.ts        # Typed collection and Meteor-RPC module (exports the TaskApi type)
+    taskSchema.ts   # Shared Zod schemas and Task model
+    client.ts       # Client API (createClient)
   lib/
-    utils.js        # cn() utility for Tailwind class merging
+    utils.ts        # cn() utility for Tailwind class merging
   ui/
-    App.jsx         # Main app layout
-    Dashboard.jsx   # Reactive metrics cards
-    TaskList.jsx    # Task table with filters and actions
-    TaskForm.jsx    # Create/edit dialog
+    App.tsx         # Main app layout
+    Dashboard.tsx   # Reactive metrics cards
+    TaskList.tsx    # Task table with filters and actions
+    TaskForm.tsx    # Create/edit dialog
     components/ui/  # shadcn/ui components
 client/
-  main.jsx          # Entry point with QueryClientProvider
+  main.tsx          # Entry point with QueryClientProvider
   main.css          # Tailwind + shadcn/ui CSS variables
 server/
-  main.js           # Server entry (imports API module)
+  main.ts           # Server entry (imports API module)
 ```
 
 ### shadcn/ui setup notes
@@ -79,6 +80,23 @@ Since shadcn/ui doesn't officially support Meteor, components are manually insta
 3. The `cn()` utility uses `clsx` + `tailwind-merge`
 4. Tailwind is configured with CSS custom properties for theming
 5. Path alias `@` maps to `imports/` via Rspack config
+
+## TypeScript
+
+Run `meteor npm run typecheck` after installing dependencies. It runs `meteor types`
+to regenerate the Meteor 3.6 package declarations in `.meteor/types`, then `tsc --noEmit`.
+The generated files stay out of Git. Run `meteor npm run types` after changing
+Meteor packages to refresh editor types. The configuration uses native declarations
+without `@types/meteor` or `zodern:types`.
+
+The collection model is inferred from the shared Zod schemas, and the client uses
+`createClient<TaskApi>()` with a type-only import of the server API. UI props and
+method inputs are checked without bundling the server registration on the client.
+
+Meteor-RPC 1.1 uses Zod 3 and publishes TypeScript source. The patch in `patches/`
+is applied by `postinstall` to align publication resolver and optional argument
+types, native Meteor call results, and React 19's reducer types. It also passes a single cursor to the shared
+publication hook, as required by `useFind`.
 
 ## Deployment
 

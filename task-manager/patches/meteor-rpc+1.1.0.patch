@@ -1,0 +1,92 @@
+diff --git a/node_modules/meteor-rpc/lib/createClient.ts b/node_modules/meteor-rpc/lib/createClient.ts
+index d78fc45..1c5b638 100644
+--- a/node_modules/meteor-rpc/lib/createClient.ts
++++ b/node_modules/meteor-rpc/lib/createClient.ts
+@@ -63,16 +63,17 @@ const createProxyClient = <T extends R>(path: string[] = []) => {
+       async function call(...params) {
+         // @ts-ignore
+         const result = await Meteor.callAsync(name, ...params);
++        const errorResult = result as { __isError__?: boolean; errorType?: string; error: string | number; reason?: string } | null;
+         if (result && Object.hasOwn(result, "__isError__")) {
+-          throw new Meteor.Error(result.error, result.reason);
++          throw new Meteor.Error(errorResult!.error, errorResult!.reason);
+         }
+ 
+         if (
+           result &&
+           Object.hasOwn(result, "errorType") &&
+-          result.errorType === "Meteor.Error"
++          errorResult?.errorType === "Meteor.Error"
+         ) {
+-          throw new Meteor.Error(result.error, result.reason);
++          throw new Meteor.Error(errorResult!.error, errorResult!.reason);
+         }
+ 
+         return result;
+diff --git a/node_modules/meteor-rpc/lib/createModule.ts b/node_modules/meteor-rpc/lib/createModule.ts
+index 85a9a03..356a7c0 100644
+--- a/node_modules/meteor-rpc/lib/createModule.ts
++++ b/node_modules/meteor-rpc/lib/createModule.ts
+@@ -69,7 +69,7 @@ export const createModule = <
+     schema: Schema,
+     resolver: (
+       this: MeteorSubscription,
+-      args: UnwrappedArgs
++      args: z.output<Schema>
+     ) => Mongo.Cursor<T> | Promise<Mongo.Cursor<T>>,
+     config?: Config<UnwrappedArgs, T>
+   ) => {
+@@ -118,7 +118,7 @@ export const createModule = <
+     schema: Schema,
+     resolver: (
+       this: MeteorSubscription,
+-      args: UnwrappedArgs
++      args: z.output<Schema>
+     ) => Array<Mongo.Cursor<T>> | Promise<Array<Mongo.Cursor<T>>>,
+     config?: Config<UnwrappedArgs, T>
+   ) => {
+diff --git a/node_modules/meteor-rpc/lib/createSharedRealtimeQuery.ts b/node_modules/meteor-rpc/lib/createSharedRealtimeQuery.ts
+index 943fdf0..b98a979 100644
+--- a/node_modules/meteor-rpc/lib/createSharedRealtimeQuery.ts
++++ b/node_modules/meteor-rpc/lib/createSharedRealtimeQuery.ts
+@@ -69,7 +69,7 @@ export const createSharedRealtimeQuery = <
+   query.useRealtime = (args: z.input<Schema>) => {
+     useSubscribe(name);
+     const data = useFind(() => {
+-      return query(args);
++      return query(args)[0];
+     }, [args]);
+     return data;
+   };
+diff --git a/node_modules/meteor-rpc/lib/utils/hooks/useFind.ts b/node_modules/meteor-rpc/lib/utils/hooks/useFind.ts
+index b4c61a1..88be32d 100644
+--- a/node_modules/meteor-rpc/lib/utils/hooks/useFind.ts
++++ b/node_modules/meteor-rpc/lib/utils/hooks/useFind.ts
+@@ -108,8 +108,8 @@ const useFindClient = <T = any>(
+     return cursor;
+   }, deps);
+ 
+-  const [data, dispatch] = useReducer<Reducer<T[], useFindActions<T>>, null>(
+-    useFindReducer,
++  const [data, dispatch] = useReducer(
++    useFindReducer<T>,
+     null,
+     () => {
+       if (!(cursor instanceof Mongo.Cursor)) {
+diff --git a/node_modules/meteor-rpc/types/index.ts b/node_modules/meteor-rpc/types/index.ts
+index 03f4db0..4801f78 100644
+--- a/node_modules/meteor-rpc/types/index.ts
++++ b/node_modules/meteor-rpc/types/index.ts
+@@ -196,7 +196,11 @@ type ReturnSubscription<
+   /**
+    * Creates a react-query useQuery hook using the context for the method
+    */
+-  usePublication: (args: z.input<Schema>) => {
++  usePublication: (
++    ...args: undefined extends z.input<Schema>
++      ? [args?: z.input<Schema>]
++      : [args: z.input<Schema>]
++  ) => {
+     data: Result[];
+     // @ts-ignore
+     collection: Mongo.Collection<Result>;

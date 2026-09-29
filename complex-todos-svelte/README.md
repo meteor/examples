@@ -2,7 +2,7 @@
 
 Same idea as the [simple Svelte tutorial](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack), but not simple. This app covers things you'll actually run into when building something real: module boundaries, validation, rate limiting, caching, migrations, jobs, and proper separation of concerns.
 
-Built with Meteor 3.5.2, Svelte 5, Skeleton UI, and Tailwind CSS v4.
+Built with Meteor 3.6-beta.3, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 
 Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
 
@@ -10,7 +10,7 @@ Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5.2 |
+| Runtime | Meteor 3.6-beta.3 |
 | Frontend | Svelte 5 (runes) |
 | UI | Skeleton UI v4 + Tailwind CSS v4, Cerberus theme |
 | Build | Rspack |
@@ -48,7 +48,7 @@ The code follows a [modular monolith](https://github.com/kgrzybek/modular-monoli
 
 ```
 imports/modules/tasks/
-├── database/tasks.js          # Collection
+├── database/tasks.ts          # Collection
 ├── enums/                     # Method names, publication names, rate limits
 ├── taskRepository.js          # Data access (extends BaseRepository)
 ├── taskService.js             # Business logic
@@ -74,7 +74,7 @@ Methods are controllers: they take a request and return a result, nothing more. 
 
 ### The UI side
 
-Svelte 5 runes throughout: `$state`, `$derived`, `$props`, no `$:` or `export let` anywhere. A custom `useTracker()` hook bridges Meteor's `Tracker.autorun()` into Svelte writable stores.
+Svelte 5 runes throughout: `$state`, `$derived`, `$props`, no `$:` or `export let` anywhere. A custom `useTracker()` hook bridges Meteor's `Tracker.autorun()` into typed Svelte readable stores.
 
 The UI uses Skeleton's compound components where they add value (AppBar for navigation, Dialog for the login modal) and plain Tailwind for the rest (task cards, badges, form inputs).
 
@@ -89,6 +89,18 @@ Getting Skeleton UI to work with Rspack required a few tweaks in `rspack.config.
 ## Settings
 
 `settings.json` in the project root is for development, `npm start` loads it automatically. For production, point your deployment tool at a different settings file.
+
+## TypeScript
+
+Run `meteor npm run typecheck` after installing dependencies. It runs `meteor types`
+to regenerate the Meteor 3.6 package declarations in `.meteor/types`, then `svelte-check`.
+The generated files stay out of Git. Run `meteor npm run types` after changing
+Meteor packages to refresh editor types. The configuration uses native declarations
+without `@types/meteor` or `zodern:types`.
+
+The Svelte components, task collection, and generic Tracker store use TypeScript.
+The remaining server and repository modules use JavaScript and can be migrated
+incrementally through `allowJs`; `checkJs` is disabled for those modules.
 
 ## Deployment
 

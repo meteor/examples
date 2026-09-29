@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import type { ChipProps } from "@mui/material/Chip";
+import type { Room, JoinRoomResult } from "../api/rooms";
 import React, { useState } from "react";
 import { useSubscribe, useFind } from "meteor/react-meteor-data";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +21,7 @@ import AddIcon from "@mui/icons-material/Add";
 import PeopleIcon from "@mui/icons-material/People";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
-const getRoomStatus = (capacity, winner) => {
+const getRoomStatus = (capacity: Room["capacity"], winner: Room["winner"]): Pick<ChipProps, "label" | "color" | "icon"> => {
   if (winner) return { label: `Winner: ${winner}`, color: "secondary", icon: <EmojiEventsIcon /> };
   if (capacity === 2) return { label: "Open", color: "success" };
   if (capacity === 1) return { label: "Waiting for opponent", color: "warning" };
@@ -29,7 +32,7 @@ export const RoomList = () => {
   const navigate = useNavigate();
   const listLoading = useSubscribe("rooms");
   const rooms = useFind(() => RoomCollection.find({}, { sort: { createdAt: -1 } }), []);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   if (listLoading()) {
     return (
@@ -91,7 +94,7 @@ export const RoomList = () => {
                   size="small"
                   disabled={capacity <= 0}
                   onClick={() => {
-                    Meteor.callAsync("joinRoom", { roomId: _id })
+                    Meteor.callAsync<JoinRoomResult>("joinRoom", { roomId: _id })
                       .then(({ room, color }) => {
                         navigate(`/game/${room._id}`, { state: { color } });
                       })

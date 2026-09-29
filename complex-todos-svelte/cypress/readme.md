@@ -1,42 +1,33 @@
-# E2E Tests
+# E2E tests
 
-This folder contains e2e tests
+The Cypress suite contains 15 tests across four specs:
 
-### Test Strategy
+- `1.prepareTestEnvironment.cy.js`: clear the database and insert fixtures (2 tests).
+- `authentication.cy.js`: registration, login, logout, and invalid credentials (5 tests).
+- `navigation.cy.js`: default page and navigation between Tasks and About (3 tests).
+- `tasks.cy.js`: task form, creation, completion, privacy, and deletion (5 tests).
 
-Some test may require dummy data, the responsibility of dummy data should not be on cypress. The test data is different
-from dummy data. Test data will be stored and modified by cypress.
+The setup spec deletes all tasks and users. Run this suite against a disposable
+development app/database, never against an instance with data you need to keep.
+The authentication and task specs depend on setup and execute in filename order.
 
-### Test Plan
+Install dependencies with `meteor npm install`. If the Cypress binary has not been
+installed, run `npx cypress install`. Cypress is declared in `devDependencies` and
+its version is recorded in the lockfile.
 
-1. Authentication
-    - [x] Sign up - Fail - Passwords must match
-    - [x] Sign up - Fail - Password must long
-    - [x] Sign up - Success
-    - [x] Sign in - Fail - Incorrect password
-    - [x] Sign in - Fail - User not found
-    - [x] Sign in - Success
-    - [ ] Sign out
+Start the disposable app with `meteor npm start`, then in another terminal run:
 
-1. Navigation
-    - [ ] Go to tasks page
-    - [ ] Go to about page
+```bash
+npm run e2e:headless
+```
 
-1. Task
-    - [ ] Guest can not see the new task form
-    - [ ] Insert a new task
-    - [ ] Update a task as checked
-    - [ ] Update a task as unchecked
-    - [ ] Update a task as private
-    - [ ] Update a task as public
-    - [ ] Remove a task
-    - [ ] Check if a task is expired
+Use `npm run e2e` for the interactive runner. The default URL is
+`http://localhost:3000`. To target a different disposable app and disable retries:
 
-### How to start tests
+```bash
+npm run e2e:headless -- --config baseUrl=http://localhost:3370,retries=0
+```
 
-Type ```npm run cypress``` into terminal
-
-### Location of tests
-
-If cypress cache exists after file change, delete
-~/Library/Application Support/Cypress/cy
+Current gaps include guest/other-user authorization, toggling completion and
+privacy back to their original state, and scheduled task expiration. Passing the
+suite does not establish complete feature or code coverage.

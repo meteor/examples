@@ -8,7 +8,7 @@ Demo: https://tic-tac-toe.sandbox.galaxycloud.app/
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5.2 |
+| Runtime | Meteor 3.6-beta.3 |
 | Frontend | React 19 (`react-meteor-data` for `useTracker` / `useFind`) |
 | UI | MUI v7 (Material UI) |
 | Routing | React Router v7 |
@@ -48,6 +48,14 @@ This is a two-player game. Open the app in **two separate browser tabs**:
 2. Click **Join Room** from both tabs on the same room
 3. Players alternate turns: one plays as X, the other as O
 4. The game announces the winner via a dialog when three in a row is achieved
+
+## TypeScript
+
+Run `meteor npm run typecheck` after installing dependencies. It runs `meteor types`
+to regenerate the Meteor 3.6 package declarations in `.meteor/types`, then `tsc --noEmit`.
+The generated files stay out of Git. Run `meteor npm run types` after changing
+Meteor packages to refresh editor types. The configuration uses native declarations
+without `@types/meteor` or `zodern:types`.
 
 ## Deployment
 
