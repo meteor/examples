@@ -139,8 +139,8 @@
       "Testing Library",
       "Playwright"
     ],
-    "lastUpdatedAt": "Sep/22/2026",
-    "meteorVersion": "Checkout (`rspack-rstest-integration`, experimental)"
+    "lastUpdatedAt": "Sep/30/2026",
+    "meteorVersion": "Rstest prerelease"
   },
   {
     "title": "Parties",
