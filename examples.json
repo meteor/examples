@@ -120,6 +120,29 @@
     "meteorVersion": "3.5.2"
   },
   {
+    "title": "Memory Match",
+    "slug": "memory-match",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/memory-match",
+    "isInternal": true,
+    "internalPath": "memory-match",
+    "why": "A cosmic card game with a live leaderboard showcasing Rstest unit, component, browser, Meteor runtime, local package, and end-to-end tests",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "TypeScript",
+      "MongoDB",
+      "Rstest",
+      "Testing Library",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Sep/30/2026",
+    "meteorVersion": "Rstest prerelease"
+  },
+  {
     "title": "Parties",
     "slug": "parties",
     "demo": "https://parties.sandbox.galaxycloud.app",
