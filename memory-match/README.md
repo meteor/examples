@@ -36,7 +36,8 @@ and full-browser E2E tests.
 
 ## Running it
 
-Use Node.js 22.12 or newer. The temporary setup expects sibling Meteor and
+Use Node.js 22.12 or newer. No global Meteor installation is needed. Run setup
+before `npm install` or `npm ci`. The temporary setup expects sibling Meteor and
 examples checkouts:
 
 ```text

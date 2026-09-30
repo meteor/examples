@@ -65,6 +65,7 @@ export function resolveCheckout(env = process.env) {
 export function withCheckoutEnvironment(checkout, env = process.env) {
   return {
     ...env,
+    PATH: [checkout.root, env.PATH].filter(Boolean).join(path.delimiter),
     METEOR_CHECKOUT: checkout.root,
     METEOR_PACKAGE_DIRS: [checkout.packagesDir, env.METEOR_PACKAGE_DIRS].filter(Boolean).join(path.delimiter),
     METEOR_RSPACK_NPM_SPEC: checkout.rspackNpmPackage,
@@ -140,6 +141,7 @@ export function renderCheckoutLauncher(checkout) {
     '  printf "Meteor checkout branch is %s; expected %s. Rerun npm run setup with a compatible checkout.\\n" "${current:-detached HEAD}" "$expected" >&2',
     '  exit 2',
     'fi',
+    'export PATH="$checkout:$PATH"',
     'export METEOR_CHECKOUT="$checkout"',
     'export METEOR_PACKAGE_DIRS="$checkout/packages${METEOR_PACKAGE_DIRS:+:$METEOR_PACKAGE_DIRS}"',
     'export METEOR_RSPACK_NPM_SPEC="$checkout/npm-packages/meteor-rspack"',

@@ -59,8 +59,9 @@ test('refuses the wrong branch without changing the checkout', (t) => {
 test('normalizes checkout paths and preserves custom package directories', (t) => {
   const root = fakeCheckout(t);
   const checkout = resolveCheckout({ METEOR_CHECKOUT: root });
-  const env = withCheckoutEnvironment(checkout, { METEOR_PACKAGE_DIRS: '/custom' });
+  const env = withCheckoutEnvironment(checkout, { PATH: '/usr/bin', METEOR_PACKAGE_DIRS: '/custom' });
   assert.equal(checkout.root, realpathSync(root));
+  assert.equal(env.PATH, `${checkout.root}${path.delimiter}/usr/bin`);
   assert.equal(env.METEOR_PACKAGE_DIRS, `${checkout.packagesDir}${path.delimiter}/custom`);
   assert.equal(env.METEOR_RSPACK_NPM_SPEC, checkout.rspackNpmPackage);
   assert.equal(env.METEOR_RSTEST_NPM_SPEC, checkout.rstestNpmPackage);
@@ -86,6 +87,7 @@ test('launcher preserves arguments, environment, exit status, and checks later b
   const projectRoot = temporaryRoot(t);
   const meteorBinary = path.join(root, 'meteor');
   writeFileSync(meteorBinary, `#!/bin/sh
+printf 'meteor=%s\\n' "$(command -v meteor)"
 printf 'packageDirs=%s\\n' "$METEOR_PACKAGE_DIRS"
 printf 'rspack=%s\\n' "$METEOR_RSPACK_NPM_SPEC"
 printf 'rstest=%s\\n' "$METEOR_RSTEST_NPM_SPEC"
@@ -102,6 +104,7 @@ exit 23
   const result = run();
   assert.equal(result.status, 23, result.stderr);
   assert.equal(result.stderr, '');
+  assert(result.stdout.includes(`meteor=${checkout.meteorBinary}\n`));
   assert(result.stdout.includes(`packageDirs=${checkout.packagesDir}:/custom/packages\n`));
   assert(result.stdout.includes(`rspack=${checkout.rspackNpmPackage}\n`));
   assert(result.stdout.includes(`rstest=${checkout.rstestNpmPackage}\n`));
