@@ -47,9 +47,12 @@ workspace/
     └── memory-match/
 ```
 
-From the directory containing `examples`, clone the required Meteor checkout:
+From an empty workspace, clone both feature branches as siblings:
 
 ```bash
+mkdir memory-match-workspace
+cd memory-match-workspace
+git clone --branch feat/memory-match-rstest https://github.com/meteor/examples.git examples
 git clone --branch rspack-rstest-integration https://github.com/meteor/meteor.git meteor
 cd examples/memory-match
 npm run setup
@@ -60,7 +63,8 @@ npm start
 Visit `http://localhost:3000/`. Open a second browser tab before completing a
 game to see its leaderboard entry arrive without a page refresh.
 
-If the checkout is elsewhere, set `METEOR_CHECKOUT` during setup:
+If you already have this examples branch, place the Meteor checkout beside it.
+If the Meteor checkout is elsewhere, set `METEOR_CHECKOUT` during setup:
 
 ```bash
 METEOR_CHECKOUT=/absolute/path/to/meteor npm run setup
@@ -91,8 +95,8 @@ reinstalling dependencies.
 | `npm run test:tooling` | Temporary checkout setup and launcher checks |
 
 Run `./meteor-checkout npx playwright install chromium` once before Browser Mode
-or E2E tests. Full-app test commands manage their own Meteor app and MongoDB, so
-you do not need to start the game first.
+or E2E tests. Stop `npm start` before running tests that use Meteor; they share
+the default ports. Full-app test commands manage their own app and MongoDB.
 
 ## How it is structured
 
@@ -111,10 +115,11 @@ rstest.config.ts   # Browser, coverage, and test project configuration
 
 The ordinary test sources use `@rstest/core`. Tests that import `meteor/*` run
 inside real Meteor hosts; pure tests use Rstest's Node, jsdom, or browser
-projects. See [Rstest integration details](docs/RSTEST.md) for the routing rules,
-coverage behavior, parallel execution, and the publication checklist.
+projects. See [Rstest integration details](docs/RSTEST.md) for how to add tests,
+the routing rules, coverage behavior, parallel execution, and the publication
+checklist.
 
-For a narrated demo, use the [showcase walkthrough](docs/SHOWCASE.md).
+For a guided tour, use the [showcase walkthrough](docs/SHOWCASE.md).
 
 ## Links
 

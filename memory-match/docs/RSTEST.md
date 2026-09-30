@@ -63,15 +63,34 @@ Fallback markers demonstrate the remaining explicit ownership cases:
 `import.meta.rstest`. The one test below `tests/rstest/pure` remains as a
 compatibility-root example.
 
+## Adding a feature or test
+
+Keep new behavior and its tests together. Choose the lightest test environment
+that exercises the behavior:
+
+| Change | Add tests in | Run |
+|---|---|---|
+| Game rules or scoring | `imports/game/`, importing `@rstest/core` | `npm run test:unit` |
+| React component behavior | `imports/ui/`, with a `.dom.rstest.test.tsx` marker for jsdom or an `@rstest/browser` import for Chromium | `npm run test:component` or `npm run test:browser` |
+| Methods, publications, or subscriptions | `imports/api/`, importing real `meteor/*` modules and using a server/client marker when needed | `npm run test:integration` |
+| Complete user journey | `tests/e2e/`, importing `@rstest/playwright` | `npm run test:e2e` |
+| Local Atmosphere package | `packages/`, with a strong `rstest` dependency in `Package.onTest` | `npm run test:package` |
+
+Use `npm run typecheck` and the relevant test command while working; run
+`npm run test:coverage` when a change crosses several layers. If a new test
+needs its own project, give it a distinct name in `rstest.config.ts` and verify
+the project selection with a focused run.
+
 ## Useful options
 
-Pass standard Rstest filtering and reporting options through the existing npm
-scripts:
+Filter by name or shard through the npm shortcut. Select one project for a
+single-file run; `test:unit` also selects the in-source project. Native Rstest
+reporter options go after a second `--`, which tells Meteor to pass them through:
 
 ```bash
 npm run test:unit -- --test-name-pattern deck
-npm run test:unit -- --test-file imports/game/score.test.ts
-npm run test:unit -- --reporters=verbose
+./meteor-checkout test --once --server-only --project meteor-pure-server --test-file imports/game/score.test.ts
+npm run test:unit -- -- --reporters=verbose
 npm run test:unit -- --shard 1/2
 
 SHOWCASE_HEADED=1 npm run test:browser

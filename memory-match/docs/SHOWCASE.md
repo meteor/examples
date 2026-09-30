@@ -19,7 +19,7 @@ npm run test:e2e
 ```
 
 Run these sequentially; some Meteor commands share default ports. Complete the
-first build and browser installation before recording or presenting.
+first build and browser installation before presenting.
 
 ## A five-minute demo
 
@@ -57,22 +57,3 @@ first build and browser installation before recording or presenting.
 In watch mode, change an assertion, show the failure, restore it, then stop with
 Ctrl+C. Coverage includes the game, UI, and local package across selected native,
 Meteor, and full-app E2E tests. Configuration is in `rstest.config.ts`.
-
-## Existing recording tools
-
-The separate `meteor-rstest-recordings` project can target this example without
-copying recordings or adding recorder dependencies to the app. From that
-project, set the example path for setup and recording:
-
-```bash
-export SHOWCASE_DIR=/absolute/path/to/examples/memory-match
-npm run setup
-npm run record -- unit
-npm run record -- integration
-npm run record:all
-```
-
-Its README covers asciinema/agg installation and rendering. Casts and GIFs stay
-in that project's `recordings/` and `gifs/` directories. Browser failure
-screenshots from this example go in `reports/failures/`; E2E retains traces on
-failure. Run `SHOWCASE_HEADED=1 npm run test:e2e` for a visible browser demo.
