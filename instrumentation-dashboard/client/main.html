@@ -1,0 +1,22 @@
+<head>
+  <title>Instrumentation dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  {{> layout}}
+</body>
+
+<template name="layout">
+  <header class="topbar">
+    <a href="/">Tasks</a>
+    <a href="/admin">Admin dashboard</a>
+  </header>
+  <main>
+    {{#if isAdminRoute}}
+      {{> adminPage}}
+    {{else}}
+      {{> tasksPage}}
+    {{/if}}
+  </main>
+</template>

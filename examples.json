@@ -183,5 +183,28 @@
     ],
     "lastUpdatedAt": "Apr/29/2026",
     "meteorVersion": "3.4.1"
+  },
+  {
+    "title": "Instrumentation Dashboard",
+    "slug": "instrumentation-dashboard",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/instrumentation-dashboard",
+    "isInternal": true,
+    "internalPath": "instrumentation-dashboard",
+    "why": "Admin dashboard built on Meteor's instrumentation package: method calls, latency percentiles, errors and DDP connections, with bounded storage that works across several server instances",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze 3",
+      "Chart.js",
+      "MongoDB",
+      "Mocha",
+      "RSLint",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Oct/19/2026",
+    "meteorVersion": "3.6-rc.0"
   }
 ]

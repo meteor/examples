@@ -1,0 +1,40 @@
+{
+  "name": "instrumentation-dashboard",
+  "private": true,
+  "scripts": {
+    "start": "meteor run --settings settings.json",
+    "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --settings settings.json",
+    "test:headless": "meteor test --once --driver-package meteortesting:mocha --settings settings.json",
+    "visualize": "meteor --production --extra-packages bundle-visualizer",
+    "lint": "npx rslint .",
+    "lint:fix": "npx rslint . --fix",
+    "e2e": "npx playwright test --ui",
+    "e2e:headless": "npx playwright test"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.23.5",
+    "@swc/helpers": "^0.5.23",
+    "chart.js": "^4.5.1",
+    "jquery": "^3.7.1",
+    "meteor-node-stubs": "^1.2.30"
+  },
+  "devDependencies": {
+    "@meteorjs/rspack": "^3.0.0-rc.0",
+    "@playwright/test": "^1.64.1",
+    "@rsdoctor/rspack-plugin": "^1.6.4",
+    "@rslint/core": "^0.3.4",
+    "@rspack/cli": "^2.2.7",
+    "@rspack/core": "^2.2.7",
+    "@rspack/dev-server": "^2.2.1",
+    "@rspack/plugin-react-refresh": "^2.0.2",
+    "@swc/core": "^1.16.2"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.js",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js",
+    "modern": true
+  }
+}

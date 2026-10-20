@@ -15,6 +15,7 @@ Each example doubles as a reference for [community packages](https://docs.meteor
   - [Parties](#parties)
   - [Complex Todos (Svelte)](#complex-todos-svelte)
   - [Welcome Meteor Cordova](#welcome-meteor-cordova)
+  - [Instrumentation Dashboard](#instrumentation-dashboard)
 - [Other examples](#other-examples)
   - [React Tutorial App](#react-tutorial-app)
   - [Blaze Tutorial App](#blaze-tutorial-app)
@@ -89,6 +90,13 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Stack: Meteor, Cordova
 - Last Updated At: Apr/29/2026
 - Meteor Version: 3.4.1
+
+### Instrumentation Dashboard
+- Repository: [meteor/examples/instrumentation-dashboard](./instrumentation-dashboard)
+- Why: Admin dashboard built on Meteor's instrumentation package: method calls, latency percentiles, errors and DDP connections, with bounded storage that works across several server instances
+- Stack: Meteor, Rspack, Blaze 3, Chart.js, MongoDB, Mocha, RSLint, Playwright
+- Last Updated At: Oct/19/2026
+- Meteor Version: 3.6-rc.0
 
 ## Other examples
 
