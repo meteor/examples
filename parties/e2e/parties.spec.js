@@ -63,6 +63,8 @@ test.describe("Parties", () => {
 
   test("should create a party via double-click on map", async ({ page }) => {
     await signUp(page);
+    const circles = page.locator("svg .circles circle");
+    const previousCount = await circles.count();
 
     // Double-click on the map SVG to open create dialog
     const svg = page.locator("svg").first();
@@ -79,14 +81,14 @@ test.describe("Parties", () => {
     // Click save
     await page.locator("button.save").click();
 
-    // At least one party circle should be on the map
-    await expect(page.locator("svg .circles circle").first()).toBeVisible({
-      timeout: 5000,
-    });
+    await expect(circles).toHaveCount(previousCount + 1);
+    await expect(circles.last()).toBeVisible({ timeout: 5000 });
   });
 
   test("should RSVP to a party", async ({ page }) => {
     await signUp(page);
+    const circles = page.locator("svg .circles circle");
+    const previousCount = await circles.count();
 
     // Create a party at a unique position to avoid overlapping with other tests
     const svg = page.locator("svg").first();
@@ -96,8 +98,8 @@ test.describe("Parties", () => {
     await page.locator("textarea.description").fill("Testing RSVP");
     await page.locator("button.save").click();
 
-    // Let Playwright wait for the new circle's entrance animation to finish.
-    const circles = page.locator("svg .circles circle");
+    // Wait for the new circle before resolving last(), then let its animation finish.
+    await expect(circles).toHaveCount(previousCount + 1);
     await expect(circles.last()).toBeVisible({ timeout: 5000 });
     await circles.last().click();
 
@@ -114,6 +116,8 @@ test.describe("Parties", () => {
 
   test("should delete a party", async ({ page }) => {
     await signUp(page);
+    const circles = page.locator("svg .circles circle");
+    const previousCount = await circles.count();
 
     // Create a party at a unique position (far corner to avoid overlap)
     const svg = page.locator("svg").first();
@@ -123,11 +127,10 @@ test.describe("Parties", () => {
     await page.locator("textarea.description").fill("Will be deleted");
     await page.locator("button.save").click();
 
-    // Select the new circle after its entrance animation.
-    await expect(page.locator("svg .circles circle").last()).toBeVisible({
-      timeout: 5000,
-    });
-    await page.locator("svg .circles circle").last().click();
+    // Wait for insertion so last() cannot select a party from a previous test.
+    await expect(circles).toHaveCount(previousCount + 1);
+    await expect(circles.last()).toBeVisible({ timeout: 5000 });
+    await circles.last().click();
 
     // Verify we selected our party
     await expect(page.getByText(partyTitle)).toBeVisible({ timeout: 5000 });

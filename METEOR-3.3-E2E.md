@@ -4,7 +4,7 @@
 
 | App | Build | Browser suite | Adaptation |
 | --- | --- | --- | --- |
-| Parties | Meteor Isobuild | 8 Playwright tests | Restore the standard Meteor compiler and package versions; wait for animated map markers before clicking. |
+| Parties | Meteor Isobuild | 8 Playwright tests | Restore the standard Meteor compiler and package versions; wait for a new map marker to be inserted and finish its animation before clicking. |
 | Tic-Tac-Toe | Meteor Isobuild | 6 Playwright tests | Pin React Router 6.30.6, whose entry points resolve with the 3.3 tool. |
 | Task Manager | Meteor Isobuild | 9 Playwright tests | Compile Meteor-RPC's TypeScript, use `/imports/` paths, and share one React 19 runtime through npm overrides. |
 | Notes Offline | Meteor Isobuild | 14 Playwright tests | Use Babel for Lingui macros, compile catalogs and Workbox assets before startup, pin React Markdown 8.0.7 for 3.3 module resolution, and import the required icon modules directly. Includes an offline reload check. |
@@ -27,7 +27,7 @@ On October 26, 2026, the same app source and npm lockfiles passed against publis
 
 These accepted runs had zero failures, skips or retries. They ran on Ubuntu 22.04 under WSL2, with Chromium 147.0.7727.15, Playwright 1.58.2 and Cypress 16.1.0. The published tool used Node 22.18.0; the checkout used Node 22.23.4 from dev bundle 22.23.4.0. Each run had a fresh app database, with at most two apps running concurrently and one browser worker per app.
 
-The comparison followed fixes to the adaptation: incompatible module entry points, duplicate React runtimes, missing styles, Vite startup wiring and offline catalog loading. The Parties marker failure was a test interaction with its entrance animation; waiting for a normal click and checking the selected title fixed it. Two setup attempts also found unfinished process cleanup in the local runner. Those failed attempts are separate from the accepted counts above. This is a newly adapted branch, not evidence of historical Meteor 3.3 examples CI.
+The comparison followed fixes to the adaptation: incompatible module entry points, duplicate React runtimes, missing styles, Vite startup wiring and offline catalog loading. Parties needed normal clicks after its marker entrance animation, plus a marker-count check so the locator cannot select an earlier party before insertion. The intended title is also asserted. Two setup attempts found unfinished process cleanup in the local runner. Those failed attempts are separate from the accepted counts above. This is a newly adapted branch, not evidence of historical Meteor 3.3 examples CI.
 
 The baseline selected the published 3.3.3 core package versions. The checkout selected the intended maintenance packages, and the built server files contained the DDP and Mongo field-preservation corrections. Separate Meteor release CI and publication preflight remain required.
 

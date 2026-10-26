@@ -51,8 +51,10 @@ jobs:
         if: inputs.meteor_ref != ''
         run: |
           echo "METEOR_BIN=$GITHUB_WORKSPACE/meteor-source/meteor" >> "$GITHUB_ENV"
-          "$GITHUB_WORKSPACE/meteor-source/meteor" --version
       - run: npm ci --no-audit --no-fund
+      - name: Prepare checkout packages
+        if: inputs.meteor_ref != ''
+        run: '"$METEOR_BIN" --prepare-app'
       - name: Install Chromium
         if: matrix.app != 'complex-todos-svelte'
         run: npx playwright install --with-deps chromium
