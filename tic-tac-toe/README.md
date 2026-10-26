@@ -2,13 +2,13 @@
 
 Multiplayer tic-tac-toe with room support, built with Meteor, React, and Material UI. Shows how Meteor's real-time pub/sub works for game state synchronization between two players.
 
-Demo: https://tic-tac-toe.sandbox.galaxycloud.app/
+Hosted demo (may use a newer Meteor release): https://tic-tac-toe.sandbox.galaxycloud.app/
 
 ## Stack
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5.2 |
+| Runtime | Meteor 3.3.3 |
 | Frontend | React 19 (`react-meteor-data` for `useTracker` / `useFind`) |
 | UI | MUI v7 (Material UI) |
 | Routing | React Router v7 |
@@ -16,12 +16,14 @@ Demo: https://tic-tac-toe.sandbox.galaxycloud.app/
 | Tests | Mocha (via `meteortesting:mocha`) |
 | Code Quality | oxlint (OXC) + react, import plugins |
 | E2E | Playwright |
-| Build | Rspack |
+| Build | Meteor (Isobuild) |
+
+This branch targets Meteor 3.3. See the [shared testing guide](../METEOR-3.3-E2E.md) for source checkout runs.
 
 ## Running it
 
 ```bash
-meteor npm install
+meteor npm ci
 npm start
 ```
 

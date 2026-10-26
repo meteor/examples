@@ -1,5 +1,5 @@
 import { Stack, Text, Title, Kbd, Group } from '@mantine/core';
-import { IconNotes } from '@tabler/icons-react';
+import IconNotes from '@tabler/icons-react/dist/esm/icons/IconNotes.mjs';
 import { Trans } from '@lingui/macro';
 
 export const EmptyState = () => (

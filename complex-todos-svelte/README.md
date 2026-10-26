@@ -2,28 +2,30 @@
 
 Same idea as the [simple Svelte tutorial](https://github.com/meteor/meteor3-svelte/tree/3.4-rspack), but not simple. This app covers things you'll actually run into when building something real: module boundaries, validation, rate limiting, caching, migrations, jobs, and proper separation of concerns.
 
-Built with Meteor 3.5.2, Svelte 5, Skeleton UI, and Tailwind CSS v4.
+Built with Meteor 3.3.3, Svelte 5, Skeleton UI, and Tailwind CSS v4.
 
-Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
+Hosted demo (may use a newer Meteor release): https://complex-todos-svelte.sandbox.galaxycloud.app/
 
 ## Stack
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5.2 |
+| Runtime | Meteor 3.3.3 |
 | Frontend | Svelte 5 (runes) |
 | UI | Skeleton UI v4 + Tailwind CSS v4, Cerberus theme |
-| Build | Rspack |
+| Build | Vite + Meteor |
 | Database | MongoDB |
 | Validation | Zod + jam:method |
 | Caching | node-cache |
 | Code Quality | oxlint (OXC) + import plugin |
 | Tests | Mocha + Chai (integration), Cypress (E2E) |
 
+This branch targets Meteor 3.3. See the [shared testing guide](../METEOR-3.3-E2E.md) for source checkout runs.
+
 ## Running it
 
 ```bash
-meteor npm install
+meteor npm ci
 npm start
 # http://localhost:3000/
 ```
@@ -78,13 +80,9 @@ Svelte 5 runes throughout: `$state`, `$derived`, `$props`, no `$:` or `export le
 
 The UI uses Skeleton's compound components where they add value (AppBar for navigation, Dialog for the login modal) and plain Tailwind for the rest (task cards, badges, form inputs).
 
-### Rspack config notes
+### Vite integration
 
-Getting Skeleton UI to work with Rspack required a few tweaks in `rspack.config.js`:
-
-- `fullySpecified: false` because `@zag-js/svelte` uses ESM imports without extensions
-- A separate `.svelte.js` loader rule, since these files contain Svelte runes but aren't `.svelte` files
-- `onwarn` filter to suppress `state_referenced_locally` warnings from Skeleton's internals
+`jorgenvatle:vite` and `meteor-vite` integrate the Svelte 5 frontend with Meteor 3.3. `vite.config.mjs` selects `client/main.js` and enables the Svelte compiler. Vite serves client assets through Meteor's `/vite/` route. Meteor still builds the server and its Atmosphere packages. `client/entry-meteor.js` leaves application UI compilation to Vite.
 
 ## Settings
 

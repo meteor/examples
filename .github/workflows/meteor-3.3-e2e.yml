@@ -1,0 +1,96 @@
+name: Meteor 3.3 examples
+
+on:
+  push:
+    branches: [release-3.3-e2e]
+  workflow_dispatch:
+    inputs:
+      meteor_ref:
+        description: Meteor source ref to test (empty uses published 3.3.3)
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [parties, tic-tac-toe, task-manager, notes-offline, complex-todos-svelte]
+    defaults:
+      run:
+        working-directory: ${{ matrix.app }}
+    env:
+      CI: 'true'
+      PORT: '3000'
+      TEST_BASE_URL: http://127.0.0.1:3000
+      METEOR_NO_DEPRECATION: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: meteorengineer/setup-meteor@v2
+        with:
+          meteor-release: '3.3.3'
+      - name: Prepare published baseline
+        run: meteor --release 3.3.3 --version
+      - name: Check out Meteor candidate
+        if: inputs.meteor_ref != ''
+        uses: actions/checkout@v4
+        with:
+          repository: meteor/meteor
+          ref: ${{ inputs.meteor_ref }}
+          path: meteor-source
+          submodules: recursive
+      - name: Select Meteor candidate
+        if: inputs.meteor_ref != ''
+        run: |
+          echo "METEOR_BIN=$GITHUB_WORKSPACE/meteor-source/meteor" >> "$GITHUB_ENV"
+          "$GITHUB_WORKSPACE/meteor-source/meteor" --version
+      - run: npm ci --no-audit --no-fund
+      - name: Install Chromium
+        if: matrix.app != 'complex-todos-svelte'
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright suite
+        if: matrix.app != 'complex-todos-svelte'
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_FILE: test-results/results.json
+        run: npx playwright test --workers=1 --retries=0 --reporter=line,json
+      - name: Run Cypress suite
+        if: matrix.app == 'complex-todos-svelte'
+        run: |
+          npm start > meteor.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          ready=false
+          for attempt in $(seq 1 120); do
+            if ! kill -0 "$app_pid" 2>/dev/null; then
+              cat meteor.log
+              exit 1
+            fi
+            if grep -q 'App running at:' meteor.log && curl --fail --silent --output /dev/null "$TEST_BASE_URL"; then
+              ready=true
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ready" != true ]; then
+            cat meteor.log
+            exit 1
+          fi
+          npx cypress run --browser chrome --config retries=0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ matrix.app }}-e2e
+          path: |
+            ${{ matrix.app }}/test-results/
+            ${{ matrix.app }}/cypress/screenshots/
+            ${{ matrix.app }}/cypress/videos/
+            ${{ matrix.app }}/meteor.log
+          if-no-files-found: ignore

@@ -16,25 +16,23 @@ import {
   Button,
   useMantineColorScheme,
 } from '@mantine/core';
-import {
-  IconPlus,
-  IconSearch,
-  IconPin,
-  IconSun,
-  IconMoon,
-  IconDots,
-  IconDownload,
-  IconUpload,
-  IconWifi,
-  IconWifiOff,
-  IconRefresh,
-  IconTrash,
-  IconNote,
-  IconArrowBackUp,
-  IconTrashX,
-  IconChevronDown,
-  IconCheck,
-} from '@tabler/icons-react';
+import IconPlus from '@tabler/icons-react/dist/esm/icons/IconPlus.mjs';
+import IconSearch from '@tabler/icons-react/dist/esm/icons/IconSearch.mjs';
+import IconPin from '@tabler/icons-react/dist/esm/icons/IconPin.mjs';
+import IconSun from '@tabler/icons-react/dist/esm/icons/IconSun.mjs';
+import IconMoon from '@tabler/icons-react/dist/esm/icons/IconMoon.mjs';
+import IconDots from '@tabler/icons-react/dist/esm/icons/IconDots.mjs';
+import IconDownload from '@tabler/icons-react/dist/esm/icons/IconDownload.mjs';
+import IconUpload from '@tabler/icons-react/dist/esm/icons/IconUpload.mjs';
+import IconWifi from '@tabler/icons-react/dist/esm/icons/IconWifi.mjs';
+import IconWifiOff from '@tabler/icons-react/dist/esm/icons/IconWifiOff.mjs';
+import IconRefresh from '@tabler/icons-react/dist/esm/icons/IconRefresh.mjs';
+import IconTrash from '@tabler/icons-react/dist/esm/icons/IconTrash.mjs';
+import IconNote from '@tabler/icons-react/dist/esm/icons/IconNote.mjs';
+import IconArrowBackUp from '@tabler/icons-react/dist/esm/icons/IconArrowBackUp.mjs';
+import IconTrashX from '@tabler/icons-react/dist/esm/icons/IconTrashX.mjs';
+import IconChevronDown from '@tabler/icons-react/dist/esm/icons/IconChevronDown.mjs';
+import IconCheck from '@tabler/icons-react/dist/esm/icons/IconCheck.mjs';
 import { isSyncing } from 'meteor/jam:offline';
 import { t, Trans, Plural } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

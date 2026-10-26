@@ -1,4 +1,10 @@
 import { i18n } from '@lingui/core';
+import { messages as en } from '../locales/en/messages.mjs';
+import { messages as es } from '../locales/es/messages.mjs';
+import { messages as pt } from '../locales/pt/messages.mjs';
+
+// Include catalogs in the cached app bundle for offline page reloads.
+const catalogs = { en, es, pt };
 
 export const SUPPORTED_LOCALES = ['en', 'es', 'pt'];
 const DEFAULT_LOCALE = 'en';
@@ -18,9 +24,7 @@ export function detectLocale() {
 
 export async function activateLocale(locale) {
   const target = SUPPORTED_LOCALES.includes(locale) ? locale : DEFAULT_LOCALE;
-  // @lingui/loader compiles the JSON catalog at bundle time. No precompile step required.
-  const { messages } = await import(`@lingui/loader!../locales/${target}/messages.json`);
-  i18n.load(target, messages);
+  i18n.load(target, catalogs[target]);
   i18n.activate(target);
   if (typeof localStorage !== 'undefined') {
     localStorage.setItem(STORAGE_KEY, target);

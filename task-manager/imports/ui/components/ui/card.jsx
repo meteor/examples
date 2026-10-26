@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "/imports/lib/utils";
 
 function Card({ className, ref, ...props }) {
   return (

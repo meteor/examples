@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { createRoot } from 'react-dom/client';
 import { I18nProvider } from '@lingui/react';
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
 // Import collection + offline config (must be on client for jam:offline)
 import '../imports/api/notes/collection';

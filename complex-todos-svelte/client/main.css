@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton-svelte';
+@import '../node_modules/@skeletonlabs/skeleton-svelte/dist/index.css';
 
 /*
  * Skeleton UI Theme

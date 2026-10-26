@@ -2,10 +2,17 @@ import { test, expect } from '@playwright/test';
 
 const uid = () => Math.random().toString(36).slice(2, 8);
 
+async function waitForNotesReady(page) {
+  await expect(page.getByRole('button', { name: 'New note' })).toBeEnabled();
+  await expect
+    .poll(() => page.evaluate(() => Boolean(window.Meteor?.status().connected)))
+    .toBe(true);
+}
+
 test.describe('Notes Offline', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await waitForNotesReady(page);
   });
 
   test('should display the app with empty state', async ({ page }) => {
@@ -214,9 +221,9 @@ test.describe('Notes Offline', () => {
       const pageB = await ctxB.newPage();
 
       await pageA.goto('/');
-      await pageA.waitForLoadState('networkidle');
+      await waitForNotesReady(pageA);
       await pageB.goto('/');
-      await pageB.waitForLoadState('networkidle');
+      await waitForNotesReady(pageB);
 
       const ownerA = await pageA.evaluate(() => localStorage.getItem('notes-offline.ownerId'));
       const ownerB = await pageB.evaluate(() => localStorage.getItem('notes-offline.ownerId'));
@@ -234,7 +241,7 @@ test.describe('Notes Offline', () => {
       // Give server-side sync time to settle, then refresh context B
       await pageB.waitForTimeout(500);
       await pageB.reload();
-      await pageB.waitForLoadState('networkidle');
+      await waitForNotesReady(pageB);
 
       const sidebarB = pageB.locator('.mantine-AppShell-navbar');
       await expect(sidebarB.getByText(secretTitle)).not.toBeVisible();

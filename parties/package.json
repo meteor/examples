@@ -2,7 +2,7 @@
   "name": "parties",
   "private": true,
   "scripts": {
-    "start": "meteor run --settings settings.json",
+    "start": "node ../scripts/start-example.mjs",
     "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
     "test:headless": "meteor test --once --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
@@ -30,11 +30,7 @@
     "modern": true
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^2.2.0",
     "@playwright/test": "^1.50.0",
-    "@rsdoctor/rspack-plugin": "^1.5.7",
-    "@rslint/core": "^0.3.0",
-    "@rspack/cli": "^1.7.1",
-    "@rspack/core": "^1.7.1"
+    "@rslint/core": "^0.3.0"
   }
 }

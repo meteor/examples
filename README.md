@@ -1,8 +1,8 @@
 # Meteor examples
 
-With Meteor 3.4 introducing the Rspack bundler, modern build optimizations, and full ESM support, our application examples needed a refresh. We've revamped this repository to reflect the current state of Meteor and showcase what's possible with the latest tools.
+This branch keeps the five applications with browser E2E suites usable on Meteor 3.3 without Rspack. It provides a published 3.3.3 baseline for testing maintenance releases from a source checkout. The Svelte 5 app uses Vite; the other four use Meteor's standard build system.
 
-Each example doubles as a reference for [community packages](https://docs.meteor.com/community-packages/) and the conventions you'll find in real-world Meteor apps. Several apps push the Rspack bundler further to integrate with the wider JS ecosystem (PostCSS, SWC, Workbox, Lingui, Tailwind v4, and more), replacing legacy Meteor approaches with tooling the rest of the JavaScript world already uses.
+See [the Meteor 3.3 testing guide](METEOR-3.3-E2E.md) for setup, checkout commands, scope, and validation. Hosted demo links refer to the deployed examples and do not identify the version tested by this branch. Other examples listed below retain their original versions.
 
 ## Table of contents
 
@@ -40,17 +40,17 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Repository: [meteor/examples/task-manager](./task-manager)
 - Demo: https://task-manager.sandbox.galaxycloud.app/
 - Why: Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC
-- Stack: Meteor, Rspack, React, Meteor-RPC, shadcn/ui, Tailwind CSS v4, React Query, Zod, Mocha, Biome, Playwright
-- Last Updated At: Apr/21/2026
-- Meteor Version: 3.5.2
+- Stack: Meteor, React, Meteor-RPC, shadcn/ui, Tailwind CSS v4, React Query, Zod, Mocha, Biome, Playwright
+- Last Updated At: Oct/26/2026
+- Meteor Version: 3.3.3
 
 ### Notes Offline
 - Repository: [meteor/examples/notes-offline](./notes-offline)
 - Demo: https://notes-offline.sandbox.galaxycloud.app/
 - Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)
-- Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, LinguiJS, Mocha, ESLint, Prettier, Playwright
-- Last Updated At: Apr/21/2026
-- Meteor Version: 3.5.2
+- Stack: Meteor, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, LinguiJS, Mocha, ESLint, Prettier, Playwright
+- Last Updated At: Oct/26/2026
+- Meteor Version: 3.3.3
 
 ### Simple Blog
 - Repository: [dupontbertrand/meteor-blog](https://github.com/dupontbertrand/meteor-blog)
@@ -63,25 +63,25 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)
 - Demo: https://tic-tac-toe.sandbox.galaxycloud.app/
 - Why: Real-time multiplayer game with room-based matchmaking and live state sync via pub/sub
-- Stack: Meteor, Rspack, React, MUI (Material UI), Mocha, oxlint, Playwright
-- Last Updated At: Apr/21/2026
-- Meteor Version: 3.5.2
+- Stack: Meteor, React, MUI (Material UI), Mocha, oxlint, Playwright
+- Last Updated At: Oct/26/2026
+- Meteor Version: 3.3.3
 
 ### Parties
 - Repository: [meteor/examples/parties](./parties)
 - Demo: https://parties.sandbox.galaxycloud.app/
 - Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates
-- Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
-- Last Updated At: Apr/21/2026
-- Meteor Version: 3.5.2
+- Stack: Meteor, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
+- Last Updated At: Oct/26/2026
+- Meteor Version: 3.3.3
 
 ### Complex Todos (Svelte)
 - Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
 - Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
 - Why: Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests
-- Stack: Meteor, Rspack, Svelte 5, Skeleton UI, Tailwind CSS v4, jam:method, Zod, oxlint, Cypress, Mocha, MongoDB
-- Last Updated At: Apr/21/2026
-- Meteor Version: 3.5.2
+- Stack: Meteor, Vite, Svelte 5, Skeleton UI, Tailwind CSS v4, jam:method, Zod, oxlint, Cypress, Mocha, MongoDB
+- Last Updated At: Oct/26/2026
+- Meteor Version: 3.3.3
 
 ### Welcome Meteor Cordova
 - Repository: [CloudByGalaxy/welcome-meteor-cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova)

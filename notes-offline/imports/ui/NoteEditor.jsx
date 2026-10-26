@@ -14,16 +14,14 @@ import {
   Divider,
 } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
-import {
-  IconPin,
-  IconPinFilled,
-  IconTrash,
-  IconArrowLeft,
-  IconEye,
-  IconEdit,
-  IconTag,
-  IconX,
-} from '@tabler/icons-react';
+import IconPin from '@tabler/icons-react/dist/esm/icons/IconPin.mjs';
+import IconPinFilled from '@tabler/icons-react/dist/esm/icons/IconPinFilled.mjs';
+import IconTrash from '@tabler/icons-react/dist/esm/icons/IconTrash.mjs';
+import IconArrowLeft from '@tabler/icons-react/dist/esm/icons/IconArrowLeft.mjs';
+import IconEye from '@tabler/icons-react/dist/esm/icons/IconEye.mjs';
+import IconEdit from '@tabler/icons-react/dist/esm/icons/IconEdit.mjs';
+import IconTag from '@tabler/icons-react/dist/esm/icons/IconTag.mjs';
+import IconX from '@tabler/icons-react/dist/esm/icons/IconX.mjs';
 import Markdown from 'react-markdown';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

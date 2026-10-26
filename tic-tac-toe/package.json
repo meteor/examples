@@ -2,7 +2,7 @@
   "name": "tic-tac-toe",
   "private": true,
   "scripts": {
-    "start": "meteor run --settings settings.json",
+    "start": "node ../scripts/start-example.mjs",
     "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
     "test:headless": "meteor test --once --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
@@ -21,18 +21,12 @@
     "meteor-node-stubs": "^1.2.27",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router": "^7.13.1",
-    "react-router-dom": "^7.13.1"
+    "react-router": "6.30.6",
+    "react-router-dom": "6.30.6"
   },
   "devDependencies": {
-    "@meteorjs/rspack": "^2.2.0",
     "@playwright/test": "^1.50.0",
-    "@rsdoctor/rspack-plugin": "^1.5.7",
-    "@rspack/cli": "^1.7.9",
-    "@rspack/core": "^1.7.9",
-    "@rspack/plugin-react-refresh": "^1.6.1",
-    "oxlint": "^1.56.0",
-    "react-refresh": "^0.18.0"
+    "oxlint": "^1.56.0"
   },
   "meteor": {
     "mainModule": {

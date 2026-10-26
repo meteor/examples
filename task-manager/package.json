@@ -1,7 +1,7 @@
 {
   "name": "task-manager",
   "scripts": {
-    "start": "meteor run --settings settings.json",
+    "start": "node ../scripts/start-example.mjs",
     "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",
     "test:headless": "meteor test --once --driver-package meteortesting:mocha",
     "lint": "npx @biomejs/biome check .",
@@ -23,25 +23,19 @@
     "lucide-react": "^0.577.0",
     "meteor-node-stubs": "^1.2.27",
     "meteor-rpc": "^1.1.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "tailwind-merge": "^3.5.0",
     "tw-animate-css": "^1.4.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
-    "@meteorjs/rspack": "^2.2.0",
     "@playwright/test": "^1.50.0",
-    "@rsdoctor/rspack-plugin": "^1.5.7",
-    "@rspack/cli": "^1.7.1",
-    "@rspack/core": "^1.7.1",
-    "@rspack/plugin-react-refresh": "^1.4.3",
     "@tailwindcss/postcss": "^4.2.2",
     "postcss": "^8.5.8",
-    "postcss-loader": "^8.2.1",
-    "react-refresh": "^0.18.0",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.2",
+    "postcss-load-config": "6.0.1"
   },
   "meteor": {
     "mainModule": {
@@ -49,6 +43,20 @@
       "server": "server/main.js"
     },
     "testModule": "tests/main.js",
-    "modern": true
+    "modern": true,
+    "nodeModules": {
+      "recompile": {
+        "meteor-rpc": [
+          "client",
+          "server"
+        ]
+      }
+    }
+  },
+  "overrides": {
+    "meteor-rpc": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
   }
 }

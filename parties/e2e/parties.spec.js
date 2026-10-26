@@ -96,13 +96,13 @@ test.describe("Parties", () => {
     await page.locator("textarea.description").fill("Testing RSVP");
     await page.locator("button.save").click();
 
-    // Wait for the party circle to appear and click it using force
-    // to avoid interception by overlapping circles from other tests
+    // Let Playwright wait for the new circle's entrance animation to finish.
     const circles = page.locator("svg .circles circle");
     await expect(circles.last()).toBeVisible({ timeout: 5000 });
-    await circles.last().click({ force: true });
+    await circles.last().click();
 
     // Details sidebar should show the party and RSVP buttons
+    await expect(page.getByText(partyTitle)).toBeVisible({ timeout: 5000 });
     await expect(page.locator("button.rsvp_yes")).toBeVisible({ timeout: 5000 });
 
     // Click "Going!"
@@ -123,11 +123,11 @@ test.describe("Parties", () => {
     await page.locator("textarea.description").fill("Will be deleted");
     await page.locator("button.save").click();
 
-    // Wait for circle to appear, then click at the party's position
-    await expect(page.locator("svg .circles circle").first()).toBeVisible({
+    // Select the new circle after its entrance animation.
+    await expect(page.locator("svg .circles circle").last()).toBeVisible({
       timeout: 5000,
     });
-    await svg.click({ position: { x: 50, y: 50 }, force: true });
+    await page.locator("svg .circles circle").last().click();
 
     // Verify we selected our party
     await expect(page.getByText(partyTitle)).toBeVisible({ timeout: 5000 });

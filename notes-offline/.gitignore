@@ -88,3 +88,6 @@ playwright-report/
 # Meteor Modern-Tools build context directories
 */build-assets*
 */build-chunks*
+
+# Compiled by npm run prepare:assets
+imports/locales/*/messages.mjs

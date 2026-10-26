@@ -19,10 +19,10 @@ Meteor.startup(function()
 
   app = mount(App, {target});
 
-  if(import.meta.webpackHot)
+  if(import.meta.hot)
   {
-    import.meta.webpackHot.accept();
-    import.meta.webpackHot.dispose(() =>
+    import.meta.hot.accept();
+    import.meta.hot.dispose(() =>
     {
       if(app)
       {

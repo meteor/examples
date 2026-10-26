@@ -1,14 +1,14 @@
 # Parties
 
-A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.5.2 with Blaze 3 and async database operations.
+A collaborative event planning app where users create parties, place them on an interactive map, and RSVP. One of the original Meteor examples, now running on Meteor 3.3.3 with Blaze 3 and async database operations.
 
-Demo: https://parties.sandbox.galaxycloud.app/
+Hosted demo (may use a newer Meteor release): https://parties.sandbox.galaxycloud.app/
 
 ## Stack
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5.2 |
+| Runtime | Meteor 3.3.3 |
 | Frontend | Blaze 3 |
 | UI | Bootstrap 5 |
 | Visualization | D3.js v7 (interactive map) |
@@ -16,12 +16,14 @@ Demo: https://parties.sandbox.galaxycloud.app/
 | Auth | Meteor Accounts (password) |
 | Code Quality | RSLint |
 | E2E | Playwright |
-| Build | Rspack |
+| Build | Meteor (Isobuild) |
+
+This branch targets Meteor 3.3. See the [shared testing guide](../METEOR-3.3-E2E.md) for source checkout runs.
 
 ## Running it
 
 ```bash
-meteor npm install
+meteor npm ci
 npm start
 ```
 

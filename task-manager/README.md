@@ -2,22 +2,22 @@
 
 A task management app showcasing [Meteor-RPC](https://docs.meteor.com/community-packages/meteor-rpc.html) for type-safe methods and publications, [shadcn/ui](https://ui.shadcn.com/) components, and Tailwind CSS. Full CRUD with real-time reactivity, status and priority filters, and a live dashboard.
 
-Demo: https://task-manager.sandbox.galaxycloud.app/
+Hosted demo (may use a newer Meteor release): https://task-manager.sandbox.galaxycloud.app/
 
 ## Stack
 
 | | |
 |---|---|
-| Runtime | Meteor 3.5.2 |
+| Runtime | Meteor 3.3.3 |
 | Frontend | React 19 |
 | UI | shadcn/ui (Radix + Tailwind) |
-| Styling | Tailwind CSS 3 |
+| Styling | Tailwind CSS 4 |
 | Data | Meteor-RPC + React Query |
 | Validation | Zod |
 | Tests | Mocha |
 | Code Quality | Biome |
 | E2E | Playwright |
-| Build | Rspack |
+| Build | Meteor (Isobuild) |
 
 ## Features
 
@@ -27,10 +27,12 @@ Demo: https://task-manager.sandbox.galaxycloud.app/
 - Filter tasks by status and priority
 - Real-time dashboard with task metrics
 
+This branch targets Meteor 3.3. See the [shared testing guide](../METEOR-3.3-E2E.md) for source checkout runs.
+
 ## Running it
 
 ```bash
-meteor npm install
+meteor npm ci
 npm start
 ```
 
@@ -78,7 +80,8 @@ Since shadcn/ui doesn't officially support Meteor, components are manually insta
 2. Component source files are copied into `imports/ui/components/ui/`
 3. The `cn()` utility uses `clsx` + `tailwind-merge`
 4. Tailwind is configured with CSS custom properties for theming
-5. Path alias `@` maps to `imports/` via Rspack config
+5. Components use Meteor absolute imports under `/imports/`
+6. npm overrides make Meteor-RPC share the app's React 19 runtime, including the ref behavior used by these components
 
 ## Deployment
 

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "/imports/lib/utils";
 
 function Table({ className, ref, ...props }) {
   return (

@@ -1,0 +1,12 @@
+e2e/
+cypress/
+playwright.config.js
+cypress.config.js
+postcss.config.js
+lingui.config.js
+eslint.config.js
+swc.config.js
+workbox-config.cjs
+scripts/
+test-results/
+playwright-report/

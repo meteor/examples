@@ -32,7 +32,6 @@
     "why": "Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC",
     "stack": [
       "Meteor",
-      "Rspack",
       "React",
       "Meteor-RPC",
       "shadcn/ui",
@@ -43,8 +42,8 @@
       "Biome",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Oct/26/2026",
+    "meteorVersion": "3.3.3"
   },
   {
     "title": "Notes Offline",
@@ -58,7 +57,6 @@
     "why": "Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)",
     "stack": [
       "Meteor",
-      "Rspack",
       "React",
       "Mantine UI",
       "jam:offline",
@@ -73,8 +71,8 @@
       "Prettier",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Oct/26/2026",
+    "meteorVersion": "3.3.3"
   },
   {
     "title": "Simple Blog",
@@ -109,15 +107,14 @@
     "why": "Real-time multiplayer game with room-based matchmaking and live state sync via pub/sub",
     "stack": [
       "Meteor",
-      "Rspack",
       "React",
       "MUI (Material UI)",
       "Mocha",
       "oxlint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Oct/26/2026",
+    "meteorVersion": "3.3.3"
   },
   {
     "title": "Parties",
@@ -131,15 +128,14 @@
     "why": "One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates",
     "stack": [
       "Meteor",
-      "Rspack",
       "Blaze 3",
       "Bootstrap 5",
       "D3.js",
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Oct/26/2026",
+    "meteorVersion": "3.3.3"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -153,7 +149,7 @@
     "why": "Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests",
     "stack": [
       "Meteor",
-      "Rspack",
+      "Vite",
       "Svelte 5",
       "Skeleton UI",
       "Tailwind CSS v4",
@@ -164,8 +160,8 @@
       "Mocha",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.5.2"
+    "lastUpdatedAt": "Oct/26/2026",
+    "meteorVersion": "3.3.3"
   },
   {
     "title": "Welcome Meteor Cordova",
