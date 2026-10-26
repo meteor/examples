@@ -70,9 +70,9 @@ For Svelte, set `METEOR_BIN` on the `npm start` command and run Cypress separate
 
 Notes Offline generates catalogs and `public/sw.js` through `npm run prepare:assets`, which runs before `npm start`. Run that command explicitly before a direct `meteor build` or `meteor deploy`.
 
-## CI
+## Local verification
 
-The **Meteor 3.3 examples** workflow runs all five apps on pushes to this branch. Its manual `meteor_ref` input accepts a `meteor/meteor` source ref for checkout verification; an empty input uses published 3.3.3. The workflow keeps browser reports and failure artifacts.
+Run the commands above locally and save the exact examples and Meteor commits, resolved package versions, browser reports and failed attempts. The existing examples CI is inactive and is not required for this comparison. This branch does not add an examples CI workflow. Meteor's own release CI remains a separate release check.
 
 ## Verification scope
 
