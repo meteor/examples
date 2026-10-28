@@ -1,5 +1,6 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
+import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
@@ -9,7 +10,13 @@ const DropdownMenuPortal = DropdownMenuPrimitive.Portal;
 const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
 
-function DropdownMenuSubTrigger({ className, inset, children, ref, ...props }) {
+function DropdownMenuSubTrigger({
+  className,
+  inset,
+  children,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & { inset?: boolean }) {
   return (
     <DropdownMenuPrimitive.SubTrigger
       ref={ref}
@@ -26,7 +33,11 @@ function DropdownMenuSubTrigger({ className, inset, children, ref, ...props }) {
   );
 }
 
-function DropdownMenuSubContent({ className, ref, ...props }) {
+function DropdownMenuSubContent({
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
   return (
     <DropdownMenuPrimitive.SubContent
       ref={ref}
@@ -39,7 +50,12 @@ function DropdownMenuSubContent({ className, ref, ...props }) {
   );
 }
 
-function DropdownMenuContent({ className, sideOffset = 4, ref, ...props }) {
+function DropdownMenuContent({
+  className,
+  sideOffset = 4,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Content>) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
@@ -55,7 +71,12 @@ function DropdownMenuContent({ className, sideOffset = 4, ref, ...props }) {
   );
 }
 
-function DropdownMenuItem({ className, inset, ref, ...props }) {
+function DropdownMenuItem({
+  className,
+  inset,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Item> & { inset?: boolean }) {
   return (
     <DropdownMenuPrimitive.Item
       ref={ref}
@@ -69,7 +90,13 @@ function DropdownMenuItem({ className, inset, ref, ...props }) {
   );
 }
 
-function DropdownMenuCheckboxItem({ className, children, checked, ref, ...props }) {
+function DropdownMenuCheckboxItem({
+  className,
+  children,
+  checked,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
   return (
     <DropdownMenuPrimitive.CheckboxItem
       ref={ref}
@@ -90,7 +117,12 @@ function DropdownMenuCheckboxItem({ className, children, checked, ref, ...props 
   );
 }
 
-function DropdownMenuRadioItem({ className, children, ref, ...props }) {
+function DropdownMenuRadioItem({
+  className,
+  children,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
   return (
     <DropdownMenuPrimitive.RadioItem
       ref={ref}
@@ -110,7 +142,12 @@ function DropdownMenuRadioItem({ className, children, ref, ...props }) {
   );
 }
 
-function DropdownMenuLabel({ className, inset, ref, ...props }) {
+function DropdownMenuLabel({
+  className,
+  inset,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Label> & { inset?: boolean }) {
   return (
     <DropdownMenuPrimitive.Label
       ref={ref}
@@ -120,7 +157,11 @@ function DropdownMenuLabel({ className, inset, ref, ...props }) {
   );
 }
 
-function DropdownMenuSeparator({ className, ref, ...props }) {
+function DropdownMenuSeparator({
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return (
     <DropdownMenuPrimitive.Separator
       ref={ref}
@@ -130,7 +171,7 @@ function DropdownMenuSeparator({ className, ref, ...props }) {
   );
 }
 
-function DropdownMenuShortcut({ className, ...props }) {
+function DropdownMenuShortcut({ className, ...props }: ComponentProps<"span">) {
   return (
     <span className={cn("ml-auto text-xs tracking-widest opacity-60", className)} {...props} />
   );

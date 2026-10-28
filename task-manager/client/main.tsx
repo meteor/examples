@@ -7,7 +7,9 @@ import "./main.css";
 const queryClient = new QueryClient();
 
 Meteor.startup(() => {
-  const root = createRoot(document.getElementById("app"));
+  const container = document.getElementById("app");
+  if (!container) throw new Error("Missing app container");
+  const root = createRoot(container);
   root.render(
     <QueryClientProvider client={queryClient}>
       <App />

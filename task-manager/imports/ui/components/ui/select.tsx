@@ -1,12 +1,18 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
 const Select = SelectPrimitive.Root;
 const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
 
-function SelectTrigger({ className, children, ref, ...props }) {
+function SelectTrigger({
+  className,
+  children,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.Trigger>) {
   return (
     <SelectPrimitive.Trigger
       ref={ref}
@@ -24,7 +30,11 @@ function SelectTrigger({ className, children, ref, ...props }) {
   );
 }
 
-function SelectScrollUpButton({ className, ref, ...props }) {
+function SelectScrollUpButton({
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
   return (
     <SelectPrimitive.ScrollUpButton
       ref={ref}
@@ -36,7 +46,11 @@ function SelectScrollUpButton({ className, ref, ...props }) {
   );
 }
 
-function SelectScrollDownButton({ className, ref, ...props }) {
+function SelectScrollDownButton({
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
   return (
     <SelectPrimitive.ScrollDownButton
       ref={ref}
@@ -48,7 +62,13 @@ function SelectScrollDownButton({ className, ref, ...props }) {
   );
 }
 
-function SelectContent({ className, children, position = "popper", ref, ...props }) {
+function SelectContent({
+  className,
+  children,
+  position = "popper",
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.Content>) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -78,7 +98,7 @@ function SelectContent({ className, children, position = "popper", ref, ...props
   );
 }
 
-function SelectLabel({ className, ref, ...props }) {
+function SelectLabel({ className, ref, ...props }: ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
       ref={ref}
@@ -88,7 +108,12 @@ function SelectLabel({ className, ref, ...props }) {
   );
 }
 
-function SelectItem({ className, children, ref, ...props }) {
+function SelectItem({
+  className,
+  children,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.Item>) {
   return (
     <SelectPrimitive.Item
       ref={ref}
@@ -108,7 +133,11 @@ function SelectItem({ className, children, ref, ...props }) {
   );
 }
 
-function SelectSeparator({ className, ref, ...props }) {
+function SelectSeparator({
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
       ref={ref}

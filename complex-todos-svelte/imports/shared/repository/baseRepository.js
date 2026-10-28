@@ -4,18 +4,19 @@ import {Random} from 'meteor/random';
 
 /**
  * Base class containing repository functionality
+ * @template {{_id: string}} T
  */
 class BaseRepository
 {
   /**
    * @constructor
-   * @param collection {Mongo.Collection}
+   * @param collection {import('meteor/mongo').Mongo.Collection<T>}
    */
   constructor(collection)
   {
     /**
      * @protected
-     * @type {Mongo.Collection}
+     * @type {import('meteor/mongo').Mongo.Collection<T>}
      */
     this._collection = collection;
 
@@ -37,7 +38,7 @@ class BaseRepository
    * Finds documents based on provided selector and options
    * @param selector {string|object} [optional]
    * @param options {object} [optional]
-   * @returns {Mongo.Cursor}
+   * @returns {import('meteor/mongo').Mongo.Cursor<T>}
    */
   find(selector = {}, options = {})
   {
@@ -48,7 +49,7 @@ class BaseRepository
    * Finds one document only
    * @param selector {string|object}
    * @param options {object} [optional]
-   * @returns {Promise<object>}
+   * @returns {Promise<T | undefined>}
    */
   async findOne(selector = {}, options = {})
   {

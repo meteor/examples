@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import GridOnIcon from '@mui/icons-material/GridOn';
 
-export const Layout = ({ children }) => (
+export const Layout = ({ children }: PropsWithChildren) => (
   <>
     <AppBar position="static">
       <Toolbar>

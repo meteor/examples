@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
   import {Meteor} from 'meteor/meteor';
-  import {useTracker} from './lib/useTracker.js';
+  import {useTracker} from './lib/useTracker';
   import Task from './Task.svelte';
   import {taskRepository} from '../modules/tasks/taskRepository.js';
   import TaskAddNewForm from './TaskAddNewForm.svelte';
@@ -11,7 +11,10 @@
   Meteor.subscribe(TASKS_PUBLICATION.TASKS);
 
   const incompleteCount = useTracker(() => taskRepository.find({checked: {$ne: true}}).count());
-  const currentUser = useTracker(() => Meteor.user());
+  const currentUser = useTracker(() => {
+    const userId = Meteor.userId();
+    return userId ? Meteor.users.findOne(userId) : undefined;
+  });
   const allTasks = useTracker(() => taskRepository.find({}, {sort: {createdAt: -1}}).fetch());
 
   let tasks = $derived(

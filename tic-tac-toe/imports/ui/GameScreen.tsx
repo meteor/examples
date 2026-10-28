@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import type { Cell, PlayerColor, JoinRoomResult } from "../api/rooms";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useTracker, useFind } from "meteor/react-meteor-data";
@@ -22,7 +24,12 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 const CROSS_COLOR = "#1e88e5";
 const CIRCLE_COLOR = "#e53935";
 
-const Slot = ({ index, value, onPlay }) => (
+interface SlotProps {
+  value: Cell;
+  onPlay: () => void;
+}
+
+const Slot = ({ value, onPlay }: SlotProps) => (
   <Paper
     elevation={2}
     onClick={onPlay}
@@ -53,7 +60,11 @@ export const GameScreen = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const [color, setColor] = useState(location.state?.color || null);
+  const [color, setColor] = useState<PlayerColor | null>(
+    location.state?.color === "cross" || location.state?.color === "circle"
+      ? location.state.color
+      : null
+  );
   const [joining, setJoining] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
@@ -66,7 +77,7 @@ export const GameScreen = () => {
   useEffect(() => {
     if (color || roomLoading || !room || joining) return;
     setJoining(true);
-    Meteor.callAsync("joinRoom", { roomId: id })
+    Meteor.callAsync<JoinRoomResult>("joinRoom", { roomId: id })
       .then(({ color: assignedColor }) => {
         setColor(assignedColor);
       })
@@ -76,7 +87,7 @@ export const GameScreen = () => {
       .finally(() => setJoining(false));
   }, [color, roomLoading, room, joining, id, navigate]);
 
-  if (roomLoading || !color) {
+  if (roomLoading || !color || !room) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
         <CircularProgress />
@@ -88,7 +99,7 @@ export const GameScreen = () => {
   const gameOver = !!room.winner;
   const won = room.winner === color;
 
-  const handlePlay = async (index) => {
+  const handlePlay = async (index: number) => {
     if (gameOver) return;
     try {
       await Meteor.callAsync("makePlay", {
@@ -97,9 +108,9 @@ export const GameScreen = () => {
       });
     } catch (e) {
       const message =
-        e.error === "invalid-play"
+        e instanceof Meteor.Error && e.error === "invalid-play"
           ? "Invalid move. You might need to wait for your turn!"
-          : e.message;
+          : e instanceof Error ? e.message : "Unable to make a move";
       setSnackbar({ open: true, message });
     }
   };
@@ -155,7 +166,6 @@ export const GameScreen = () => {
           {room.gameState.map((value, index) => (
             <Slot
               key={index}
-              index={index}
               value={value}
               onPlay={() => handlePlay(index)}
             />

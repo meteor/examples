@@ -1,6 +1,7 @@
 import {BaseRepository} from '../../shared/repository/baseRepository.js';
-import {Tasks} from './database/tasks.js';
+import {Tasks} from './database/tasks';
 
+/** @extends {BaseRepository<import('./database/tasks').Task>} */
 class TaskRepository extends BaseRepository
 {
   /**

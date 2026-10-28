@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { api } from "../api/client";
+import { PriorityEnum, StatusEnum, type Task } from "../api/taskSchema";
 import { Button } from "./components/ui/button";
 import {
   Dialog,
@@ -18,11 +19,17 @@ import {
   SelectValue,
 } from "./components/ui/select";
 
-export const TaskForm = ({ open, onOpenChange, task }) => {
+interface TaskFormProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  task: Task | null;
+}
+
+export const TaskForm = ({ open, onOpenChange, task }: TaskFormProps) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("todo");
-  const [priority, setPriority] = useState("medium");
+  const [status, setStatus] = useState<Task["status"]>("todo");
+  const [priority, setPriority] = useState<Task["priority"]>("medium");
 
   const isEditing = !!task;
 
@@ -43,7 +50,7 @@ export const TaskForm = ({ open, onOpenChange, task }) => {
   const createMutation = api.createTask.useMutation();
   const updateMutation = api.updateTask.useMutation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim()) return;
 
@@ -97,7 +104,7 @@ export const TaskForm = ({ open, onOpenChange, task }) => {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Status</Label>
-              <Select value={status} onValueChange={setStatus}>
+              <Select value={status} onValueChange={(value) => setStatus(StatusEnum.parse(value))}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -110,7 +117,10 @@ export const TaskForm = ({ open, onOpenChange, task }) => {
             </div>
             <div className="space-y-2">
               <Label>Priority</Label>
-              <Select value={priority} onValueChange={setPriority}>
+              <Select
+                value={priority}
+                onValueChange={(value) => setPriority(PriorityEnum.parse(value))}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>

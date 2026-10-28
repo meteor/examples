@@ -1,10 +1,27 @@
 import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 
-export const RoomCollection = new Mongo.Collection("rooms");
+export type PlayerColor = "cross" | "circle";
+export type Cell = PlayerColor | "empty";
 
-function checkEndGame(gameState) {
-  const sameColor = (x, y, z) =>
+export interface Room {
+  _id: string;
+  createdAt: Date;
+  capacity: number;
+  gameState: Cell[];
+  colorTurn: PlayerColor;
+  winner: PlayerColor | null;
+}
+
+export interface JoinRoomResult {
+  room: Room;
+  color: PlayerColor;
+}
+
+export const RoomCollection = new Mongo.Collection<Room>("rooms");
+
+function checkEndGame(gameState: Cell[]) {
+  const sameColor = (x: number, y: number, z: number) =>
     new Set([gameState[x - 1], gameState[y - 1], gameState[z - 1]]).size ===
       1 &&
     gameState[x - 1] !== "empty" &&
@@ -32,7 +49,7 @@ Meteor.methods({
     });
     return RoomCollection.findOneAsync(roomId);
   },
-  async joinRoom({ roomId }) {
+  async joinRoom({ roomId }: { roomId: string }): Promise<JoinRoomResult> {
     await RoomCollection.updateAsync(
       { _id: roomId, capacity: { $gte: 1 } },
       { $inc: { capacity: -1 } }
@@ -46,9 +63,12 @@ Meteor.methods({
       color: room.capacity === 1 ? "cross" : "circle",
     };
   },
-  async makePlay({ roomId, playState: { color, play } }) {
+  async makePlay({ roomId, playState: { color, play } }: {
+    roomId: string;
+    playState: { color: PlayerColor; play: number };
+  }) {
     const otherColor = color === "cross" ? "circle" : "cross";
-    const query = {
+    const query: Mongo.Selector<Room> = {
       _id: roomId,
       colorTurn: color,
       winner: null,
