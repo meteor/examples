@@ -1,0 +1,11 @@
+meteor-base
+mongo
+ecmascript
+typescript
+zodern:types
+shell-server
+static-html
+react-meteor-data
+rspack
+rstest
+memory-match-engine

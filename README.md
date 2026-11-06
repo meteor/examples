@@ -12,6 +12,7 @@ Each example doubles as a reference for [community packages](https://docs.meteor
   - [Notes Offline](#notes-offline)
   - [Simple Blog](#simple-blog)
   - [Tic-Tac-Toe](#tic-tac-toe)
+  - [Memory Match](#memory-match)
   - [Parties](#parties)
   - [Complex Todos (Svelte)](#complex-todos-svelte)
   - [Welcome Meteor Cordova](#welcome-meteor-cordova)
@@ -66,6 +67,18 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Stack: Meteor, Rspack, React, MUI (Material UI), Mocha, oxlint, Playwright
 - Last Updated At: Apr/21/2026
 - Meteor Version: 3.5.2
+
+### Memory Match
+- Repository: [meteor/examples/memory-match](./memory-match)
+- Why: A cosmic card game with a live leaderboard showcasing Rstest unit, component, browser, Meteor runtime, local package, and end-to-end tests
+- Stack: Meteor, Rspack, React, TypeScript, MongoDB, Rstest, Testing Library, Playwright
+- Last Updated At: Sep/30/2026
+- Meteor Version: Rstest prerelease
+
+Rstest support is currently prerelease, so the example has a temporary Meteor
+source-checkout setup. Its [setup guide](./memory-match/README.md) covers the
+current commands, while [Rstest integration details](./memory-match/docs/RSTEST.md)
+records the migration once the integration is published.
 
 ### Parties
 - Repository: [meteor/examples/parties](./parties)
