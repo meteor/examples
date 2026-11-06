@@ -1,0 +1,70 @@
+<template name="adminPage">
+  <section class="page admin">
+    <header class="admin-header">
+      <div>
+        <h1>Admin dashboard</h1>
+        {{#with snapshot}}
+          <p class="meta">Last {{minutes windowMs}} minutes · updated at {{time computedAt}}</p>
+        {{/with}}
+      </div>
+      {{#if isDevelopment}}
+        <button type="button" class="traffic">Generate sample traffic</button>
+      {{/if}}
+    </header>
+
+    {{#with snapshot}}
+      <div class="tiles">
+        <div class="tile"><span class="label">Method calls</span><span class="value" data-tile="calls">{{calls}}</span></div>
+        <div class="tile"><span class="label">p95 duration</span><span class="value" data-tile="p95">{{ms p95}}</span></div>
+        <div class="tile"><span class="label">Error rate</span><span class="value" data-tile="error-rate">{{percent errorRate}}</span></div>
+        <div class="tile"><span class="label">DDP connections</span><span class="value" data-tile="connections">{{connections}}</span></div>
+      </div>
+      {{#if dropped}}
+        <p class="warning" role="status">{{dropped}} events were dropped because the collector queue was full.</p>
+      {{/if}}
+    {{else}}
+      <p class="hint">Waiting for the first snapshot…</p>
+    {{/with}}
+
+    <div class="chart"><canvas id="calls-chart" aria-label="Method calls and errors per minute"></canvas></div>
+
+    {{#with snapshot}}
+      <h2>Methods</h2>
+      <table class="methods">
+        <thead><tr><th>Method</th><th>Calls</th><th>Errors</th><th>p50</th><th>p95</th></tr></thead>
+        <tbody>
+          {{#each method in methods}}
+            <tr><td>{{method.name}}</td><td>{{method.calls}}</td><td>{{method.errors}}</td><td>{{ms method.p50}}</td><td>{{ms method.p95}}</td></tr>
+          {{else}}
+            <tr><td colspan="5">No method calls in this window.</td></tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <h2>Recent events</h2>
+      <ol class="events">
+        {{#each recent}}
+          <li>
+            <button type="button" class="inspect" data-type="{{type}}">
+              <span class="type">{{type}}</span>
+              <span class="name">{{name}}</span>
+              <span class="duration">{{#if durationMs}}{{ms durationMs}}{{/if}}</span>
+              <span class="trace">{{shortId traceId}}</span>
+            </button>
+          </li>
+        {{/each}}
+      </ol>
+
+      <p class="instances">
+        {{#each instance in instances}}
+          <span>{{instance._id}}: {{instance.connections}} connections, {{instance.publications}} subscriptions</span>
+        {{/each}}
+      </p>
+    {{/with}}
+
+    <dialog class="inspector" aria-label="Event payload">
+      <pre>{{inspected}}</pre>
+      <form method="dialog"><button type="submit">Close</button></form>
+    </dialog>
+  </section>
+</template>

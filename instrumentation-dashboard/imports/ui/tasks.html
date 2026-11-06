@@ -1,0 +1,22 @@
+<template name="tasksPage">
+  <section class="page">
+    <h1>Tasks</h1>
+    <p class="hint">Every action here is a method call or a subscription that the admin dashboard observes.</p>
+    <form class="new-task">
+      <input type="text" name="text" placeholder="What needs doing?" autocomplete="off" aria-label="New task">
+      <button type="submit">Add</button>
+    </form>
+    {{#if error}}<p class="error" role="alert">{{error}}</p>{{/if}}
+    <ul class="task-list">
+      {{#each task in tasks}}
+        <li class="{{taskClass task}}" data-id="{{task._id}}">
+          <input type="checkbox" class="toggle" checked={{task.checked}} aria-label="Done">
+          <span class="text">{{task.text}}</span>
+          <button type="button" class="remove" aria-label="Remove">×</button>
+        </li>
+      {{else}}
+        <li class="empty">No tasks yet.</li>
+      {{/each}}
+    </ul>
+  </section>
+</template>
