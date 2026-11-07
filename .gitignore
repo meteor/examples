@@ -105,3 +105,6 @@ dist
 
 # Intelij IDEs project configuration folder
 .idea
+
+# Local agent execution artifacts
+.superpowers/

@@ -10,6 +10,10 @@ Each example doubles as a reference for [community packages](https://docs.meteor
   - [Simple Tasks](#simple-tasks)
   - [Task Manager](#task-manager)
   - [Notes Offline](#notes-offline)
+  - [Native applications](#native-applications)
+    - [Meteor Drop](#meteor-drop)
+    - [Stock Scanner](#stock-scanner)
+    - [Civic Snap](#civic-snap)
   - [Simple Blog](#simple-blog)
   - [Tic-Tac-Toe](#tic-tac-toe)
   - [Parties](#parties)
@@ -51,6 +55,32 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, LinguiJS, Mocha, ESLint, Prettier, Playwright
 - Last Updated At: Apr/21/2026
 - Meteor Version: 3.5.2
+
+### Native applications
+
+Official Meteor applications built with Capacitor, native plugins, HCP, and Maestro-tested mobile flows.
+
+#### Meteor Drop
+- Repository: [meteor/examples/meteor-drop](./meteor-drop)
+- Why: Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics
+- Gallery: Generated outside the checkout through the documented Playwright and Maestro showcase flows
+- Stack: Meteor, Rspack, React, Konsta UI, Capacitor, App, Haptics, Network, Share, Meteor Capacitor HCP, MongoDB, Mocha, oxlint, Playwright, Maestro
+- Last Updated At: Jul/23/2026
+- Meteor Version: 3.4.1
+
+#### Stock Scanner
+- Repository: [meteor/examples/stock-scanner](./stock-scanner)
+- Why: Promotion-ready mobile inventory audit with an illustrated shift brief, camera-first scanning, category-aware stock states, adaptive MUI navigation, native haptics/sharing, and separate runtime/DDP/HCP diagnostics
+- Stack: Meteor, Rspack, React, MUI (Material UI), Capacitor, App, Barcode Scanner, Haptics, Share, Meteor Capacitor HCP, MongoDB, Mocha, oxlint, Playwright, Maestro
+- Last Updated At: Jul/21/2026
+- Meteor Version: 3.4.1
+
+#### Civic Snap
+- Repository: [meteor/examples/city-issue-reporter](./city-issue-reporter)
+- Why: Promotion-ready neighborhood reporting app with a field brief, evidence capture, visible issue lifecycle, Framework7 navigation, offline submission, native plugins, and separate runtime/DDP/HCP diagnostics
+- Stack: Meteor, Rspack, React, Framework7 React, Capacitor, App, Camera, Geolocation, Network, Local Notifications, Share, Meteor Capacitor HCP, jam:offline, jam:method, jam:pub-sub, MongoDB, Mocha, oxlint, Playwright, Maestro
+- Last Updated At: Jul/21/2026
+- Meteor Version: 3.4.1
 
 ### Simple Blog
 - Repository: [dupontbertrand/meteor-blog](https://github.com/dupontbertrand/meteor-blog)

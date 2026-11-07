@@ -1,0 +1,117 @@
+appId: com.meteor.examples.meteordrop
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Meteor Drop"
+    timeout: 120000
+- runFlow:
+    when:
+      visible: "New app update available"
+    commands:
+      - tapOn: "Not now"
+- extendedWaitUntil:
+    visible: "Play vs CPU"
+    timeout: 60000
+- assertVisible: "Connect four meteors before your rival."
+- tapOn: "Play vs CPU"
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 15000
+- assertVisible: "Meteor Drop board"
+- extendedWaitUntil:
+    visible: "Drop meteor in column 4"
+    timeout: 10000
+- tapOn: "Drop meteor in column 4"
+- extendedWaitUntil:
+    visible: "CPU thinking"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- tapOn: "Drop meteor in column 2"
+- extendedWaitUntil:
+    visible: "CPU thinking"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- tapOn: "Drop meteor in column 3"
+- extendedWaitUntil:
+    visible: "CPU thinking"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- tapOn: "Drop meteor in column 1"
+- extendedWaitUntil:
+    visible: "Four connected!"
+    timeout: 15000
+- assertVisible: "You win"
+- assertVisible: "Rematch"
+- assertVisible: "Share Result"
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible: "Play vs CPU"
+    timeout: 10000
+- tapOn: "Records"
+- extendedWaitUntil:
+    visible: "Records"
+    timeout: 10000
+- assertVisible: "Solo vs CPU"
+- assertVisible: "Win"
+- tapOn: "System"
+- extendedWaitUntil:
+    visible: "System information"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "Native ready"
+    timeout: 60000
+- extendedWaitUntil:
+    visible: "DDP connected"
+    timeout: 60000
+- assertVisible: "Meteor.isCapacitor true"
+- tapOn: "Live DDP connection"
+- extendedWaitUntil:
+    visible: "DDP paused"
+    timeout: 10000
+- scrollUntilVisible:
+    element:
+      text: "Reconnect now"
+    direction: DOWN
+    timeout: 10000
+- tapOn: "Reconnect now"
+- extendedWaitUntil:
+    visible: "DDP connected"
+    timeout: 60000
+- runFlow:
+    when:
+      visible: "Update ready"
+    commands:
+      - tapOn: "Review update"
+- runFlow:
+    when:
+      notVisible: "New app update available"
+    commands:
+      - scrollUntilVisible:
+          element:
+            text: "Preview HCP update"
+          direction: DOWN
+          timeout: 10000
+      - tapOn: "Preview HCP update"
+- assertVisible: "New app update available"
+- assertVisible: "Install update"
+- tapOn: "Not now"
+- assertVisible: "Update ready"
+- tapOn: "Play"
+- extendedWaitUntil:
+    visible: "Create Live Match"
+    timeout: 10000
+- tapOn: "Create Live Match"
+- extendedWaitUntil:
+    visible: "Waiting for rival"
+    timeout: 15000
+- assertVisible: "Room code"
+- assertVisible: "Share Room Code"
+- tapOn: "Close live match"
+- assertVisible: "Open Live Room"

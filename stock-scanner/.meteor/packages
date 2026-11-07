@@ -1,0 +1,20 @@
+# Meteor packages used by this project, one per line.
+
+meteor-base@1.5.2
+mobile-experience@1.1.2
+mongo@2.2.1-rc341.1
+reactive-var@1.0.13
+standard-minifier-css@1.10.1-rc341.1
+standard-minifier-js@3.2.0
+es5-shim@4.8.1
+ecmascript@0.18.0-rc341.1
+typescript@5.10.0-rc341.1
+shell-server@0.7.0
+hot-module-replacement@0.6.0-rc341.1
+static-html@1.5.0
+react-meteor-data
+rspack@1.1.0-rc341.1
+capacitor
+
+# Testing
+meteortesting:mocha

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Meteor Drop app icon</title>
+  <desc id="description">Four bright meteors connected diagonally across a blue game grid</desc>
+  <rect width="512" height="512" rx="112" fill="#f6f7fb" />
+  <circle cx="430" cy="82" r="34" fill="#ffd166" />
+  <path d="M410 55 378 22M429 48 417 10M397 74 357 62" fill="none" stroke="#f97350" stroke-linecap="round" stroke-width="14" />
+  <rect x="66" y="82" width="380" height="348" rx="54" fill="#2563eb" />
+  <path d="M66 390h380v40H66z" fill="#1649b9" />
+  <g fill="#dbeafe">
+    <circle cx="116" cy="132" r="28" />
+    <circle cx="186" cy="132" r="28" />
+    <circle cx="256" cy="132" r="28" />
+    <circle cx="326" cy="132" r="28" />
+    <circle cx="396" cy="132" r="28" />
+    <circle cx="116" cy="202" r="28" />
+    <circle cx="186" cy="202" r="28" />
+    <circle cx="256" cy="202" r="28" />
+    <circle cx="396" cy="202" r="28" />
+    <circle cx="116" cy="272" r="28" />
+    <circle cx="186" cy="272" r="28" />
+    <circle cx="326" cy="272" r="28" />
+    <circle cx="396" cy="272" r="28" />
+    <circle cx="116" cy="342" r="28" />
+    <circle cx="256" cy="342" r="28" />
+    <circle cx="326" cy="342" r="28" />
+    <circle cx="396" cy="342" r="28" />
+  </g>
+  <g id="four-meteor-diagonal" fill="#ff6b4a" stroke="#fff1e8" stroke-width="8">
+    <circle cx="396" cy="132" r="30" />
+    <circle cx="326" cy="202" r="30" />
+    <circle cx="256" cy="272" r="30" />
+    <circle cx="186" cy="342" r="30" />
+  </g>
+  <g fill="#b8322f">
+    <circle cx="386" cy="122" r="7" />
+    <circle cx="316" cy="192" r="7" />
+    <circle cx="246" cy="262" r="7" />
+    <circle cx="176" cy="332" r="7" />
+  </g>
+  <path d="M369 159 213 315" fill="none" stroke="#ffd166" stroke-linecap="round" stroke-width="12" />
+</svg>

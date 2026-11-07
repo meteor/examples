@@ -1,0 +1,18 @@
+{
+  "name": "Meteor Drop",
+  "short_name": "Meteor Drop",
+  "description": "A native-style four-in-a-row game with solo CPU and live Meteor matches.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#2563eb",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
