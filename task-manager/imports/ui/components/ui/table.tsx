@@ -1,6 +1,7 @@
+import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
-function Table({ className, ref, ...props }) {
+function Table({ className, ref, ...props }: ComponentProps<"table">) {
   return (
     <div className="relative w-full overflow-auto">
       <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
@@ -8,15 +9,15 @@ function Table({ className, ref, ...props }) {
   );
 }
 
-function TableHeader({ className, ref, ...props }) {
+function TableHeader({ className, ref, ...props }: ComponentProps<"thead">) {
   return <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />;
 }
 
-function TableBody({ className, ref, ...props }) {
+function TableBody({ className, ref, ...props }: ComponentProps<"tbody">) {
   return <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />;
 }
 
-function TableFooter({ className, ref, ...props }) {
+function TableFooter({ className, ref, ...props }: ComponentProps<"tfoot">) {
   return (
     <tfoot
       ref={ref}
@@ -26,7 +27,7 @@ function TableFooter({ className, ref, ...props }) {
   );
 }
 
-function TableRow({ className, ref, ...props }) {
+function TableRow({ className, ref, ...props }: ComponentProps<"tr">) {
   return (
     <tr
       ref={ref}
@@ -39,7 +40,7 @@ function TableRow({ className, ref, ...props }) {
   );
 }
 
-function TableHead({ className, ref, ...props }) {
+function TableHead({ className, ref, ...props }: ComponentProps<"th">) {
   return (
     <th
       ref={ref}
@@ -52,7 +53,7 @@ function TableHead({ className, ref, ...props }) {
   );
 }
 
-function TableCell({ className, ref, ...props }) {
+function TableCell({ className, ref, ...props }: ComponentProps<"td">) {
   return (
     <td
       ref={ref}
@@ -62,7 +63,7 @@ function TableCell({ className, ref, ...props }) {
   );
 }
 
-function TableCaption({ className, ref, ...props }) {
+function TableCaption({ className, ref, ...props }: ComponentProps<"caption">) {
   return (
     <caption ref={ref} className={cn("mt-4 text-sm text-muted-foreground", className)} {...props} />
   );

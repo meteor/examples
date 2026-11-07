@@ -1,5 +1,6 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
 const Dialog = DialogPrimitive.Root;
@@ -7,7 +8,11 @@ const DialogTrigger = DialogPrimitive.Trigger;
 const DialogPortal = DialogPrimitive.Portal;
 const DialogClose = DialogPrimitive.Close;
 
-function DialogOverlay({ className, ref, ...props }) {
+function DialogOverlay({
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
       ref={ref}
@@ -20,7 +25,12 @@ function DialogOverlay({ className, ref, ...props }) {
   );
 }
 
-function DialogContent({ className, children, ref, ...props }) {
+function DialogContent({
+  className,
+  children,
+  ref,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Content>) {
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -42,7 +52,7 @@ function DialogContent({ className, children, ref, ...props }) {
   );
 }
 
-function DialogHeader({ className, ...props }) {
+function DialogHeader({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)}
@@ -51,7 +61,7 @@ function DialogHeader({ className, ...props }) {
   );
 }
 
-function DialogFooter({ className, ...props }) {
+function DialogFooter({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)}
@@ -60,7 +70,7 @@ function DialogFooter({ className, ...props }) {
   );
 }
 
-function DialogTitle({ className, ref, ...props }) {
+function DialogTitle({ className, ref, ...props }: ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       ref={ref}
@@ -70,7 +80,11 @@ function DialogTitle({ className, ref, ...props }) {
   );
 }
 
-function DialogDescription({ className, ref, ...props }) {
+function DialogDescription({
+  className,
+  ref,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
       ref={ref}

@@ -1,6 +1,7 @@
+import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
-function Card({ className, ref, ...props }) {
+function Card({ className, ref, ...props }: ComponentProps<"div">) {
   return (
     <div
       ref={ref}
@@ -10,11 +11,11 @@ function Card({ className, ref, ...props }) {
   );
 }
 
-function CardHeader({ className, ref, ...props }) {
+function CardHeader({ className, ref, ...props }: ComponentProps<"div">) {
   return <div ref={ref} className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />;
 }
 
-function CardTitle({ className, ref, ...props }) {
+function CardTitle({ className, ref, ...props }: ComponentProps<"h3">) {
   return (
     <h3
       ref={ref}
@@ -24,15 +25,15 @@ function CardTitle({ className, ref, ...props }) {
   );
 }
 
-function CardDescription({ className, ref, ...props }) {
+function CardDescription({ className, ref, ...props }: ComponentProps<"p">) {
   return <p ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />;
 }
 
-function CardContent({ className, ref, ...props }) {
+function CardContent({ className, ref, ...props }: ComponentProps<"div">) {
   return <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />;
 }
 
-function CardFooter({ className, ref, ...props }) {
+function CardFooter({ className, ref, ...props }: ComponentProps<"div">) {
   return <div ref={ref} className={cn("flex items-center p-6 pt-0", className)} {...props} />;
 }
 

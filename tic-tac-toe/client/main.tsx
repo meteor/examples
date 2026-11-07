@@ -8,6 +8,7 @@ import { App } from '/imports/ui/App';
 
 Meteor.startup(() => {
   const container = document.getElementById('react-target');
+  if (!container) throw new Error("Missing react-target container");
   const root = createRoot(container);
   root.render(
     <ThemeProvider theme={theme}>
