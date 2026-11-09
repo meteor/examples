@@ -5,13 +5,20 @@ module.exports = defineConfig((Meteor) => {
     return {};
   }
 
-  if (!Meteor.isNative) {
-    return {};
-  }
-
   return {
-    output: {
-      publicPath: '/app/',
+    module: {
+      rules: [
+        {
+          test: /\.css$/,
+          type: 'css/auto',
+          use: ['postcss-loader'],
+        },
+      ],
     },
+    ...(Meteor.isNative ? {
+      output: {
+        publicPath: '/app/',
+      },
+    } : {}),
   };
 });

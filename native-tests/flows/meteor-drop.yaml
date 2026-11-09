@@ -5,16 +5,34 @@ appId: com.meteor.examples.meteordrop
 - extendedWaitUntil:
     visible: "Meteor Drop"
     timeout: 120000
+- extendedWaitUntil:
+    visible:
+      text: "Play vs CPU"
+      enabled: true
+    timeout: 60000
+- assertVisible: "Connect four meteors before your rival."
+# Startup HCP can open its modal after the home screen becomes ready.
 - runFlow:
     when:
       visible: "New app update available"
     commands:
       - tapOn: "Not now"
-- extendedWaitUntil:
-    visible: "Play vs CPU"
-    timeout: 60000
-- assertVisible: "Connect four meteors before your rival."
 - tapOn: "Play vs CPU"
+# An update arriving during the tap can consume it on the modal backdrop.
+# Recover only when the home button is still enabled and an update is ready.
+- runFlow:
+    when:
+      visible:
+        text: "Play vs CPU"
+        enabled: true
+    commands:
+      - assertVisible: "Update ready"
+      - runFlow:
+          when:
+            visible: "New app update available"
+          commands:
+            - tapOn: "Not now"
+      - tapOn: "Play vs CPU"
 - extendedWaitUntil:
     visible: "Your turn"
     timeout: 15000
@@ -23,22 +41,25 @@ appId: com.meteor.examples.meteordrop
     visible: "Drop meteor in column 4"
     timeout: 10000
 - tapOn: "Drop meteor in column 4"
+# Assert completed CPU replies; the 900 ms thinking label can disappear
+# before a native automation tap finishes settling.
+# iOS exposes the numeric count separately from the "moves" text.
 - extendedWaitUntil:
-    visible: "CPU thinking"
+    visible: "2( moves)?"
     timeout: 10000
 - extendedWaitUntil:
     visible: "Your turn"
     timeout: 10000
 - tapOn: "Drop meteor in column 2"
 - extendedWaitUntil:
-    visible: "CPU thinking"
+    visible: "4( moves)?"
     timeout: 10000
 - extendedWaitUntil:
     visible: "Your turn"
     timeout: 10000
 - tapOn: "Drop meteor in column 3"
 - extendedWaitUntil:
-    visible: "CPU thinking"
+    visible: "6( moves)?"
     timeout: 10000
 - extendedWaitUntil:
     visible: "Your turn"
@@ -71,18 +92,29 @@ appId: com.meteor.examples.meteordrop
     visible: "DDP connected"
     timeout: 60000
 - assertVisible: "Meteor.isCapacitor true"
+- scrollUntilVisible:
+    element:
+      text: "Live DDP connection"
+    direction: DOWN
+    centerElement: true
+    timeout: 10000
 - tapOn: "Live DDP connection"
-- extendedWaitUntil:
-    visible: "DDP paused"
+- scrollUntilVisible:
+    element:
+      text: "DDP paused"
+    direction: UP
     timeout: 10000
 - scrollUntilVisible:
     element:
       text: "Reconnect now"
     direction: DOWN
+    centerElement: true
     timeout: 10000
 - tapOn: "Reconnect now"
-- extendedWaitUntil:
-    visible: "DDP connected"
+- scrollUntilVisible:
+    element:
+      text: "DDP connected"
+    direction: UP
     timeout: 60000
 - runFlow:
     when:
@@ -97,6 +129,7 @@ appId: com.meteor.examples.meteordrop
           element:
             text: "Preview HCP update"
           direction: DOWN
+          centerElement: true
           timeout: 10000
       - tapOn: "Preview HCP update"
 - assertVisible: "New app update available"

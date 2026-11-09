@@ -155,6 +155,7 @@ select {
 
 .system-page {
   width: min(100%, 35rem);
+  grid-template-columns: minmax(0, 1fr);
   margin: 0 auto;
 }
 
@@ -1024,6 +1025,7 @@ select {
 .system-section__status {
   margin: 0.65rem 0 0;
   padding: 0.65rem;
+  overflow-wrap: anywhere;
   border-left: 4px solid var(--meteor-teal);
   background: #e9f8f4;
 }
