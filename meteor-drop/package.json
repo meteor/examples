@@ -32,8 +32,8 @@
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^7.6.7",
-    "@meteorjs/capacitor": "file:../../meteor/npm-packages/meteor-capacitor",
-    "@meteorjs/rspack": "file:../../meteor/npm-packages/meteor-rspack",
+    "@meteorjs/capacitor": "^0.2.0-alpha.1",
+    "@meteorjs/rspack": "^3.0.0-rc.2",
     "@playwright/test": "^1.50.0",
     "@rsdoctor/rspack-plugin": "^1.6.4",
     "@rspack/cli": "^2.2.7",

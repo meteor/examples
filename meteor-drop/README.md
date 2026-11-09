@@ -54,6 +54,12 @@ npm run run:native:meteor-drop -- ios
 npm run run:native:meteor-drop -- android
 ```
 
+The manifest uses published npm versions. The native runner uses `npm link
+--no-save` to select `@meteorjs/capacitor` and `@meteorjs/rspack` from your Meteor
+checkout without saving local paths in `package.json` or `package-lock.json`.
+Set `METEOR_CHECKOUT` or pass `--meteor-checkout /path/to/meteor` to select a
+checkout outside the default adjacent `meteor` directory.
+
 Meteor CLI options follow `--`:
 
 ```sh
