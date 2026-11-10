@@ -44,8 +44,8 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 - Demo: https://simpletasks.sandbox.galaxycloud.app/
 - Why: A task management app showcasing form handling, user accounts, DB migrations, and a polished component-based UI
 - Stack: Meteor, Rspack, Chakra UI, React, Formik, MongoDB
-- Last Updated At: Apr/29/2026
-- Meteor Version: 3.4.1
+- Last Updated At: Nov/10/2026
+- Meteor Version: 3.6
 
 ### Task Manager
 - Repository: [meteor/examples/task-manager](./task-manager)

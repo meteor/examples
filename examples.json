@@ -17,8 +17,8 @@
       "Formik",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Apr/29/2026",
-    "meteorVersion": "3.4.1"
+    "lastUpdatedAt": "Nov/10/2026",
+    "meteorVersion": "3.6"
   },
   {
     "title": "Task Manager",
