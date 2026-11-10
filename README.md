@@ -96,7 +96,7 @@ Each example doubles as a reference for [community packages](https://docs.meteor
 - Why: Admin dashboard built on Meteor's instrumentation package: method calls, latency percentiles, errors and DDP connections, with bounded storage that works across several server instances
 - Stack: Meteor, Rspack, Blaze 3, Chart.js, MongoDB, Mocha, RSLint, Playwright
 - Last Updated At: Nov/01/2026
-- Meteor Version: 3.6-rc.1
+- Meteor Version: 3.6
 
 ## Other examples
 
