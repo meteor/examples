@@ -49,21 +49,33 @@ export function minuteOf(ts) {
   return Math.floor(ts / MINUTE_MS) * MINUTE_MS;
 }
 
-// Adds a terminal method event to the per-minute counters of a flush.
-export function addToRollups(rollups, event) {
-  if (!TERMINAL_METHOD_EVENTS.includes(event.type)) return;
-  const minute = minuteOf(event.ts);
-  const key = `${new Date(minute).toISOString()}|${event.name}`;
+// Adds counters to the rollup of one method and minute.
+export function mergeRollup(rollups, key, counters) {
   const rollup = rollups.get(key)
-    ?? { minute, name: event.name, calls: 0, errors: 0, totalMs: 0, maxMs: 0 };
-  rollup.calls += 1;
-  if (event.type === 'method.error') rollup.errors += 1;
-  rollup.totalMs += event.durationMs ?? 0;
-  rollup.maxMs = Math.max(rollup.maxMs, event.durationMs ?? 0);
+    ?? { minute: counters.minute, name: counters.name, calls: 0, errors: 0, totalMs: 0, maxMs: 0 };
+  rollup.calls += counters.calls;
+  rollup.errors += counters.errors;
+  rollup.totalMs += counters.totalMs;
+  rollup.maxMs = Math.max(rollup.maxMs, counters.maxMs);
   rollups.set(key, rollup);
 }
 
-// MongoDB upserts for the counters gathered during one flush.
+// Adds a terminal method event to the per-minute counters.
+export function addToRollups(rollups, event) {
+  if (!TERMINAL_METHOD_EVENTS.includes(event.type)) return;
+  const minute = minuteOf(event.ts);
+  const durationMs = event.durationMs ?? 0;
+  mergeRollup(rollups, `${new Date(minute).toISOString()}|${event.name}`, {
+    minute,
+    name: event.name,
+    calls: 1,
+    errors: event.type === 'method.error' ? 1 : 0,
+    totalMs: durationMs,
+    maxMs: durationMs,
+  });
+}
+
+// MongoDB upserts for a set of counters, in the order of the map.
 export function rollupOperations(rollups) {
   return [...rollups].map(([key, rollup]) => ({
     updateOne: {
@@ -76,4 +88,12 @@ export function rollupOperations(rollups) {
       upsert: true,
     },
   }));
+}
+
+// The counters a failed bulk write did not apply: those of the operations it
+// reports as failed, or all of them when the error has no per-operation detail.
+export function unwrittenRollups(rollups, error) {
+  const entries = [...rollups];
+  if (!Array.isArray(error.writeErrors)) return new Map(entries);
+  return new Map(error.writeErrors.map(({ index }) => entries[index]));
 }

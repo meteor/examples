@@ -1,7 +1,9 @@
-import { TERMINAL_METHOD_EVENTS, minuteOf } from './collector-core';
+import { minuteOf } from './collector-core';
 
 const MINUTE_MS = 60 * 1000;
 export const SERIES_MINUTES = 60;
+// Percentiles are computed from the newest calls of the window, at most this many.
+export const LATENCY_SAMPLE_SIZE = 2000;
 
 // Nearest-rank percentile of an ascending array.
 export function percentile(sortedValues, p) {
@@ -15,24 +17,28 @@ function durationStats(durations) {
   return { p50: percentile(sorted, 50), p95: percentile(sorted, 95), p99: percentile(sorted, 99) };
 }
 
-// Everything the dashboard shows, computed from bounded reads.
-export function computeSnapshot({ terminalEvents, recentEvents, rollups, instances, now, windowMs, staleMs = 10000 }) {
-  const inWindow = terminalEvents.filter((event) =>
-    TERMINAL_METHOD_EVENTS.includes(event.type) && event.ts >= now - windowMs);
-  const calls = inWindow.length;
-  const errors = inWindow.filter((event) => event.type === 'method.error').length;
-
+// Everything the dashboard shows, computed from bounded reads. `totals` counts
+// every terminal event of the window per method and type; `latencySample` holds
+// the newest ones, so the percentiles describe a sample when the window is larger.
+export function computeSnapshot({
+  totals, latencySample, recentEvents, rollups, instances, now, windowMs, staleMs = 10000,
+}) {
   const byName = new Map();
-  for (const event of inWindow) {
-    const entry = byName.get(event.name) ?? { name: event.name, calls: 0, errors: 0, durations: [] };
-    entry.calls += 1;
-    if (event.type === 'method.error') entry.errors += 1;
-    entry.durations.push(event.durationMs ?? 0);
-    byName.set(event.name, entry);
+  const methodOf = (name) => {
+    if (!byName.has(name)) byName.set(name, { name, calls: 0, errors: 0, durations: [] });
+    return byName.get(name);
+  };
+  for (const { name, type, count } of totals) {
+    const entry = methodOf(name);
+    entry.calls += count;
+    if (type === 'method.error') entry.errors += count;
   }
+  for (const event of latencySample) methodOf(event.name).durations.push(event.durationMs ?? 0);
   const methods = [...byName.values()]
     .map(({ durations, ...entry }) => ({ ...entry, ...durationStats(durations) }))
     .sort((a, b) => b.calls - a.calls || a.name.localeCompare(b.name));
+  const calls = methods.reduce((total, method) => total + method.calls, 0);
+  const errors = methods.reduce((total, method) => total + method.errors, 0);
 
   const lastMinute = minuteOf(now);
   const series = Array.from({ length: SERIES_MINUTES }, (_, index) => ({
@@ -58,7 +64,9 @@ export function computeSnapshot({ terminalEvents, recentEvents, rollups, instanc
     calls,
     errors,
     errorRate: calls ? errors / calls : 0,
-    ...durationStats(inWindow.map((event) => event.durationMs ?? 0)),
+    ...durationStats(latencySample.map((event) => event.durationMs ?? 0)),
+    sampleSize: latencySample.length,
+    sampled: calls > latencySample.length,
     methods,
     recent: recentEvents,
     series,

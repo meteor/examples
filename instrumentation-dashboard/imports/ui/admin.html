@@ -22,6 +22,9 @@
       {{#if dropped}}
         <p class="warning" role="status">{{dropped}} events were dropped because the collector queue was full.</p>
       {{/if}}
+      {{#if sampled}}
+        <p class="hint">Durations are measured on the latest {{sampleSize}} calls of this window; the counts cover all of them.</p>
+      {{/if}}
     {{else}}
       <p class="hint">Waiting for the first snapshot…</p>
     {{/with}}

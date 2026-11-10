@@ -2,7 +2,9 @@ import os from 'node:os';
 import { Meteor } from 'meteor/meteor';
 import { Instrumentation } from 'meteor/instrumentation';
 import { Events, Rollups, Instances } from './collections';
-import { toEventDoc, createBoundedQueue, addToRollups, rollupOperations } from './collector-core';
+import {
+  toEventDoc, createBoundedQueue, addToRollups, mergeRollup, rollupOperations, unwrittenRollups,
+} from './collector-core';
 
 const EVENT_TYPES = [
   'method.start', 'method.end', 'method.error',
@@ -29,25 +31,51 @@ export function startCollector({ flushMs, maxQueue, refreshMs }) {
   };
   const registrations = EVENT_TYPES.map((type) => Instrumentation.on(type, onEvent));
 
-  let flushing = false;
-  let lastErrorLog = 0;
-  const flush = async () => {
-    if (flushing || queue.size === 0) return;
-    flushing = true;
+  // Counters of stored events that are not in the rollups yet.
+  let pendingRollups = new Map();
+
+  const writeEvents = async () => {
     const events = queue.drain();
-    const rollups = new Map();
-    for (const event of events) addToRollups(rollups, event);
-    let inserted = false;
+    if (!events.length) return;
     try {
       await Events.rawCollection().insertMany(
         events.map((event) => toEventDoc(event, instanceId)), { ordered: false });
-      inserted = true;
-      if (rollups.size) {
-        await Rollups.rawCollection().bulkWrite(rollupOperations(rollups), { ordered: false });
-      }
     } catch (error) {
       // MongoDB unavailable: keep the batch for the next tick, still bounded.
-      if (!inserted) queue.unshift(events);
+      queue.unshift(events);
+      throw error;
+    }
+    // The events are stored, so they are never inserted again: their counters
+    // now wait in the pending rollups, which are retried on their own.
+    for (const event of events) addToRollups(pendingRollups, event);
+  };
+
+  const writeRollups = async () => {
+    if (!pendingRollups.size) return;
+    const rollups = pendingRollups;
+    pendingRollups = new Map();
+    try {
+      await Rollups.rawCollection().bulkWrite(rollupOperations(rollups), { ordered: false });
+    } catch (error) {
+      // Only the counters the write did not apply are retried, so a partial
+      // failure counts nothing twice. A write lost in flight after MongoDB
+      // applied it has no such detail and is counted again (see README, Limits).
+      for (const [key, counters] of unwrittenRollups(rollups, error)) {
+        mergeRollup(pendingRollups, key, counters);
+      }
+      throw error;
+    }
+  };
+
+  let flushing = false;
+  let lastErrorLog = 0;
+  const flush = async () => {
+    if (flushing || (queue.size === 0 && pendingRollups.size === 0)) return;
+    flushing = true;
+    try {
+      await writeEvents();
+      await writeRollups();
+    } catch (error) {
       if (Date.now() - lastErrorLog > 60 * 1000) {
         lastErrorLog = Date.now();
         console.error(`[observability] flush failed: ${error.message}`);

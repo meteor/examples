@@ -14,12 +14,16 @@ describe('snapshot core', function () {
   it('computes rates, per-method stats, the series and live instances', function () {
     const now = Date.UTC(2026, 9, 19, 10, 30, 20);
     const lastMinute = Date.UTC(2026, 9, 19, 10, 30);
-    const terminalEvents = [
-      { type: 'method.end', name: 'tasks.insert', durationMs: 10, ts: now - 1000 },
-      { type: 'method.end', name: 'tasks.insert', durationMs: 20, ts: now - 2000 },
-      { type: 'method.error', name: 'tasks.insert', durationMs: 30, ts: now - 3000 },
-      { type: 'method.end', name: 'tasks.remove', durationMs: 5, ts: now - 4000 },
-      { type: 'method.end', name: 'tasks.remove', durationMs: 50, ts: now - 10 * MINUTE },
+    const totals = [
+      { name: 'tasks.insert', type: 'method.end', count: 2 },
+      { name: 'tasks.insert', type: 'method.error', count: 1 },
+      { name: 'tasks.remove', type: 'method.end', count: 1 },
+    ];
+    const latencySample = [
+      { name: 'tasks.insert', durationMs: 10 },
+      { name: 'tasks.insert', durationMs: 20 },
+      { name: 'tasks.insert', durationMs: 30 },
+      { name: 'tasks.remove', durationMs: 5 },
     ];
     const rollups = [
       { minute: new Date(lastMinute), calls: 4, errors: 1 },
@@ -32,13 +36,14 @@ describe('snapshot core', function () {
     ];
 
     const snapshot = computeSnapshot({
-      terminalEvents, recentEvents: [], rollups, instances, now, windowMs: 5 * MINUTE,
+      totals, latencySample, recentEvents: [], rollups, instances, now, windowMs: 5 * MINUTE,
     });
 
     assert.strictEqual(snapshot.calls, 4);
     assert.strictEqual(snapshot.errors, 1);
     assert.strictEqual(snapshot.errorRate, 0.25);
     assert.strictEqual(snapshot.p50, 10);
+    assert.strictEqual(snapshot.sampled, false);
     assert.deepStrictEqual(snapshot.methods.map(({ name, calls, errors }) => ({ name, calls, errors })), [
       { name: 'tasks.insert', calls: 3, errors: 1 },
       { name: 'tasks.remove', calls: 1, errors: 0 },

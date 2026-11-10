@@ -66,6 +66,8 @@ task app (/)                                  dashboard (/admin)
 
 - **Nothing on the hot path.** The listeners run inside the observed method, so they only push the event onto a queue. All writes happen in the periodic flush.
 - **Bounded everywhere.** The queue drops its oldest events when full and counts them (the dashboard shows the count), the events collection is capped, and rollups expire after 24 hours.
+- **Exact counts, sampled durations.** The calls and errors of the window are counted over every stored event. The percentiles come from the newest 2,000 calls, and the dashboard says so when the window holds more.
+- **Counters are never lost or doubled.** Once the raw events are stored, their per-minute counters wait in memory until the rollup write succeeds. After a partial failure only the operations MongoDB reported as failed are retried.
 - **Several instances.** Every process writes into the same collections, tagged with its instance id. A compare-and-set on the snapshot's `computedAt` lets one process recompute the summary each round without a leader election, and any process can serve the dashboard.
 - **One document to publish.** The dashboard subscribes to a single summary document, so viewers never receive the raw event stream.
 - **Private by default.** Client IP addresses are not captured. Method arguments are not captured either, except for a projection on `tasks.insert` that records the length of the text, never the text itself (`imports/observability/policy.js`).
@@ -106,6 +108,8 @@ e2e/                    # Playwright specs
 - Events still in the queue when the process stops are lost.
 - The subscription count per instance is approximate: it counts publication starts minus stops and errors.
 - The trace and span ids are the package's own ids, not OpenTelemetry ids.
+- The window counts cover the events the capped collection still holds (20,000 by default), and the percentiles the newest 2,000 calls.
+- A rollup write lost in flight after MongoDB applied it is retried and counted twice in the chart. The raw events are not affected.
 
 ## Deployment
 
