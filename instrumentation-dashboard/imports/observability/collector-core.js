@@ -51,12 +51,9 @@ export function minuteOf(ts) {
 
 // Adds counters to the rollup of one method and minute.
 export function mergeRollup(rollups, key, counters) {
-  const rollup = rollups.get(key)
-    ?? { minute: counters.minute, name: counters.name, calls: 0, errors: 0, totalMs: 0, maxMs: 0 };
+  const rollup = rollups.get(key) ?? { minute: counters.minute, name: counters.name, calls: 0, errors: 0 };
   rollup.calls += counters.calls;
   rollup.errors += counters.errors;
-  rollup.totalMs += counters.totalMs;
-  rollup.maxMs = Math.max(rollup.maxMs, counters.maxMs);
   rollups.set(key, rollup);
 }
 
@@ -64,14 +61,8 @@ export function mergeRollup(rollups, key, counters) {
 export function addToRollups(rollups, event) {
   if (!TERMINAL_METHOD_EVENTS.includes(event.type)) return;
   const minute = minuteOf(event.ts);
-  const durationMs = event.durationMs ?? 0;
   mergeRollup(rollups, `${new Date(minute).toISOString()}|${event.name}`, {
-    minute,
-    name: event.name,
-    calls: 1,
-    errors: event.type === 'method.error' ? 1 : 0,
-    totalMs: durationMs,
-    maxMs: durationMs,
+    minute, name: event.name, calls: 1, errors: event.type === 'method.error' ? 1 : 0,
   });
 }
 
@@ -82,18 +73,18 @@ export function rollupOperations(rollups) {
       filter: { _id: key },
       update: {
         $setOnInsert: { minute: new Date(rollup.minute), name: rollup.name },
-        $inc: { calls: rollup.calls, errors: rollup.errors, totalMs: rollup.totalMs },
-        $max: { maxMs: rollup.maxMs },
+        $inc: { calls: rollup.calls, errors: rollup.errors },
       },
       upsert: true,
     },
   }));
 }
 
-// The counters a failed bulk write did not apply: those of the operations it
-// reports as failed, or all of them when the error has no per-operation detail.
-export function unwrittenRollups(rollups, error) {
-  const entries = [...rollups];
-  if (!Array.isArray(error.writeErrors)) return new Map(entries);
-  return new Map(error.writeErrors.map(({ index }) => entries[index]));
+// The items of a failed bulk write that MongoDB did not apply: those of the
+// operations the error reports as failed, or all of them when it reports none.
+// An empty list is not a success: a connection lost before the write was saved
+// also comes back as a bulk write error without any operation detail.
+export function unwrittenItems(items, error) {
+  if (!error.writeErrors?.length) return items;
+  return error.writeErrors.map(({ index }) => items[index]);
 }

@@ -1,6 +1,6 @@
 // The single place that decides who may read the dashboard. This example has
 // no accounts, so everyone may. In a real app, check a role (Roles is part of
-// Meteor core since 3.4):
+// Meteor core since 3.1):
 //
 //   import { Roles } from 'meteor/roles';
 //

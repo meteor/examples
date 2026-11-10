@@ -67,10 +67,10 @@ task app (/)                                  dashboard (/admin)
 - **Nothing on the hot path.** The listeners run inside the observed method, so they only push the event onto a queue. All writes happen in the periodic flush.
 - **Bounded everywhere.** The queue drops its oldest events when full and counts them (the dashboard shows the count), the events collection is capped, and rollups expire after 24 hours.
 - **Exact counts, sampled durations.** The calls and errors of the window are counted over every stored event. The percentiles come from the newest 2,000 calls, and the dashboard says so when the window holds more.
-- **Counters are never lost or doubled.** Once the raw events are stored, their per-minute counters wait in memory until the rollup write succeeds. After a partial failure only the operations MongoDB reported as failed are retried.
-- **Several instances.** Every process writes into the same collections, tagged with its instance id. A compare-and-set on the snapshot's `computedAt` lets one process recompute the summary each round without a leader election, and any process can serve the dashboard.
-- **One document to publish.** The dashboard subscribes to a single summary document, so viewers never receive the raw event stream.
-- **Private by default.** Client IP addresses are not captured. Method arguments are not captured either, except for a projection on `tasks.insert` that records the length of the text, never the text itself (`imports/observability/policy.js`).
+- **Counters survive write failures.** Once the raw events are stored, their per-minute counters wait in memory until the rollup write succeeds. After a partial failure only the operations MongoDB reported as failed are retried.
+- **Several instances.** Every process writes into the same collections, tagged with its instance id. A compare-and-set lease on the snapshot document lets one process recompute the summary each round without a leader election, and any process can serve the dashboard.
+- **One document to publish.** The dashboard subscribes to a single summary document: counts, percentiles, the chart series and the 50 most recent events. Viewers never subscribe to the raw collections.
+- **Private by default.** Client IP addresses are not captured. Method arguments are not captured either, except for a projection on `tasks.insert` that records the length of the text, never the text itself (`imports/observability/policy.js`). The recent events do carry user ids, error messages and instance names, for the people `requireAdmin()` lets in.
 
 ## How it's structured
 
@@ -100,16 +100,18 @@ e2e/                    # Playwright specs
 ## In production
 
 - **Permissions.** `requireAdmin()` allows everyone because this example has no accounts. Replace it with a role check, for example `Roles.userIsInRoleAsync(userId, 'admin')` with the `roles` package from Meteor core.
-- **Sizes.** `settings.json` controls the capped collection size, the window, the flush and refresh intervals, the rollup retention and the queue size. Set `observability.enabled` to `false` to stop collecting, or `METEOR_INSTRUMENTATION_DISABLED=1` to turn the events off entirely.
+- **Sizes.** `settings.json` controls the capped collection size, the window, the flush and refresh intervals, the rollup retention and the queue size. The capped collection is created on the first start and keeps its size afterwards; a new rollup retention is applied to the existing index at the next start. Set `observability.enabled` to `false` to stop collecting, or `METEOR_INSTRUMENTATION_DISABLED=1` to turn the events off entirely.
 - **OpenTelemetry.** To send traces and metrics to an OpenTelemetry backend instead, the `meteor-otel` package (in review, [meteor/meteor#14086](https://github.com/meteor/meteor/pull/14086)) consumes the same events.
 
 ## Limits
 
-- Events still in the queue when the process stops are lost.
+- Events still in the queue when the process stops are lost, and so are the counters of stored events whose rollup write has not happened yet.
+- Counters waiting for a rollup write stay in memory without bound while that write keeps failing.
+- Instances share the refresh through timestamps, so a clock far ahead of the others monopolises it.
 - The subscription count per instance is approximate: it counts publication starts minus stops and errors.
 - The trace and span ids are the package's own ids, not OpenTelemetry ids.
-- The window counts cover the events the capped collection still holds (20,000 by default), and the percentiles the newest 2,000 calls.
-- A rollup write lost in flight after MongoDB applied it is retried and counted twice in the chart. The raw events are not affected.
+- The window counts cover the events the capped collection still holds (up to 20,000 events or 5 MB by default); the header says since when they are kept. The percentiles cover the newest 2,000 calls.
+- Writes are at-least-once: a write lost in flight after MongoDB applied it is retried, so the events or counters it carried can be stored twice.
 
 ## Deployment
 

@@ -7,6 +7,7 @@ Meteor.methods({
     check(text, String);
     const trimmed = text.trim();
     if (!trimmed) throw new Meteor.Error('empty-task', 'A task needs some text');
+    if (trimmed.length > 200) throw new Meteor.Error('task-too-long', 'A task is 200 characters at most');
     return Tasks.insertAsync({ text: trimmed, checked: false, createdAt: new Date() });
   },
 

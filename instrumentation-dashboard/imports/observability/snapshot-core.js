@@ -12,7 +12,9 @@ export function percentile(sortedValues, p) {
   return sortedValues[Math.max(0, rank - 1)];
 }
 
+// Null percentiles when the sample holds no call of this method.
 function durationStats(durations) {
+  if (!durations.length) return { p50: null, p95: null, p99: null };
   const sorted = [...durations].sort((a, b) => a - b);
   return { p50: percentile(sorted, 50), p95: percentile(sorted, 95), p99: percentile(sorted, 99) };
 }
@@ -21,7 +23,7 @@ function durationStats(durations) {
 // every terminal event of the window per method and type; `latencySample` holds
 // the newest ones, so the percentiles describe a sample when the window is larger.
 export function computeSnapshot({
-  totals, latencySample, recentEvents, rollups, instances, now, windowMs, staleMs = 10000,
+  totals, latencySample, recentEvents, oldestTs, rollups, instances, now, windowMs, staleMs = 10000,
 }) {
   const byName = new Map();
   const methodOf = (name) => {
@@ -33,7 +35,7 @@ export function computeSnapshot({
     entry.calls += count;
     if (type === 'method.error') entry.errors += count;
   }
-  for (const event of latencySample) methodOf(event.name).durations.push(event.durationMs ?? 0);
+  for (const event of latencySample) byName.get(event.name)?.durations.push(event.durationMs ?? 0);
   const methods = [...byName.values()]
     .map(({ durations, ...entry }) => ({ ...entry, ...durationStats(durations) }))
     .sort((a, b) => b.calls - a.calls || a.name.localeCompare(b.name));
@@ -67,6 +69,8 @@ export function computeSnapshot({
     ...durationStats(latencySample.map((event) => event.durationMs ?? 0)),
     sampleSize: latencySample.length,
     sampled: calls > latencySample.length,
+    // Set when the stored events do not reach back to the start of the window.
+    eventsSince: oldestTs > now - windowMs ? new Date(oldestTs) : null,
     methods,
     recent: recentEvents,
     series,

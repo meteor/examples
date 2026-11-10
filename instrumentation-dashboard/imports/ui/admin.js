@@ -41,7 +41,7 @@ Template.adminPage.helpers({
   snapshot: liveSnapshot,
   isDevelopment: () => Meteor.isDevelopment,
   inspected: () => Template.instance().inspected.get(),
-  ms: (value) => `${Math.round(value ?? 0)} ms`,
+  ms: (value) => (value === null ? 'no sample' : value === undefined ? '' : `${Math.round(value)} ms`),
   percent: (value) => `${((value ?? 0) * 100).toFixed(1)} %`,
   minutes: (windowMs) => Math.round(windowMs / 60000),
   time: (date) => (date ? new Date(date).toLocaleTimeString() : ''),

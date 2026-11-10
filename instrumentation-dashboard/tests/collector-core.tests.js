@@ -1,6 +1,6 @@
 import assert from 'assert';
 import {
-  toEventDoc, createBoundedQueue, addToRollups, rollupOperations, minuteOf,
+  toEventDoc, createBoundedQueue, addToRollups, rollupOperations, unwrittenItems, minuteOf,
 } from '/imports/observability/collector-core';
 
 describe('collector core', function () {
@@ -39,10 +39,19 @@ describe('collector core', function () {
     assert.strictEqual(rollups.size, 1);
     const [[key, rollup]] = [...rollups];
     assert.strictEqual(key, '2026-10-19T10:15:00.000Z|tasks.insert');
-    assert.deepStrictEqual(rollup, { minute: minuteOf(ts), name: 'tasks.insert', calls: 2, errors: 1, totalMs: 40, maxMs: 30 });
+    assert.deepStrictEqual(rollup, { minute: minuteOf(ts), name: 'tasks.insert', calls: 2, errors: 1 });
 
     const [operation] = rollupOperations(rollups);
-    assert.deepStrictEqual(operation.updateOne.update.$inc, { calls: 2, errors: 1, totalMs: 40 });
+    assert.deepStrictEqual(operation.updateOne.update.$inc, { calls: 2, errors: 1 });
     assert.strictEqual(operation.updateOne.upsert, true);
+  });
+
+  it('keeps every item of a failed write unless it names the failed operations', function () {
+    const items = ['a', 'b', 'c'];
+    // Connection lost before the write was saved: a bulk write error without any operation.
+    assert.deepStrictEqual(unwrittenItems(items, { writeErrors: [] }), ['a', 'b', 'c']);
+    assert.deepStrictEqual(unwrittenItems(items, new Error('connection closed')), ['a', 'b', 'c']);
+    // Partial success: only the operations reported as failed are retried.
+    assert.deepStrictEqual(unwrittenItems(items, { writeErrors: [{ index: 2 }] }), ['c']);
   });
 });

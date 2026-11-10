@@ -3,8 +3,9 @@ import { Meteor } from 'meteor/meteor';
 import { Instrumentation } from 'meteor/instrumentation';
 import { Events, Rollups, Instances } from './collections';
 import {
-  toEventDoc, createBoundedQueue, addToRollups, mergeRollup, rollupOperations, unwrittenRollups,
+  toEventDoc, createBoundedQueue, addToRollups, mergeRollup, rollupOperations, unwrittenItems,
 } from './collector-core';
+import { logFailure } from './log';
 
 const EVENT_TYPES = [
   'method.start', 'method.end', 'method.error',
@@ -37,17 +38,23 @@ export function startCollector({ flushMs, maxQueue, refreshMs }) {
   const writeEvents = async () => {
     const events = queue.drain();
     if (!events.length) return;
+    let unwritten = new Set();
     try {
       await Events.rawCollection().insertMany(
         events.map((event) => toEventDoc(event, instanceId)), { ordered: false });
     } catch (error) {
-      // MongoDB unavailable: keep the batch for the next tick, still bounded.
-      queue.unshift(events);
-      throw error;
+      // The events MongoDB did not store go back to the queue, still bounded.
+      // After a partial failure the stored ones stay out, so nothing is
+      // inserted twice.
+      unwritten = new Set(unwrittenItems(events, error));
+      queue.unshift([...unwritten]);
+      logFailure('event write', error);
     }
-    // The events are stored, so they are never inserted again: their counters
-    // now wait in the pending rollups, which are retried on their own.
-    for (const event of events) addToRollups(pendingRollups, event);
+    // Stored events are never inserted again: their counters now wait in the
+    // pending rollups, which are retried on their own.
+    for (const event of events) {
+      if (!unwritten.has(event)) addToRollups(pendingRollups, event);
+    }
   };
 
   const writeRollups = async () => {
@@ -60,26 +67,20 @@ export function startCollector({ flushMs, maxQueue, refreshMs }) {
       // Only the counters the write did not apply are retried, so a partial
       // failure counts nothing twice. A write lost in flight after MongoDB
       // applied it has no such detail and is counted again (see README, Limits).
-      for (const [key, counters] of unwrittenRollups(rollups, error)) {
+      for (const [key, counters] of unwrittenItems([...rollups], error)) {
         mergeRollup(pendingRollups, key, counters);
       }
-      throw error;
+      logFailure('rollup write', error);
     }
   };
 
   let flushing = false;
-  let lastErrorLog = 0;
   const flush = async () => {
     if (flushing || (queue.size === 0 && pendingRollups.size === 0)) return;
     flushing = true;
     try {
       await writeEvents();
       await writeRollups();
-    } catch (error) {
-      if (Date.now() - lastErrorLog > 60 * 1000) {
-        lastErrorLog = Date.now();
-        console.error(`[observability] flush failed: ${error.message}`);
-      }
     } finally {
       flushing = false;
     }
@@ -88,11 +89,12 @@ export function startCollector({ flushMs, maxQueue, refreshMs }) {
   const heartbeat = () => Instances.upsertAsync(instanceId, {
     $set: { ...gauges, dropped: queue.dropped, lastSeen: new Date() },
   });
+  const sendHeartbeat = () => heartbeat().catch((error) => logFailure('heartbeat', error));
 
   const flushTimer = Meteor.setInterval(flush, flushMs);
-  const heartbeatTimer = Meteor.setInterval(() => {
-    heartbeat().catch((error) => console.error(`[observability] heartbeat failed: ${error.message}`));
-  }, refreshMs);
+  const heartbeatTimer = Meteor.setInterval(sendHeartbeat, refreshMs);
+  // Listed on the dashboard right away, not after the first interval.
+  sendHeartbeat();
 
   return {
     flush,

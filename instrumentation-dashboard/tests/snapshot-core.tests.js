@@ -18,6 +18,7 @@ describe('snapshot core', function () {
       { name: 'tasks.insert', type: 'method.end', count: 2 },
       { name: 'tasks.insert', type: 'method.error', count: 1 },
       { name: 'tasks.remove', type: 'method.end', count: 1 },
+      { name: 'tasks.toggle', type: 'method.end', count: 1 },
     ];
     const latencySample = [
       { name: 'tasks.insert', durationMs: 10 },
@@ -36,17 +37,20 @@ describe('snapshot core', function () {
     ];
 
     const snapshot = computeSnapshot({
-      totals, latencySample, recentEvents: [], rollups, instances, now, windowMs: 5 * MINUTE,
+      totals, latencySample, recentEvents: [], oldestTs: now - 2 * MINUTE, rollups, instances, now, windowMs: 5 * MINUTE,
     });
 
-    assert.strictEqual(snapshot.calls, 4);
+    assert.strictEqual(snapshot.calls, 5);
     assert.strictEqual(snapshot.errors, 1);
-    assert.strictEqual(snapshot.errorRate, 0.25);
+    assert.strictEqual(snapshot.errorRate, 0.2);
     assert.strictEqual(snapshot.p50, 10);
-    assert.strictEqual(snapshot.sampled, false);
-    assert.deepStrictEqual(snapshot.methods.map(({ name, calls, errors }) => ({ name, calls, errors })), [
-      { name: 'tasks.insert', calls: 3, errors: 1 },
-      { name: 'tasks.remove', calls: 1, errors: 0 },
+    assert.strictEqual(snapshot.sampled, true);
+    assert.deepStrictEqual(snapshot.eventsSince, new Date(now - 2 * MINUTE));
+    assert.deepStrictEqual(snapshot.methods.map(({ name, calls, errors, p95 }) => ({ name, calls, errors, p95 })), [
+      { name: 'tasks.insert', calls: 3, errors: 1, p95: 30 },
+      { name: 'tasks.remove', calls: 1, errors: 0, p95: 5 },
+      // Counted in the window but absent from the latency sample: no duration.
+      { name: 'tasks.toggle', calls: 1, errors: 0, p95: null },
     ]);
     assert.strictEqual(snapshot.series.length, SERIES_MINUTES);
     assert.deepStrictEqual(snapshot.series.at(-1), { minute: new Date(lastMinute), calls: 4, errors: 1 });
