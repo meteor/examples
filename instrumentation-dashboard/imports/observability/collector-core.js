@@ -1,0 +1,90 @@
+// Pure helpers of the collector, kept free of I/O so they can be unit tested.
+
+export const TERMINAL_METHOD_EVENTS = ['method.end', 'method.error'];
+
+const MINUTE_MS = 60 * 1000;
+
+// The document stored for one event. The seam already bounds every value.
+export function toEventDoc(event, instanceId) {
+  const doc = { ts: event.ts, type: event.type, instanceId };
+  for (const field of ['name', 'traceId', 'spanId', 'connectionId', 'userId',
+    'subscriptionId', 'durationMs', 'error', 'args', 'result']) {
+    if (event[field] !== undefined && event[field] !== null) doc[field] = event[field];
+  }
+  return doc;
+}
+
+// A bounded FIFO: when full, the oldest entry is dropped and counted.
+export function createBoundedQueue(maxSize) {
+  let items = [];
+  let dropped = 0;
+  return {
+    push(item) {
+      items.push(item);
+      if (items.length > maxSize) {
+        items.shift();
+        dropped += 1;
+      }
+    },
+    // Puts back a batch that could not be written, still within the bound.
+    unshift(batch) {
+      items = batch.concat(items);
+      const overflow = items.length - maxSize;
+      if (overflow > 0) {
+        items.splice(0, overflow);
+        dropped += overflow;
+      }
+    },
+    drain() {
+      const batch = items;
+      items = [];
+      return batch;
+    },
+    get size() { return items.length; },
+    get dropped() { return dropped; },
+  };
+}
+
+export function minuteOf(ts) {
+  return Math.floor(ts / MINUTE_MS) * MINUTE_MS;
+}
+
+// Adds counters to the rollup of one method and minute.
+export function mergeRollup(rollups, key, counters) {
+  const rollup = rollups.get(key) ?? { minute: counters.minute, name: counters.name, calls: 0, errors: 0 };
+  rollup.calls += counters.calls;
+  rollup.errors += counters.errors;
+  rollups.set(key, rollup);
+}
+
+// Adds a terminal method event to the per-minute counters.
+export function addToRollups(rollups, event) {
+  if (!TERMINAL_METHOD_EVENTS.includes(event.type)) return;
+  const minute = minuteOf(event.ts);
+  mergeRollup(rollups, `${new Date(minute).toISOString()}|${event.name}`, {
+    minute, name: event.name, calls: 1, errors: event.type === 'method.error' ? 1 : 0,
+  });
+}
+
+// MongoDB upserts for a set of counters, in the order of the map.
+export function rollupOperations(rollups) {
+  return [...rollups].map(([key, rollup]) => ({
+    updateOne: {
+      filter: { _id: key },
+      update: {
+        $setOnInsert: { minute: new Date(rollup.minute), name: rollup.name },
+        $inc: { calls: rollup.calls, errors: rollup.errors },
+      },
+      upsert: true,
+    },
+  }));
+}
+
+// The items of a failed bulk write that MongoDB did not apply: those of the
+// operations the error reports as failed, or all of them when it reports none.
+// An empty list is not a success: a connection lost before the write was saved
+// also comes back as a bulk write error without any operation detail.
+export function unwrittenItems(items, error) {
+  if (!error.writeErrors?.length) return items;
+  return error.writeErrors.map(({ index }) => items[index]);
+}
