@@ -23,6 +23,7 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
   - [Notes Offline](#notes-offline)
   - [Simple Blog](#simple-blog)
   - [Tic-Tac-Toe](#tic-tac-toe)
+  - [Memory Match](#memory-match)
   - [Parties](#parties)
   - [Complex Todos (Svelte)](#complex-todos-svelte)
   - [Welcome Meteor Cordova](#welcome-meteor-cordova)
@@ -78,6 +79,18 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 - Stack: Meteor, Rspack, TypeScript, React, MUI (Material UI), Mocha, oxlint, Playwright
 - Last Updated At: Nov/10/2026
 - Meteor Version: 3.6
+
+### Memory Match
+- Repository: [meteor/examples/memory-match](./memory-match)
+- Why: A cosmic card game with a live leaderboard showcasing Rstest unit, component, browser, Meteor runtime, local package, and end-to-end tests
+- Stack: Meteor, Rspack, React, TypeScript, MongoDB, Rstest, Testing Library, Playwright
+- Last Updated At: Sep/30/2026
+- Meteor Version: Rstest prerelease
+
+Rstest support is currently prerelease, so the example has a temporary Meteor
+source-checkout setup. Its [setup guide](./memory-match/README.md) covers the
+current commands, while [Rstest integration details](./memory-match/docs/RSTEST.md)
+records the migration once the integration is published.
 
 ### Parties
 - Repository: [meteor/examples/parties](./parties)

@@ -10,6 +10,9 @@
   "homepage": "https://github.com/meteor/examples#readme",
   "license": "MIT",
   "scripts": {
+    "setup:memory-match": "npm --prefix memory-match run setup",
+    "start:memory-match": "npm --prefix memory-match start",
+    "test:memory-match": "npm --prefix memory-match test",
     "update:examples": "node scripts/update-examples-json.mjs",
     "check:examples": "node scripts/update-examples-json.mjs --check"
   }
