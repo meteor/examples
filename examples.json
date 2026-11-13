@@ -80,7 +80,7 @@
   {
     "title": "Simple Blog",
     "slug": "simple-blog",
-    "demo": null,
+    "demo": "https://example-simple-blog.sandbox.galaxycloud.app",
     "tutorial": null,
     "repository": "dupontbertrand/meteor-blog",
     "repositoryUrl": "https://github.com/dupontbertrand/meteor-blog",
@@ -95,8 +95,8 @@
       "Flow Router",
       "MJML"
     ],
-    "lastUpdatedAt": "Mar/24/2026",
-    "meteorVersion": "3.4"
+    "lastUpdatedAt": "Nov/10/2026",
+    "meteorVersion": "3.6"
   },
   {
     "title": "Tic-Tac-Toe",
