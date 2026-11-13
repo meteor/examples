@@ -160,6 +160,27 @@ test('Enter in the Title field saves the card', async ({ page }) => {
   await expect(page.locator('.card')).toHaveText(['Saved with Enter']);
 });
 
+test('the editor moves a card to another column without a drag', async ({ page }) => {
+  await createBoard(page, 'Keyboard move test');
+  await addCard(page, 'Done', 'Shipped');
+  await addCard(page, 'Doing', 'Moved');
+
+  await page.locator('.card', { hasText: 'Moved' }).press('Enter');
+  const dialog = page.locator('dialog.card-editor');
+  await expect(dialog).toBeVisible();
+  // The field starts on the card's own column, or a plain save would move it.
+  await expect(dialog.getByLabel('Column').locator('option:checked')).toHaveText('Doing');
+  await dialog.getByLabel('Column').selectOption({ label: 'Done' });
+  await dialog.getByLabel('Title').press('Enter');
+
+  await expect(dialog).toBeHidden();
+  await expect(column(page, 'Done').locator('.card')).toHaveText(['Shipped', 'Moved']);
+  await expect(column(page, 'Done').locator('.card', { hasText: 'Moved' })).toBeFocused();
+  await page.reload();
+  await expect(column(page, 'Done').locator('.card')).toHaveText(['Shipped', 'Moved']);
+  await expect(column(page, 'Doing').locator('.card')).toHaveCount(0);
+});
+
 test('a card link opens the editor, Back and Forward switch pages', async ({ page, context }) => {
   await createBoard(page, 'Link test');
   await addCard(page, 'To do', 'Linked');

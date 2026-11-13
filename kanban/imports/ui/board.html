@@ -18,7 +18,7 @@
         </form>
       </main>
       {{#with editingCard}}
-        {{> cardEditor card=this}}
+        {{> cardEditor card=this board=board}}
       {{/with}}
     {{else}}
       {{#if ready}}
@@ -76,6 +76,13 @@
       </label>
       <label>Description
         <textarea name="description" rows="6" placeholder="Details, links, anything">{{card.description}}</textarea>
+      </label>
+      <label>Column
+        <select name="columnId">
+          {{#each column in board.columns}}
+            <option value="{{column._id}}" selected={{isCardColumn column}}>{{column.title}}</option>
+          {{/each}}
+        </select>
       </label>
       <p class="status" aria-live="polite">{{status}}</p>
       <menu>

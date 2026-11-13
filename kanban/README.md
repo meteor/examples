@@ -44,6 +44,7 @@ Before running E2E tests for the first time, install Playwright's browsers with 
 - Create a board, share its URL; anyone with the link can edit it
 - Add cards by typing, or paste a list to create one card per line
 - Drag cards between columns and reorder them
+- Move a card to another column from its editor, with the keyboard too; reordering inside a column still needs a pointer
 - Edit a card in a dialog, copy a link that opens it directly, delete it
 - Rename, add and delete columns
 - Copy the board's link, or share it with the Web Share API where that exists

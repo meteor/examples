@@ -276,6 +276,9 @@ Template.cardEditor.onRendered(function () {
 
 Template.cardEditor.helpers({
   status: () => Template.instance().status.get(),
+  isCardColumn(column) {
+    return column._id === this.card.columnId;
+  },
 });
 
 Template.cardEditor.events({
@@ -287,15 +290,22 @@ Template.cardEditor.events({
     if (event.submitter.value !== 'save') return;
     event.preventDefault();
     const { elements } = event.currentTarget;
+    const columnId = elements.columnId.value;
     instance.status.set('Saving…');
     try {
       await Meteor.callAsync('cards.update', this.card._id, {
         title: elements.title.value,
         description: elements.description.value,
       });
+      // The column field moves a card without a drag, from the keyboard too.
+      // The card goes to the end of that column.
+      if (columnId !== this.card.columnId) await Meteor.callAsync('cards.move', this.card._id, columnId, null);
       // `instance` came in as an argument: `Template.instance()` would be
       // null here, after the `await`.
       instance.find('dialog').close('saved');
+      // Closing gives focus back to the card the editor was opened from, but a
+      // moved card is a new element in its new column.
+      Tracker.afterFlush(() => document.querySelector(`[data-card-id="${CSS.escape(this.card._id)}"]`)?.focus());
     } catch (error) {
       instance.status.set(error.reason ?? error.message);
     }
