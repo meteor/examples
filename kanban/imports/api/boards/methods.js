@@ -60,8 +60,8 @@ Meteor.methods({
 
 if (Meteor.isServer) {
   Meteor.methods({
-    // Called from a template helper on the landing page: no stub, so the
-    // helper's Promise only settles with the server's answer.
+    // Called from a template helper on the landing page. Server only: a
+    // client holds one board at most, so a stub would have nothing to count.
     async 'boards.stats'() {
       return {
         boards: await Boards.find().countAsync(),

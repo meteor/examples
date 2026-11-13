@@ -4,7 +4,7 @@ With Meteor 3.4 introducing the Rspack bundler, modern build optimizations, and 
 
 Each example doubles as a reference for [community packages](https://docs.meteor.com/community-packages/) and the conventions you'll find in real-world Meteor apps. Several apps push the Rspack bundler further to integrate with the wider JS ecosystem (PostCSS, SWC, Workbox, Lingui, Tailwind v4, and more), replacing legacy Meteor approaches with tooling the rest of the JavaScript world already uses.
 
-The seven apps maintained in this repository target Meteor 3.6. Task Manager,
+The eight apps maintained in this repository target Meteor 3.6. Task Manager,
 Tic-Tac-Toe, and Complex Todos demonstrate native Meteor TypeScript declarations
 with a `meteor npm run typecheck` command; Notes Offline uses them for JavaScript
 editor support. External examples below retain their independently maintained versions.
@@ -91,8 +91,8 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 ### Kanban
 - Repository: [meteor/examples/kanban](./kanban)
 - Why: Real-time kanban board built on web platform APIs with Blaze 3.1 and no UI library: native drag and drop, dialog and popovers, clipboard, View Transitions, a custom element fed from an autorun, async helpers
-- Stack: Meteor, Rspack, Blaze 3.1, MongoDB, Mocha, RSLint, Playwright
-- Last Updated At: Nov/12/2026
+- Stack: Meteor, Rspack, Blaze 3.1 (beta), MongoDB, Mocha, RSLint, Playwright
+- Last Updated At: Nov/13/2026
 - Meteor Version: 3.6
 
 ### Complex Todos (Svelte)

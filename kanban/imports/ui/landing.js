@@ -10,7 +10,7 @@ Template.landingPage.onCreated(function () {
 });
 
 Template.landingPage.helpers({
-  // Since Blaze 3.1 a helper may return a Promise: `#let` unwraps it and
+  // A helper may return a Promise (Blaze 2.7 and later): `#let` unwraps it and
   // `@pending`, `@rejected` and `@resolved` tell the template where it stands.
   siteStats: () => Meteor.callAsync('boards.stats'),
   error: () => Template.instance().error.get(),

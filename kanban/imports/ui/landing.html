@@ -14,9 +14,9 @@
     {{#let stats=siteStats}}
       <p class="stats">
         {{#if @pending 'stats'}}Counting boards…{{/if}}
-        {{#if @rejected 'stats'}}The server is not answering.{{/if}}
+        {{#if @rejected 'stats'}}Could not load the stats.{{/if}}
         {{#if @resolved 'stats'}}
-          {{stats.boards}} boards and {{stats.cards}} cards so far. Open a board in two tabs to watch it update live.
+          Boards so far: {{stats.boards}}, cards: {{stats.cards}}. Open a board in two tabs to watch it update live.
         {{/if}}
       </p>
     {{/let}}
