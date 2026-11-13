@@ -44,8 +44,8 @@
       "Biome",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Notes Offline",
@@ -74,8 +74,8 @@
       "Prettier",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Simple Blog",
@@ -118,8 +118,8 @@
       "oxlint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Parties",
@@ -140,8 +140,8 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -167,8 +167,8 @@
       "Mocha",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Welcome Meteor Cordova",
@@ -207,7 +207,7 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/01/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   }
 ]

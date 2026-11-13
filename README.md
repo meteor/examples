@@ -4,7 +4,7 @@ With Meteor 3.4 introducing the Rspack bundler, modern build optimizations, and 
 
 Each example doubles as a reference for [community packages](https://docs.meteor.com/community-packages/) and the conventions you'll find in real-world Meteor apps. Several apps push the Rspack bundler further to integrate with the wider JS ecosystem (PostCSS, SWC, Workbox, Lingui, Tailwind v4, and more), replacing legacy Meteor approaches with tooling the rest of the JavaScript world already uses.
 
-The six apps maintained in this repository target Meteor 3.6. Task Manager,
+The seven apps maintained in this repository target Meteor 3.6.1. Task Manager,
 Tic-Tac-Toe, and Complex Todos demonstrate native Meteor TypeScript declarations
 with a `meteor npm run typecheck` command; Notes Offline uses them for JavaScript
 editor support. External examples below retain their independently maintained versions.
@@ -53,16 +53,16 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 - Demo: https://task-manager.sandbox.galaxycloud.app/
 - Why: Task management with CRUD, status workflows, priority filtering, real-time dashboard, and type-safe RPC
 - Stack: Meteor, Rspack, TypeScript, React, Meteor-RPC, shadcn/ui, Tailwind CSS v4, React Query, Zod, Mocha, Biome, Playwright
-- Last Updated At: Nov/10/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/13/2026
+- Meteor Version: 3.6.1
 
 ### Notes Offline
 - Repository: [meteor/examples/notes-offline](./notes-offline)
 - Demo: https://notes-offline.sandbox.galaxycloud.app/
 - Why: Offline-first PWA notes app with auto-save, markdown, search, tagging, pinning, trash/recovery, import/export, cross-tab sync, per-device scoping, and multi-language UI (en/es/pt)
 - Stack: Meteor, Rspack, React, Mantine UI, jam:offline, jam:method, jam:pub-sub, jam:soft-delete, Zod, Workbox, LinguiJS, Mocha, ESLint, Prettier, Playwright
-- Last Updated At: Nov/10/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/13/2026
+- Meteor Version: 3.6.1
 
 ### Simple Blog
 - Repository: [dupontbertrand/meteor-blog](https://github.com/dupontbertrand/meteor-blog)
@@ -76,24 +76,24 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 - Demo: https://tic-tac-toe.sandbox.galaxycloud.app/
 - Why: Real-time multiplayer game with room-based matchmaking and live state sync via pub/sub
 - Stack: Meteor, Rspack, TypeScript, React, MUI (Material UI), Mocha, oxlint, Playwright
-- Last Updated At: Nov/10/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/13/2026
+- Meteor Version: 3.6.1
 
 ### Parties
 - Repository: [meteor/examples/parties](./parties)
 - Demo: https://parties.sandbox.galaxycloud.app/
 - Why: One of the original Meteor examples showcasing how to build a nice working application with Blaze with very little code, while taking advantage of optimistic updates
 - Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, D3.js, RSLint, Playwright
-- Last Updated At: Nov/10/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/13/2026
+- Meteor Version: 3.6.1
 
 ### Complex Todos (Svelte)
 - Repository: [meteor/examples/complex-todos-svelte](./complex-todos-svelte)
 - Demo: https://complex-todos-svelte.sandbox.galaxycloud.app/
 - Why: Production-grade todo app with modular monolith architecture, rate limiting, caching, migrations, scheduled jobs, and E2E tests
 - Stack: Meteor, Rspack, TypeScript, Svelte 5, Skeleton UI, Tailwind CSS v4, jam:method, Zod, oxlint, Cypress, Mocha, MongoDB
-- Last Updated At: Nov/10/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/13/2026
+- Meteor Version: 3.6.1
 
 ### Welcome Meteor Cordova
 - Repository: [CloudByGalaxy/welcome-meteor-cordova](https://github.com/CloudByGalaxy/welcome-meteor-cordova)
@@ -106,8 +106,8 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 - Repository: [meteor/examples/instrumentation-dashboard](./instrumentation-dashboard)
 - Why: Admin dashboard built on Meteor's instrumentation package: method calls, latency percentiles, errors and DDP connections, with bounded storage that works across several server instances
 - Stack: Meteor, Rspack, Blaze 3, Chart.js, MongoDB, Mocha, RSLint, Playwright
-- Last Updated At: Nov/01/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/13/2026
+- Meteor Version: 3.6.1
 
 ## Other examples
 
@@ -152,8 +152,8 @@ Additional examples covering tutorials, integrations, and specialized use cases.
 - Repository: [meteor/examples/nft-marketplace](./nft-marketplace)
 - Why: Decentralized NFT marketplace for minting, listing, and buying NFTs with wallet auth and on-chain transactions
 - Stack: Meteor, Rspack, React, Tailwind CSS v3, Polygon, Solidity, Hardhat, Ethers.js, IPFS
-- Last Updated At: Nov/10/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/13/2026
+- Meteor Version: 3.6.1
 
 ## How to add your example?
 
