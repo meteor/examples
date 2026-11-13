@@ -1,0 +1,90 @@
+# Kanban
+
+A real-time kanban board built with Blaze 3.1 and the web platform. Cards move by native drag and drop, the editor is a `<dialog>`, menus and toasts are popovers, pasting a list creates cards, moves are animated with the View Transition API, and the header chart is a custom element fed from an autorun. No UI library, no jQuery, no router package.
+
+Open a board in two tabs: every change shows up in both.
+
+## Stack
+
+| | |
+|---|---|
+| Runtime | Meteor 3.6 |
+| Frontend | Blaze 3.1 (without jQuery) |
+| UI | Plain CSS: nesting, `light-dark()`, `::backdrop`, `::view-transition` |
+| Database | MongoDB |
+| Code Quality | RSLint |
+| Tests | Mocha |
+| E2E | Playwright |
+| Build | Rspack |
+
+## Running it
+
+```bash
+meteor npm install
+npm start
+```
+
+Visit `http://localhost:3000/`.
+
+| Command | What it does |
+|---|---|
+| `npm start` | Start the app |
+| `npm test` | Unit and method tests (Mocha, watch mode) |
+| `npm run test:headless` | Unit and method tests (Mocha, headless/CI) |
+| `npm run visualize` | Bundle analyzer in production mode |
+| `npm run lint` | Lint (RSLint) |
+| `npm run lint:fix` | Lint and auto-fix (RSLint) |
+| `npm run e2e` | E2E tests (Playwright, interactive UI) |
+| `npm run e2e:headless` | E2E tests (Playwright, headless) |
+
+Before running E2E tests for the first time, install Playwright's browsers with `npx playwright install`.
+
+## What it does
+
+- Create a board, share its URL; anyone with the link can edit it
+- Add cards by typing, or paste a list to create one card per line
+- Drag cards between columns and reorder them
+- Edit a card in a dialog, copy a link that opens it directly, delete it
+- Rename, add and delete columns
+- Share the board with the Web Share API where it exists, copy its link elsewhere
+
+## Where each platform API is used
+
+| API | Where | Blaze side |
+|---|---|---|
+| Drag and Drop | `imports/ui/board.js`, `dragstart` / `dragover` / `drop` | `event.dataTransfer` is on the event itself, no `originalEvent` |
+| View Transitions | `moveCard` in `imports/ui/board.js` | the Method stub runs inside the callback, then `Tracker.flush()` so the new state is captured |
+| `<dialog>` | `cardEditor` template | `method="dialog"`, `event.submitter`, `closedby="any"`; `close` does not bubble but the event map still gets it |
+| Popover | column menus and the toast | `popovertarget` set from a helper, `popover="manual"` for the toast |
+| CSS Anchor Positioning | `.menu` in `client/main.css` | the menu hangs under its `popovertarget` button, the implicit anchor; centered where unsupported |
+| Clipboard | `paste` on the new-card input, copy link buttons | `event.clipboardData`, `navigator.clipboard.writeText` |
+| Web Share | header `Share` button | rendered only when `navigator.share` exists |
+| Custom element | `<board-chart>` in `imports/ui/board-chart.js` | fed through a property from `onRendered` + `autorun`; attributes would only carry strings |
+| Async helpers (Blaze 3.1) | `siteStats` on the landing page | `#let` unwraps the Promise, `@pending` / `@rejected` / `@resolved` drive the markup |
+| `history` + `popstate` | `imports/ui/app.js` | a reactive copy of the path picks the page |
+
+## How it's structured
+
+```
+client/
+  main.html             # Shell HTML
+  main.js               # Entry: methods (for stubs), templates and styles
+  main.css              # Plain CSS, light and dark
+server/
+  main.js               # Methods and the board publication
+imports/
+  api/
+    boards/             # Boards collection, methods, publication
+    cards/              # Cards collection, methods, rank and title helpers
+  ui/
+    app.js              # Page choice from the path
+    landing.js          # Board creation, async stats helper
+    board.js            # Board, columns, cards, card editor
+    board-chart.js      # The <board-chart> custom element
+tests/                  # Mocha: pure helpers and methods
+e2e/                    # Playwright: create, paste, drag, edit, live update
+```
+
+## Related examples
+
+[Simple Blog](https://github.com/dupontbertrand/meteor-blog) shows accounts, roles and permissions, and email with Blaze; [Parties](../parties) shows a D3 map and optimistic updates.

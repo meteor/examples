@@ -1,0 +1,24 @@
+<template name="landingPage">
+  <main class="landing">
+    <h1>Kanban</h1>
+    <p>
+      A real-time board built with Blaze and the web platform: drag and drop,
+      <code>&lt;dialog&gt;</code>, popovers, the clipboard, view transitions and a
+      custom element, with no UI library and no jQuery.
+    </p>
+    <form class="new-board">
+      <input name="title" placeholder="Board title" required autocomplete="off" aria-label="Board title">
+      <button type="submit">Create a board</button>
+    </form>
+    {{#if error}}<p class="error" role="alert">{{error}}</p>{{/if}}
+    {{#let stats=siteStats}}
+      <p class="stats">
+        {{#if @pending 'stats'}}Counting boards…{{/if}}
+        {{#if @rejected 'stats'}}The server is not answering.{{/if}}
+        {{#if @resolved 'stats'}}
+          {{stats.boards}} boards and {{stats.cards}} cards so far. Open a board in two tabs to watch it update live.
+        {{/if}}
+      </p>
+    {{/let}}
+  </main>
+</template>

@@ -1,0 +1,223 @@
+:root {
+  color-scheme: light dark;
+  --text: light-dark(#1f2937, #e5e7eb);
+  --muted: light-dark(#6b7280, #9ca3af);
+  --border: light-dark(#e5e7eb, #374151);
+  --surface: light-dark(#ffffff, #1f2937);
+  --background: light-dark(#f3f4f6, #111827);
+  --accent: light-dark(#2563eb, #60a5fa);
+  --danger: light-dark(#dc2626, #f87171);
+  --chart-bar: light-dark(#94a3b8, #64748b);
+  --chart-bar-2: var(--accent);
+  --chart-bar-3: light-dark(#16a34a, #4ade80);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+h1, h2 {
+  margin: 0;
+  font-weight: 600;
+}
+
+button, input, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+input, textarea {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+}
+
+button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  cursor: pointer;
+
+  &:hover { border-color: var(--accent); }
+  &.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+}
+
+.error {
+  color: var(--danger);
+}
+
+/* Landing */
+
+.landing {
+  max-width: 36rem;
+  margin: 10vh auto;
+  padding: 0 1rem;
+
+  p { line-height: 1.5; }
+  .stats { color: var(--muted); }
+}
+
+.new-board {
+  display: flex;
+  gap: 0.5rem;
+
+  input { flex: 1; }
+}
+
+/* Board */
+
+.board-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+
+  .home { color: var(--accent); text-decoration: none; font-weight: 600; }
+  h1 { font-size: 1.2rem; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  button { white-space: nowrap; }
+}
+
+.board {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  overflow-x: auto;
+  min-height: calc(100dvh - 4rem);
+}
+
+.column {
+  flex: 0 0 18rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+
+  &.drop-target { border-color: var(--accent); }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+  h2 { flex: 1; font-size: 1rem; }
+  .count { color: var(--muted); font-weight: 400; }
+  .rename-column { flex: 1; }
+  .rename-column input { width: 100%; box-sizing: border-box; }
+  .menu-button { padding: 0.1rem 0.5rem; anchor-name: --column-menu; }
+  .new-card input { width: 100%; box-sizing: border-box; }
+}
+
+/* Every menu button carries the same anchor name: a menu resolves to the last
+   button before it in the DOM, its own. Without anchor positioning the menu
+   is centered, which is the default for a popover. */
+.menu {
+  inset: 0;
+  margin: auto;
+  padding: 0.3rem;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
+
+  button { display: block; width: 100%; border: 0; text-align: left; white-space: nowrap; }
+  button:hover { background: var(--background); }
+
+  @supports (anchor-name: --column-menu) {
+    position-anchor: --column-menu;
+    inset: auto;
+    margin: 0.25rem 0 0;
+    top: anchor(bottom);
+    right: anchor(right);
+  }
+}
+
+.cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 2rem;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--background);
+  border: 1px solid var(--border);
+  cursor: grab;
+  overflow-wrap: anywhere;
+
+  &:hover, &:focus-visible { border-color: var(--accent); outline: none; }
+  .has-description { color: var(--muted); }
+}
+
+.new-column {
+  flex: 0 0 18rem;
+  display: flex;
+  gap: 0.5rem;
+
+  input { flex: 1; }
+}
+
+/* Card editor */
+
+.card-editor {
+  width: min(32rem, 90vw);
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--text);
+
+  &::backdrop { background: rgb(0 0 0 / 0.4); }
+
+  form { display: flex; flex-direction: column; gap: 0.75rem; }
+  label { display: flex; flex-direction: column; gap: 0.25rem; color: var(--muted); }
+  input, textarea { color: var(--text); }
+  .status { margin: 0; min-height: 1.2em; color: var(--muted); }
+  menu { display: flex; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+  .spacer { flex: 1; }
+  .remove-card { color: var(--danger); }
+}
+
+/* Toast, shown with the Popover API */
+
+.toast {
+  inset: auto 1rem 1rem auto;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
+}
+
+/* View transitions: a moved card glides, the rest of the page stays put */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+@media (width < 40rem) {
+  .board-header board-chart { display: none; }
+}

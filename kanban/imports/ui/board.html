@@ -1,0 +1,90 @@
+<template name="boardPage">
+  {{#let board=currentBoard}}
+    {{#if board}}
+      <header class="board-header">
+        <a href="/" class="home">Kanban</a>
+        <h1>{{board.title}}</h1>
+        {{> boardChart board=board}}
+        {{#if canShare}}<button type="button" class="share">Share</button>{{/if}}
+        <button type="button" class="copy-link">Copy link</button>
+      </header>
+      <main class="board">
+        {{#each column in board.columns}}
+          {{> boardColumn board=board column=column}}
+        {{/each}}
+        <form class="new-column">
+          <input name="title" placeholder="New column" required autocomplete="off" aria-label="New column title">
+          <button type="submit">Add</button>
+        </form>
+      </main>
+      {{#with editingCard}}
+        {{> cardEditor card=this}}
+      {{/with}}
+    {{else}}
+      {{#if ready}}
+        <main class="landing"><p>No such board. <a href="/">Create one.</a></p></main>
+      {{/if}}
+    {{/if}}
+  {{/let}}
+  <output class="toast" popover="manual">{{notice}}</output>
+</template>
+
+<template name="boardChart">
+  <board-chart role="img" aria-label="{{summary}}"></board-chart>
+</template>
+
+<template name="boardColumn">
+  <section class="column {{#if isDropTarget}}drop-target{{/if}}" data-column-id="{{column.id}}">
+    <header>
+      {{#if renaming}}
+        <form class="rename-column">
+          <input name="title" value="{{column.title}}" required autocomplete="off" aria-label="Column title">
+        </form>
+      {{else}}
+        <h2>{{column.title}} <span class="count">{{cardCount}}</span></h2>
+      {{/if}}
+      <button type="button" class="menu-button" popovertarget="{{menuId}}" aria-label="Menu for {{column.title}}">⋯</button>
+      <menu class="menu" popover id="{{menuId}}">
+        <li><button type="button" class="start-rename">Rename</button></li>
+        <li><button type="button" class="remove-column">Delete column</button></li>
+      </menu>
+    </header>
+    <ul class="cards">
+      {{#each card in cards}}
+        {{> boardCard card=card}}
+      {{/each}}
+    </ul>
+    <form class="new-card">
+      <input name="title" placeholder="Add a card, or paste a list" required autocomplete="off" aria-label="New card in {{column.title}}">
+    </form>
+  </section>
+</template>
+
+<template name="boardCard">
+  <li class="card" draggable="true" tabindex="0" role="button" aria-haspopup="dialog"
+      data-card-id="{{card._id}}" style="view-transition-name: card-{{card._id}}">
+    {{card.title}}
+    {{#if card.description}}<span class="has-description" aria-label="Has a description">≡</span>{{/if}}
+  </li>
+</template>
+
+<template name="cardEditor">
+  <dialog class="card-editor" closedby="any">
+    <form method="dialog">
+      <label>Title
+        <input name="title" value="{{card.title}}" required autocomplete="off">
+      </label>
+      <label>Description
+        <textarea name="description" rows="6" placeholder="Details, links, anything">{{card.description}}</textarea>
+      </label>
+      <p class="status" aria-live="polite">{{status}}</p>
+      <menu>
+        <li><button type="button" class="copy-card-link">Copy link</button></li>
+        <li><button type="button" class="remove-card">Delete</button></li>
+        <li class="spacer"></li>
+        <li><button type="submit" value="cancel" formnovalidate>Cancel</button></li>
+        <li><button type="submit" value="save" class="primary">Save</button></li>
+      </menu>
+    </form>
+  </dialog>
+</template>

@@ -1,0 +1,7 @@
+<template name="app">
+  {{#if boardId}}
+    {{> boardPage boardId=boardId}}
+  {{else}}
+    {{> landingPage}}
+  {{/if}}
+</template>

@@ -144,6 +144,28 @@
     "meteorVersion": "3.6"
   },
   {
+    "title": "Kanban",
+    "slug": "kanban",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/kanban",
+    "isInternal": true,
+    "internalPath": "kanban",
+    "why": "Real-time kanban board built on web platform APIs with Blaze 3.1 and no UI library: native drag and drop, dialog and popovers, clipboard, View Transitions, a custom element fed from an autorun, async helpers",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze 3.1",
+      "MongoDB",
+      "Mocha",
+      "RSLint",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Nov/12/2026",
+    "meteorVersion": "3.6"
+  },
+  {
     "title": "Complex Todos (Svelte)",
     "slug": "complex-todos-svelte",
     "demo": "https://complex-todos-svelte.sandbox.galaxycloud.app",
