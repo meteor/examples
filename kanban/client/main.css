@@ -110,7 +110,7 @@ button {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    position: relative;
+    anchor-scope: --column-menu;
   }
   h2 { flex: 1; font-size: 1rem; }
   .count { color: var(--muted); font-weight: 400; }
@@ -120,9 +120,12 @@ button {
   .new-card input { width: 100%; box-sizing: border-box; }
 }
 
-/* Every menu button carries the same anchor name: a menu resolves to the last
-   button before it in the DOM, its own. Without anchor positioning the menu
-   is centered, which is the default for a popover. */
+/* Every menu button carries the same anchor name. An open popover sits in the
+   top layer, where that name alone resolves to the last button of the page:
+   `anchor-scope` on the column header keeps each menu on its own button. A
+   menu that would overflow the viewport hangs from the button's other edge.
+   A browser without `anchor-scope` centers the menu, which is the default
+   for a popover. */
 .menu {
   inset: 0;
   margin: auto;
@@ -131,13 +134,15 @@ button {
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   background: var(--surface);
+  color: var(--text);
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
 
   button { display: block; width: 100%; border: 0; text-align: left; white-space: nowrap; }
   button:hover { background: var(--background); }
 
-  @supports (anchor-name: --column-menu) {
+  @supports (anchor-scope: --column-menu) {
     position-anchor: --column-menu;
+    position-try-fallbacks: flip-inline;
     inset: auto;
     margin: 0.25rem 0 0;
     top: anchor(bottom);

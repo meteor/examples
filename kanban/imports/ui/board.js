@@ -14,19 +14,30 @@ const editingCardId = new ReactiveVar(new URLSearchParams(location.hash.slice(1)
 const dropTargetColumnId = new ReactiveVar(null);
 const notice = new ReactiveVar(null);
 
-const notify = (text) => notice.set({ text, at: Date.now() });
+const notify = (text) => notice.set({ text });
 const reportError = (error) => notify(error.reason ?? error.message);
+
+// `navigator.clipboard` only exists in a secure context: HTTPS or localhost.
+const copyText = async (text) => {
+  if (!navigator.clipboard) throw new Error('Copying needs HTTPS or localhost');
+  await navigator.clipboard.writeText(text);
+};
 
 const cardsIn = (board, column) => Cards.find({ boardId: board._id, columnId: column.id }, { sort: { rank: 1 } });
 
-// The card under the pointer, or the next one when the pointer is in its
-// lower half; null drops at the end of the column.
+// A dragged card carries its id under a type of its own: a column then only
+// answers to cards, and leaves links, files and selected text to the browser.
+const CARD_TYPE = 'application/x-kanban-card';
+
+// The first card of the column whose middle is below the pointer, or null at
+// the end of the column. The pointer's height decides rather than the event's
+// target, which is the list itself in the gap between two cards.
 const cardBefore = (event) => {
-  const over = event.target.closest('.card');
-  if (!over) return null;
-  const { top, height } = over.getBoundingClientRect();
-  const target = event.clientY < top + height / 2 ? over : over.nextElementSibling;
-  return target?.dataset.cardId ?? null;
+  const next = [...event.currentTarget.querySelectorAll('.card')].find((card) => {
+    const { top, height } = card.getBoundingClientRect();
+    return event.clientY < top + height / 2;
+  });
+  return next?.dataset.cardId ?? null;
 };
 
 // The method stub moves the card in Minimongo right away. Starting the call
@@ -41,7 +52,12 @@ const moveCard = async (cardId, columnId, beforeCardId) => {
   };
   try {
     if (document.startViewTransition) {
-      await document.startViewTransition(applyMove).updateCallbackDone;
+      const transition = document.startViewTransition(applyMove);
+      // `ready` and `finished` also reject when the stub throws, and `ready`
+      // when a newer transition takes over: nothing else handles them.
+      transition.ready.catch(() => {});
+      transition.finished.catch(() => {});
+      await transition.updateCallbackDone;
     } else {
       await applyMove();
     }
@@ -52,6 +68,9 @@ const moveCard = async (cardId, columnId, beforeCardId) => {
 };
 
 Template.boardPage.onCreated(function () {
+  // The notice lives in the module: one left by an earlier board page is not
+  // for this one.
+  notice.set(null);
   this.autorun(() => this.subscribe('board', Template.currentData().boardId));
 });
 
@@ -75,17 +94,19 @@ Template.boardPage.helpers({
 });
 
 Template.boardPage.events({
+  // Share and Copy link hand over the address without its fragment: a
+  // `#card=` can stay there after its card is gone.
   async 'click .share'() {
     const board = Boards.findOne(this.boardId);
     try {
-      await navigator.share({ title: board.title, url: location.href });
+      await navigator.share({ title: board.title, url: location.origin + location.pathname });
     } catch (error) {
       if (error.name !== 'AbortError') reportError(error);
     }
   },
 
   'click .copy-link'() {
-    navigator.clipboard.writeText(location.href).then(() => notify('Board link copied'), reportError);
+    copyText(location.origin + location.pathname).then(() => notify('Board link copied'), reportError);
   },
 
   async 'submit .new-column'(event) {
@@ -193,6 +214,7 @@ Template.boardColumn.events({
   },
 
   'dragover .column'(event) {
+    if (!event.dataTransfer.types.includes(CARD_TYPE)) return;
     event.preventDefault(); // allows the drop
     event.dataTransfer.dropEffect = 'move';
     dropTargetColumnId.set(this.column.id);
@@ -203,11 +225,16 @@ Template.boardColumn.events({
   },
 
   'drop .column'(event) {
+    if (!event.dataTransfer.types.includes(CARD_TYPE)) return;
     event.preventDefault();
     dropTargetColumnId.set(null);
-    const cardId = event.dataTransfer.getData('text/plain');
+    const cardId = event.dataTransfer.getData(CARD_TYPE);
     const beforeCardId = cardBefore(event);
-    if (!cardId || beforeCardId === cardId) return;
+    // Dropped on itself, or right above the card that already follows it: the
+    // card is where it was, and there is nothing to send.
+    const dragged = event.currentTarget.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
+    const inPlace = dragged && (dragged.nextElementSibling?.dataset.cardId ?? null) === beforeCardId;
+    if (!cardId || beforeCardId === cardId || inPlace) return;
     moveCard(cardId, this.column.id, beforeCardId);
   },
 });
@@ -219,7 +246,7 @@ const openCard = (cardId) => {
 
 Template.boardCard.events({
   'dragstart .card'(event) {
-    event.dataTransfer.setData('text/plain', this.card._id);
+    event.dataTransfer.setData(CARD_TYPE, this.card._id);
     event.dataTransfer.effectAllowed = 'move';
   },
 
@@ -254,6 +281,8 @@ Template.cardEditor.helpers({
 Template.cardEditor.events({
   // With `method="dialog"` a submit closes the dialog and `event.submitter`
   // tells which button did it. Saving keeps it open until the server answers.
+  // Enter in the Title field counts as a click on the form's first submit
+  // button, which is why Save comes before Cancel in the template.
   async 'submit form'(event, instance) {
     if (event.submitter.value !== 'save') return;
     event.preventDefault();
@@ -275,7 +304,7 @@ Template.cardEditor.events({
   async 'click .copy-card-link'(event, instance) {
     const url = `${location.origin}/b/${this.card.boardId}#card=${this.card._id}`;
     try {
-      await navigator.clipboard.writeText(url);
+      await copyText(url);
       instance.status.set('Link copied');
     } catch (error) {
       instance.status.set(error.message);
