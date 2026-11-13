@@ -9,7 +9,7 @@ const MAX_DESCRIPTION_LENGTH = 5000;
 const MAX_PASTED_CARDS = 100;
 
 const requireColumn = async (boardId, columnId) => {
-  const board = await Boards.findOneAsync({ _id: boardId, 'columns.id': columnId });
+  const board = await Boards.findOneAsync({ _id: boardId, 'columns._id': columnId });
   if (!board) throw new Meteor.Error('column-not-found', 'No such column on this board');
 };
 
@@ -77,17 +77,19 @@ Meteor.methods({
 
     const siblings = await Cards.find(
       { boardId: card.boardId, columnId, _id: { $ne: cardId } },
-      { sort: { rank: 1 } },
+      { sort: { rank: 1, _id: 1 } },
     ).fetchAsync();
     // A target card that left the column meanwhile sends the card to the end.
     const foundIndex = beforeCardId ? siblings.findIndex((sibling) => sibling._id === beforeCardId) : -1;
     const index = foundIndex === -1 ? siblings.length : foundIndex;
 
     if (needsRenumbering(siblings[index - 1]?.rank, siblings[index]?.rank)) {
-      await Promise.all(siblings.map((sibling, rank) => {
+      // One update at a time: in the stub, Minimongo cannot move several
+      // documents of a sorted cursor at once.
+      for (const [rank, sibling] of siblings.entries()) {
         sibling.rank = rank;
-        return Cards.updateAsync(sibling._id, { $set: { rank } });
-      }));
+        await Cards.updateAsync(sibling._id, { $set: { rank } });
+      }
     }
     const rank = rankBetween(siblings[index - 1]?.rank, siblings[index]?.rank);
     return Cards.updateAsync(cardId, { $set: { columnId, rank, updatedAt: new Date() } });

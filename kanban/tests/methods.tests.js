@@ -38,7 +38,7 @@ describe('board methods', function () {
   });
 
   it('counts boards and cards', async function () {
-    await Meteor.callAsync('cards.insert', boardId, board.columns[0].id, 'One');
+    await Meteor.callAsync('cards.insert', boardId, board.columns[0]._id, 'One');
     assert.deepStrictEqual(await Meteor.callAsync('boards.stats'), { boards: 1, cards: 1 });
   });
 });
@@ -52,7 +52,7 @@ describe('card methods', function () {
     await Boards.removeAsync({});
     await Cards.removeAsync({});
     boardId = await Meteor.callAsync('boards.create', 'Sprint');
-    [todo, doing] = (await Boards.findOneAsync(boardId)).columns.map((column) => column.id);
+    [todo, doing] = (await Boards.findOneAsync(boardId)).columns.map((column) => column._id);
   });
 
   it('appends cards in insertion order', async function () {

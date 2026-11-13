@@ -23,7 +23,7 @@ const copyText = async (text) => {
   await navigator.clipboard.writeText(text);
 };
 
-const cardsIn = (board, column) => Cards.find({ boardId: board._id, columnId: column.id }, { sort: { rank: 1 } });
+const cardsIn = (board, column) => Cards.find({ boardId: board._id, columnId: column._id }, { sort: { rank: 1, _id: 1 } });
 
 // A dragged card carries its id under a type of its own: a column then only
 // answers to cards, and leaves links, files and selected text to the browser.
@@ -154,11 +154,11 @@ Template.boardColumn.helpers({
     return cardsIn(this.board, this.column).count();
   },
   menuId() {
-    return `menu-${this.column.id}`;
+    return `menu-${this.column._id}`;
   },
   renaming: () => Template.instance().renaming.get(),
   isDropTarget() {
-    return dropTargetColumnId.get() === this.column.id;
+    return dropTargetColumnId.get() === this.column._id;
   },
 });
 
@@ -177,7 +177,7 @@ Template.boardColumn.events({
   async 'submit .rename-column'(event, instance) {
     event.preventDefault();
     try {
-      await Meteor.callAsync('boards.renameColumn', this.board._id, this.column.id, event.currentTarget.elements.title.value);
+      await Meteor.callAsync('boards.renameColumn', this.board._id, this.column._id, event.currentTarget.elements.title.value);
       instance.renaming.set(false);
     } catch (error) {
       reportError(error);
@@ -186,7 +186,7 @@ Template.boardColumn.events({
 
   'click .remove-column'(event, instance) {
     instance.find('.menu').hidePopover();
-    Meteor.callAsync('boards.removeColumn', this.board._id, this.column.id).catch(reportError);
+    Meteor.callAsync('boards.removeColumn', this.board._id, this.column._id).catch(reportError);
   },
 
   // The stub shows the card at once, so the input is cleared at once too;
@@ -197,7 +197,7 @@ Template.boardColumn.events({
     const title = input.value;
     input.value = '';
     try {
-      await Meteor.callAsync('cards.insert', this.board._id, this.column.id, title);
+      await Meteor.callAsync('cards.insert', this.board._id, this.column._id, title);
     } catch (error) {
       input.value = title;
       reportError(error);
@@ -210,14 +210,14 @@ Template.boardColumn.events({
     const titles = splitTitles(event.clipboardData.getData('text/plain'));
     if (titles.length < 2) return;
     event.preventDefault();
-    Meteor.callAsync('cards.insertMany', this.board._id, this.column.id, titles).catch(reportError);
+    Meteor.callAsync('cards.insertMany', this.board._id, this.column._id, titles).catch(reportError);
   },
 
   'dragover .column'(event) {
     if (!event.dataTransfer.types.includes(CARD_TYPE)) return;
     event.preventDefault(); // allows the drop
     event.dataTransfer.dropEffect = 'move';
-    dropTargetColumnId.set(this.column.id);
+    dropTargetColumnId.set(this.column._id);
   },
 
   'dragleave .column'(event) {
@@ -235,7 +235,7 @@ Template.boardColumn.events({
     const dragged = event.currentTarget.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
     const inPlace = dragged && (dragged.nextElementSibling?.dataset.cardId ?? null) === beforeCardId;
     if (!cardId || beforeCardId === cardId || inPlace) return;
-    moveCard(cardId, this.column.id, beforeCardId);
+    moveCard(cardId, this.column._id, beforeCardId);
   },
 });
 

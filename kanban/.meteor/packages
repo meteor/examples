@@ -25,5 +25,4 @@ blaze-hot@2.1.0-beta.0   # Update files using Blaze's API with HMR
 
 rspack@1.4.0                  # Integrate Rspack into Meteor for client and server app bundling
 check
-random
 meteortesting:mocha
