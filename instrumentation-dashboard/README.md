@@ -8,7 +8,7 @@ The point is the pattern, not the charts: observing an app without slowing its m
 
 | | |
 |---|---|
-| Runtime | Meteor 3.6 |
+| Runtime | Meteor 3.6.1 |
 | Observability | `instrumentation` (Meteor core) |
 | Frontend | Blaze 3 |
 | Chart | Chart.js 4 |
