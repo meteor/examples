@@ -69,8 +69,8 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 - Demo: https://example-simple-blog.sandbox.galaxycloud.app/
 - Why: Mini blog with role-based access control, post/comment management, email notifications, and dev-mode mail preview
 - Stack: Meteor, Rspack, Blaze 3, Bootstrap 5, Flow Router, MJML
-- Last Updated At: Nov/10/2026
-- Meteor Version: 3.6
+- Last Updated At: Nov/14/2026
+- Meteor Version: 3.6.1
 
 ### Tic-Tac-Toe
 - Repository: [meteor/examples/tic-tac-toe](./tic-tac-toe)

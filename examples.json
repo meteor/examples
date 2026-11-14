@@ -95,8 +95,8 @@
       "Flow Router",
       "MJML"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/14/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Tic-Tac-Toe",
