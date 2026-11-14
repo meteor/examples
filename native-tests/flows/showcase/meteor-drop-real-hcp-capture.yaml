@@ -1,0 +1,22 @@
+appId: com.meteor.examples.meteordrop
+---
+- startRecording:
+    path: ${SHOWCASE_VIDEO_PATH}
+    label: "Meteor Drop real HCP update"
+- extendedWaitUntil:
+    visible: "New app update available"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 4000
+- takeScreenshot: ${SHOWCASE_POSTER_PATH}
+- tapOn: "Install update"
+- extendedWaitUntil:
+    visible: "Meteor Drop updated live!"
+    timeout: 90000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3000
+- stopRecording

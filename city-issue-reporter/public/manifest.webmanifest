@@ -1,0 +1,18 @@
+{
+  "name": "Civic Snap",
+  "short_name": "Civic Snap",
+  "description": "Report neighborhood issues with photos, location context, and native share tools.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f756b",
+  "theme_color": "#0f756b",
+  "icons": [
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+appId: com.meteor.examples.meteordrop
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Meteor Drop"
+    timeout: 60000
+- runFlow:
+    when:
+      visible: "New app update available"
+    commands:
+      - tapOn: "Not now"
+- extendedWaitUntil:
+    visible: "Play vs CPU"
+    timeout: 60000
+- startRecording:
+    path: ${SHOWCASE_VIDEO_PATH}
+    label: "Meteor Drop four-in-a-row showcase"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3500
+- tapOn: "Play vs CPU"
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2500
+- tapOn: "Drop meteor in column 4"
+- extendedWaitUntil:
+    visible: "CPU thinking"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 1800
+- tapOn: "Drop meteor in column 2"
+- extendedWaitUntil:
+    visible: "CPU thinking"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 1800
+- tapOn: "Drop meteor in column 3"
+- extendedWaitUntil:
+    visible: "CPU thinking"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Your turn"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 1800
+- tapOn: "Drop meteor in column 1"
+- extendedWaitUntil:
+    visible: "Four connected!"
+    timeout: 15000
+- assertVisible: "You win"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 4000
+- takeScreenshot: ${SHOWCASE_POSTER_PATH}
+- tapOn: "Share Result"
+- extendedWaitUntil:
+    visible: "Copy"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3500
+- tapOn:
+    point: "50%,20%"
+- assertNotVisible: "Copy"
+- tapOn: "Home"
+- extendedWaitUntil:
+    visible: "Play vs CPU"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2500
+- tapOn: "Records"
+- extendedWaitUntil:
+    visible: "Solo vs CPU"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3500
+- tapOn: "System"
+- extendedWaitUntil:
+    visible: "System information"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2500
+- scrollUntilVisible:
+    element:
+      text: "Preview HCP update"
+    direction: DOWN
+    visibilityPercentage: 80
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2500
+- tapOn: "Preview HCP update"
+- assertVisible: "New app update available"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 4000
+- tapOn: "Not now"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2000
+- tapOn: "Play"
+- extendedWaitUntil:
+    visible: "Create Live Match"
+    timeout: 10000
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 2000
+- tapOn: "Create Live Match"
+- extendedWaitUntil:
+    visible: "Waiting for rival"
+    timeout: 10000
+- assertVisible: "Room code"
+- assertVisible: "Share Room Code"
+- runScript:
+    file: presentation-pause.js
+    env:
+      PAUSE_MS: 3500
+- stopRecording

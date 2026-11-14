@@ -44,8 +44,8 @@
       "Biome",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Notes Offline",
@@ -74,8 +74,103 @@
       "Prettier",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
+  },
+  {
+    "title": "Meteor Drop",
+    "slug": "meteor-drop",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/meteor-drop",
+    "isInternal": true,
+    "internalPath": "meteor-drop",
+    "why": "Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "Konsta UI",
+      "Capacitor",
+      "App",
+      "Haptics",
+      "Network",
+      "Share",
+      "Meteor Capacitor HCP",
+      "MongoDB",
+      "Mocha",
+      "oxlint",
+      "Playwright",
+      "Maestro"
+    ],
+    "lastUpdatedAt": "Nov/14/2026",
+    "meteorVersion": "3.6.1"
+  },
+  {
+    "title": "Stock Scanner",
+    "slug": "stock-scanner",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/stock-scanner",
+    "isInternal": true,
+    "internalPath": "stock-scanner",
+    "why": "Promotion-ready mobile inventory audit with an illustrated shift brief, camera-first scanning, category-aware stock states, adaptive MUI navigation, native haptics/sharing, and separate runtime/DDP/HCP diagnostics",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "MUI (Material UI)",
+      "Capacitor",
+      "App",
+      "Barcode Scanner",
+      "Haptics",
+      "Share",
+      "Meteor Capacitor HCP",
+      "MongoDB",
+      "Mocha",
+      "oxlint",
+      "Playwright",
+      "Maestro"
+    ],
+    "lastUpdatedAt": "Nov/14/2026",
+    "meteorVersion": "3.6.1"
+  },
+  {
+    "title": "Civic Snap",
+    "slug": "civic-snap",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/city-issue-reporter",
+    "isInternal": true,
+    "internalPath": "city-issue-reporter",
+    "why": "Promotion-ready neighborhood reporting app with a field brief, evidence capture, visible issue lifecycle, Framework7 navigation, offline submission, native plugins, and separate runtime/DDP/HCP diagnostics",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "Framework7 React",
+      "Capacitor",
+      "App",
+      "Camera",
+      "Geolocation",
+      "Network",
+      "Local Notifications",
+      "Share",
+      "Meteor Capacitor HCP",
+      "jam:offline",
+      "jam:method",
+      "jam:pub-sub",
+      "MongoDB",
+      "Mocha",
+      "oxlint",
+      "Playwright",
+      "Maestro"
+    ],
+    "lastUpdatedAt": "Nov/14/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Simple Blog",
@@ -118,8 +213,8 @@
       "oxlint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Parties",
@@ -140,8 +235,8 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -167,8 +262,8 @@
       "Mocha",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Welcome Meteor Cordova",
@@ -207,7 +302,7 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/01/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   }
 ]
