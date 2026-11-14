@@ -21,6 +21,8 @@ module.exports = defineConfig({
     command: `METEOR_DROP_E2E=1 "${meteorBin}" run --port ${port}`,
     url: baseURL,
     timeout: 120_000,
+    // Let Meteor stop its detached Rspack processes before the next app starts.
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 10_000 },
     reuseExistingServer: !process.env.CI,
   },
 });

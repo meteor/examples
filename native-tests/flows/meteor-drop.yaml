@@ -5,11 +5,20 @@ appId: com.meteor.examples.meteordrop
 - extendedWaitUntil:
     visible: "Meteor Drop"
     timeout: 120000
-- extendedWaitUntil:
-    visible:
-      text: "Play vs CPU"
-      enabled: true
-    timeout: 60000
+# A startup HCP can open its modal before the home action becomes accessible.
+- retry:
+    maxRetries: 3
+    commands:
+      - runFlow:
+          when:
+            visible: "New app update available"
+          commands:
+            - tapOn: "Not now"
+      - extendedWaitUntil:
+          visible:
+            text: "Play vs CPU"
+            enabled: true
+          timeout: 60000
 - assertVisible: "Connect four meteors before your rival."
 # Startup HCP can open its modal after the home screen becomes ready.
 - runFlow:

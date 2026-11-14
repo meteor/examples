@@ -18,6 +18,8 @@ export default defineConfig({
     command: `${meteorBin} run --port ${port}`,
     url: baseURL,
     timeout: 120000,
+    // Let Meteor stop its detached Rspack processes before the next app starts.
+    gracefulShutdown: { signal: 'SIGTERM', timeout: 10000 },
     reuseExistingServer: !process.env.CI,
   },
 });

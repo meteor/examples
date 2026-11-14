@@ -52,6 +52,12 @@ Open `http://localhost:3000`.
 
 ## Run A Native Target
 
+Requires Capacitor 8, Node.js 22+, JDK 21 with Android SDK 36 for Android, and
+Xcode 26+ for iOS. While the Meteor integration is unpublished, use the shared
+[checkout launcher](../native-tests/README.md#run-native-apps), which links both
+`@meteorjs/capacitor` and `@meteorjs/rspack`. Existing Capacitor 7 projects need
+the [native migration](../native-tests/README.md#prerequisites) before launching.
+
 From the repository root:
 
 ```sh

@@ -1,16 +1,12 @@
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import nativeLauncher from '../native-tests/scripts/run-native.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const defaultMeteorCheckout = path.resolve(repoRoot, '..', 'meteor');
-const meteorBin = process.env.METEOR_BIN || path.join(defaultMeteorCheckout, 'meteor');
+const { meteorBin, localPackageDirs } = nativeLauncher.resolveRuntime({}, { examplesRoot: repoRoot });
 const appNames = ['stock-scanner', 'city-issue-reporter', 'meteor-drop'];
-const localPackageDirs = [
-  path.join(defaultMeteorCheckout, 'npm-packages', 'meteor-capacitor'),
-  path.join(defaultMeteorCheckout, 'npm-packages', 'meteor-rspack'),
-];
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, {

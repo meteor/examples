@@ -20,7 +20,7 @@ uses the stable demo owner.
 | UI | Framework7 React v9 |
 | Database | MongoDB |
 | Offline data | `jam:offline`, `jam:method`, `jam:pub-sub` |
-| Native shell | Capacitor 7 through the Meteor `capacitor` package |
+| Native shell | Capacitor 8 through the Meteor `capacitor` package |
 | Native plugins | `@capacitor/app`, `@capacitor/camera`, `@capacitor/geolocation`, `@capacitor/network`, `@capacitor/local-notifications`, `@capacitor/share` |
 | HCP | Meteor Capacitor webapp Hot Code Push via `window.WebAppLocalServer` |
 | Tests | Mocha, oxlint, Playwright, Maestro smoke flow |
@@ -99,6 +99,12 @@ Before running Playwright locally for the first time, install the browser
 binaries with `npx playwright install`.
 
 ## Native Setup
+
+Requires Capacitor 8, Node.js 22+, JDK 21 with Android SDK 36 for Android, and
+Xcode 26+ for iOS. While the Meteor integration is unpublished, use the shared
+[checkout launcher](../native-tests/README.md#run-native-apps), which links both
+`@meteorjs/capacitor` and `@meteorjs/rspack`. Existing Capacitor 7 projects need
+the [native migration](../native-tests/README.md#prerequisites) before launching.
 
 Capacitor projects are generated from the Meteor app. The generated `android/`
 and `ios/` folders are intentionally not the main source of truth for this

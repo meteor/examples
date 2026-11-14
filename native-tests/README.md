@@ -6,15 +6,25 @@ journeys, including selected native sharing and HCP interactions.
 
 ## Prerequisites
 
-- Meteor checkout with Capacitor support: `/Users/igcogi/meteor/meteor`
+- Meteor checkout with Capacitor 8 support
+- Node.js 22+, JDK 21, Android Studio 2025.2.1+ and Android SDK 36 for Android
+- Xcode 26+ for iOS, with an installed simulator runtime
 - Maestro CLI
 - Android emulator or iOS Simulator
+
+All three examples use Capacitor 8.6.2 with compatible plugin releases. Assets
+keeps its independent major 3 and Barcode Scanner uses major 3. New iOS projects
+use Swift Package Manager. For an existing Capacitor 7 native project, back up
+your changes, install the updated dependencies, then run `npx cap migrate` and
+`npx cap sync`. Review the [Capacitor 8 migration guide](https://capacitorjs.com/docs/updating/8-0).
+The launcher preserves existing native projects and does not migrate them.
 
 Set checkout binary when needed:
 
 ```sh
-export METEOR_BIN=/Users/igcogi/meteor/meteor/meteor
-export PATH=/Users/igcogi/meteor/meteor:$PATH
+export METEOR_CHECKOUT=/path/to/meteor
+export METEOR_BIN="$METEOR_CHECKOUT/meteor"
+export PATH="$METEOR_CHECKOUT:$PATH"
 ```
 
 ## Run Web Checks
