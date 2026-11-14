@@ -6,8 +6,8 @@ ios/
 
 # Meteor Modern-Tools build context directories
 _build
-*/build-assets
-*/build-chunks
+*/build-assets*
+*/build-chunks*
 .rsdoctor
 
 # Source maps

@@ -16,7 +16,7 @@ empty technical shell.
 
 | | |
 |---|---|
-| Runtime | Meteor 3.4.1 from the local checkout while the Capacitor package is unpublished |
+| Runtime | Meteor 3.6.1 baseline; local checkout with Capacitor support required |
 | Frontend | React 19 (`react-meteor-data` for reactive inventory reads) |
 | UI | MUI v7 with a compact mobile theme and responsive bottom sheet |
 | Database | MongoDB |
@@ -76,10 +76,10 @@ and dry-run mode. For a browser preview, run
 `PATH=/Users/igcogi/meteor/meteor:$PATH npm start` in this directory, then visit
 `http://localhost:3000/`.
 
-After the package is published, the checkout prefix and local npm links can be
-removed. At that point the app should use the published Meteor release and the
-published `@meteorjs/capacitor` package instead of the file-linked checkout
-package.
+Once the Capacitor integration is included in a published Meteor release,
+update to that release and remove the checkout prefix and local npm links. The
+manifest and lockfile already use published npm versions; the runner selects
+local packages without saving machine-specific paths.
 
 | Command | What it does |
 |---|---|

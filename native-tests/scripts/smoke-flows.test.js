@@ -60,7 +60,12 @@ test('Meteor Drop covers CPU gameplay, records, diagnostics, and a live room', (
   );
 
   assert.match(flow, /tapOn: "Play vs CPU"/);
-  assert.match(flow, /visible: "CPU thinking"/);
+  for (const moves of [2, 4, 6]) {
+    assert.ok(
+      flow.includes(`visible: "${moves}( moves)?"`),
+      `expected the completed CPU reply after ${moves} moves`
+    );
+  }
   assert.deepStrictEqual(
     [...flow.matchAll(/- tapOn: "Drop meteor in column (\d)"/g)].map(
       (match) => Number(match[1])
@@ -71,8 +76,8 @@ test('Meteor Drop covers CPU gameplay, records, diagnostics, and a live room', (
   assert.match(flow, /visible: "Four connected!"[\s\S]*assertVisible: "You win"/);
   assert.match(flow, /tapOn: "Home"[\s\S]*tapOn: "Records"/);
   assert.match(flow, /assertVisible: "Solo vs CPU"[\s\S]*assertVisible: "Win"/);
-  assert.match(flow, /tapOn: "Live DDP connection"[\s\S]*visible: "DDP paused"/);
-  assert.match(flow, /visible: "DDP paused"[\s\S]*visible: "DDP connected"/);
+  assert.match(flow, /tapOn: "Live DDP connection"[\s\S]*text: "DDP paused"/);
+  assert.match(flow, /text: "DDP paused"[\s\S]*text: "DDP connected"/);
   assert.match(flow, /visible: "New app update available"[\s\S]*assertVisible: "Install update"/);
   assert.match(flow, /tapOn: "Create Live Match"[\s\S]*visible: "Waiting for rival"/);
   assert.match(flow, /assertVisible: "Share Room Code"/);

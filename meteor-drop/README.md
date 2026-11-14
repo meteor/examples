@@ -34,13 +34,18 @@ players are present.
 - Android hardware-back handling through `@capacitor/app`
 - Dedicated System screen for application, runtime, DDP, and HCP controls
 
+The release baseline is Meteor 3.6.1. The Capacitor integration is still
+unpublished, so browser and native targets currently require the local Meteor
+checkout with Capacitor support.
+
 ## Run In A Browser
 
 From this directory:
 
 ```sh
-npm install
-npm start
+export METEOR_CHECKOUT=/path/to/meteor
+"$METEOR_CHECKOUT/meteor" npm install
+"$METEOR_CHECKOUT/meteor" run
 ```
 
 Open `http://localhost:3000`.
