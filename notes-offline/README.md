@@ -2,28 +2,28 @@
 
 _Your notes, always available._
 
-An offline-first notes app built with Meteor 3.4.1-rc.1. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
+An offline-first notes app built with Meteor 3.6.1. Demonstrates IndexedDB persistence, optimistic UI, cached subscriptions, soft delete, and PWA support using the `jam:*` package family.
 
 Demo: https://notes-offline.sandbox.galaxycloud.app/
 
 ## Stack
 
-|              |                                               |
-| ------------ | --------------------------------------------- |
-| Runtime      | Meteor 3.4.1-rc.1                             |
-| Frontend     | React 19                                      |
-| UI           | Mantine UI                                    |
-| Offline      | jam:offline (IndexedDB, auto-sync, cross-tab) |
-| Methods      | jam:method (optimistic, offline queuing)      |
-| Pub/Sub      | jam:pub-sub (cached subscriptions)            |
-| Soft Delete  | jam:soft-delete                               |
-| Validation   | Zod                                           |
-| PWA          | Workbox (via workbox-webpack-plugin + Rspack) |
-| i18n         | Lingui (SWC macro + minimal JSON catalogs)    |
-| Tests        | Mocha                                         |
+|              |                                                                   |
+| ------------ | ----------------------------------------------------------------- |
+| Runtime      | Meteor 3.6.1                                                      |
+| Frontend     | React 19                                                          |
+| UI           | Mantine UI                                                        |
+| Offline      | jam:offline (IndexedDB, auto-sync, cross-tab)                     |
+| Methods      | jam:method (optimistic, offline queuing)                          |
+| Pub/Sub      | jam:pub-sub (cached subscriptions)                                |
+| Soft Delete  | jam:soft-delete                                                   |
+| Validation   | Zod                                                               |
+| PWA          | Workbox (via workbox-webpack-plugin + Rspack)                     |
+| i18n         | Lingui (SWC macro + minimal JSON catalogs)                        |
+| Tests        | Mocha                                                             |
 | Code Quality | ESLint (flat config: react, hooks, jsx-a11y, import-x) + Prettier |
-| E2E          | Playwright                                    |
-| Build        | Rspack                                        |
+| E2E          | Playwright                                                        |
+| Build        | Rspack                                                            |
 
 ## Features
 
@@ -145,3 +145,10 @@ To add a new locale, append it to `locales` in `lingui.config.js`, add it to `SU
 - [Mantine UI](https://mantine.dev/) · [Workbox](https://developer.chrome.com/docs/workbox)
 - [jam:offline](https://docs.meteor.com/community-packages/offline) · [jam:method](https://docs.meteor.com/community-packages/jam-method) · [jam:pub-sub](https://docs.meteor.com/community-packages/pub-sub)
 - [LinguiJS](https://lingui.dev/) · [@lingui/swc-plugin](https://lingui.dev/ref/swc-plugin)
+
+## Native Meteor types
+
+This example keeps JavaScript. Run `meteor npm run types` after installing or
+changing Meteor packages to generate `.meteor/types` for editor completion through
+`jsconfig.json`. Native declarations replace `@types/meteor`; generated files are
+ignored by Git. This command generates declarations and does not type-check the app.

@@ -78,3 +78,7 @@ _build
 # Playwright
 test-results/
 playwright-report/
+
+# Meteor Modern-Tools build context directories
+*/build-assets*
+*/build-chunks*

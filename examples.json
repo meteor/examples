@@ -17,8 +17,8 @@
       "Formik",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Apr/29/2026",
-    "meteorVersion": "3.4.1"
+    "lastUpdatedAt": "Nov/10/2026",
+    "meteorVersion": "3.6"
   },
   {
     "title": "Task Manager",
@@ -33,6 +33,7 @@
     "stack": [
       "Meteor",
       "Rspack",
+      "TypeScript",
       "React",
       "Meteor-RPC",
       "shadcn/ui",
@@ -43,8 +44,8 @@
       "Biome",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Notes Offline",
@@ -73,7 +74,37 @@
       "Prettier",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
+  },
+  {
+    "title": "Meteor Drop",
+    "slug": "meteor-drop",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/meteor-drop",
+    "isInternal": true,
+    "internalPath": "meteor-drop",
+    "why": "Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "React",
+      "Konsta UI",
+      "Capacitor",
+      "App",
+      "Haptics",
+      "Network",
+      "Share",
+      "Meteor Capacitor HCP",
+      "MongoDB",
+      "Mocha",
+      "oxlint",
+      "Playwright",
+      "Maestro"
+    ],
+    "lastUpdatedAt": "Jul/23/2026",
     "meteorVersion": "3.4.1"
   },
   {
@@ -142,36 +173,6 @@
     "meteorVersion": "3.4.1"
   },
   {
-    "title": "Meteor Drop",
-    "slug": "meteor-drop",
-    "demo": null,
-    "tutorial": null,
-    "repository": "meteor/examples",
-    "repositoryUrl": "https://github.com/meteor/examples/tree/main/meteor-drop",
-    "isInternal": true,
-    "internalPath": "meteor-drop",
-    "why": "Promotion-ready four-in-a-row game with solo CPU and live room play, Konsta mobile navigation, reactive DDP board sync, Capacitor haptics/sharing, and separate runtime/DDP/HCP diagnostics",
-    "stack": [
-      "Meteor",
-      "Rspack",
-      "React",
-      "Konsta UI",
-      "Capacitor",
-      "App",
-      "Haptics",
-      "Network",
-      "Share",
-      "Meteor Capacitor HCP",
-      "MongoDB",
-      "Mocha",
-      "oxlint",
-      "Playwright",
-      "Maestro"
-    ],
-    "lastUpdatedAt": "Jul/23/2026",
-    "meteorVersion": "3.4.1"
-  },
-  {
     "title": "Simple Blog",
     "slug": "simple-blog",
     "demo": null,
@@ -205,14 +206,15 @@
     "stack": [
       "Meteor",
       "Rspack",
+      "TypeScript",
       "React",
       "MUI (Material UI)",
       "Mocha",
       "oxlint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Parties",
@@ -233,8 +235,8 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -249,6 +251,7 @@
     "stack": [
       "Meteor",
       "Rspack",
+      "TypeScript",
       "Svelte 5",
       "Skeleton UI",
       "Tailwind CSS v4",
@@ -259,8 +262,8 @@
       "Mocha",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Apr/21/2026",
-    "meteorVersion": "3.4.1"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Welcome Meteor Cordova",
@@ -278,5 +281,28 @@
     ],
     "lastUpdatedAt": "Apr/29/2026",
     "meteorVersion": "3.4.1"
+  },
+  {
+    "title": "Instrumentation Dashboard",
+    "slug": "instrumentation-dashboard",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/instrumentation-dashboard",
+    "isInternal": true,
+    "internalPath": "instrumentation-dashboard",
+    "why": "Admin dashboard built on Meteor's instrumentation package: method calls, latency percentiles, errors and DDP connections, with bounded storage that works across several server instances",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze 3",
+      "Chart.js",
+      "MongoDB",
+      "Mocha",
+      "RSLint",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   }
 ]
