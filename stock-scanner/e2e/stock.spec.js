@@ -80,9 +80,11 @@ test.describe('Stock Scanner', () => {
     await expect(page.getByRole('switch', { name: 'Live DDP connection' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Reconnect now' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Preview HCP update' })).toBeVisible();
-    await expect(page.getByLabel('Native ready')).toBeVisible();
-    await expect(page.getByLabel(/DDP connected|DDP connecting/)).toBeVisible();
-    await expect(page.getByLabel(/Meteor.isCapacitor/)).toBeVisible();
+    await expect(page.getByRole('status', { name: 'Native ready' })).toBeVisible();
+    await expect(page.getByRole('status', { name: 'Native ready' })).toHaveText('Native ready');
+    await expect(page.getByRole('status', { name: /DDP connected|DDP connecting/ })).toBeVisible();
+    await expect(page.getByRole('status', { name: /DDP connected|DDP connecting/ })).toHaveText(/DDP connected|DDP connecting/);
+    await expect(page.getByRole('status', { name: /Meteor.isCapacitor/ })).toBeVisible();
   });
 
   test('keeps mobile scan controls comfortable to tap', async ({ page }) => {

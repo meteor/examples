@@ -10,12 +10,12 @@ export default function NativeStatus() {
 
   return (
     <div className="native-status">
-      <span className="status-pill" aria-label="Native ready">Ready to file</span>
-      <span className="status-pill" aria-label={ddpLabel}>
-        {connected ? 'Live queue' : 'Queue syncing'}
+      <span className="status-pill" role="status" aria-label="Native ready">Native ready</span>
+      <span className="status-pill" role="status" aria-label={ddpLabel}>
+        {ddpLabel}
       </span>
-      <span className="status-pill" aria-label={capacitorLabel}>
-        {Meteor.isCapacitor ? 'Phone shell' : 'Browser preview'}
+      <span className="status-pill" role="status" aria-label={capacitorLabel}>
+        {capacitorLabel}
       </span>
     </div>
   );

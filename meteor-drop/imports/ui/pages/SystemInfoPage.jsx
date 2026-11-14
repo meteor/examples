@@ -2,9 +2,9 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Button, List, ListItem } from 'konsta/react';
 
-function StatusPill({ label, value, ariaLabel }) {
+function StatusPill({ label, value }) {
   return (
-    <span className="status-pill" aria-label={ariaLabel}>
+    <span className="status-pill" role="status" aria-label={value}>
       <strong>{label}</strong>
       <span>{value}</span>
     </span>
@@ -52,21 +52,18 @@ export function SystemInfoPage({
 
         <section className="system-section">
           <h2>Runtime</h2>
-          <div className="system-status" aria-label="Native status">
+          <div className="system-status" role="group" aria-label="Native status">
             <StatusPill
               label="Native"
-              value={appInfo.native ? 'Ready' : 'Preview'}
-              ariaLabel={appInfo.native ? 'Native ready' : 'Native browser preview'}
+              value={appInfo.native ? 'Native ready' : 'Native browser preview'}
             />
             <StatusPill
               label="DDP"
-              value={ddpStatusValue}
-              ariaLabel={ddpReadyLabel}
+              value={ddpReadyLabel}
             />
             <StatusPill
               label="Mode"
-              value={appInfo.native ? 'Phone shell' : 'Browser preview'}
-              ariaLabel={capacitorLabel}
+              value={capacitorLabel}
             />
           </div>
           <List inset strong>

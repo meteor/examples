@@ -95,6 +95,11 @@ location permissions.
 
 ## Run Native Smoke
 
+Stock Scanner creates a unique SKU for each flow run, so its low-stock assertion
+continues to test the newly created item when the server already has demo data.
+Meteor Drop checks the game grid by its HTML id on Android and its accessible
+name on iOS, matching the hierarchy each platform exposes to Maestro.
+
 In one terminal, start the target app:
 
 ```sh

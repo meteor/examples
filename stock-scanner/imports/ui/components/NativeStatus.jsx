@@ -10,12 +10,13 @@ export default function NativeStatus() {
   const capacitorLabel = Meteor.isCapacitor ? 'Meteor.isCapacitor true' : 'Meteor.isCapacitor false';
 
   return (
-    <Stack className="native-status" direction="row" aria-label="Native status">
-      <Chip size="small" label="Ready for floor count" aria-label="Native ready" variant="outlined" />
-      <Chip size="small" label={connected ? 'Live inventory sync' : 'Syncing inventory'} aria-label={ddpLabel} />
+    <Stack className="native-status" direction="row" role="group" aria-label="Native status">
+      <Chip size="small" label="Native ready" role="status" aria-label="Native ready" variant="outlined" />
+      <Chip size="small" label={ddpLabel} role="status" aria-label={ddpLabel} />
       <Chip
         size="small"
-        label={Meteor.isCapacitor ? 'Mobile shell' : 'Browser preview'}
+        label={capacitorLabel}
+        role="status"
         aria-label={capacitorLabel}
         variant="outlined"
       />

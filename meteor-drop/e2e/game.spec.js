@@ -104,7 +104,8 @@ test('keeps technical controls on System screen with HCP review flow', async ({ 
   await page.getByRole('link', { name: 'System' }).click();
 
   await expect(page.getByRole('heading', { name: 'System information' })).toBeVisible();
-  await expect(page.getByLabel(/Meteor\.isCapacitor/)).toBeVisible();
+  await expect(page.getByRole('status', { name: /Meteor\.isCapacitor/ })).toBeVisible();
+  await expect(page.getByRole('status', { name: /Meteor\.isCapacitor/ })).toContainText(/Meteor\.isCapacitor/);
   await expect(page.getByText(/DDP/).first()).toBeVisible();
   await page.getByRole('button', { name: 'Preview HCP update' }).click();
   await expect(page.getByRole('dialog', { name: 'New app update available' })).toBeVisible();

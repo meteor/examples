@@ -1,5 +1,7 @@
 appId: com.meteor.examples.stockscanner
 ---
+# Keep the newly scanned item independent of earlier runs against this server.
+- evalScript: ${output.nativeSku = 'SKU-NATIVE-' + new Date().getTime()}
 - launchApp:
     clearState: true
 - extendedWaitUntil:
@@ -59,13 +61,13 @@ appId: com.meteor.examples.stockscanner
       - tapOn: "Open navigation"
 - tapOn: "Inventory"
 - tapOn: "Manual SKU"
-- inputText: "SKU-NATIVE-1"
+- inputText: ${output.nativeSku}
 - hideKeyboard
 - tapOn: "Add manual SKU"
 - extendedWaitUntil:
-    visible: "Open SKU-NATIVE-1"
+    visible: ${'Open ' + output.nativeSku}
     timeout: 10000
 - tapOn: "Show low stock"
 - extendedWaitUntil:
-    visible: "Open SKU-NATIVE-1"
+    visible: ${'Open ' + output.nativeSku}
     timeout: 10000

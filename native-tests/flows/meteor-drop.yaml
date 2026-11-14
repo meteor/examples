@@ -45,7 +45,18 @@ appId: com.meteor.examples.meteordrop
 - extendedWaitUntil:
     visible: "Your turn"
     timeout: 15000
-- assertVisible: "Meteor Drop board"
+# Android exposes the grid's HTML id; iOS exposes its accessible name.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: "meteor-drop-board"
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - assertVisible: "Meteor Drop board"
 - extendedWaitUntil:
     visible: "Drop meteor in column 4"
     timeout: 10000
