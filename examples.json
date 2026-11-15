@@ -209,5 +209,31 @@
     ],
     "lastUpdatedAt": "Nov/01/2026",
     "meteorVersion": "3.6"
+  },
+  {
+    "title": "Team Appointments",
+    "slug": "team-appointments",
+    "demo": null,
+    "tutorial": null,
+    "repository": "meteor/examples",
+    "repositoryUrl": "https://github.com/meteor/examples/tree/main/team-appointments",
+    "isInternal": true,
+    "internalPath": "team-appointments",
+    "why": "A shared appointment book for a small team: live calendar, server-side list, who is on each page with their pointer, and roles for who changes what, built from three Blaze packages",
+    "stack": [
+      "Meteor",
+      "Rspack",
+      "Blaze 3.1",
+      "dupontbertrand:calendar",
+      "dupontbertrand:table",
+      "dupontbertrand:presence",
+      "roles",
+      "MongoDB",
+      "Mocha",
+      "RSLint",
+      "Playwright"
+    ],
+    "lastUpdatedAt": "Nov/14/2026",
+    "meteorVersion": "3.6"
   }
 ]

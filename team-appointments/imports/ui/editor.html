@@ -1,0 +1,31 @@
+<template name="appointmentEditor">
+  <dialog class="editor" aria-labelledby="editor-title" closedby="any">
+    {{#with opened}}
+      <form class="editor-form">
+        <h2 id="editor-title">{{#if canEdit}}Edit the appointment{{else}}Appointment{{/if}}</h2>
+        <p class="when">{{when}} · {{#with owner}}<span class="owner" style="--who: {{color}}">{{name}}</span>{{/with}}</p>
+        {{#each person in alsoOpen}}
+          <p class="also"><span class="owner" style="--who: {{person.color}}">{{person.name}}</span> has it open too.</p>
+        {{/each}}
+        {{#if gone}}
+          <p class="warning">Someone deleted this appointment.</p>
+        {{else if changedSince}}
+          <p class="warning">Someone changed it since you opened it. <button type="button" class="reload">Show their version</button></p>
+        {{/if}}
+        <label>Title <input name="title" value="{{title}}" maxlength="80" required disabled="{{readOnly}}"></label>
+        <label>Client <input name="client" value="{{client}}" maxlength="80" disabled="{{readOnly}}"></label>
+        <label>Notes <textarea name="notes" rows="4" maxlength="1000" disabled="{{readOnly}}">{{notes}}</textarea></label>
+        {{#if error}}<p class="error" role="alert">{{error}}</p>{{/if}}
+        <div class="actions">
+          {{#if canEdit}}
+            <button type="submit" class="primary">Save</button>
+            <button type="button" class="delete">{{#if confirming}}Delete for good{{else}}Delete{{/if}}</button>
+          {{/if}}
+          <button type="button" class="close">Close</button>
+        </div>
+      </form>
+    {{else}}
+      <p class="muted">Loading…</p>
+    {{/with}}
+  </dialog>
+</template>

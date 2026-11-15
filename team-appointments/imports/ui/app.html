@@ -1,0 +1,31 @@
+<template name="app">
+  <header class="top">
+    <h1>Team appointments</h1>
+    <nav aria-label="Pages">
+      <a href="#calendar" aria-current="{{current 'calendar'}}">Calendar</a>
+      <a href="#list" aria-current="{{current 'list'}}">List</a>
+    </nav>
+    <div class="here">
+      {{#if currentUser}}{{> presenceAvatars room=room label="Also on this page"}}{{/if}}
+    </div>
+    <label class="who">Signed in as
+      <select class="sign-in">
+        {{#each member in team}}
+          <option value="{{member.username}}" selected="{{isMe member.username}}">{{member.name}}, {{member.role}}</option>
+        {{/each}}
+      </select>
+    </label>
+  </header>
+
+  <p class="notice" role="status">{{#if notice}}{{notice}} <button type="button" class="dismiss" aria-label="Dismiss">×</button>{{/if}}</p>
+
+  <main>
+    {{#if currentUser}}
+      {{#if onList}}{{> appointmentList}}{{else}}{{> appointmentCalendar}}{{/if}}
+    {{else}}
+      <p class="muted">Signing in…</p>
+    {{/if}}
+  </main>
+
+  {{> appointmentEditor}}
+</template>

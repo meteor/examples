@@ -1,0 +1,17 @@
+<template name="appointmentCalendar">
+  {{#presenceArea room=room class="calendar-area"}}
+    {{> blazeCalendar events=appointments eventTemplate="appointmentEvent"
+        onMove=move onSelect=create onClick=open onRange=setRange onError=showError
+        eventColor=eventColor canMove=canMove canSelect=canSelect
+        businessHours=businessHours nowIndicator=true}}
+  {{/presenceArea}}
+  <p class="hint">{{#if mayCreate}}Select empty time to add an appointment, drag one to move it, click it to edit it.{{else}}You are a viewer: you see the calendar and who is on it, but cannot change it.{{/if}} Open this page in another browser, signed in as someone else, to see their pointer.</p>
+</template>
+
+<template name="appointmentEvent">
+  <span class="bc-event-title">{{title}}</span>
+  {{#if client}}<span class="event-client">{{client}}</span>{{/if}}
+  {{#each person in editors}}
+    <span class="editing" style="--who: {{person.color}}">{{person.name}} is editing</span>
+  {{/each}}
+</template>

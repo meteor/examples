@@ -4,7 +4,7 @@ With Meteor 3.4 introducing the Rspack bundler, modern build optimizations, and 
 
 Each example doubles as a reference for [community packages](https://docs.meteor.com/community-packages/) and the conventions you'll find in real-world Meteor apps. Several apps push the Rspack bundler further to integrate with the wider JS ecosystem (PostCSS, SWC, Workbox, Lingui, Tailwind v4, and more), replacing legacy Meteor approaches with tooling the rest of the JavaScript world already uses.
 
-The six apps maintained in this repository target Meteor 3.6. Task Manager,
+The eight apps maintained in this repository target Meteor 3.6. Task Manager,
 Tic-Tac-Toe, and Complex Todos demonstrate native Meteor TypeScript declarations
 with a `meteor npm run typecheck` command; Notes Offline uses them for JavaScript
 editor support. External examples below retain their independently maintained versions.
@@ -27,6 +27,7 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
   - [Complex Todos (Svelte)](#complex-todos-svelte)
   - [Welcome Meteor Cordova](#welcome-meteor-cordova)
   - [Instrumentation Dashboard](#instrumentation-dashboard)
+  - [Team Appointments](#team-appointments)
 - [Other examples](#other-examples)
   - [React Tutorial App](#react-tutorial-app)
   - [Blaze Tutorial App](#blaze-tutorial-app)
@@ -107,6 +108,13 @@ the compatible fallback. Hosts that meet the requirement can keep `uws` enabled.
 - Why: Admin dashboard built on Meteor's instrumentation package: method calls, latency percentiles, errors and DDP connections, with bounded storage that works across several server instances
 - Stack: Meteor, Rspack, Blaze 3, Chart.js, MongoDB, Mocha, RSLint, Playwright
 - Last Updated At: Nov/01/2026
+- Meteor Version: 3.6
+
+### Team Appointments
+- Repository: [meteor/examples/team-appointments](./team-appointments)
+- Why: A shared appointment book for a small team: live calendar, server-side list, who is on each page with their pointer, and roles for who changes what, built from three Blaze packages
+- Stack: Meteor, Rspack, Blaze 3.1, dupontbertrand:calendar, dupontbertrand:table, dupontbertrand:presence, roles, MongoDB, Mocha, RSLint, Playwright
+- Last Updated At: Nov/14/2026
 - Meteor Version: 3.6
 
 ## Other examples

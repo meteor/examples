@@ -1,0 +1,11 @@
+<template name="appointmentList">
+  <div class="filters">
+    <label><input type="checkbox" class="mine" checked="{{filter.mine}}"> Mine only</label>
+    <label><input type="checkbox" class="upcoming" checked="{{filter.upcoming}}"> Upcoming only</label>
+  </div>
+  {{> blazeTable table=table filter=filter onRowClick=open onError=showError caption="Appointments" class="appointments"}}
+</template>
+
+<template name="ownerCell">
+  {{#with owner}}<span class="owner" style="--who: {{color}}">{{name}}</span>{{/with}}
+</template>
