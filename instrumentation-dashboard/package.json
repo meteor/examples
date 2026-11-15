@@ -15,6 +15,7 @@
     "@babel/runtime": "^7.23.5",
     "@swc/helpers": "^0.5.23",
     "chart.js": "^4.5.1",
+    "gridstack": "^14.1.0",
     "jquery": "^3.7.1",
     "meteor-node-stubs": "^1.2.30"
   },

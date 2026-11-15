@@ -11,5 +11,6 @@ describe('instrumentation-dashboard', function () {
     require('./collector-core.tests');
     require('./snapshot-core.tests');
     require('./integration.tests');
+    require('./layout.tests');
   }
 });

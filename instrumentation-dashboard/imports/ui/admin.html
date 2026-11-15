@@ -7,18 +7,15 @@
           <p class="meta">Last {{minutes windowMs}} minutes{{#if eventsSince}}, events kept since {{time eventsSince}}{{/if}} · updated at {{time computedAt}}</p>
         {{/with}}
       </div>
-      {{#if isDevelopment}}
-        <button type="button" class="traffic">Generate sample traffic</button>
-      {{/if}}
+      <div class="admin-actions">
+        <button type="button" class="reset-layout">Reset layout</button>
+        {{#if isDevelopment}}
+          <button type="button" class="traffic">Generate sample traffic</button>
+        {{/if}}
+      </div>
     </header>
 
     {{#with snapshot}}
-      <div class="tiles">
-        <div class="tile"><span class="label">Method calls</span><span class="value" data-tile="calls">{{calls}}</span></div>
-        <div class="tile"><span class="label">p95 duration</span><span class="value" data-tile="p95">{{ms p95}}</span></div>
-        <div class="tile"><span class="label">Error rate</span><span class="value" data-tile="error-rate">{{percent errorRate}}</span></div>
-        <div class="tile"><span class="label">DDP connections</span><span class="value" data-tile="connections">{{connections}}</span></div>
-      </div>
       {{#if dropped}}
         <p class="warning" role="status">{{dropped}} events were dropped since the servers started because the collector queue was full.</p>
       {{/if}}
@@ -29,45 +26,77 @@
       <p class="hint">Waiting for the first snapshot…</p>
     {{/with}}
 
-    <div class="chart"><canvas id="calls-chart" aria-label="Method calls and errors per minute"></canvas></div>
-
-    {{#with snapshot}}
-      <h2>Methods</h2>
-      <table class="methods">
-        <thead><tr><th>Method</th><th>Calls</th><th>Errors</th><th>p50</th><th>p95</th></tr></thead>
-        <tbody>
-          {{#each method in methods}}
-            <tr><td>{{method.name}}</td><td>{{method.calls}}</td><td>{{method.errors}}</td><td>{{ms method.p50}}</td><td>{{ms method.p95}}</td></tr>
-          {{else}}
-            <tr><td colspan="5">No method calls in this window.</td></tr>
-          {{/each}}
-        </tbody>
-      </table>
-
-      <h2>Recent events</h2>
-      <ol class="events">
-        {{#each recent}}
-          <li>
-            <button type="button" class="inspect" data-type="{{type}}">
-              <span class="type">{{type}}</span>
-              <span class="name">{{name}}</span>
-              <span class="duration">{{ms durationMs}}</span>
-              <span class="trace">{{shortId traceId}}</span>
-            </button>
-          </li>
-        {{/each}}
-      </ol>
-
-      <p class="instances">
-        {{#each instance in instances}}
-          <span>{{instance._id}}: {{instance.connections}} connections, {{instance.publications}} subscriptions</span>
-        {{/each}}
-      </p>
-    {{/with}}
+    <p class="hint">Drag a panel by its title, resize it from its corner: everyone who has the dashboard open sees the new layout.</p>
+    {{> gridStack items=panels itemTemplate="adminPanel" options=gridOptions onChange=saveLayout}}
 
     <dialog class="inspector" aria-label="Event payload">
       <pre>{{inspected}}</pre>
       <form method="dialog"><button type="submit">Close</button></form>
     </dialog>
   </section>
+</template>
+
+<!-- One grid item: a title to drag it by, and the panel's own template. -->
+<template name="adminPanel">
+  <section class="panel" data-panel="{{id}}" aria-labelledby="panel-{{id}}">
+    <h2 class="panel-title" id="panel-{{id}}">{{title}}</h2>
+    <div class="panel-body">{{> Template.dynamic template=template}}</div>
+  </section>
+</template>
+
+<template name="adminTiles">
+  {{#with snapshot}}
+    <div class="tiles">
+      <div class="tile"><span class="label">Method calls</span><span class="value" data-tile="calls">{{calls}}</span></div>
+      <div class="tile"><span class="label">p95 duration</span><span class="value" data-tile="p95">{{ms p95}}</span></div>
+      <div class="tile"><span class="label">Error rate</span><span class="value" data-tile="error-rate">{{percent errorRate}}</span></div>
+      <div class="tile"><span class="label">DDP connections</span><span class="value" data-tile="connections">{{connections}}</span></div>
+    </div>
+  {{/with}}
+</template>
+
+<template name="adminChart">
+  <div class="chart"><canvas id="calls-chart" aria-label="Method calls and errors per minute"></canvas></div>
+</template>
+
+<template name="adminInstances">
+  {{#with snapshot}}
+    <ul class="instances">
+      {{#each instance in instances}}
+        <li><span class="instance-id">{{instance._id}}</span> {{instance.connections}} connections, {{instance.publications}} subscriptions</li>
+      {{/each}}
+    </ul>
+  {{/with}}
+</template>
+
+<template name="adminMethods">
+  {{#with snapshot}}
+    <table class="methods">
+      <thead><tr><th>Method</th><th>Calls</th><th>Errors</th><th>p50</th><th>p95</th></tr></thead>
+      <tbody>
+        {{#each method in methods}}
+          <tr><td>{{method.name}}</td><td>{{method.calls}}</td><td>{{method.errors}}</td><td>{{ms method.p50}}</td><td>{{ms method.p95}}</td></tr>
+        {{else}}
+          <tr><td colspan="5">No method calls in this window.</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/with}}
+</template>
+
+<template name="adminEvents">
+  {{#with snapshot}}
+    <ol class="events">
+      {{#each recent}}
+        <li>
+          <button type="button" class="inspect" data-type="{{type}}">
+            <span class="type">{{type}}</span>
+            <span class="name">{{name}}</span>
+            <span class="duration">{{ms durationMs}}</span>
+            <span class="trace">{{shortId traceId}}</span>
+          </button>
+        </li>
+      {{/each}}
+    </ol>
+  {{/with}}
 </template>
