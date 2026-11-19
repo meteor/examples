@@ -53,7 +53,7 @@ build, runtime, DDP, HCP, and diagnostic controls stay off the community screens
 The Meteor release that contains the `capacitor` package is not published yet.
 Until it is, launch the native app from the examples repository root. The shared
 runner verifies the local `capacitor-integration` checkout, installs dependencies,
-links local Meteor npm packages, ensures the platform exists, and starts the full
+installs local Meteor npm packages, ensures the platform exists, and starts the full
 native target.
 
 ```bash
@@ -76,13 +76,12 @@ bundled unless `METEOR_CAPACITOR_MODE=livereload` is set.
 
 Run `npm run run:native -- --help` for checkout overrides, setup skip options,
 and dry-run mode. For a browser preview, run
-`PATH=/Users/igcogi/meteor/meteor:$PATH npm start` in this directory, then visit
+`"$METEOR_BIN" run` in this directory, then visit
 `http://localhost:3000/`.
 
 Once the Capacitor integration is included in a published Meteor release,
-update to that release and remove the checkout prefix and local npm links. The
-manifest and lockfile already use published npm versions; the runner selects
-local packages without saving machine-specific paths.
+update to that release and reinstall npm dependencies. The launcher preserves
+the published versions in the manifest and lockfile.
 
 | Command | What it does |
 |---|---|
@@ -102,7 +101,7 @@ binaries with `npx playwright install`.
 
 Requires Capacitor 8, Node.js 22+, JDK 21 with Android SDK 36 for Android, and
 Xcode 26+ for iOS. While the Meteor integration is unpublished, use the shared
-[checkout launcher](../native-tests/README.md#run-native-apps), which links both
+[checkout launcher](../native-tests/README.md#run-native-apps), which installs both
 `@meteorjs/capacitor` and `@meteorjs/rspack`. Existing Capacitor 7 projects need
 the [native migration](../native-tests/README.md#prerequisites) before launching.
 
@@ -112,11 +111,11 @@ example; keep app behavior in the Meteor source and document native permission
 changes that must be applied after `meteor add-platform`.
 
 ```bash
-PATH=/Users/igcogi/meteor/meteor:$PATH meteor add-platform android
-PATH=/Users/igcogi/meteor/meteor:$PATH meteor run android
+"$METEOR_BIN" add-platform android
+"$METEOR_BIN" run android
 
-PATH=/Users/igcogi/meteor/meteor:$PATH meteor add-platform ios
-PATH=/Users/igcogi/meteor/meteor:$PATH meteor run ios
+"$METEOR_BIN" add-platform ios
+"$METEOR_BIN" run ios
 ```
 
 Permissions are requested only after explicit user actions. The native smoke
@@ -217,14 +216,14 @@ e2e/
 Run the app-level checks from this directory:
 
 ```bash
-PATH=/Users/igcogi/meteor/meteor:$PATH npm run lint
-PATH=/Users/igcogi/meteor/meteor:$PATH npm run test:headless
-PATH=/Users/igcogi/meteor/meteor:$PATH CI=1 npm run e2e:headless
+PATH="$METEOR_CHECKOUT:$PATH" npm run lint
+PATH="$METEOR_CHECKOUT:$PATH" npm run test:headless
+PATH="$METEOR_CHECKOUT:$PATH" CI=1 npm run e2e:headless
 ```
 
 From the repository root, `npm run test:mobile-examples` runs the same lint,
 Meteor tests, and Playwright checks for both mobile examples with the checkout
-Meteor binary and local npm links.
+Meteor binary and local npm packages.
 
 Native smoke flows live in `../native-tests`. Start the native app first, then
 run the matching Maestro command from the repository root:
@@ -245,9 +244,9 @@ writes reusable media to the external `NATIVE_SHOWCASE_OUTPUT_DIR` library.
 ## Troubleshooting
 
 - If `meteor run` does not find the `capacitor` package, confirm that
-  `/Users/igcogi/meteor/meteor` is first on `PATH`.
-- If npm cannot resolve `@meteorjs/capacitor`, rerun the local `npm link` command
-  after `meteor npm install`.
+  `METEOR_BIN` points to the Capacitor integration checkout.
+- If a checkout npm package is missing or stale, rerun the shared native launcher
+  without `--skip-install`.
 - If Playwright opens the wrong app on port 3000, stop any stale Meteor or native
   test process with `lsof -nP -iTCP:3000 -sTCP:LISTEN`.
 - If camera or location actions fail on native, recheck the iOS usage strings and

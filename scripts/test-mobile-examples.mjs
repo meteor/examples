@@ -5,7 +5,8 @@ import nativeLauncher from '../native-tests/scripts/run-native.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
-const { meteorBin, localPackageDirs } = nativeLauncher.resolveRuntime({}, { examplesRoot: repoRoot });
+const runtime = nativeLauncher.resolveRuntime({}, { examplesRoot: repoRoot });
+const { meteorBin } = runtime;
 const appNames = ['stock-scanner', 'city-issue-reporter', 'meteor-drop'];
 
 function run(command, args, options = {}) {
@@ -25,16 +26,23 @@ function run(command, args, options = {}) {
   }
 }
 
-function linkLocalPackages(appDir) {
-  run('npm', ['link', '--no-save', ...localPackageDirs], { cwd: appDir });
+async function installLocalPackages(appDir) {
+  const result = await nativeLauncher.spawnStep({
+    action: 'install-local-packages',
+    meteorBin,
+    packageDirs: runtime.localPackageDirs,
+    cwd: appDir,
+  });
+  if (result.code !== 0 || result.signal) {
+    throw new Error(`Checkout package installation failed in ${appDir}`);
+  }
 }
 
 for (const appName of appNames) {
   const appDir = path.join(repoRoot, appName);
-  run(meteorBin, ['npm', 'install', '--no-audit', '--no-fund'], { cwd: appDir });
-  linkLocalPackages(appDir);
+  await installLocalPackages(appDir);
   run('npm', ['run', 'lint'], { cwd: appDir });
   run('npm', ['run', 'test:headless'], { cwd: appDir });
-  linkLocalPackages(appDir);
+  await installLocalPackages(appDir);
   run('npm', ['run', 'e2e:headless'], { cwd: appDir, env: { CI: '1' } });
 }

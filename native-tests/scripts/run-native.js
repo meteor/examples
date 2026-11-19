@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { spawn, spawnSync } = require('node:child_process');
 const { getAppConfig } = require('./app-config');
@@ -149,22 +150,18 @@ function buildCommandPlan(args, runtime, app, {
   const plan = [];
   const appName = app.name || args.appName;
   if (!args.skipInstall) {
-    const localPackageArgs = args.skipLink
-      ? []
-      : ['--no-save', '--package-lock=false', ...runtime.localPackageDirs];
-    plan.push({
+    plan.push(args.skipLink ? {
       label: 'install',
       command: runtime.meteorBin,
-      args: ['npm', 'install', '--no-audit', '--no-fund', ...localPackageArgs],
+      args: ['npm', 'install', '--no-audit', '--no-fund'],
       cwd: app.sourceDir,
-    });
-  }
-  if (!args.skipLink) {
-    plan.push({
-      label: 'link',
-      command: 'npm',
-      args: ['link', '--no-save', ...runtime.localPackageDirs],
+    } : {
+      label: 'install',
+      action: 'install-local-packages',
+      meteorBin: runtime.meteorBin,
+      packageDirs: runtime.localPackageDirs,
       cwd: app.sourceDir,
+      display: `install dependencies and checkout npm packages in ${app.sourceDir}`,
     });
   }
   if (!platformPresent) {
@@ -264,7 +261,7 @@ function validateRuntime(runtime, args, {
       `(checkout: ${runtime.checkoutDir})`,
     );
   }
-  if (!args.skipLink) {
+  if (!args.skipLink && !args.skipInstall) {
     for (const packageDir of runtime.localPackageDirs) {
       if (!fs.existsSync(packageDir)) {
         throw new Error(`Local npm package not found: ${packageDir}`);
@@ -288,6 +285,36 @@ async function spawnStep(step, {
   signalSource = process,
   spawnImpl = spawn,
 } = {}) {
+  if (step.action === 'install-local-packages') {
+    const packDir = fs.mkdtempSync(path.join(os.tmpdir(), 'meteor-native-packages-'));
+    const options = {
+      // Native icon generation uses sharp's bundled libvips, not a host install.
+      env: { ...env, SHARP_IGNORE_GLOBAL_LIBVIPS: env.SHARP_IGNORE_GLOBAL_LIBVIPS || '1' },
+      signalSource,
+      spawnImpl,
+    };
+    try {
+      const packed = await spawnStep({
+        command: step.meteorBin,
+        args: ['npm', 'pack', ...step.packageDirs, '--pack-destination', packDir, '--silent'],
+        cwd: step.cwd,
+      }, options);
+      if (packed.code !== 0 || packed.signal) return packed;
+      const archives = fs.readdirSync(packDir)
+        .filter((name) => name.endsWith('.tgz'))
+        .map((name) => path.join(packDir, name));
+      if (archives.length !== step.packageDirs.length) {
+        throw new Error('npm pack did not produce all checkout packages');
+      }
+      return await spawnStep({
+        command: step.meteorBin,
+        args: ['npm', 'install', '--no-audit', '--no-fund', '--no-save', '--package-lock=false', ...archives],
+        cwd: step.cwd,
+      }, options);
+    } finally {
+      fs.rmSync(packDir, { recursive: true, force: true });
+    }
+  }
   if (step.action === 'ensure-capacitor-web-dir') {
     ensureCapacitorWebDir(step.app.sourceDir, { env });
     return { code: 0, signal: null };
@@ -355,7 +382,7 @@ Runner options:
   --expected-branch <name>  Override expected capacitor-integration branch
   --skip-branch-check       Allow an alternate or detached checkout
   --skip-install            Skip meteor npm install
-  --skip-link               Skip local npm package linking
+  --skip-link               Use declared npm packages instead of checkout packages
   --dry-run                 Print commands without running them
   --help, -h                Show this help
 

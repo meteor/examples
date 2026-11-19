@@ -54,7 +54,7 @@ Open `http://localhost:3000`.
 
 Requires Capacitor 8, Node.js 22+, JDK 21 with Android SDK 36 for Android, and
 Xcode 26+ for iOS. While the Meteor integration is unpublished, use the shared
-[checkout launcher](../native-tests/README.md#run-native-apps), which links both
+[checkout launcher](../native-tests/README.md#run-native-apps), which installs both
 `@meteorjs/capacitor` and `@meteorjs/rspack`. Existing Capacitor 7 projects need
 the [native migration](../native-tests/README.md#prerequisites) before launching.
 
@@ -65,9 +65,9 @@ npm run run:native:meteor-drop -- ios
 npm run run:native:meteor-drop -- android
 ```
 
-The manifest uses published npm versions. The native runner uses `npm link
---no-save` to select `@meteorjs/capacitor` and `@meteorjs/rspack` from your Meteor
-checkout without saving local paths in `package.json` or `package-lock.json`.
+The native runner installs fresh archives of `@meteorjs/capacitor` and
+`@meteorjs/rspack` from your checkout without changing `package.json` or
+`package-lock.json`. Rerun it after editing either checkout npm package.
 Set `METEOR_CHECKOUT` or pass `--meteor-checkout /path/to/meteor` to select a
 checkout outside the default adjacent `meteor` directory.
 

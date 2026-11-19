@@ -33,18 +33,33 @@ export PATH="$METEOR_CHECKOUT:$PATH"
 npm run test:mobile-examples
 ```
 
-This installs each app through the checkout Meteor binary, then runs lint,
-links local checkout npm packages with `npm link --no-save`, then runs lint,
-Meteor method tests, and Playwright web E2E with `CI=1`.
+This installs each app and fresh archives of both checkout npm packages through
+the checkout Meteor binary, then runs lint, Meteor method tests, and Playwright
+web E2E with `CI=1`.
 
 ## Run Native Apps
 
-From the repository root, launch any example through the adjacent Meteor
-checkout and its local Capacitor packages:
+Clone matching branches and initialize Meteor once:
+
+```sh
+mkdir meteor-native-workspace
+cd meteor-native-workspace
+git clone --branch feat/capacitor-mobile-examples https://github.com/meteor/examples.git examples
+git clone --recursive --branch capacitor-integration https://github.com/meteor/meteor.git meteor
+cd meteor
+./meteor --help
+export METEOR_CHECKOUT="$PWD"
+export METEOR_BIN="$METEOR_CHECKOUT/meteor"
+cd ../examples
+```
+
+For an existing Meteor checkout, run `git submodule update --init --recursive`
+in it first. Start an Android emulator in Android Studio or an iOS Simulator
+in Xcode before launching an example:
 
 ```sh
 npm run run:native -- stock-scanner ios
-npm run run:native -- civic-snap android
+npm run run:native -- civic-snap android -- --mobile-server http://10.0.2.2:3000
 npm run run:native -- meteor-drop ios
 ```
 
@@ -56,10 +71,14 @@ npm run run:native:civic-snap -- ios
 npm run run:native:meteor-drop -- android
 ```
 
-The launcher verifies that the checkout is on `capacitor-integration`, runs
-`meteor npm install`, links local `meteor-capacitor` and `meteor-rspack`
-packages, adds a missing platform, then starts `meteor run <platform>`. It never
-switches branches or removes generated native projects.
+The launcher verifies the `capacitor-integration` checkout, installs app
+dependencies and fresh archives of `meteor-capacitor` and `meteor-rspack`, adds a
+missing platform, then starts `meteor run <platform>`. It uses the checkout's
+npm throughout and preserves app manifests and lockfiles. Rerun it after editing
+either checkout npm package. It never switches branches or removes native projects.
+
+The first run can take several minutes. Open **System information** in the app
+and check **Native ready** and **DDP connected** before continuing.
 
 The launcher does not force a build mode. Meteor defaults to development; pass
 `-- --production` when validating a production bundle. Native mode remains

@@ -1,6 +1,10 @@
 {
   "name": "city-issue-reporter",
   "private": true,
+  "allowScripts": {
+    "@swc/core": true,
+    "sharp": true
+  },
   "scripts": {
     "start": "meteor run",
     "test": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha",

@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { EventEmitter } = require('node:events');
+const { execFileSync } = require('node:child_process');
 const {
   buildCommandPlan,
   executePlan,
@@ -204,24 +205,11 @@ test('builds setup and native run commands with passthrough', () => {
   }), [
     {
       label: 'install',
-      command: '/repo/meteor/meteor',
-      args: [
-        'npm',
-        'install',
-        '--no-audit',
-        '--no-fund',
-        '--no-save',
-        '--package-lock=false',
-        '/repo/meteor/capacitor',
-        '/repo/meteor/rspack',
-      ],
+      action: 'install-local-packages',
+      meteorBin: '/repo/meteor/meteor',
+      packageDirs: ['/repo/meteor/capacitor', '/repo/meteor/rspack'],
       cwd: app.sourceDir,
-    },
-    {
-      label: 'link',
-      command: 'npm',
-      args: ['link', '--no-save', '/repo/meteor/capacitor', '/repo/meteor/rspack'],
-      cwd: app.sourceDir,
+      display: `install dependencies and checkout npm packages in ${app.sourceDir}`,
     },
     {
       label: 'add-platform',
@@ -270,6 +258,49 @@ test('uses development builds by default and forwards explicit production flags'
     buildRun(['--', '--port', '3199']),
     ['run', 'android', '--port', '3199']
   );
+});
+
+test('installs fresh checkout snapshots with app-owned dependencies and preserves manifests', async (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'native-package-install-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const appDir = path.join(root, 'app');
+  const sourceDir = path.join(root, 'checkout-package');
+  const dependencyDir = path.join(root, 'dependency');
+  const env = { ...process.env, npm_config_prefix: path.join(root, 'global'), npm_config_cache: path.join(root, 'cache') };
+  for (const directory of [appDir, sourceDir, dependencyDir, env.npm_config_prefix]) fs.mkdirSync(directory);
+  fs.mkdirSync(path.join(env.npm_config_prefix, 'lib', 'node_modules'), { recursive: true });
+  fs.mkdirSync(path.join(env.npm_config_prefix, 'bin'));
+  fs.writeFileSync(path.join(dependencyDir, 'package.json'), JSON.stringify({ name: 'host-dependency', version: '1.0.0' }));
+  fs.writeFileSync(path.join(dependencyDir, 'index.js'), 'module.exports = "app dependency";');
+  execFileSync('npm', ['pack', dependencyDir, '--pack-destination', root, '--silent'], { cwd: root, env, stdio: 'pipe' });
+  fs.writeFileSync(path.join(sourceDir, 'package.json'), JSON.stringify({
+    name: 'checkout-probe',
+    version: '1.0.0',
+    dependencies: { 'host-dependency': `file:${path.join(root, 'host-dependency-1.0.0.tgz')}` },
+  }));
+  const manifest = JSON.stringify({ name: 'app', private: true });
+  const lock = JSON.stringify({ name: 'app', lockfileVersion: 3, packages: { '': { name: 'app' } } });
+  fs.writeFileSync(path.join(appDir, 'package.json'), manifest);
+  fs.writeFileSync(path.join(appDir, 'package-lock.json'), lock);
+  const meteorBin = path.join(root, 'meteor');
+  fs.writeFileSync(meteorBin, '#!/usr/bin/env node\n' +
+    'require("node:child_process").execFileSync("npm", process.argv.slice(3), {stdio:"inherit"});\n');
+  fs.chmodSync(meteorBin, 0o755);
+  const runtime = { meteorBin, localPackageDirs: [sourceDir] };
+  for (const marker of ['initial', 'updated']) {
+    fs.writeFileSync(path.join(sourceDir, 'index.js'),
+      `module.exports = { marker: '${marker}', dependency: require('host-dependency') };\n`);
+    const setup = buildCommandPlan(parseArgs(['stock-scanner', 'android']), runtime,
+      { sourceDir: appDir }, { platformPresent: true, nativeProjectPresent: true })
+      .filter((step) => step.label === 'install' || step.label === 'link');
+    assert.equal((await executePlan(setup, { env })).code, 0);
+    const installed = JSON.parse(execFileSync(process.execPath,
+      ['-e', 'console.log(JSON.stringify(require("checkout-probe")))'], { cwd: appDir, encoding: 'utf8' }));
+    assert.deepEqual(installed, { marker, dependency: 'app dependency' });
+    assert.equal(fs.lstatSync(path.join(appDir, 'node_modules', 'checkout-probe')).isSymbolicLink(), false);
+    assert.equal(fs.readFileSync(path.join(appDir, 'package.json'), 'utf8'), manifest);
+    assert.equal(fs.readFileSync(path.join(appDir, 'package-lock.json'), 'utf8'), lock);
+  }
 });
 
 test('skips optional setup commands and quotes dry-run output', () => {
