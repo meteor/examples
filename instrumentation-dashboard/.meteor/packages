@@ -28,3 +28,4 @@ rspack@1.4.0                  # Integrate Rspack into Meteor for client and serv
 instrumentation@0.0.1         # Read-only lifecycle events for methods, publications and DDP connections
 check@1.5.1                   # Argument validation for methods
 meteortesting:mocha     # Test driver
+dupontbertrand:gridstack@0.2.1

@@ -202,12 +202,13 @@
       "Rspack",
       "Blaze 3",
       "Chart.js",
+      "dupontbertrand:gridstack",
       "MongoDB",
       "Mocha",
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/13/2026",
+    "lastUpdatedAt": "Nov/14/2026",
     "meteorVersion": "3.6.1"
   }
 ]
