@@ -8,10 +8,11 @@ The point is the pattern, not the charts: observing an app without slowing its m
 
 | | |
 |---|---|
-| Runtime | Meteor 3.6 |
+| Runtime | Meteor 3.6.1 |
 | Observability | `instrumentation` (Meteor core) |
 | Frontend | Blaze 3 |
 | Chart | Chart.js 4 |
+| Layout | [`dupontbertrand:gridstack`](https://github.com/dupontbertrand/blaze-gridstack) (gridstack.js 14) |
 | Database | MongoDB |
 | Tests | Mocha (`meteortesting:mocha`), Playwright |
 | Code Quality | RSLint |
@@ -44,6 +45,7 @@ Before running E2E tests for the first time, install Playwright's browsers with 
 - The task app (`/`) adds, checks and removes tasks through methods and a publication: that is the traffic being observed.
 - The dashboard (`/admin`) shows, for the last 5 minutes, the number of method calls, the p95 duration, the error rate and the open DDP connections, a per-method table (calls, errors, p50, p95), a chart of calls and errors per minute over the last hour, and the 50 most recent events.
 - Clicking an event opens its payload as JSON text.
+- The panels can be dragged by their title and resized from their corner. The layout is saved and shared: every open dashboard follows a move at once. **Reset layout** puts them back. On a narrow screen they stack in one column, and that is not saved.
 - In development, **Generate sample traffic** makes twenty method calls, three of which fail validation on purpose.
 
 ## How it works
@@ -70,6 +72,7 @@ task app (/)                                  dashboard (/admin)
 - **Counters survive write failures.** Once the raw events are stored, their per-minute counters wait in memory until the rollup write succeeds. After a partial failure only the operations MongoDB reported as failed are retried.
 - **Several instances.** Every process writes into the same collections, tagged with its instance id. A compare-and-set lease on the snapshot document lets one process recompute the summary each round without a leader election, and any process can serve the dashboard.
 - **One document to publish.** The dashboard subscribes to a single summary document: counts, percentiles, the chart series and the 50 most recent events. Viewers never subscribe to the raw collections.
+- **A layout shared live.** The grid's `items` come from one `admin_layouts` document, so a move saved by one dashboard reaches the others through the publication. The grid's `onChange` saves what a person drags or resizes in the full 12-column grid; on a narrow screen the panels stack in one column, which the component does not report, and back at full width they go where the saved layout says. The Method stores positions only, each panel once, within the 12 columns and no smaller than the panel allows; titles and templates stay in the code (`imports/admin/layout.js`).
 - **Private by default.** Client IP addresses are not captured. Method arguments are not captured either, except for a projection on `tasks.insert` that records the length of the text, never the text itself (`imports/observability/policy.js`). The recent events do carry user ids, error messages and instance names, for the people `requireAdmin()` lets in.
 
 ## How it's structured
@@ -79,10 +82,11 @@ client/
   main.html, main.js    # Layout and the two pages, chosen by path
   main.css
 server/
-  main.js               # Starts the collector, publishes admin.snapshot
+  main.js               # Starts the collector, publishes admin.snapshot and admin.layout
 imports/
   admin/
     authorization.js    # requireAdmin(): the single place to plug real permissions
+    layout.js           # The panels, their default layout, the Methods that save and reset it
   api/tasks/            # Tasks collection, methods and publication
   observability/
     policy.js           # Instrumentation.configure() and the tasks.insert projection
@@ -92,7 +96,7 @@ imports/
     snapshot.js         # Bounded reads and the compare-and-set refresh
     server.js           # Storage setup (capped collection, TTL indexes) and startup
     settings.js         # Defaults, overridable in settings.json
-  ui/                   # Tasks page, admin page and chart
+  ui/                   # Tasks page, admin page (a grid of panels) and chart
 tests/                  # Unit tests and a server integration test (Mocha)
 e2e/                    # Playwright specs
 ```
@@ -123,4 +127,4 @@ e2e/                    # Playwright specs
 
 - [Meteor docs](https://docs.meteor.com/) · [Instrumentation API](https://docs.meteor.com/api/instrumentation)
 - [Blaze docs](https://www.blazejs.org/)
-- [Chart.js](https://www.chartjs.org/)
+- [Chart.js](https://www.chartjs.org/) · [gridstack.js](https://gridstackjs.com/)

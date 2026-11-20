@@ -44,8 +44,8 @@
       "Biome",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Notes Offline",
@@ -74,13 +74,13 @@
       "Prettier",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Simple Blog",
     "slug": "simple-blog",
-    "demo": null,
+    "demo": "https://example-simple-blog.sandbox.galaxycloud.app",
     "tutorial": null,
     "repository": "dupontbertrand/meteor-blog",
     "repositoryUrl": "https://github.com/dupontbertrand/meteor-blog",
@@ -95,8 +95,8 @@
       "Flow Router",
       "MJML"
     ],
-    "lastUpdatedAt": "Mar/24/2026",
-    "meteorVersion": "3.4"
+    "lastUpdatedAt": "Nov/14/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Tic-Tac-Toe",
@@ -118,8 +118,8 @@
       "oxlint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Parties",
@@ -140,8 +140,8 @@
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Complex Todos (Svelte)",
@@ -167,8 +167,8 @@
       "Mocha",
       "MongoDB"
     ],
-    "lastUpdatedAt": "Nov/10/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/13/2026",
+    "meteorVersion": "3.6.1"
   },
   {
     "title": "Welcome Meteor Cordova",
@@ -202,12 +202,13 @@
       "Rspack",
       "Blaze 3",
       "Chart.js",
+      "dupontbertrand:gridstack",
       "MongoDB",
       "Mocha",
       "RSLint",
       "Playwright"
     ],
-    "lastUpdatedAt": "Nov/01/2026",
-    "meteorVersion": "3.6"
+    "lastUpdatedAt": "Nov/14/2026",
+    "meteorVersion": "3.6.1"
   }
 ]
