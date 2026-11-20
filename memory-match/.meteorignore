@@ -1,0 +1,7 @@
+coverage/
+reports/
+test-results/
+playwright-report/
+docs/
+scripts/
+tests/tooling/

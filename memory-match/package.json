@@ -1,0 +1,67 @@
+{
+  "name": "memory-match",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A Meteor Memory Match game showcasing Rstest from unit tests to live DDP and browser E2E",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "typecheck": "tsc --noEmit",
+    "test:tooling": "node --test tests/tooling/*.test.mjs",
+    "start": "./meteor-checkout run",
+    "test": "./meteor-checkout test --once --server-only --project meteor-pure-server --project showcase-in-source",
+    "test:unit": "./meteor-checkout test --once --server-only --project meteor-pure-server --project showcase-in-source",
+    "test:watch": "./meteor-checkout test --server-only --project meteor-pure-server --project showcase-in-source",
+    "test:component": "./meteor-checkout test --once --client-only --project meteor-pure-client",
+    "test:browser": "./meteor-checkout test --once --client-only --browser chromium --project meteor-browser",
+    "test:integration": "./meteor-checkout test --once --browser chromium --project meteor-runtime-server --project meteor-runtime-client",
+    "test:package": "./meteor-checkout test-packages --once memory-match-engine",
+    "test:e2e": "./meteor-checkout test --once --full-app --browser chromium --project meteor-e2e",
+    "test:coverage": "./meteor-checkout test --once --coverage --full-app --runtime-workers 1",
+    "test:parallel:native": "./meteor-checkout test --once --server-only --project meteor-pure-server -- --pool.type threads --pool.maxWorkers 4",
+    "test:parallel:meteor": "./meteor-checkout test --once --server-only --runtime-workers 2 --project meteor-runtime-server"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.28.4",
+    "@swc/helpers": "^0.5.17",
+    "meteor-node-stubs": "^1.2.18",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@meteorjs/rspack": "file:.meteor/local/npm/meteor-rspack",
+    "@meteorjs/rstest": "file:.meteor/local/npm/meteor-rstest",
+    "@rsdoctor/rspack-plugin": "^1.5.9",
+    "@rspack/cli": "2.1.8",
+    "@rspack/core": "2.1.8",
+    "@rspack/dev-server": "^2.1.0",
+    "@rspack/plugin-react-refresh": "^2.0.0",
+    "@rstest/adapter-rspack": "0.11.6",
+    "@rstest/browser": "0.11.6",
+    "@rstest/browser-react": "0.11.6",
+    "@rstest/core": "0.11.6",
+    "@rstest/coverage-istanbul": "0.11.6",
+    "@rstest/playwright": "0.11.6",
+    "@swc/core": "^1.15.32",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/meteor": "^2.9.8",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "jsdom": "29.1.1",
+    "playwright": "1.59.0",
+    "react-refresh": "^0.17.0",
+    "typescript": "^5.9.0"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.tsx",
+      "server": "server/main.ts"
+    },
+    "modern": true
+  }
+}

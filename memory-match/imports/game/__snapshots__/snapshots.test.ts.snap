@@ -1,0 +1,22 @@
+// Rstest Snapshot v1
+
+exports[`captures deterministic board order externally 1`] = `
+[
+  "☄️",
+  "🌌",
+  "👾",
+  "🪐",
+  "⭐",
+  "🛰️",
+  "🛰️",
+  "🌙",
+  "☄️",
+  "🌌",
+  "🚀",
+  "🪐",
+  "🚀",
+  "🌙",
+  "👾",
+  "⭐",
+]
+`;

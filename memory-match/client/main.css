@@ -1,0 +1,278 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  background: #050816;
+  color: #f5f7ff;
+  --accent: #7cf7d4;
+  --accent-strong: #24d6a5;
+  --panel: #080f24;
+  --panel-raised: #111b3d;
+  --text-muted: #aeb9db;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 8%, #1a2d69 0, transparent 32rem),
+    radial-gradient(circle at 90% 20%, #173e4c 0, transparent 28rem),
+    #050816;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.app-shell {
+  width: min(70rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 2rem;
+}
+
+.app-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  letter-spacing: -0.05em;
+}
+
+.app-header p {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
+}
+
+.name-form,
+.memory-game {
+  border: 1px solid #2b386b;
+  border-radius: 1.5rem;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow: 0 1.5rem 4rem #0008;
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.memory-game {
+  display: grid;
+  grid-template-columns: minmax(0, 24rem) minmax(12rem, 1fr);
+  column-gap: 1.5rem;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.memory-game h2 {
+  margin: 0 0 0.25rem;
+}
+
+.memory-game > :not(.leaderboard) {
+  grid-column: 1;
+}
+
+.memory-game .leaderboard {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  margin: 0;
+  border-top: 0;
+  border-left: 1px solid #2b386b;
+  padding: 0 0 0 1.5rem;
+}
+
+.memory-game .leaderboard h2 {
+  margin-bottom: 1rem;
+}
+
+.new-game {
+  display: block;
+  margin: 1rem auto 0;
+  min-height: 2.5rem;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.75rem;
+  background: var(--panel-raised);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.name-form {
+  width: min(32rem, 100%);
+  margin: 0 auto;
+}
+
+.name-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.name-form__controls {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.name-form input,
+.name-form button {
+  min-height: 3rem;
+  border-radius: 0.75rem;
+}
+
+.name-form input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid #46558a;
+  background: #070d21;
+  color: inherit;
+  padding: 0 0.875rem;
+}
+
+.name-form button {
+  border: 0;
+  background: var(--accent);
+  color: #03231b;
+  font-weight: 800;
+  padding: 0 1.25rem;
+}
+
+.game-status {
+  margin: 0.5rem 0 0.75rem;
+  min-height: 1.5rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(3.5rem, 1fr));
+  gap: clamp(0.5rem, 2vw, 1rem);
+  border: 1px solid #26335f;
+  border-radius: 1.25rem;
+  background-color: rgb(8, 15, 36);
+  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  perspective: 80rem;
+}
+
+.memory-card {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid #5265aa;
+  border-radius: 1rem;
+  background: var(--panel-raised);
+  color: #fff;
+  transform-style: preserve-3d;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.memory-card:not(:disabled):hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.memory-card[data-state="revealed"],
+.memory-card[data-state="matched"] {
+  background: #173e4c;
+  border-color: var(--accent-strong);
+  transform: rotateY(180deg);
+}
+
+.memory-card[data-state="matched"] {
+  box-shadow: inset 0 0 0 2px #7cf7d455;
+}
+
+.memory-card__face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  backface-visibility: hidden;
+  font-size: clamp(1.3rem, 5vw, 2.4rem);
+}
+
+.memory-card__front {
+  transform: rotateY(180deg);
+}
+
+.leaderboard {
+  margin-top: 2rem;
+  border-top: 1px solid #2b386b;
+  padding-top: 1rem;
+}
+
+.leaderboard ol {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leaderboard li {
+  border-radius: 0.6rem;
+  background: #111b3d;
+  padding: 0.65rem 0.8rem;
+}
+
+@media (max-width: 38rem) {
+  .app-shell {
+    width: min(100% - 1rem, 70rem);
+    padding-top: 1rem;
+  }
+
+  .name-form__controls {
+    flex-direction: column;
+  }
+
+  .card-grid {
+    gap: 0.45rem;
+  }
+
+  .memory-game {
+    display: block;
+    max-width: 28rem;
+  }
+
+  .memory-game .leaderboard {
+    margin-top: 1.5rem;
+    border-left: 0;
+    border-top: 1px solid #2b386b;
+    padding: 1rem 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .memory-card,
+  .name-form,
+  .memory-game {
+    border: 2px solid CanvasText;
+  }
+}

@@ -1,0 +1,4 @@
+Player: Ada
+Moves: 8
+Score: 7800
+Status: completed
