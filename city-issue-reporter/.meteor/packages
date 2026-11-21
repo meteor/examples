@@ -1,0 +1,25 @@
+# Meteor packages used by this project, one per line.
+# Core versions follow .meteor/release or the selected Meteor checkout.
+
+meteor-base
+mobile-experience
+mongo
+accounts-base
+reactive-var
+standard-minifier-css
+standard-minifier-js
+es5-shim
+ecmascript
+typescript
+shell-server
+hot-module-replacement
+static-html
+react-meteor-data
+rspack
+capacitor
+jam:offline
+jam:method
+jam:pub-sub
+
+# Testing
+meteortesting:mocha

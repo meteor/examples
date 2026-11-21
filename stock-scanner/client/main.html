@@ -1,0 +1,28 @@
+<head>
+  <title>Stock Scanner</title>
+  <meta
+    name="description"
+    content="Track stock with a native-style scanner workflow for warehouse floor teams."
+  />
+  <meta name="theme-color" content="#126b5c" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icons/app-icon.svg" sizes="any" type="image/svg+xml" />
+  <script>
+    document
+      .querySelectorAll('link[rel="stylesheet"][href^="/app/build-chunks/"]')
+      .forEach((stylesheet) => {
+        stylesheet.href = stylesheet.getAttribute('href').replace(
+          '/app/build-chunks/',
+          '/build-chunks/'
+        );
+      });
+  </script>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+</head>
+
+<body>
+  <div id="react-target"></div>
+</body>

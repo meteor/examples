@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Stock Scanner app icon</title>
+  <desc id="description">A handheld barcode scanner reading a labeled package</desc>
+  <rect width="512" height="512" rx="112" fill="#126b5c" />
+  <circle cx="404" cy="108" r="72" fill="#f4c870" opacity="0.24" />
+  <path d="M64 407c98-68 265-64 384 8v97H64Z" fill="#0b5a4d" opacity="0.48" />
+
+  <g id="package">
+    <path d="m244 235 130-18 48 40-126 23Z" fill="#f4c870" />
+    <path d="m244 235 52 45v139l-52-49Z" fill="#d9953d" />
+    <path d="m296 280 126-23v137l-126 25Z" fill="#fff9ed" />
+    <path d="m338 272 42-8v44l-42 8Z" fill="#f1b45f" />
+    <rect x="320" y="329" width="78" height="53" rx="9" fill="#ffffff" transform="rotate(-10 320 329)" />
+    <path d="m333 339 2 27m9-30 3 28m10-31 2 27m10-30 4 28m9-31 2 27"
+      fill="none" stroke="#17211d" stroke-width="5" />
+  </g>
+
+  <g id="scan-beam">
+    <path d="m218 188 192 97-9 70-201-126Z" fill="#8ce4d1" opacity="0.34" />
+    <path d="m222 207 174 101" fill="none" stroke="#b9f5e8" stroke-linecap="round" stroke-width="10" />
+    <path d="m342 283 54 31" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="6" opacity="0.9" />
+  </g>
+
+  <g id="scanner" transform="rotate(-12 188 238)">
+    <path d="M90 116c0-22 18-40 40-40h135c22 0 40 18 40 40v76c0 22-18 40-40 40H130c-22 0-40-18-40-40Z"
+      fill="#fffef9" />
+    <path d="M118 127c0-11 9-20 20-20h116c11 0 20 9 20 20v35c0 11-9 20-20 20H138c-11 0-20-9-20-20Z"
+      fill="#17211d" />
+    <path d="M133 140h126" fill="none" stroke="#8ce4d1" stroke-linecap="round" stroke-width="14" />
+    <path d="M153 219h82l-15 135c-3 25-24 44-49 44h-12c-19 0-34-16-31-35Z" fill="#fffef9" />
+    <path d="M155 252h67l-5 43h-69Z" fill="#e2eee8" />
+    <path d="M285 130h20v50h-20Z" fill="#f4c870" />
+    <circle cx="183" cy="327" r="11" fill="#126b5c" />
+  </g>
+
+  <path d="m405 172 9 19 21 3-15 15 3 21-18-10-19 10 4-21-16-15 21-3Z" fill="#fff4ca" />
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Civic Snap app icon</title>
+  <desc id="description">A phone camera framing street damage and its location</desc>
+  <rect width="512" height="512" rx="112" fill="#0f756b" />
+  <circle cx="103" cy="110" r="58" fill="#f4c870" opacity="0.28" />
+  <path d="M45 418c106-48 306-51 422 2v92H45Z" fill="#0a5e57" opacity="0.52" />
+
+  <g id="camera">
+    <rect x="95" y="55" width="322" height="414" rx="64" fill="#084f4a" opacity="0.34" />
+    <rect x="83" y="43" width="322" height="414" rx="64" fill="#fffefb" />
+    <rect x="111" y="92" width="266" height="310" rx="28" fill="#7cc5dc" />
+    <rect x="191" y="63" width="106" height="12" rx="6" fill="#b8c8c4" />
+    <circle cx="244" cy="429" r="16" fill="#dfe9e6" />
+    <path d="M129 189v-34c0-16 13-29 29-29h35m166 63v-34c0-16-13-29-29-29h-35M129 300v34c0 16 13 29 29 29h35m166-63v34c0 16-13 29-29 29h-35"
+      fill="none" stroke="#f4c870" stroke-linecap="round" stroke-width="14" />
+  </g>
+
+  <path d="M111 250c44-36 85-51 126-45 54 8 91 0 140-35v232H111Z" fill="#e9f2ef" />
+  <path d="M111 305c69-31 137-32 266-5v102H111Z" fill="#5f7782" />
+  <path d="M134 344c75-16 146-15 220 4" fill="none" stroke="#f8d786" stroke-dasharray="24 19" stroke-linecap="round" stroke-width="9" />
+  <path d="M146 208h52v58h-52Zm68-30h63v80h-63Zm79 17h55v64h-55Z" fill="#fff9ee" opacity="0.95" />
+
+  <g id="street-damage">
+    <path d="m203 308 34-18 39 11 31-7 32 20-22 16 11 19-46 12-42-6-35 10-23-22 20-16Z" fill="#cc5e4c" />
+    <path d="m260 309-10 21 22 10-8 21m35-54-16 20 28 13m-83-26-9 18-22-1"
+      fill="none" stroke="#7d3d34" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" />
+    <ellipse cx="264" cy="333" rx="36" ry="14" fill="#7d3d34" opacity="0.42" />
+  </g>
+
+  <g id="location-pin">
+    <path d="M386 66c-43 0-78 35-78 78 0 55 60 109 69 117a14 14 0 0 0 18 0c9-8 69-62 69-117 0-43-35-78-78-78Z"
+      fill="#f0a45a" />
+    <circle cx="386" cy="144" r="31" fill="#fffefb" />
+    <circle cx="386" cy="144" r="14" fill="#0f756b" />
+  </g>
+</svg>

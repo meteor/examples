@@ -1,0 +1,18 @@
+{
+  "name": "Stock Scanner",
+  "short_name": "Stock Scanner",
+  "description": "Mobile stock counts, barcode scans, and inventory follow-up for warehouse teams.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#126b5c",
+  "theme_color": "#126b5c",
+  "icons": [
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
